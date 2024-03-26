@@ -113,7 +113,7 @@ export default function SiteNavBar () {
             <Button className='bg-gray-200 gap-1 py-2 w-32 flex items-center rounded-3xl text-sm' >For students
               <FiArrowRight />
             </Button>
-            <Button className='bg-primary-app text-black rounded-3xl w-24 py-2 text-sm' onClick={() => router.push('/login')}>Sign in</Button>
+            <Button className='bg-primary-app text-black hover:bg-primary-app/80 rounded-3xl w-24 py-2 text-sm' onClick={() => router.push('/auth/login')}>Sign in</Button>
           </div>
         </div>
       </div>

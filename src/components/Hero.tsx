@@ -83,12 +83,12 @@ export default function Hero () {
                 <div className='relative h-[400px] w-[500px] '>
                   <div className='w-full absolute text-black phone hidden'>
                     <div className='w-full h-full flex justify-center'>
-                      <img loading='lazy' src="/assets/wsapp-phone.gif" className='h-[400px] w-[220px]' alt="pyramid" />
+                      <img loading='lazy' src="/assets/wsapp-phone.gif" className='h-[400px] w-[250px]' alt="pyramid" />
                     </div>
                   </div>
                   <div className='w-full absolute top-7 text-black phone hidden'>
                     <div className='w-full h-full flex justify-center'>
-                      <img loading='lazy' src="/assets/final-gif-2x.gif" className='h-[360px] rounded-2xl w-[195px]' alt="pyramid" />
+                      <img loading='lazy' src="/assets/final-gif-2x.gif" className='h-[360px] rounded-2xl w-[215px]' alt="pyramid" />
                     </div>
                   </div>
                   <div className="-bottom-5 shadow-xl py-3 w-full rounded-xl h-24 bg-white absolute flex justify-between items-center">
