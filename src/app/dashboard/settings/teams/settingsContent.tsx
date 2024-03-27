@@ -8,6 +8,7 @@ import { getAvatarFallback } from '@/utils/string-formatters'
 import { Button, ButtonGroup, Spinner, Tooltip } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { FiRefreshCw, FiTrash2 } from 'react-icons/fi'
+import { useAuthStore } from '@/store/auth.store'
 
 interface ResultData extends QueryResult {
   results: User[]
@@ -15,6 +16,7 @@ interface ResultData extends QueryResult {
 
 export default function TeamsSettingsPage () {
   const [page, setPage] = useState(1)
+  const { user, team } = useAuthStore()
   const loadData = async function ({ pageParam }: { pageParam: number }) {
     const result = await myTeamMembers(pageParam)
     return result
@@ -67,7 +69,9 @@ export default function TeamsSettingsPage () {
               <div key={member.id} className='flex gap-3 items-center h-12 px-3 border mt-1 text-sm hover:shadow-md'>
                 <div className='w-3/5 flex gap-2 items-center'>
                   <div className='h-8 w-8 flex justify-center items-center bg-primary-app rounded-full'>{getAvatarFallback(member.name)}</div>
-                  {member.name}</div>
+                  {member.name}
+                  {member.id === user?.id && <div className=' h-6 px-3 rounded-xl bg-primary-dark text-white flex items-center'>you</div>}
+                </div>
                 <div className='w-1/5'>{member.permissionGroup.name}</div>
                 <div className='w-1/5 flex gap-1'>
 
@@ -76,11 +80,11 @@ export default function TeamsSettingsPage () {
                       <FiRefreshCw />
                     </button>
                   </Tooltip>}
-                  <Tooltip label="Remove from team">
+                  {team?.owner !== member.id && user?.id !== member.id && <Tooltip label="Remove from team">
                     <button onClick={() => deleteMemberMutation.mutate(member.id)} className='h-8 w-8 flex justify-center items-center rounded-lg border hover:bg-gray-100'>
                       <FiTrash2 />
                     </button>
-                  </Tooltip>
+                  </Tooltip>}
                 </div>
               </div>
             ))}
