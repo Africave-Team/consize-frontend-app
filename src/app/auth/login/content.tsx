@@ -1,14 +1,11 @@
 'use client'
-import moment from 'moment'
 import Link from 'next/link'
 
 import { useFormik } from "formik"
 import * as Yup from 'yup'
-import { useRouter } from 'next/navigation'
 import { Button, useToast } from '@chakra-ui/react'
 import { useAuthStore } from '@/store/auth.store'
 import KippaLogo from '@/components/Logo'
-import { useEffect } from 'react'
 import Layout from '@/layouts/PageTransition'
 import { login } from '@/services/auth.service'
 
@@ -21,7 +18,6 @@ const LoginSchema = Yup.object().shape({
 
 export default function LoginHome () {
   const toast = useToast()
-  const router = useRouter()
   const { setAccess, setUser, setTeam } = useAuthStore()
   const loginFormik = useFormik({
     initialValues: {
@@ -43,7 +39,6 @@ export default function LoginHome () {
           duration: 5000,
           isClosable: true,
         })
-        router.push("/dashboard")
       } catch (error) {
         toast({
           title: 'Failed.',

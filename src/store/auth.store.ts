@@ -11,7 +11,9 @@ export const useAuthStore = create(
       setUser: (obj) => set({ user: obj }),
       setAccess: (obj) => set({ ...obj }),
       setTeam: (obj) => set({ team: obj }),
-      logoutAccount () { }
+      logoutAccount () {
+        set({ access: undefined, refresh: undefined, user: undefined, team: undefined })
+      }
     }),
     {
       name: "auth-storage",

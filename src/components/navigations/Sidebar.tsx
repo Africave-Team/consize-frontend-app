@@ -7,18 +7,15 @@ import { RxDashboard } from "react-icons/rx"
 import SidebarLink from './SidebarLink'
 import { useAuthStore } from '@/store/auth.store'
 import { logout } from '@/services/auth.service'
-import { useRouter } from 'next/navigation'
 
 export default function Sidebar () {
   const { toggleSidebar, sidebarOpen } = useNavigationStore()
   const { logoutAccount, refresh } = useAuthStore()
-  const router = useRouter()
   const logoutFn = async function () {
     if (refresh) {
       await logout({ refreshToken: refresh.token })
     }
     logoutAccount()
-    router.push("/auth/login")
   }
   return (
     <div className={`${sidebarOpen ? 'sidebar-large' : 'sidebar-mini'} h-full min-w-16 flex flex-col border-r`}>
