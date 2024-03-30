@@ -26,6 +26,16 @@ body {
   width: 80px;
 }
 
+::-webkit-scrollbar {
+  width: 0 !important;
+  /* For Chrome, Safari, and Opera */
+}
+
+/* Optional: For Firefox */
+html {
+  scrollbar-width: none !important;
+}
+
 .sidebar-large {
   width: 220px;
 }

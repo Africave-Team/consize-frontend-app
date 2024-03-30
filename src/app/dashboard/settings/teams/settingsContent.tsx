@@ -50,7 +50,7 @@ export default function TeamsSettingsPage () {
         <div className='w-full md:w-1/2'>
           <div className='flex justify-between'>
             <div className='flex gap-2 items-center'>
-              Team members <div className='text-black bg-primary-app h-6 w-6 text-sm rounded-full flex justify-center items-center'>{results?.pages[0] && results?.pages[0].results.length}</div>
+              Team members <div className='text-black bg-primary-app h-6 w-6 text-sm rounded-full flex justify-center items-center'>{results?.pages[0] && results?.pages[0].data.length}</div>
               {(isLoading || resendMutation.isPending || deleteMemberMutation.isPending) && <Spinner size={'sm'} />}
             </div>
 
@@ -64,8 +64,8 @@ export default function TeamsSettingsPage () {
             <div className='w-1/5'>Actions</div>
           </div>
           {results?.pages[0] && <>
-            {results?.pages[0].results.length === 0 && <div className='h-12 px-3 border mt-1 flex items-center text-sm hover:shadow-md'>You have no team members yet.</div>}
-            {results?.pages[0].results.map((member: User) => (
+            {results?.pages[0].data.length === 0 && <div className='h-12 px-3 border mt-1 flex items-center text-sm hover:shadow-md'>You have no team members yet.</div>}
+            {results?.pages[0].data.map((member: User) => (
               <div key={member.id} className='flex gap-3 items-center h-12 px-3 border mt-1 text-sm hover:shadow-md'>
                 <div className='w-3/5 flex gap-2 items-center'>
                   <div className='h-8 w-8 flex justify-center items-center bg-primary-app rounded-full'>{getAvatarFallback(member.name)}</div>

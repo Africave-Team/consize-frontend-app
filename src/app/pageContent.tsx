@@ -9,7 +9,7 @@ import Image from 'next/image'
 
 export default function Home () {
   return (
-    <section>
+    <section className='h-screen overflow-y-scroll'>
       <SiteNavBar />
       <Hero />
       <Footer />

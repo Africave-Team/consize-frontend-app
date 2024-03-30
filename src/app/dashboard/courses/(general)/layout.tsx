@@ -6,6 +6,6 @@ export default function GeneralCoursesPageLayout ({
   children: React.ReactNode
 }) {
   return (
-    <div>{children}</div>
+    <>{children}</>
   )
 }
