@@ -47,7 +47,7 @@ export default function DashboardLayout ({
     <div className='flex h-full w-full '>
       {refresh && access && user && <>
         <Sidebar />
-        <div className='flex-1 h-full'>
+        <div className='flex-1 h-full transition-all duration-500'>
           <DashboardNav />
           {user && !user?.isEmailVerified && <div className='h-8 w-full flex justify-center items-center'>
             <div className='w-1/2 text-white py-1 mt-5 text-xs bg-black rounded-md text-center'>

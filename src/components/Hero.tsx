@@ -6,7 +6,7 @@ import localFont from 'next/font/local'
 import SampleCourseCTA from './SampleCourseCTA'
 import { FiArrowRight } from 'react-icons/fi'
 
-const myFont = localFont({ src: './fonts/rgs-1.ttf' })
+const myFont = localFont({ src: '../fonts/rgs-1.ttf' })
 
 export default function Hero () {
   const animateComponents = () => {

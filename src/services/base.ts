@@ -1,12 +1,13 @@
 import qs from "query-string"
 import axios from 'axios'
 
-import type { IPut, IGet, IPost, IPatch, IDelete } from '@/type-definitions/IAxios'
+import type { IPut, IGet, IPost, IPatch, IDelete, IPostMultipart } from '@/type-definitions/IAxios'
 import { useAuthStore } from '@/store/auth.store'
 
 
 class HttpFacade {
   private http
+  private httpMultipart
 
   private env = process.env.NEXT_PUBLIC_APP_ENV
   private baseUrl = process.env.NEXT_PUBLIC_BASE_URL
@@ -18,10 +19,32 @@ class HttpFacade {
       baseURL: this.baseUrl,
       headers: { 'Content-Type': 'application/json' },
     })
+    this.httpMultipart = axios.create({
+      baseURL: this.baseUrl,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
 
 
 
     this.http.interceptors.request.use(
+      (config) => {
+        if (!config.headers.get('Authorization')) {
+          if (typeof window !== 'undefined') {
+            // Access the Zustand store only on the client-side
+            try {
+              const { access } = useAuthStore.getState()
+              config.headers['Authorization'] = `Bearer ${access?.token}`
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        }
+        return config
+      },
+      (error) => Promise.reject(error)
+    )
+
+    this.httpMultipart.interceptors.request.use(
       (config) => {
         if (!config.headers.get('Authorization')) {
           if (typeof window !== 'undefined') {
@@ -79,7 +102,37 @@ class HttpFacade {
       }
     )
 
+    this.httpMultipart.interceptors.response.use(
+      (response) => {
+        return response
+      },
+      async (error) => {
+        const { response } = error
+        const originalRequest = error.config
+        if (response.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true
+          try {
+            const newToken = await refreshToken()
+            originalRequest.headers.Authorization = `Bearer ${newToken}`
+            return this.http(originalRequest)
+          } catch (error) {
+            // Handle token refresh error
+            useAuthStore.setState({ access: undefined, refresh: undefined, user: undefined, team: undefined })
+            // For example, log the user out or redirect to login page
+            console.error('Error refreshing token:', error)
+            // Redirect to login page or log the user out
+          }
+        }
+        return Promise.reject(response.data)
+      }
+    )
+
   }
+
+  upload = async ({ url, data, headers = {} }: IPostMultipart) => {
+    const response = await this.httpMultipart.post(url, data, { headers })
+    return response.data
+  };
 
   post = async ({ url, body, headers = {} }: IPost) => {
     let py = { ...body }

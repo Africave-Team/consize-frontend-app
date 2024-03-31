@@ -38,6 +38,9 @@ export default function RootLayout ({
 
   return (
     <html lang="en">
+      <head>
+        <script src="/js/tinymce/tinymce.min.js" />
+      </head>
       <body className='h-screen overflow-y-hidden w-screen overflow-x-hidden' suppressHydrationWarning>
         <ChakraProvider>
           <CacheProvider>

@@ -40,7 +40,67 @@ html {
   width: 220px;
 }
 
+.tox-tinymce {
+  @apply !rounded-none !border-[#0D1F23] !border
+}
+
+.tox .tox-menubar,
+.tox .tox-statusbar,
+.tox-promotion,
+.tox .tox-bottom-anchorbar {
+  display: none !important;
+}
+
+.tox-edit-area__iframe #tinymce .mce-content-body {
+  outline: none;
+}
+
+.tox .tox-editor-container {
+  flex-direction: column-reverse !important;
+}
+
+.tox .tox-editor-header,
+.tox .tox-toolbar__primary {
+  background-color: #F8FAFC !important;
+  padding: 0px !important;
+  background: #F8FAFC !important;
+  /* Border Top */
+  box-shadow: 0px 1px 0px 0px rgba(203, 213, 225, 0.50) inset !important;
+  @apply !border-t !border-t-[#0D1F23];
+}
+
+.tox-tinymce-aux {
+  z-index: 2000 !important;
+}
+
+.hint p {
+  display: inline !important;
+}
+
+.tox .tox-edit-area {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
 .page-container {
   height: calc(100vh - 60px);
   overflow: hidden;
+}
+
+.course-list-container {
+  min-height: calc(100vh-160px);
+}
+
+
+/* bg templates */
+.default-bg-spiral-1 {
+  background-image: url(/lines.svg);
+}
+
+.default-bg-spiral-2 {
+  background-image: url(/lines2.svg);
+}
+
+.default-bg-spiral-3 {
+  background-image: url(/lines3.svg);
 }

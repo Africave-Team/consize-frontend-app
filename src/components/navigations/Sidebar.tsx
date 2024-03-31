@@ -18,7 +18,7 @@ export default function Sidebar () {
     logoutAccount()
   }
   return (
-    <div className={`${sidebarOpen ? 'sidebar-large' : 'sidebar-mini'} h-full min-w-16 flex flex-col border-r`}>
+    <div className={`${sidebarOpen ? 'sidebar-large' : 'sidebar-mini'} h-full transition-all duration-500 min-w-16 flex flex-col border-r`}>
       <button onClick={toggleSidebar} className={`flex hover:bg-gray-100 items-center ${sidebarOpen ? 'justify-start px-8' : 'justify-center'} w-full border-b h-16`}>
         {sidebarOpen ? <FiChevronLeft /> : <FiChevronRight />}
       </button>
