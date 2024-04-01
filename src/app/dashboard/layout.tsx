@@ -30,15 +30,15 @@ export default function DashboardLayout ({
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // if (!access || !refresh || !user) {
-      //   useAuthStore.setState({
-      //     team: undefined,
-      //     access: undefined,
-      //     user: undefined,
-      //     refresh: undefined
-      //   })
-      //   router.push("/auth/login")
-      // }
+      if (!access || !refresh || !user) {
+        useAuthStore.setState({
+          team: undefined,
+          access: undefined,
+          user: undefined,
+          refresh: undefined
+        })
+        router.push("/auth/login")
+      }
       console.log(access, refresh, user)
     }
 

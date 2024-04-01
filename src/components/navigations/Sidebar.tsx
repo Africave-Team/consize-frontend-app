@@ -13,7 +13,7 @@ export default function Sidebar () {
   const { logoutAccount, refresh } = useAuthStore()
   const logoutFn = async function () {
     if (refresh) {
-      await logout({ refreshToken: refresh.token })
+      logout({ refreshToken: refresh.token })
     }
     logoutAccount()
   }

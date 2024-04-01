@@ -10,6 +10,7 @@ import {
   Select,
   Tooltip,
   Input,
+  Spinner,
 } from '@chakra-ui/react'
 import html2canvas from 'html2canvas'
 import * as Yup from 'yup'
@@ -24,6 +25,7 @@ interface Props {
 }
 export default function ImageBuilder ({ onFileUploaded, label = "Build image", title = "Build your course header image", imageText }: Props) {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const [progress, setProgress] = useState(false)
   const [bgImageUrls] = useState<{ url: string; name: string }[]>([
     {
       name: "Spiral lines I",
@@ -68,11 +70,12 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
 
       canvas.toBlob(async (blob) => {
         if (blob) {
+          setProgress(true)
           const file = new File([blob], imageText.toLowerCase() + '-header-image.jpeg', { type: 'image/jpeg' })
           formData.append("file", file)
           const { data } = await uploadFile(formData)
-          debugger
           if (data) {
+            setProgress(true)
             onFileUploaded(data)
             onClose()
           }
@@ -133,7 +136,9 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
             <button onClick={onClose}>
               Cancel
             </button>
-            <button onClick={saveBuiltImage} className='bg-[#0D1F23] h-11 w-auto px-8 text-white' >Save</button>
+            <button disabled={progress} onClick={saveBuiltImage} className='bg-[#0D1F23] disabled:bg-[#0D1F23]/80 h-11 w-auto px-8 flex gap-2 text-white' >Save
+              {progress && <Spinner size={'sm'} />}
+            </button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>}

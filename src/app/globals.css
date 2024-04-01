@@ -104,3 +104,7 @@ html {
 .default-bg-spiral-3 {
   background-image: url(/lines3.svg);
 }
+
+.chakra-menu__menu-button>span {
+  @apply flex justify-center items-center
+}

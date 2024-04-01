@@ -18,7 +18,7 @@ export default function SearchCourses () {
   const { data: searchResults, isFetching, refetch } =
     useQuery({
       queryKey: ['search', { search, isOpen }],
-      queryFn: () => isOpen && loadData({ search })
+      queryFn: () => isOpen && search.length > 0 && loadData({ search })
     })
 
 
