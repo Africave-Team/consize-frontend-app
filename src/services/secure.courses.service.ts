@@ -1,5 +1,5 @@
 import http from './base'
-import { CreateCoursePayload, PaginationPayload } from '@/type-definitions/secure.courses'
+import { AddBlock, AddBlockQuiz, AddLessonQuiz, CreateCoursePayload, PaginationPayload } from '@/type-definitions/secure.courses'
 
 
 
@@ -34,3 +34,29 @@ export const searchCourses = async (payload: { search: string }): Promise<any> =
   })
 
 
+
+// Blocks
+
+
+export const addLessonBlock = async (payload: AddBlock): Promise<any> =>
+  http.post({
+    url: `blocks/${payload.courseId}/${payload.lessonId}`,
+    body: { ...payload.block }
+  })
+
+
+
+
+
+// quiz
+export const addBlockQuiz = async (payload: AddBlockQuiz): Promise<any> =>
+  http.post({
+    url: `blocks/quiz/${payload.courseId}/${payload.lessonId}/${payload.blockId}`,
+    body: { ...payload.quiz }
+  })
+
+export const addLessonQuiz = async (payload: AddLessonQuiz): Promise<any> =>
+  http.post({
+    url: `lessons/quiz/${payload.courseId}/${payload.lessonId}`,
+    body: { ...payload.quiz }
+  })

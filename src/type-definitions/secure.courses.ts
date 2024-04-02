@@ -101,3 +101,42 @@ export interface Course {
   currentCohort?: string
   audiences?: string
 }
+
+
+// Blocks
+
+export interface Block {
+  title: string
+  content: string
+  bodyMedia: Media
+}
+export interface AddBlock {
+  courseId: string
+  lessonId: string
+  block: Block
+}
+
+
+// quiz
+
+export interface Quiz {
+  question: string
+  correctAnswerContext: string
+  wrongAnswerContext: string
+  choices: string[]
+  correctAnswerIndex: number
+  revisitChunk?: string
+  hint?: string
+}
+export interface AddBlockQuiz {
+  courseId: string
+  lessonId: string
+  blockId: string
+  quiz: Quiz
+}
+
+export interface AddLessonQuiz {
+  courseId: string
+  lessonId: string
+  quiz: Quiz
+}
