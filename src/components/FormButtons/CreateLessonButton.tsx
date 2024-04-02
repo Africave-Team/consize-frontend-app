@@ -1,13 +1,16 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spinner, useDisclosure } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import NewLesson from '../Courses/NewLesson'
+import { FiPlus } from 'react-icons/fi'
 
 
-export default function CreateLessonButton ({ courseId, refetch }: { courseId: string, refetch: () => Promise<any> }) {
+export default function CreateLessonButton ({ courseId, refetch, full }: { courseId: string, refetch: () => Promise<any>, full?: boolean }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   return (
     <div>
-      <button onClick={onOpen} className='bg-primary-dark text-white h-10 w-32'>Add lesson</button>
+      <button onClick={onOpen} className={`bg-primary-dark hover:bg-primary-dark/90 flex justify-center items-center gap-2 rounded-lg text-white h-10 ${full ? 'w-full' : 'w-32'}`}>
+        <FiPlus />
+        Add lesson</button>
       {isOpen && <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -20,7 +23,7 @@ export default function CreateLessonButton ({ courseId, refetch }: { courseId: s
             <NewLesson handleFinish={async () => {
               await refetch()
               onClose()
-            }} courseId={courseId} />
+            }} courseId={courseId} close={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>}

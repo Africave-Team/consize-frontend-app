@@ -4,6 +4,7 @@ import CustomTinyMCEEditor from '@/components/CustomTinyEditor'
 import { useFormik } from 'formik'
 import { Spinner, useToast } from '@chakra-ui/react'
 import he from "he"
+import { createLesson } from '@/services/lessons.service'
 
 
 const validationSchema = Yup.object({
@@ -11,7 +12,7 @@ const validationSchema = Yup.object({
   description: Yup.string().optional()
 })
 
-export default function NewLesson ({ courseId, handleFinish }: { courseId: string, handleFinish: () => void }) {
+export default function NewLesson ({ courseId, handleFinish, close }: { courseId: string, handleFinish: () => void, close: () => void }) {
   const toast = useToast()
   const form = useFormik({
     validationSchema,
@@ -22,18 +23,19 @@ export default function NewLesson ({ courseId, handleFinish }: { courseId: strin
       description: "",
     },
     onSubmit: async function (values) {
-
-      // toast({
-      //   description: message,
-      //   title: "Completed",
-      //   status: 'success',
-      //   duration: 2000,
-      //   isClosable: true,
-      // })
+      const { message } = await createLesson({ lesson: values, courseId })
+      toast({
+        description: message,
+        title: "Completed",
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+      handleFinish()
     },
   })
   return (
-    <div className='w-full'>
+    <div className='w-full p-3'>
       <div className='flex justify-between'>
         <div className='font-semibold text-lg'>Add a new lesson</div>
       </div>
@@ -49,7 +51,8 @@ export default function NewLesson ({ courseId, handleFinish }: { courseId: strin
               form.setFieldValue("description", value)
             }} placeholder='Describe your lesson for us. This is optional' value={form.values.description} aiOptionButtons={[]} />
           </div>
-          <div className='justify-end flex'>
+          <div className='justify-end flex gap-2'>
+            <button onClick={close} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
             <button disabled={!form.isValid} type='submit' className='text-sm px-5 h-10 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Save lesson
               {form.isSubmitting && <Spinner size={'sm'} />}
             </button>

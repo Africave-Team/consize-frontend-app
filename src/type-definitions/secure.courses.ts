@@ -63,6 +63,23 @@ export enum Sources {
   AI = "ai"
 }
 
+export interface Createlesson {
+  courseId: string
+  lesson: {
+    title: string
+    description?: string
+  }
+}
+
+export interface UpdateLesson {
+  lessonId: string
+  courseId: string
+  lesson: {
+    title: string
+    description?: string
+  }
+}
+
 
 
 
