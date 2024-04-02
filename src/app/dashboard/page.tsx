@@ -1,5 +1,6 @@
 // Import your Client Component
 import HomePage from './dashboardPageContent'
+import { cookies } from 'next/headers'
 
 import { Metadata } from 'next'
 

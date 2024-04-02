@@ -3,17 +3,24 @@
 import DashboardNav from '@/components/navigations/DashboardNav'
 import Sidebar from '@/components/navigations/Sidebar'
 import { sendVerificationEmail } from '@/services/auth.service'
-import { useAuthStore } from '@/store/auth.store'
+import { useAuthStore, cookieKey } from '@/store/auth.store'
 import { useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
+import { parseCookies } from 'nookies'
 import { useEffect } from 'react'
+
+export function delay (ms: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
+}
 
 export default function DashboardLayout ({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { user, access, refresh } = useAuthStore()
+  const { user, access } = useAuthStore()
   const toast = useToast()
   const router = useRouter()
 
@@ -28,24 +35,9 @@ export default function DashboardLayout ({
     })
   }
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!access || !refresh || !user) {
-        useAuthStore.setState({
-          team: undefined,
-          access: undefined,
-          user: undefined,
-          refresh: undefined
-        })
-        router.push("/auth/login")
-      }
-      console.log(access, refresh, user)
-    }
-
-  }, [access, refresh, user])
   return (
     <div className='flex h-full w-full '>
-      {refresh && access && user && <>
+      <>
         <Sidebar />
         <div className='flex-1 h-full transition-all duration-500'>
           <DashboardNav />
@@ -58,7 +50,7 @@ export default function DashboardLayout ({
             {children}
           </div>
         </div>
-      </>}
+      </>
     </div>
   )
 }

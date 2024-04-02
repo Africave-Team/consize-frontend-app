@@ -1,19 +1,23 @@
 "use client"
 
-import ViewCourseDetails from '@/components/Courses/ViewCourseDetails'
 import Layout from '@/layouts/PageTransition'
-import { fetchSingleCourse } from '@/services/secure.courses.service'
+
+import React from 'react'
+
 import { Course } from '@/type-definitions/secure.courses'
+import { fetchSingleCourse } from '@/services/secure.courses.service'
+
 import { useQuery } from '@tanstack/react-query'
-import { usePathname } from 'next/navigation'
+import ModifyCourse from '@/components/Courses/ModifyCourse'
+import ListLessons from '@/components/Courses/ListLessons'
 
 interface ApiResponse {
   data: Course
   message: string
 }
 
-
 export default function page ({ params }: { params: { id: string } }) {
+
   const loadData = async function (payload: { course: string }) {
     const data = await fetchSingleCourse(payload.course)
     return data
@@ -24,12 +28,14 @@ export default function page ({ params }: { params: { id: string } }) {
       queryKey: ['course', params.id],
       queryFn: () => loadData({ course: params.id })
     })
+
   return (
+
     <Layout>
       <div className='w-full overflow-y-scroll  max-h-full'>
         <div className='flex-1 flex justify-center md:py-10'>
-          <div className='px-4 w-full md:w-3/5'>
-            {courseDetails && <ViewCourseDetails course={courseDetails?.data} />}
+          <div className='flex-1 flex justify-center md:py-10'>
+            {courseDetails && courseDetails.data && <ListLessons course={courseDetails.data} refetch={refetch} />}
           </div>
         </div>
       </div>

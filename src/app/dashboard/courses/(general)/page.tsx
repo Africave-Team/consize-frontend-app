@@ -1,7 +1,7 @@
 "use client"
 import Layout from '@/layouts/PageTransition'
 import { useNavigationStore } from '@/store/navigation.store'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { CiGrid41, CiGrid2H } from "react-icons/ci"
 import { ListStyle } from '@/type-definitions/navigation'
@@ -32,10 +32,9 @@ enum PageType {
 }
 
 export default function page () {
-  const { preferredListStyle, toggleListStyle, sidebarOpen } = useNavigationStore()
+  const { preferredListStyle, toggleListStyle, setPageTitle } = useNavigationStore()
   const [page, setPage] = useState(1)
   const [type, setType] = useState<PageType>(PageType.ALL)
-
 
   const loadData = async function (payload: { pageParam: number, filter: string }) {
     const pageSize = 3
@@ -67,6 +66,10 @@ export default function page () {
       value: PageType.DRAFT
     }
   ]
+
+  useEffect(() => {
+    setPageTitle("Dashboard - Courses")
+  }, [])
 
 
 

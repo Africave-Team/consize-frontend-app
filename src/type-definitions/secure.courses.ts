@@ -50,11 +50,20 @@ export enum CourseStatus {
   DELETED = "deleted"
 }
 
-
+export interface Lesson {
+  id: string
+  title: string
+  blocks: string[]
+  quizzes: string[]
+  course: string
+  description?: string
+}
 export enum Sources {
   MANUAL = "manual",
   AI = "ai"
 }
+
+
 
 
 export interface Course {
@@ -62,8 +71,8 @@ export interface Course {
   title: string
   description: string
   owner: string
-  lessons: string[]
-  courses: string[]
+  lessons: Lesson[]
+  courses: Course[]
   headerMedia: Media
   status: CourseStatus
   free: boolean

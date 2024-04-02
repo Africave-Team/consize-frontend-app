@@ -8,6 +8,7 @@ import { useAuthStore } from '@/store/auth.store'
 import KippaLogo from '@/components/Logo'
 import Layout from '@/layouts/PageTransition'
 import { login } from '@/services/auth.service'
+import { useRouter } from 'next/navigation'
 
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
@@ -19,6 +20,7 @@ const LoginSchema = Yup.object().shape({
 export default function LoginHome () {
   const toast = useToast()
   const { setAccess, setUser, setTeam } = useAuthStore()
+  const router = useRouter()
   const loginFormik = useFormik({
     initialValues: {
       email: '',
@@ -39,6 +41,7 @@ export default function LoginHome () {
           duration: 5000,
           isClosable: true,
         })
+        router.push("/dashboard")
       } catch (error) {
         toast({
           title: 'Failed.',

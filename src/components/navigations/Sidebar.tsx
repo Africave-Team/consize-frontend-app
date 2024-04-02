@@ -10,13 +10,7 @@ import { logout } from '@/services/auth.service'
 
 export default function Sidebar () {
   const { toggleSidebar, sidebarOpen } = useNavigationStore()
-  const { logoutAccount, refresh } = useAuthStore()
-  const logoutFn = async function () {
-    if (refresh) {
-      logout({ refreshToken: refresh.token })
-    }
-    logoutAccount()
-  }
+
   return (
     <div className={`${sidebarOpen ? 'sidebar-large' : 'sidebar-mini'} h-full transition-all duration-500 min-w-16 flex flex-col border-r`}>
       <button onClick={toggleSidebar} className={`flex hover:bg-gray-100 items-center ${sidebarOpen ? 'justify-start px-8' : 'justify-center'} w-full border-b h-16`}>
@@ -42,9 +36,11 @@ export default function Sidebar () {
           <div className='h-full w-full flex justify-center items-center'><FiSettings /></div>
         </Tooltip>}
       </SidebarLink>
-      <button onClick={logoutFn} className={`flex hover:bg-gray-100 items-center ${sidebarOpen ? 'justify-start px-8' : 'justify-center'} w-full border-b h-16`}>
-        {sidebarOpen ? <FiLogOut /> : <FiLogOut />}
-      </button>
+      <SidebarLink href={'/auth/logout'} >
+        <div className={`flex hover:bg-gray-100 items-center ${sidebarOpen ? 'justify-start px-8' : 'justify-center'} w-full border-b h-16`}>
+          {sidebarOpen ? <FiLogOut /> : <FiLogOut />}
+        </div>
+      </SidebarLink>
     </div>
   )
 }

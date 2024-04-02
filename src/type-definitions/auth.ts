@@ -130,5 +130,5 @@ export interface IAuthStore extends authStore {
   setUser: (payload: User) => void
   setAccess: (payload: Access) => void
   setTeam: (payload: Team) => void
-  logoutAccount: () => void
+  logoutAccount: () => Promise<void>
 }

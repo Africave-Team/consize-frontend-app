@@ -136,7 +136,7 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
             <button onClick={onClose}>
               Cancel
             </button>
-            <button disabled={progress} onClick={saveBuiltImage} className='bg-[#0D1F23] disabled:bg-[#0D1F23]/80 h-11 w-auto px-8 flex gap-2 text-white' >Save
+            <button disabled={progress} onClick={saveBuiltImage} className='bg-[#0D1F23] disabled:bg-[#0D1F23]/80 h-11 w-auto px-8 flex items-center gap-2 text-white' >Save
               {progress && <Spinner size={'sm'} />}
             </button>
           </DrawerFooter>

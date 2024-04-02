@@ -41,7 +41,7 @@ html {
 }
 
 .tox-tinymce {
-  @apply !rounded-none !border-[#0D1F23] !border
+  @apply !rounded-lg !border-[#0D1F23] !border-2
 }
 
 .tox .tox-menubar,

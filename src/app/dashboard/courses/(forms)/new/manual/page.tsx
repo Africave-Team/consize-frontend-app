@@ -51,7 +51,7 @@ export default function page () {
         duration: 2000,
         isClosable: true,
       })
-      router.push(`/dashboard/courses/${data.id}/modify`)
+      router.push(`/dashboard/courses/${data.id}/modify/lessons`)
     },
   })
   return (
@@ -72,7 +72,7 @@ export default function page () {
               <form onSubmit={form.handleSubmit} className='flex flex-col gap-4'>
                 <div>
                   <label htmlFor="title">Course title *</label>
-                  <input onChange={form.handleChange} onBlur={form.handleBlur} id="title" type="text" placeholder='Course title' className='h-14 px-4 focus-visible:outline-none w-full rounded-none border border-[#0D1F23]' />
+                  <input onChange={form.handleChange} onBlur={form.handleBlur} id="title" type="text" placeholder='Course title' className='h-14 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
                 </div>
                 <div>
                   <label htmlFor="description">Course description *</label>

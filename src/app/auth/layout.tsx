@@ -1,5 +1,6 @@
 "use client"
 import { useAuthStore } from '@/store/auth.store'
+import { useNavigationStore } from '@/store/navigation.store'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 
@@ -9,12 +10,11 @@ export default function AuthLayout ({
   children: React.ReactNode
 }) {
   const { user, access, refresh } = useAuthStore()
+  const { setPageTitle } = useNavigationStore()
   const router = useRouter()
   useEffect(() => {
-    if (access && refresh && user) {
-      router.push("/dashboard")
-    }
-  }, [access, refresh])
+    setPageTitle("Consize - Authentication")
+  }, [])
   return (
     <div>{children}</div>
   )

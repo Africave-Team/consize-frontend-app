@@ -16,7 +16,7 @@ export default function RowItem ({ course }: { course: Course }) {
       app = getApp()
     }
     const database = getDatabase(app)
-    const projectStats = ref(database, 'course-statistics/' + course.id)
+    const projectStats = ref(database, 'course-statistics/' + course.owner + '/' + course.id)
     const fetchData = async () => {
       onValue(projectStats, async (snapshot) => {
         const data: CourseStatistics = snapshot.val()

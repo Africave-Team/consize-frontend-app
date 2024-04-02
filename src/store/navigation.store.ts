@@ -7,9 +7,13 @@ export const useNavigationStore = create(
     (set, get) => ({
       sidebarOpen: false,
       preferredListStyle: ListStyle.ROWS,
+      pageTitle: "Dashboard - Home",
 
 
       // methods
+      setPageTitle (title) {
+        set({ pageTitle: title })
+      },
       toggleSidebar: () => set({ sidebarOpen: !get().sidebarOpen }),
       toggleListStyle: () => set({ preferredListStyle: get().preferredListStyle === ListStyle.GRID ? ListStyle.ROWS : ListStyle.GRID })
     }),
