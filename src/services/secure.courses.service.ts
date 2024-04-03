@@ -1,5 +1,5 @@
 import http from './base'
-import { AddBlock, AddBlockQuiz, AddLessonQuiz, CreateCoursePayload, PaginationPayload } from '@/type-definitions/secure.courses'
+import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CreateCoursePayload, PaginationPayload, Quiz } from '@/type-definitions/secure.courses'
 
 
 
@@ -34,6 +34,11 @@ export const searchCourses = async (payload: { search: string }): Promise<any> =
   })
 
 
+// lessons
+export const fetchSingleLesson = async (course: string, lesson: string): Promise<any> =>
+  http.get({
+    url: `lessons/${course}/${lesson}`
+  })
 
 // Blocks
 
@@ -43,6 +48,32 @@ export const addLessonBlock = async (payload: AddBlock): Promise<any> =>
     url: `blocks/${payload.courseId}/${payload.lessonId}`,
     body: { ...payload.block }
   })
+
+export const updateLessonBlock = async (payload: {
+  blockId: string, update: Partial<Block>
+}): Promise<any> =>
+  http.put({
+    url: `blocks/${payload.blockId}`,
+    body: { ...payload.update }
+  })
+
+export const deleteLessonBlock = async (payload: {
+  lessonId: string, blockId: string
+}): Promise<any> => {
+  return http.delete({
+    url: `blocks/${payload.lessonId}/${payload.blockId}`
+  })
+}
+
+
+
+export const deleteBlockQuiz = async (payload: {
+  quizId: string, blockId: string
+}): Promise<any> => {
+  return http.delete({
+    url: `blocks/quiz/${payload.blockId}/${payload.quizId}`
+  })
+}
 
 
 
@@ -60,3 +91,18 @@ export const addLessonQuiz = async (payload: AddLessonQuiz): Promise<any> =>
     url: `lessons/quiz/${payload.courseId}/${payload.lessonId}`,
     body: { ...payload.quiz }
   })
+
+export const updateQuiz = async (payload: { id: string, body: Partial<Quiz> }): Promise<any> =>
+  http.put({
+    url: `quiz/${payload.id}`,
+    body: { ...payload.body }
+  })
+
+
+export const deleteLessonQuiz = async (payload: {
+  quizId: string, lessonId: string
+}): Promise<any> => {
+  return http.delete({
+    url: `lessons/quiz/${payload.lessonId}/${payload.quizId}`
+  })
+}

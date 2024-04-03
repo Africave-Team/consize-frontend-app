@@ -88,7 +88,7 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
   }
   return (
     <div>
-      <button disabled={imageText.length === 0} onClick={() => onOpen()} type='button' className='text-sm w-32 h-10  px-3 border text-white disabled:bg-[#0D1F23]/60 bg-[#0D1F23] rounded-none'>{label}</button>
+      <button disabled={imageText.length === 0} onClick={() => onOpen()} type='button' className='text-sm w-32 h-10 mb-2 px-3 border text-white disabled:bg-[#0D1F23]/60 bg-[#0D1F23] rounded-lg'>{label}</button>
 
       {isOpen && <Drawer
         isOpen={isOpen}

@@ -23,7 +23,6 @@ export function getAvatarFallback (name: string): string {
 
 export function convertToWhatsAppString (htmlString: string): string {
   if (!htmlString) return ''
-  debugger
   const entities: any = {
     '&amp;': '&',
     '&lt;': '<',

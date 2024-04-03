@@ -58,6 +58,17 @@ export interface Lesson {
   course: string
   description?: string
 }
+
+
+export interface LessonData {
+  id: string
+  title: string
+  blocks: Block[]
+  quizzes: Quiz[]
+  course: Course
+  description?: string
+}
+
 export enum Sources {
   MANUAL = "manual",
   AI = "ai"
@@ -106,6 +117,9 @@ export interface Course {
 // Blocks
 
 export interface Block {
+  quiz?: Quiz
+  id: string
+  course: string
   title: string
   content: string
   bodyMedia: Media
@@ -113,13 +127,14 @@ export interface Block {
 export interface AddBlock {
   courseId: string
   lessonId: string
-  block: Block
+  block: Omit<Block, "id" | "course">
 }
 
 
 // quiz
 
 export interface Quiz {
+  id: string
   question: string
   correctAnswerContext: string
   wrongAnswerContext: string
@@ -132,11 +147,11 @@ export interface AddBlockQuiz {
   courseId: string
   lessonId: string
   blockId: string
-  quiz: Quiz
+  quiz: Omit<Quiz, "id">
 }
 
 export interface AddLessonQuiz {
   courseId: string
   lessonId: string
-  quiz: Quiz
+  quiz: Omit<Quiz, "id">
 }

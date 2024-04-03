@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
 
 })
 
-export default function NewQuizForm ({ courseId, close }: { courseId: string, close: () => void }) {
+export default function NewQuizForm ({ courseId, close }: { courseId: string, close: (reload?: boolean) => void }) {
   const { createContent } = useCourseMgtStore()
   const toast = useToast()
   const form = useFormik({
@@ -44,7 +44,7 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
             choices,
             hint: values.hint,
             question: values.question,
-            revisitChunk: `The correct answer is ${options[correctIndex]}). ${values.correctAnswerContext}`,
+            revisitChunk: `${values.correctAnswerContext}`,
             correctAnswerIndex: correctIndex,
             correctAnswerContext: values.correctAnswerContext,
             wrongAnswerContext: `${values.correctAnswerContext}`,
@@ -57,7 +57,7 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
           duration: 2000,
           isClosable: true,
         })
-        close()
+        close(true)
 
       }
     },
@@ -68,7 +68,6 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
       <div className='flex justify-between items-center h-10'>
         <div className='font-semibold text-lg'>Add a new lesson quiz</div>
       </div>
-      {JSON.stringify(form.errors)}
       <div className='mt-4 flex-1 overflow-y-scroll' id="parent">
         <div className='flex flex-col gap-4'>
           <div>
@@ -132,7 +131,7 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
       </div>
       <div className='h-14 w-full'>
         <div className='justify-end flex h-full items-center gap-2'>
-          <button onClick={close} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
+          <button onClick={() => close()} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
           <button disabled={!form.isValid} type='submit' className='text-sm px-5 h-10 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Save section
             {form.isSubmitting && <Spinner size={'sm'} />}
           </button>

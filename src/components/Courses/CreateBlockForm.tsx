@@ -11,6 +11,7 @@ import RadioCard from '../RadioCard'
 import { addBlockQuiz, addLessonBlock } from '@/services/secure.courses.service'
 import { useCourseMgtStore } from '@/store/course.management.store'
 import { convertToWhatsAppString } from '@/utils/string-formatters'
+import mime from "mime-types"
 
 
 const validationSchema = Yup.object({
@@ -29,7 +30,7 @@ const validationSchema = Yup.object({
   }),
 })
 
-export default function NewBlockForm ({ courseId, close }: { courseId: string, close: () => void }) {
+export default function NewBlockForm ({ courseId, close }: { courseId: string, close: (reload?: boolean) => void }) {
   const { createContent } = useCourseMgtStore()
   const toast = useToast()
   const form = useFormik({
@@ -53,6 +54,12 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
     },
     onSubmit: async function (values) {
       if (createContent) {
+        if (values.bodyMedia && values.bodyMedia.url) {
+          const mimeType = mime.lookup(values.bodyMedia.url)
+          if (mimeType) {
+            values.bodyMedia.mediaType = mimeType.split('/')[0] as MediaType
+          }
+        }
         const { message, data } = await addLessonBlock({
           lessonId: createContent.lessonId, courseId, block: {
             title: values.title,
@@ -80,7 +87,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
           duration: 2000,
           isClosable: true,
         })
-        close()
+        close(true)
 
       }
     },
@@ -190,7 +197,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
       </div>
       <div className='h-14 w-full'>
         <div className='justify-end flex h-full items-center gap-2'>
-          <button onClick={close} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
+          <button onClick={() => close()} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
           <button disabled={!form.isValid} type='submit' className='text-sm px-5 h-10 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Save section
             {form.isSubmitting && <Spinner size={'sm'} />}
           </button>

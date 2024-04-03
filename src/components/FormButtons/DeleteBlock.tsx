@@ -4,16 +4,17 @@ import NewLesson from '../Courses/NewLesson'
 import { FiTrash2, FiX } from 'react-icons/fi'
 import { useFormik } from 'formik'
 import { deleteLesson } from '@/services/lessons.service'
+import { deleteLessonBlock } from '@/services/secure.courses.service'
 
 
-export default function DeleteLessonButton ({ courseId, refetch, lessonId }: { courseId: string, refetch: () => Promise<any>, lessonId: string }) {
+export default function DeleteLessonBlockButton ({ refetch, lessonId, blockId }: { blockId: string, refetch: () => Promise<any>, lessonId: string }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const toast = useToast()
   const form = useFormik({
     initialValues: {
     },
     onSubmit: async function (values) {
-      const { message } = await deleteLesson({ lessonId, courseId })
+      const { message } = await deleteLessonBlock({ lessonId, blockId })
       toast({
         description: message,
         title: "Completed",
@@ -22,11 +23,12 @@ export default function DeleteLessonButton ({ courseId, refetch, lessonId }: { c
         isClosable: true,
       })
       refetch()
+      onClose()
     },
   })
   return (
     <div>
-      <button onClick={onOpen} className={`h-10 hover:bg-gray-100 group-hover:flex hidden rounded-lg justify-center items-center w-10`}>
+      <button onClick={onOpen} className={`h-10 hover:bg-gray-100 rounded-lg hidden group-hover:flex justify-center items-center w-10`}>
         <FiTrash2 />
       </button>
       {isOpen && <Modal
@@ -44,7 +46,7 @@ export default function DeleteLessonButton ({ courseId, refetch, lessonId }: { c
               </div>
             </div>
             <div className='text-center mt-3 text-sm'>
-              Are you sure you wish to delete this lesson?
+              Are you sure you wish to delete this section?
             </div>
             <div className='text-center text-sm'>
               This action is irreversible

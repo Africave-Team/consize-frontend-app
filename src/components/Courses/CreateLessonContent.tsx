@@ -4,6 +4,7 @@ import React from 'react'
 import NewBlockForm from './CreateBlockForm'
 import { ContentTypeEnum } from '@/type-definitions/course.mgt'
 import NewQuizForm from './CreateQuizForm'
+import NewBlockQuizForm from './AddFollowupQuiz'
 
 export default function CreateLessonSection ({ open, refetch }: { open: boolean, refetch: () => Promise<any> }) {
   const { closeCreateContent, createContent } = useCourseMgtStore()
@@ -18,15 +19,28 @@ export default function CreateLessonSection ({ open, refetch }: { open: boolean,
       <ModalContent className='h-[85vh] p-0'>
         <ModalBody className='px-2 h-full'>
           <div className='h-full'>
-            {createContent && createContent.contentType === ContentTypeEnum.SECTION && <NewBlockForm close={async () => {
-              await refetch()
+            {createContent && createContent.contentType === ContentTypeEnum.SECTION && <NewBlockForm close={async (reload) => {
+              if (reload) {
+                await refetch()
+              }
               closeCreateContent()
             }} courseId={createContent?.courseId} />}
 
-            {createContent && createContent.contentType === ContentTypeEnum.QUIZ && <NewQuizForm close={async () => {
-              await refetch()
+            {createContent && createContent.contentType === ContentTypeEnum.QUIZ && <NewQuizForm close={async (reload) => {
+              if (reload) {
+                await refetch()
+              }
               closeCreateContent()
             }} courseId={createContent?.courseId} />}
+
+            {createContent && createContent.blockId && createContent.contentType === ContentTypeEnum.BLOCK_QUIZ && <NewBlockQuizForm close={async (reload) => {
+              if (reload) {
+                await refetch()
+              }
+              closeCreateContent()
+            }} blockId={createContent.blockId} courseId={createContent?.courseId} />}
+
+
           </div>
         </ModalBody>
       </ModalContent>

@@ -12,6 +12,9 @@ import LessonCard from '@/components/Courses/LessonCard'
 import CreateLessonButton from '@/components/FormButtons/CreateLessonButton'
 import { useCourseMgtStore } from '@/store/course.management.store'
 import CreateLessonSection from '@/components/Courses/CreateLessonContent'
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spinner } from '@chakra-ui/react'
+import { FiEdit2, FiEye, FiPlus, FiTrash2 } from 'react-icons/fi'
+import LessonContentView from '@/components/Courses/LessonContentView'
 
 interface ApiResponse {
   data: Course
@@ -20,7 +23,7 @@ interface ApiResponse {
 
 export default function page ({ params }: { params: { id: string } }) {
 
-  const { createContent } = useCourseMgtStore()
+  const { createContent, currentLesson } = useCourseMgtStore()
 
   const loadData = async function (payload: { course: string }) {
     const data = await fetchSingleCourse(payload.course)
@@ -37,18 +40,28 @@ export default function page ({ params }: { params: { id: string } }) {
 
     <Layout>
       <div className='w-full overflow-y-scroll border min-h-screen'>
-        {courseDetails && courseDetails.data && <div className='flex w-full h-screen'>
-          <div className='w-3/12 border-r h-full px-2'>
+        {/* {isFetching && <div className='h-40 flex justify-center items-center'>
+          <Spinner />
+        </div>} */}
+        {courseDetails && courseDetails.data && <div className='flex w-full h-screen overflow-hidden'>
+          <div className='w-[370px] border-r h-full overflow-y-scroll px-2'>
             <div className='flex w-full h-12 items-center justify-between'>
               <div className='font-medium text-lg'>Lessons</div>
-
+              {/* {courseDetails.data.lessons.length > 0 && <button className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
+                <FiEye />
+              </button>} */}
             </div>
             <div className='flex flex-col w-full gap-3'>
+              {courseDetails.data.lessons.length === 0 && <div className='h-10 flex justify-center items-center'>
+                No lessons added yet
+              </div>}
               {courseDetails.data.lessons.map((lesson, index) => <LessonCard key={lesson.id} index={index} lesson={lesson} refetch={refetch} courseId={courseDetails.data.id} />)}
               <CreateLessonButton courseId={courseDetails.data.id} refetch={refetch} full={true} />
             </div>
           </div>
-          <div></div>
+          <div className='flex-1 h-full px-5'>
+            {currentLesson && <LessonContentView reload={refetch} courseId={params.id} lessonId={currentLesson} />}
+          </div>
         </div>}
       </div>
       {createContent && createContent.open && <CreateLessonSection open={createContent.open} refetch={refetch} />}

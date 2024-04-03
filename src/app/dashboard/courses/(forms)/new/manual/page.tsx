@@ -92,7 +92,7 @@ export default function page () {
                   }} previewable={true} />
                 </div>
                 <div className='justify-end flex'>
-                  <button disabled={!form.isValid} type='submit' className='text-sm px-10 h-10 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-none'>Next
+                  <button disabled={!form.isValid} type='submit' className='text-sm px-10 h-10 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Next
                     {form.isSubmitting && <Spinner size={'sm'} />}
                   </button>
                 </div>

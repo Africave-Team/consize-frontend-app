@@ -28,10 +28,8 @@ export default function LessonCard ({ lesson, index, refetch, courseId }: { less
             <img src="/dots.svg" />
           </MenuButton>
           <MenuList className='text-sm' minWidth={'170px'}>
-            <MenuItem className='hover:bg-gray-100' icon={<FiEdit2 className='text-sm' />}>Edit lesson</MenuItem>
             <MenuItem onClick={() => initiateCreateContent(lesson.id, courseId, ContentTypeEnum.SECTION)} className='hover:bg-gray-100' icon={<FiPlus className='text-sm' />}>Add a section</MenuItem>
             <MenuItem onClick={() => initiateCreateContent(lesson.id, courseId, ContentTypeEnum.QUIZ)} className='hover:bg-gray-100' icon={<FiPlus className='text-sm' />}>Add a quiz</MenuItem>
-            <MenuItem className='hover:bg-gray-100' icon={<FiTrash2 className='text-sm' />}>Delete lesson</MenuItem>
           </MenuList>
         </Menu>
       </div>
