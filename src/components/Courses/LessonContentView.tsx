@@ -270,7 +270,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
             </AccordionItem>
           </Accordion>
           <div className='flex justify-end mt-3'>
-            <button onClick={() => router.push(`/dashboard/courses/${courseId}/modify/settings`)} type="button" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
+            <button onClick={() => router.push(`/dashboard/courses/${courseId}/builder/settings`)} type="button" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
               <FiArrowRight />
             </button>
           </div>

@@ -48,7 +48,7 @@ export default function ModifyCourse ({ course }: { course: Course }) {
         duration: 2000,
         isClosable: true,
       })
-      router.push(`/dashboard/courses/${course.id}/modify/lessons`)
+      router.push(`/dashboard/courses/${course.id}/builder/lessons`)
     },
   })
   return (

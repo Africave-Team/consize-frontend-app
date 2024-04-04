@@ -51,7 +51,7 @@ export default function page () {
         duration: 2000,
         isClosable: true,
       })
-      router.push(`/dashboard/courses/${data.id}/modify/lessons`)
+      router.push(`/dashboard/courses/${data.id}/builder/lessons`)
     },
   })
   return (

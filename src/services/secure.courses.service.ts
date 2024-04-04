@@ -1,5 +1,5 @@
 import http from './base'
-import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CreateCoursePayload, PaginationPayload, Quiz } from '@/type-definitions/secure.courses'
+import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CourseSettings, CreateCoursePayload, PaginationPayload, Quiz } from '@/type-definitions/secure.courses'
 
 
 
@@ -106,3 +106,12 @@ export const deleteLessonQuiz = async (payload: {
     url: `lessons/quiz/${payload.lessonId}/${payload.quizId}`
   })
 }
+
+// settings
+
+
+export const updateSettings = async (payload: { id: string, body: Partial<CourseSettings> }): Promise<any> =>
+  http.put({
+    url: `courses/settings/${payload.id}`,
+    body: { ...payload.body }
+  })

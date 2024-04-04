@@ -10,6 +10,7 @@ import Layout from '@/layouts/PageTransition'
 import { fetchSingleCourse } from '@/services/secure.courses.service'
 import { Course, CourseSettings } from '@/type-definitions/secure.courses'
 import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 
@@ -25,6 +26,7 @@ export default function page ({ params }: { params: { id: string } }) {
     const data = await fetchSingleCourse(payload.course)
     return data
   }
+  const router = useRouter()
 
   const { data: courseDetails, isFetching, refetch } =
     useQuery<ApiResponse>({
@@ -58,15 +60,15 @@ export default function page ({ params }: { params: { id: string } }) {
   const loadTabbedPage = function (settings: CourseSettings) {
     switch (current) {
       case "fields":
-        return <EnrollmentFormFields fields={settings.enrollmentFormFields} />
+        return <EnrollmentFormFields fields={settings.enrollmentFormFields} id={settings.id} refetch={refetch} />
       case "resources":
-        return <Resources />
+        return <Resources refetch={refetch} resources={settings.courseMaterials} id={settings.id} />
       case "metadata":
-        return <Metadata />
+        return <Metadata refetch={refetch} metadata={settings.metadata} id={settings.id} />
       case "reminders":
-        return <Reminders />
+        return <Reminders refetch={refetch} settings={settings} />
       case "groups":
-        return <LearnerGroups />
+        return <LearnerGroups fields={settings.enrollmentFormFields} refetch={refetch} groups={settings.learnerGroups} id={settings.id} />
 
       default:
         break
@@ -75,6 +77,11 @@ export default function page ({ params }: { params: { id: string } }) {
   return (
     <Layout>
       <div className='w-full overflow-y-hidden  max-h-full'>
+        <div className='flex justify-end w-8/12 mt-5'>
+          <button onClick={() => router.push(`/dashboard/courses/${params.id}/builder/finish`)} type="button" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
+            <FiArrowRight />
+          </button>
+        </div>
         <div className='flex-1 flex justify-center'>
           {courseDetails && courseDetails.data && <div className='px-4 w-full flex gap-4 mt-5'>
             <div className='w-2/12 overflow-y-scroll  flex flex-col gap-2'>
@@ -82,7 +89,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 {item.title} <FiArrowRight />
               </button>))}
             </div>
-            <div className='w-6/12 border p-5 rounded-lg h-screen overflow-y-scroll'>
+            <div className='w-6/12 border p-5 rounded-lg min-h-[70vh] overflow-y-scroll'>
               {loadTabbedPage(courseDetails.data.settings)}
             </div>
           </div>}

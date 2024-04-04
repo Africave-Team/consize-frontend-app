@@ -44,8 +44,8 @@ export default function ListLessons ({ course, refetch }: { course: Course, refe
                 <CreateLessonButton full={true} courseId={course.id} refetch={refetch} />
               </div>
               <div className='mt-2 flex justify-end gap-3'>
-                <button onClick={() => router.push(`/dashboard/courses/${course.id}/modify/course-info`)} className='h-10 flex jus items-center hover:bg-gray-100 rounded-lg border px-4'>Back</button>
-                <button onClick={() => router.push(`/dashboard/courses/${course.id}/modify/outline`)} type="submit" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
+                <button onClick={() => router.push(`/dashboard/courses/${course.id}/builder/course-info`)} className='h-10 flex jus items-center hover:bg-gray-100 rounded-lg border px-4'>Back</button>
+                <button onClick={() => router.push(`/dashboard/courses/${course.id}/builder/outline`)} type="submit" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
                   <FiArrowRight />
                 </button>
               </div>

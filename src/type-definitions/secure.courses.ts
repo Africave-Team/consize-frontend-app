@@ -176,10 +176,17 @@ export interface CourseMetadata {
   maxEnrollments: number
 }
 
+export interface Student {
+  firstName: string
+  otherNames: string
+  phoneNumber: string
+  email: string
+}
+
 export interface LearnerGroup {
   name: string
   id: string
-  members: string[]
+  members: Student[]
   launchTimes: LearnerGroupLaunchTime | null
 }
 
@@ -213,6 +220,7 @@ export interface Period {
 
 
 export interface CourseSettings {
+  id: string
   enrollmentFormFields: EnrollmentField[]
   metadata: CourseMetadata
   learnerGroups: LearnerGroup[]

@@ -80,6 +80,12 @@ export function camelToSnake (camelCaseString: string) {
   })
 }
 
+export const toCamelCase = (str: string) => {
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
+    return index === 0 ? word.toLowerCase() : word.toUpperCase()
+  }).replace(/\s+/g, '')
+}
+
 export function isBase64 (s: string): boolean {
   const pattern: RegExp = /^[A-Za-z0-9+/]+(?:={0,2})?$/
   return pattern.test(s)

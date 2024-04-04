@@ -1,14 +1,38 @@
+import { updateSettings } from '@/services/secure.courses.service'
 import { EnrollmentField } from '@/type-definitions/secure.courses'
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Switch, useDisclosure } from '@chakra-ui/react'
+import { toCamelCase } from '@/utils/string-formatters'
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Switch, useDisclosure } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { FiPlus } from 'react-icons/fi'
+import { v4 } from 'uuid'
 
-export default function EnrollmentFormFields ({ fields }: { fields: EnrollmentField[] }) {
+export default function EnrollmentFormFields ({ fields, id, refetch }: { fields: EnrollmentField[], id: string, refetch: () => Promise<any> }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [fieldName, setFieldName] = useState("")
   const [dataType, setDataType] = useState("text")
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
   const [fieldIsRequired, setFieldIsRequired] = useState(true)
+  const addCustomField = async function () {
+    const max = fields.length === 0 ? 0 : fields.map(e => e.position).sort(function (a, b) {
+      return b - a
+    })[0]
+    setLoading(true)
+    await updateSettings({
+      id, body: {
+        enrollmentFormFields: [...fields, {
+          id: v4(),
+          position: max + 1,
+          fieldName,
+          variableName: toCamelCase(fieldName.replaceAll('?', '')),
+          required: fieldIsRequired,
+          defaultField: false
+        }]
+      }
+    })
+    await refetch()
+    onClose()
+    setLoading(false)
+  }
   return (
     <div>
       <Accordion defaultIndex={[0]} className='mt-3 space-y-3' allowMultiple>
@@ -28,7 +52,13 @@ export default function EnrollmentFormFields ({ fields }: { fields: EnrollmentFi
             </div>
           </div>
           <AccordionPanel pb={4}>
-
+            {fields.filter(e => e.defaultField).map((field, index) =>
+              <div key={`form_fields_${index}`}>
+                <div className={`hover:bg-[#F8F8F8] px-3 bg-white w-full h-10 border-t flex justify-start gap-1 text-sm items-center`}>
+                  {field.fieldName} {field.required && <span className='text-red-500 text-xs'>*</span>}
+                </div>
+              </div>
+            )}
           </AccordionPanel>
         </AccordionItem>
 
@@ -51,12 +81,18 @@ export default function EnrollmentFormFields ({ fields }: { fields: EnrollmentFi
             </div>
           </div>
           <AccordionPanel pb={4}>
-
+            {fields.filter(e => !e.defaultField).map((field, index) =>
+              <div key={`form_fields_${index}`}>
+                <div className={`hover:bg-[#F8F8F8] px-3 bg-white w-full h-10 border-t flex justify-start gap-1 text-sm items-center`}>
+                  {field.fieldName} {field.required && <span className='text-red-500 text-xs'>*</span>}
+                </div>
+              </div>
+            )}
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
 
-      {isOpen && <Modal size={'lg'} onClose={onClose} isOpen={isOpen} isCentered={true}>
+      {isOpen && <Modal size={'md'} onClose={onClose} isOpen={isOpen} isCentered={true}>
 
         <ModalOverlay />
         <ModalContent>
@@ -71,45 +107,45 @@ export default function EnrollmentFormFields ({ fields }: { fields: EnrollmentFi
             <FormLabel className='mt-5 text-sm' htmlFor='datatype' requiredIndicator={true}>Select data type <span className='text-red-500 text-xs'>*</span></FormLabel>
             <div className='min-h-[100px] rounded-xl border w-full'>
               <div onClick={() => setDataType("text")} className='h-20 cursor-pointer select-none  gap-3 w-full border-b flex px-3 justify-start items-center'>
-                <div className='h-14 w-16 rounded-lg bg-gray-200 text-[#98A2B3] text-2xl flex justify-center items-center'>
+                <div className='h-14 w-16 rounded-lg bg-gray-200 text-[#98A2B3] text-xl flex justify-center items-center'>
                   Aa
                 </div>
                 <div className='h-14 flex-1 flex flex-col justify-center'>
                   <div className='font-semibold text-base'>Text</div>
                   <div className='text-sm'>A plain text input field</div>
                 </div>
-                <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'text' ? 'border-primary-500' : ''} border`}>
-                  {dataType === 'text' && <div className='h-4 w-4 bg-primary-500 rounded-full' />}
+                <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'text' ? 'border-primary-dark' : ''} border`}>
+                  {dataType === 'text' && <div className='h-4 w-4 bg-primary-dark rounded-full' />}
                 </div>
               </div>
               <div onClick={() => setDataType("number")} className='h-20  cursor-pointer select-none gap-3 w-full border-b flex px-3 justify-start items-center'>
-                <div className='h-14 w-16 rounded-lg bg-gray-200 text-[#98A2B3] text-2xl flex justify-center items-center'>
+                <div className='h-14 w-16 rounded-lg bg-gray-200 text-[#98A2B3] text-xl flex justify-center items-center'>
                   123
                 </div>
                 <div className='h-14 flex-1 flex flex-col justify-center'>
                   <div className='font-semibold text-base'>Integer</div>
                   <div className='text-sm'>An input field for numerical entries</div>
                 </div>
-                <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'number' ? 'border-primary-500' : ''} border`}>
-                  {dataType === 'number' && <div className='h-4 w-4 bg-primary-500 rounded-full' />}
+                <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'number' ? 'border-primary-dark' : ''} border`}>
+                  {dataType === 'number' && <div className='h-4 w-4 bg-primary-dark rounded-full' />}
                 </div>
               </div>
               <div onClick={() => setDataType("boolean")} className='h-20  cursor-pointer select-none gap-3 w-full flex px-3 justify-start items-center'>
-                <div className='h-14 w-16 rounded-lg bg-gray-200 text-[#98A2B3] text-2xl flex justify-center items-center'>
+                <div className='h-14 w-16 rounded-lg bg-gray-200 text-[#98A2B3] text-xl flex justify-center items-center'>
                   T/F
                 </div>
                 <div className='h-14 flex-1 flex flex-col justify-center'>
                   <div className='font-semibold text-base'>True or False</div>
                   <div className='text-sm'>Only people with the link</div>
                 </div>
-                <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'boolean' ? 'border-primary-500' : ''} border`}>
-                  {dataType === 'boolean' && <div className='h-4 w-4 bg-primary-500 rounded-full' />}
+                <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'boolean' ? 'border-primary-dark' : ''} border`}>
+                  {dataType === 'boolean' && <div className='h-4 w-4 bg-primary-dark rounded-full' />}
                 </div>
               </div>
             </div>
 
             <FormControl className='mt-5 gap-2' display='flex' alignItems='center'>
-              <Switch size={'lg'} id='fieldRequired' />
+              <Switch onChange={() => setFieldIsRequired(!fieldIsRequired)} defaultChecked={fieldIsRequired} size={'lg'} id='fieldRequired' />
               <FormLabel className='text-sm' htmlFor='fieldRequired' mb='0'>
                 Make this field compulsory
               </FormLabel>
@@ -117,7 +153,9 @@ export default function EnrollmentFormFields ({ fields }: { fields: EnrollmentFi
           </ModalBody>
           <ModalFooter className='!justify-between'>
             <button className='px-4 py-2 border rounded-lg font-semibold' onClick={onClose}>Cancel</button>
-            <button className='px-4 py-2 border rounded-lg font-semibold disabled:bg-primary-300 bg-primary-500 text-white'>Add field</button>
+            <button onClick={addCustomField} disabled={fieldName.length === 0} className='px-4 py-2 border flex justify-center items-center rounded-lg font-semibold disabled:bg-primary-dark/80 gap-2 disabled:cursor-not-allowed bg-primary-dark text-white'>
+              Add field {loading && <Spinner size={'sm'} />}
+            </button>
           </ModalFooter>
         </ModalContent></Modal>}
     </div>
