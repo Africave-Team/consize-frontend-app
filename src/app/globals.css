@@ -51,6 +51,10 @@ html {
   display: none !important;
 }
 
+.PhoneInputInput {
+  @apply !h-12 px-3 focus-visible:outline-none bg-transparent
+}
+
 .tox-edit-area__iframe #tinymce .mce-content-body {
   outline: none;
 }

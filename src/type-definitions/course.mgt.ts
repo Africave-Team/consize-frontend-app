@@ -13,7 +13,9 @@ export interface CreateLessonContent {
 export interface CourseMgtStoreInterface {
   currentLesson?: string
   createContent?: CreateLessonContent
+  reloadLesson?: boolean
 
+  setReloadLesson: (val: boolean) => void
   setCurrentLesson: (lessonId: string) => void
   initiateCreateContent: (lessonId: string, courseId: string, contentType: ContentTypeEnum, blockId?: string) => void
   closeCreateContent: () => void

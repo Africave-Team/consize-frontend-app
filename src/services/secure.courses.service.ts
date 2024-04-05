@@ -1,5 +1,5 @@
 import http from './base'
-import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CourseSettings, CreateCoursePayload, PaginationPayload, Quiz } from '@/type-definitions/secure.courses'
+import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CourseSettings, CourseSettingsPayload, CreateCoursePayload, LearnerGroupLaunchTime, LearnerGroupPayload, PaginationPayload, Quiz, StudentDataForm } from '@/type-definitions/secure.courses'
 
 
 
@@ -10,7 +10,7 @@ export const createCourse = async (payload: CreateCoursePayload): Promise<any> =
     body: { ...payload }
   })
 
-export const updateCourse = async (payload: CreateCoursePayload, id: string): Promise<any> =>
+export const updateCourse = async (payload: Partial<CreateCoursePayload>, id: string): Promise<any> =>
   http.put({
     url: `courses/${id}`,
     body: { ...payload }
@@ -110,8 +110,37 @@ export const deleteLessonQuiz = async (payload: {
 // settings
 
 
-export const updateSettings = async (payload: { id: string, body: Partial<CourseSettings> }): Promise<any> =>
+export const updateSettings = async (payload: { id: string, body: Partial<CourseSettingsPayload> }): Promise<any> =>
   http.put({
     url: `courses/settings/${payload.id}`,
     body: { ...payload.body }
+  })
+
+export const addLearnerGroup = async (payload: { id: string, body: LearnerGroupPayload }): Promise<any> =>
+  http.post({
+    url: `courses/settings/add-learner-group/${payload.id}`,
+    body: { ...payload.body }
+  })
+
+export const setLauncTimes = async (payload: { id: string, groupId: string, body: LearnerGroupLaunchTime }): Promise<any> =>
+  http.patch({
+    url: `courses/settings/launchtimes/${payload.id}/${payload.groupId}`,
+    body: { ...payload.body }
+  })
+
+export const removeLearnerGroup = async (payload: { id: string, groupId: string }): Promise<any> =>
+  http.delete({
+    url: `courses/settings/remove-learner-group/${payload.id}/${payload.groupId}`
+  })
+
+
+
+
+
+//students 
+
+export const bulkAddStudents = async (payload: { body: StudentDataForm[] }): Promise<any> =>
+  http.post({
+    url: `students/bulk-save`,
+    body: { students: payload.body }
   })

@@ -3,7 +3,7 @@ import { LessonData, MediaType } from '@/type-definitions/secure.courses'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spinner } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import he from 'he'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FiArrowRight, FiEdit2, FiEye, FiMinus, FiPlus, FiTrash2, FiX } from 'react-icons/fi'
 import DeleteLessonBlockButton from '../FormButtons/DeleteBlock'
 import { useCourseMgtStore } from '@/store/course.management.store'
@@ -21,7 +21,7 @@ interface ApiResponse {
 }
 
 export default function LessonContentView ({ lessonId, courseId, reload }: { lessonId: string, courseId: string, reload: () => Promise<any> }) {
-  const { initiateCreateContent } = useCourseMgtStore()
+  const { initiateCreateContent, reloadLesson, setReloadLesson } = useCourseMgtStore()
   const loadData = async function (payload: { lesson: string, course: string }) {
     const data = await fetchSingleLesson(payload.course, payload.lesson)
     return data
@@ -36,6 +36,13 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
       queryKey: ['lesson', { lessonId, courseId }],
       queryFn: () => loadData({ lesson: lessonId, course: courseId })
     })
+
+  useEffect(() => {
+    if (reloadLesson) {
+      refetch()
+      setReloadLesson(false)
+    }
+  }, [reloadLesson])
 
   return (
     <div>

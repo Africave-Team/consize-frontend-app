@@ -35,7 +35,7 @@ export default function RowItem ({ course }: { course: Course }) {
         {course.title}
       </div>
       <div className='w-1/3 p-2 flex gap-4 items-center justify-end text-sm'>
-        <div className='w-1/2'>
+        <div className='w-1/2 flex gap-10'>
           {(course.status === CourseStatus.COMPLETED || course.status === CourseStatus.PUBLISHED) && <>
             <div className=''>
               <div className='font-semibold'>Enrollments</div>

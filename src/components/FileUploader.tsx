@@ -106,30 +106,32 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
           </div>}
         </div>
       </div>
-      {previewable && originalUrl.length > 0 && originalUrl.startsWith('https') && <div className='rounded-lg w-full border mt-2'>
-        {
-          fileType.includes(MediaType.IMAGE) && <img src={originalUrl} className='h-80 w-full rounded-md' />
-        }
+      {(originalUrl.length > 0 && originalUrl.startsWith('https')) && previewable ? <>
+        <div className='rounded-lg w-full border mt-2'>
+          {
+            fileType.includes(MediaType.IMAGE) && <img src={originalUrl} className='h-80 w-full rounded-md' />
+          }
 
-        {
-          fileType.includes(MediaType.AUDIO) &&
-          <>
-            <audio controls>
-              <source src={originalUrl} type={fileType} />
-              Your browser does not support the audio tag.
-            </audio>
-          </>
-        }
-        {
-          fileType.includes(MediaType.VIDEO) && <>
-            <video className='h-80 w-full' controls>
-              <source src={originalUrl} type={fileType} />
-              Your browser does not support the video tag.
-            </video>
-          </>
-        }
+          {
+            fileType.includes(MediaType.AUDIO) &&
+            <>
+              <audio controls>
+                <source src={originalUrl} type={fileType} />
+                Your browser does not support the audio tag.
+              </audio>
+            </>
+          }
+          {
+            fileType.includes(MediaType.VIDEO) && <>
+              <video className='h-80 w-full' controls>
+                <source src={originalUrl} type={fileType} />
+                Your browser does not support the video tag.
+              </video>
+            </>
+          }
 
-      </div>}
+        </div>
+      </> : <div className='h-8'>{originalUrl}</div>}
 
     </div>
   )

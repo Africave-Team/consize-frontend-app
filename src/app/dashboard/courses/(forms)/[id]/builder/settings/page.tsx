@@ -68,7 +68,7 @@ export default function page ({ params }: { params: { id: string } }) {
       case "reminders":
         return <Reminders refetch={refetch} settings={settings} />
       case "groups":
-        return <LearnerGroups fields={settings.enrollmentFormFields} refetch={refetch} groups={settings.learnerGroups} id={settings.id} />
+        return <LearnerGroups fields={settings.enrollmentFormFields} maxEnrollments={settings.metadata.maxEnrollments} refetch={refetch} groups={settings.learnerGroups} settingsId={settings.id} />
 
       default:
         break
@@ -76,9 +76,9 @@ export default function page ({ params }: { params: { id: string } }) {
   }
   return (
     <Layout>
-      <div className='w-full overflow-y-hidden  max-h-full'>
+      <div className='w-full overflow-y-scroll  max-h-full'>
         <div className='flex justify-end w-8/12 mt-5'>
-          <button onClick={() => router.push(`/dashboard/courses/${params.id}/builder/finish`)} type="button" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
+          <button onClick={() => router.push(`/dashboard/courses/${params.id}/builder/publish`)} type="button" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
             <FiArrowRight />
           </button>
         </div>

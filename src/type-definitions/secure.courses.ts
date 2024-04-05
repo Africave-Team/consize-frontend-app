@@ -183,10 +183,18 @@ export interface Student {
   email: string
 }
 
+export interface StudentRecord extends Student {
+  id: string
+}
+
+export interface StudentDataForm extends Student {
+  custom?: any
+}
+
 export interface LearnerGroup {
   name: string
   id: string
-  members: Student[]
+  members: StudentRecord[]
   launchTimes: LearnerGroupLaunchTime | null
 }
 
@@ -224,6 +232,30 @@ export interface CourseSettings {
   enrollmentFormFields: EnrollmentField[]
   metadata: CourseMetadata
   learnerGroups: LearnerGroup[]
+  courseMaterials: CourseMaterial[]
+  // times within the day to send out reminders
+  reminderSchedule: string[]
+  // how much inactivity time to wait for before sending dropout message
+  dropoutWaitPeriod: Period
+  // How long should the reminder (dropout message) continue for if the learner doesn’t respond?
+  reminderDuration: Period
+  // How many hours of learner inactivity before the next reminder (to continue) gets sent out?
+  inactivityPeriod: Period
+  dropoutEvent: DropoutEvents
+}
+
+export interface LearnerGroupPayload {
+  name: string
+  id: string
+  members: string[]
+  launchTimes: LearnerGroupLaunchTime | null
+}
+
+export interface CourseSettingsPayload {
+  id: string
+  enrollmentFormFields: EnrollmentField[]
+  metadata: CourseMetadata
+  learnerGroups: LearnerGroupPayload[]
   courseMaterials: CourseMaterial[]
   // times within the day to send out reminders
   reminderSchedule: string[]

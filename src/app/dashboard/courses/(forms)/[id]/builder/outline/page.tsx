@@ -23,7 +23,7 @@ interface ApiResponse {
 
 export default function page ({ params }: { params: { id: string } }) {
 
-  const { createContent, currentLesson } = useCourseMgtStore()
+  const { createContent, currentLesson, setReloadLesson } = useCourseMgtStore()
 
   const loadData = async function (payload: { course: string }) {
     const data = await fetchSingleCourse(payload.course)
@@ -64,7 +64,14 @@ export default function page ({ params }: { params: { id: string } }) {
           </div>
         </div>}
       </div>
-      {createContent && createContent.open && <CreateLessonSection open={createContent.open} refetch={refetch} />}
+      {createContent && createContent.open && <CreateLessonSection
+        open={createContent.open}
+        refetch={async () => {
+          setReloadLesson(true)
+          refetch()
+        }}
+      />
+      }
     </Layout>
   )
 }

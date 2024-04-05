@@ -71,7 +71,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
 
   const getToolbarButtons = () => {
     // Return the generated toolbar string
-    return `bold italic emoticons`
+    return `bold italic emoticons numlist bullist`
   }
 
   return (
@@ -98,7 +98,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                 placeholder,
                 menubar: '',
                 height: 150,
-                plugins: 'emoticons',
+                plugins: 'emoticons lists',
                 toolbar: getToolbarButtons(),
                 content_style: `
                 body {
@@ -117,18 +117,19 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                     return true
                   })
 
-                  editor.on('PastePreProcess', function (e) {
-                    var contentLength = editor.getContent({ format: 'text' }).length
-                    // Calculate the remaining space
-                    var remainingLength = maxLength - contentLength
-                    let pastedContent = he.decode(e.content)
-                    // If pasted content exceeds the remaining space
-                    if (pastedContent.length > remainingLength) {
-                      // Truncate the pasted content
-                      let truncatedText = pastedContent.substring(0, remainingLength)
-                      e.content = e.content.replace(pastedContent, truncatedText)
-                    }
-                  })
+                  // editor.on('PastePreProcess', function (e) {
+                  //   var contentLength = editor.getContent({ format: 'text' }).length
+                  //   // Calculate the remaining space
+                  //   var remainingLength = maxLength - contentLength
+                  //   let pastedContent = he.decode(e.content)
+                  //   console.log(remainingLength)
+                  //   // If pasted content exceeds the remaining space
+                  //   if (pastedContent.length > remainingLength) {
+                  //     // Truncate the pasted content
+                  //     let truncatedText = pastedContent.substring(0, remainingLength)
+                  //     e.content = e.content.replace(pastedContent, truncatedText)
+                  //   }
+                  // })
                 }
               }}
               value={value}
