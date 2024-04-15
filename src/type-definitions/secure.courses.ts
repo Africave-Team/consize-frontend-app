@@ -1,3 +1,5 @@
+import { Team } from './auth'
+
 export enum MediaType {
   AUDIO = 'audio',
   VIDEO = 'video',
@@ -101,6 +103,25 @@ export interface Course {
   owner: string
   lessons: Lesson[]
   courses: Course[]
+  headerMedia: Media
+  status: CourseStatus
+  free: boolean
+  settings: CourseSettings
+  bundle: boolean
+  private: boolean
+  source: Sources
+  price?: number
+  currentCohort?: string
+  audiences?: string
+}
+
+export interface PublicCourse {
+  id: string
+  title: string
+  description: string
+  owner: Team
+  lessons: Lesson[]
+  courses: PublicCourse[]
   headerMedia: Media
   status: CourseStatus
   free: boolean

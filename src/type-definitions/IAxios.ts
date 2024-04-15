@@ -27,3 +27,8 @@ export interface IResponse<D> {
   code?: number
   message?: string
 }
+
+export interface RequestError {
+  code: number,
+  message: string
+}

@@ -52,7 +52,11 @@ html {
 }
 
 .PhoneInputInput {
-  @apply !h-12 px-3 focus-visible:outline-none bg-transparent
+  @apply !h-12 px-1 focus-visible:outline-none bg-transparent
+}
+
+.PhoneInputCountry {
+  @apply !px-2
 }
 
 .tox-edit-area__iframe #tinymce .mce-content-body {

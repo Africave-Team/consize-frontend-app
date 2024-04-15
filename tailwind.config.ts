@@ -18,6 +18,8 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'hero-pattern':
+          "linear-gradient(to right, #14123D, #3C35B8)",
       },
     },
   },

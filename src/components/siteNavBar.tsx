@@ -70,7 +70,7 @@ export default function SiteNavBar () {
                 aria-current="page"
                 href="/products"
                 data-te-nav-link-ref>Solutions</Link>
-            </li>
+            </li> */}
             <li
               className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"
               data-te-nav-item-ref>
@@ -78,7 +78,7 @@ export default function SiteNavBar () {
                 className="text-[#334155] hover:text-[#334155] focus:text-[#334155] disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
                 aria-current="page"
                 href="/courses"
-                data-te-nav-link-ref>Case studies</Link>
+                data-te-nav-link-ref>Courses</Link>
             </li>
             <li
               className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"
@@ -106,7 +106,7 @@ export default function SiteNavBar () {
                 aria-current="page"
                 href="/courses"
                 data-te-nav-link-ref>Blog</Link>
-            </li> */}
+            </li>
           </ul>
 
           <div className="flex items-center gap-3 md:mt-0 mt-3">
