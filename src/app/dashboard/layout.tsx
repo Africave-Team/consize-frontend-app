@@ -3,17 +3,9 @@
 import DashboardNav from '@/components/navigations/DashboardNav'
 import Sidebar from '@/components/navigations/Sidebar'
 import { sendVerificationEmail } from '@/services/auth.service'
-import { useAuthStore, cookieKey } from '@/store/auth.store'
+import { useAuthStore } from '@/store/auth.store'
 import { useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
-import { parseCookies } from 'nookies'
-import { useEffect } from 'react'
-
-export function delay (ms: number) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
-}
 
 export default function DashboardLayout ({
   children,
@@ -22,7 +14,6 @@ export default function DashboardLayout ({
 }) {
   const { user, access } = useAuthStore()
   const toast = useToast()
-  const router = useRouter()
 
   const resendVerificationEmail = async function () {
     await sendVerificationEmail()
