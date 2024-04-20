@@ -20,6 +20,11 @@ export interface CreateCoursePayload {
   audiences?: string
 }
 
+export interface TrendStatistics {
+  date: string
+  value: number
+}
+
 export interface CourseStatistics {
   enrolled: number
   active: number
@@ -36,6 +41,9 @@ export interface CourseStatistics {
   averageLessonDurationMinutes: number
   averageBlockDurationMinutes: number
   averageBlockDurationSeconds: number
+  students: {
+    [id: string]: RTDBStudent
+  }
 }
 
 export interface PaginationPayload {
@@ -206,6 +214,33 @@ export interface Student {
 
 export interface StudentRecord extends Student {
   id: string
+}
+
+export interface RTDBStudent {
+  name: string,
+  completed?: boolean
+  droppedOut?: boolean
+  progress: number
+  certificate?: string
+  phoneNumber: string
+  scores?: number[]
+  lessons?: {
+    [id: string]: {
+      duration: number
+      blocks?: {
+        [id: string]: {
+          duration: number
+        }
+      },
+      quizzes?: {
+        [id: string]: {
+          duration: number
+          retakes: number
+          score: number
+        }
+      }
+    }
+  }
 }
 
 export interface StudentDataForm extends Student {
