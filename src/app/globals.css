@@ -116,3 +116,8 @@ html {
 .chakra-menu__menu-button>span {
   @apply flex justify-center items-center
 }
+
+.htm>p {
+  white-space: nowrap;
+  overflow-wrap: break-word;
+}

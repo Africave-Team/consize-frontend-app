@@ -63,8 +63,8 @@ export enum CourseStatus {
 export interface Lesson {
   id: string
   title: string
-  blocks: string[]
-  quizzes: string[]
+  blocks: Block[]
+  quizzes: Quiz[]
   course: string
   description?: string
 }
@@ -216,7 +216,37 @@ export interface StudentRecord extends Student {
   id: string
 }
 
+export interface LeaderboardMember {
+  rank: number,
+  name: string,
+  score: number
+}
+
+interface Trend {
+  date: string
+  value: number
+}
+
+interface TrendItem {
+  trends: Trend[]
+  current: number
+}
+
+export interface TrendStatisticsBody {
+  enrolled: TrendItem
+  active: TrendItem
+  completed: TrendItem
+  dropoutRate: TrendItem
+  averageTestScore: TrendItem
+  averageCompletionMinutes: TrendItem
+  averageCourseProgress: TrendItem
+  averageMcqRetakeRate: TrendItem
+  averageLessonDurationMinutes: TrendItem
+  averageBlockDurationMinutes: TrendItem
+}
+
 export interface RTDBStudent {
+  id: string
   name: string,
   completed?: boolean
   droppedOut?: boolean

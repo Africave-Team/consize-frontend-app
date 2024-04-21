@@ -69,7 +69,7 @@ export default function StatsCard ({ value, title, trends, latestTrend, descript
                     text: xLabel
                   }
                 },
-              }} series={[]} type="area" width={"100%"} height={200} />}
+              }} series={trends.map(e => e.value)} type="area" width={"100%"} height={200} />}
 
             {trends.length === 0 && <div className='h-[200px] w-full flex justify-center items-center'>
               No trends data available.

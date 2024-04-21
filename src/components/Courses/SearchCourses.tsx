@@ -25,7 +25,7 @@ export default function SearchCourses () {
   return (
 
     <div>
-      <div onClick={onOpen} className='h-10 w-full border-2 select-none cursor-pointer px-2 flex hover:border-[#0D1F23] justify-start items-center gap-2'>
+      <div onClick={onOpen} className='h-10 w-full border-2 select-none rounded-lg cursor-pointer px-2 flex hover:border-[#0D1F23] justify-start items-center gap-2'>
         <FaSearch /> Search courses
       </div>
 
@@ -33,6 +33,7 @@ export default function SearchCourses () {
         isOpen={isOpen}
         onClose={onClose}
         size={'md'}
+        isCentered
       >
         <ModalOverlay />
         <ModalContent className='min-h-96 p-0'>
