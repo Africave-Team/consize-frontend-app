@@ -17,14 +17,13 @@ export default function StatsCard ({ value, title, trends, latestTrend, descript
   const { isOpen, onClose, onOpen } = useDisclosure()
   let xLabel = "Dates", yLabel = title, multiplier = 1
 
-
   return (
     <>
       <div className='h-20 border rounded-lg hover:shadow-md shadow-sm py-3 px-2 flex-col'>
         <div className='h-8 flex items-center gap-2'>
           <div className='text-gray-900 value font-bold text-xl'>{value}<span className='text-xs ml-1'>{unit}</span></div>
           <button onClick={onOpen} className='border h-6 hover:bg-gray-100 px-2 text-xs flex justify-center items-center rounded-md'>
-            {latestTrend.value > 0 ? <div className='text-green-500'>+{latestTrend.value}%</div> : latestTrend.value === 0 ? <div>0%</div> : <div className='text-red-500'>-{Math.abs(latestTrend.value)}%</div>}
+            {latestTrend.value > 0 ? <div className='text-green-500'>+{latestTrend.value.toFixed(1)}%</div> : latestTrend.value === 0 ? <div>0%</div> : <div className='text-red-500'>-{Math.abs(latestTrend.value).toFixed(1)}%</div>}
             <IoMdArrowDropdown className='text-sm' />
           </button>
         </div>

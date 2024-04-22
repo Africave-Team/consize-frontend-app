@@ -256,6 +256,7 @@ export interface RTDBStudent {
   scores?: number[]
   lessons?: {
     [id: string]: {
+      title: string
       duration: number
       blocks?: {
         [id: string]: {

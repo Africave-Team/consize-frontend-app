@@ -19,8 +19,9 @@ export default function RowItem ({ course }: { course: Course }) {
     const projectStats = ref(database, 'course-statistics/' + course.owner + '/' + course.id)
     const fetchData = async () => {
       onValue(projectStats, async (snapshot) => {
-        const data: CourseStatistics = snapshot.val()
-        setStats(data)
+        const data: CourseStatistics = await snapshot.val()
+        const students = Object.entries(data.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 })).filter(e => e.lessons)
+        setStats({ ...data, enrolled: students.length, active: students.filter(e => !e.completed && !e.droppedOut).length })
       })
     }
     fetchData()
