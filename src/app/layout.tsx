@@ -6,29 +6,13 @@ import { ChakraProvider } from '@chakra-ui/react'
 import "react-datetime/css/react-datetime.css"
 
 import {
-  QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
 
 import { AnimatePresence } from 'framer-motion'
+import { queryClient } from '@/utils/react-query'
 
 export const dynamic = 'force-dynamic'
-
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      // retry: (failureCount, error) => {
-      //     // @ts-ignore
-      //     if (error?.status === 401 || error?.status === 403) {
-      //         return false
-      //     }
-      //     return failureCount <= 3 ? true : false;
-      // }
-    }
-  }
-})
 
 export default function RootLayout ({
   children,
