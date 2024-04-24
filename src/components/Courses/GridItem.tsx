@@ -4,10 +4,11 @@ import { getDatabase, ref, onValue, off } from "firebase/database"
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
 import CourseMenu from './CourseMenu'
+import { useRouter } from 'next/navigation'
 
 export default function GridItem ({ course }: { course: Course }) {
   const [stats, setStats] = useState<CourseStatistics | null>(null)
-
+  const router = useRouter()
   useEffect(() => {
     let app: any
     if (getApps().length === 0) {
@@ -29,8 +30,8 @@ export default function GridItem ({ course }: { course: Course }) {
     return () => off(projectStats)
   }, [course.id])
   return (
-    <div className='h-96 border-2 cursor-pointer rounded-lg hover:border-[#0D1F23]'>
-      <div className='h-60 bg-black w-full rounded-t-lg relative'>
+    <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='h-72 border-2 cursor-pointer rounded-lg hover:border-[#0D1F23]'>
+      <div className='h-40 bg-black w-full rounded-t-lg relative'>
         {course.headerMedia && course.headerMedia.url && <img src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute rounded-t-lg' alt="" />}
         <div className='absolute top-0 left-0 h-full w-full'>
           <div className='flex justify-end px-3 py-2'>

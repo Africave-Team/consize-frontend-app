@@ -4,10 +4,12 @@ import { getDatabase, ref, onValue, off } from "firebase/database"
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
 import CourseMenu from './CourseMenu'
+import { useRouter } from 'next/navigation'
 
 
 export default function RowItem ({ course }: { course: Course }) {
   const [stats, setStats] = useState<CourseStatistics | null>(null)
+  const router = useRouter()
   useEffect(() => {
     let app: any
     if (getApps().length === 0) {
@@ -30,10 +32,9 @@ export default function RowItem ({ course }: { course: Course }) {
   }, [course.id])
 
   return (
-    <div className='h-16 w-full border-2 cursor-pointer rounded-lg hover:border-[#0D1F23] flex justify-between items-center'>
+    <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='h-16 w-full border-2 cursor-pointer rounded-lg hover:border-[#0D1F23] flex justify-between items-center'>
       <div className='px-3 w-2/3 truncate'>
-        <div className='font-semibold'>Title</div>
-        {course.title}
+        <div className='font-semibold'>{course.title}</div>
       </div>
       <div className='w-1/3 p-2 flex gap-4 items-center justify-end text-sm'>
         <div className='w-1/2 flex gap-10'>
