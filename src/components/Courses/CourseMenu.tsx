@@ -4,6 +4,7 @@ import { HiDotsHorizontal, HiOutlineDuplicate } from 'react-icons/hi'
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { FiEdit2, FiEye, FiSettings, FiTrash2 } from 'react-icons/fi'
 import { useRouter } from 'next/navigation'
+import OpenSettings from '../Dashboard/OpenSettings'
 
 export default function CourseMenu ({ course, single }: { course: Course, single?: boolean }) {
   const router = useRouter()
@@ -17,7 +18,7 @@ export default function CourseMenu ({ course, single }: { course: Course, single
         {!course.bundle && <MenuItem className='hover:bg-gray-100' icon={<HiOutlineDuplicate className='text-sm' />}>Duplicate {course.bundle ? 'bundle' : 'course'}</MenuItem>}
         {!single && <MenuItem onClick={() => router.push(`/dashboard/courses/${course.id}/builder`)} className='hover:bg-gray-100' icon={<FiEdit2 className='text-sm' />}>Edit {course.bundle ? 'bundle' : 'course'}</MenuItem>}
         {single && <MenuItem onClick={() => router.push(`/dashboard/courses/${course.id}/builder/${course.status === CourseStatus.DRAFT && course.source === Sources.MANUAL ? 'course-info' : 'outline'}`)} className='hover:bg-gray-100' icon={<FiEdit2 className='text-sm' />}>Edit {course.bundle ? 'bundle' : 'course'} in builder</MenuItem>}
-        {course.status !== CourseStatus.DRAFT && <MenuItem onClick={() => router.push(`/dashboard/courses/${course.id}/builder/settings`)} className='hover:bg-gray-100' icon={<FiSettings className='text-sm' />}>{course.bundle ? 'Bundle' : 'Course'} settings</MenuItem>}
+        <OpenSettings id={course.id} />
         <MenuItem className='hover:bg-gray-100' icon={<FiTrash2 className='text-sm' />}>Delete {course.bundle ? 'bundle' : 'course'}</MenuItem>
       </MenuList>
     </Menu>
