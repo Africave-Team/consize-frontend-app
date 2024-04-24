@@ -20,10 +20,7 @@ body {
 }
 
 .leaderboard-header {
-  background: #3498db;
-  background: #8058f4;
-  background: #5047e6;
-  background-image: linear-gradient(to right, #8058f4, #5047e6);
+  background: #0D1F23;
   padding: 20px;
   text-align: center;
   color: #fff;
@@ -53,7 +50,7 @@ body {
 }
 
 .leaderboard-item:hover {
-  background-color: #ecf0f1;
+  background-color: #0D1F23;
 }
 
 .leaderboard-item span {
@@ -82,12 +79,9 @@ body {
 
 /* Style for the current user */
 .current-user {
-  background-color: #2ecc71;
-  background-image: linear-gradient(to right, #8058f4, #5047e6);
-
+  background-color: #0D1F23;
   border-radius: 5px;
   color: #fff;
-
 }
 
 .current-user span {
