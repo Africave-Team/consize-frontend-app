@@ -40,7 +40,7 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
           <div className='flex group'>
             <AccordionButton className='hover:bg-white'>
               <Box className='font-semibold text-sm' as="span" flex='1' textAlign='left'>
-                Default enrollment form fields ({fields.filter(e => e.defaultField).length})
+                Default enrollment form questions ({fields.filter(e => e.defaultField).length})
               </Box>
             </AccordionButton>
             <div className='flex gap-2 items-center pr-3'>
@@ -66,7 +66,7 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
           <div className='flex group'>
             <AccordionButton className='hover:bg-white'>
               <Box as="span" className='font-semibold text-sm' flex='1' textAlign='left'>
-                Custom enrollment form fields ({fields.filter(e => !e.defaultField).length})
+                Custom enrollment form questions ({fields.filter(e => !e.defaultField).length})
               </Box>
             </AccordionButton>
             <div className='flex gap-2 items-center pr-3'>
