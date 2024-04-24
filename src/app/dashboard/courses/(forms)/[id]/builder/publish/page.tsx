@@ -44,6 +44,15 @@ export default function page ({ params }: { params: { id: string } }) {
     }
     router.push(`/dashboard/courses/${params.id}`)
   }
+
+  const attachSurvey = async function () {
+    if (courseDetails) {
+      await updateCourse({
+        survey: "750c7074-4415-4ec9-8d17-9fb7eaf73b20"
+      }, params.id)
+      refetch()
+    }
+  }
   return (
 
     <Layout>
@@ -73,6 +82,11 @@ export default function page ({ params }: { params: { id: string } }) {
                   {courseDetails.data.status !== CourseStatus.PUBLISHED && <div>
                     <button onClick={publishCourse} className='bg-primary-dark h-12 rounded-md text-white font-medium w-full'>Publish this course</button>
                     <div className='mt-1 text-sm'>By publishing this course you agree to the terms of service as published by Consize and you understand that the course will be marked as being ready for consumption by your students</div>
+                  </div>}
+
+                  {!courseDetails.data.survey && <div>
+                    <button onClick={attachSurvey} className='bg-primary-dark h-12 rounded-md text-white font-medium w-full'>Attach default survey</button>
+                    <div className='mt-1 text-sm'>This survey will be presented to your students at the end of the course to help gauge their opinions on this course.</div>
                   </div>}
 
                   <div>

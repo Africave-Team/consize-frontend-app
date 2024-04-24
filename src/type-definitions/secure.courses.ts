@@ -18,6 +18,7 @@ export interface CreateCoursePayload {
   description: string
   price?: number
   audiences?: string
+  survey?: string
 }
 
 export interface TrendStatistics {
@@ -121,6 +122,7 @@ export interface Course {
   price?: number
   currentCohort?: string
   audiences?: string
+  survey?: string
 }
 
 export interface PublicCourse {

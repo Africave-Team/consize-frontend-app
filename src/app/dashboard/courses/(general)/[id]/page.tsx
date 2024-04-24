@@ -312,7 +312,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 <StudentReviews />
                 <CourseTrends />
                 <ExportStats courseId={params.id} stats={stats} fields={fields} />
-                <OpenSettings id={params.id} />
+                <OpenSettings dark={true} id={params.id} />
               </MenuList>
             </Menu>
           </div>

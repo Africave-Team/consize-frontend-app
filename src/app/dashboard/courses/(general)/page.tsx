@@ -93,7 +93,7 @@ export default function page () {
                   <SearchCourses />
                 </div>
                 <div className='w-44'>
-                  <Select value={type} size={'md'} className='rounded-none border-gray-300' onChange={(e) => setType(e.target.value as PageType)}>
+                  <Select value={type} size={'md'} className='rounded-lg border-gray-300' onChange={(e) => setType(e.target.value as PageType)}>
                     {tabs.map((tab, i) => {
                       return (
                         <option key={tab.value} value={tab.value}>
@@ -103,7 +103,7 @@ export default function page () {
                     })}
                   </Select>
                 </div>
-                <button type='button' className='text-sm flex justify-center items-center gap-2 h-10 w-32 text-white bg-[#0D1F23] rounded-none'><FaPlus />Bundle</button>
+                <button type='button' className='text-sm flex justify-center items-center gap-2 h-10 w-32 text-white bg-[#0D1F23] rounded-lg'><FaPlus />Bundle</button>
                 <button onClick={toggleListStyle} className='h-10 w-10 border rounded-md group hover:bg-black flex justify-center items-center'>
                   {preferredListStyle === ListStyle.ROWS && <CiGrid2H className='text-2xl group-hover:text-white' />}
                   {preferredListStyle === ListStyle.GRID && <CiGrid41 className='text-2xl group-hover:text-white' />}

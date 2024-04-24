@@ -24,10 +24,6 @@ export default function SettingsNav () {
       path: "/dashboard/settings/certificates"
     },
     {
-      title: "Signatories",
-      path: "/dashboard/settings/signatories"
-    },
-    {
       title: "Surveys",
       path: "/dashboard/settings/surveys"
     }

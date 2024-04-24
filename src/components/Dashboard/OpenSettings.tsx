@@ -3,12 +3,12 @@ import React from 'react'
 import { FiSettings, FiX } from 'react-icons/fi'
 import CourseSettingsComponent from '../Courses/CourseSettings'
 
-export default function OpenSettings ({ id }: { id: string }) {
+export default function OpenSettings ({ id, dark }: { id: string, dark?: boolean }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   return (
 
     <>
-      <MenuItem onClick={onOpen} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<FiSettings className='text-sm' />}>Settings</MenuItem>
+      <MenuItem onClick={onOpen} className={`${dark ? 'hover:bg-primary-dark/90 bg-primary-dark text-white' : 'text-primary-dark hover:bg-gray-100'}`} icon={<FiSettings className='text-sm' />}>Settings</MenuItem>
 
       {isOpen && <Modal
         isOpen={isOpen}
