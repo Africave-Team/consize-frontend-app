@@ -5,11 +5,14 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spinner
 import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import he from "he"
+import { GoDotFill } from "react-icons/go"
 import { FaSearch } from 'react-icons/fa'
+import { useRouter } from 'next/navigation'
 
 export default function SearchCourses () {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [search, setSearch] = useState("")
+  const router = useRouter()
   const loadData = async function (payload: { search: string }) {
     const { data } = await searchCourses({ search: payload.search })
     return data
@@ -57,10 +60,9 @@ export default function SearchCourses () {
                   {searchResults.length} results
                 </div>
                 <div className='w-full h-96 overflow-y-scroll'>
-                  {searchResults.map((course: Course) => (<div className='min-h-20 cursor-pointer hover:bg-[#0D1F23] hover:text-white p-2' key={course.id}>
-                    <div className='text-sm font-bold'>{course.title} {'->'} {course.status}</div>
-                    {/* {course.description} */}
-                    <div className='mt-2 text-xs' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }}></div>
+                  {searchResults.map((course: Course) => (<div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='min-h-20 cursor-pointer hover:bg-[#0D1F23] hover:text-white p-2' key={course.id}>
+                    <div className='text-sm font-bold flex gap-1 items-center'>{course.title} <GoDotFill /> {course.status}</div>
+                    <div className='mt-2 text-xs line-clamp-2' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }}></div>
                   </div>))}
                 </div>
               </div>}

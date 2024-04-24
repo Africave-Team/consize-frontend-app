@@ -32,12 +32,12 @@ export default function RowItem ({ course }: { course: Course }) {
   }, [course.id])
 
   return (
-    <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='h-16 w-full border-2 cursor-pointer rounded-lg hover:border-[#0D1F23] flex justify-between items-center'>
-      <div className='px-3 w-2/3 truncate'>
+    <div className='h-16 w-full border-2 cursor-pointer rounded-lg hover:border-[#0D1F23] flex justify-between items-center'>
+      <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='px-3 w-2/3 h-full flex items-center truncate'>
         <div className='font-semibold'>{course.title}</div>
       </div>
-      <div className='w-1/3 p-2 flex gap-4 items-center justify-end text-sm'>
-        <div className='w-1/2 flex gap-10'>
+      <div className='w-1/3 p-2 h-full flex gap-4 items-center justify-end text-sm'>
+        <div className='w-1/2 flex gap-10 ' onClick={() => router.push(`/dashboard/courses/${course.id}`)}>
           {(course.status === CourseStatus.COMPLETED || course.status === CourseStatus.PUBLISHED) && <>
             <div className=''>
               <div className='font-semibold'>Enrollments</div>

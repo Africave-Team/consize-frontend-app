@@ -2,7 +2,7 @@
 
 import Layout from '@/layouts/PageTransition'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Course } from '@/type-definitions/secure.courses'
 import { fetchSingleCourse } from '@/services/secure.courses.service'
@@ -23,7 +23,7 @@ interface ApiResponse {
 
 export default function page ({ params }: { params: { id: string } }) {
 
-  const { createContent, currentLesson, setReloadLesson } = useCourseMgtStore()
+  const { createContent, currentLesson, setReloadLesson, setCurrentLesson } = useCourseMgtStore()
 
   const loadData = async function (payload: { course: string }) {
     const data = await fetchSingleCourse(payload.course)
@@ -35,6 +35,12 @@ export default function page ({ params }: { params: { id: string } }) {
       queryKey: ['course', params.id],
       queryFn: () => loadData({ course: params.id })
     })
+
+  useEffect(() => {
+    if (!currentLesson && courseDetails) {
+      setCurrentLesson(courseDetails.data.lessons[0].id)
+    }
+  }, [currentLesson, courseDetails])
 
   return (
 

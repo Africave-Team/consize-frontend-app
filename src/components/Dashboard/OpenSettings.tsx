@@ -1,8 +1,9 @@
 import { MenuItem, Modal, ModalBody, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
-import { FiSettings } from 'react-icons/fi'
+import { FiSettings, FiX } from 'react-icons/fi'
+import CourseSettingsComponent from '../Courses/CourseSettings'
 
-export default function OpenSettings () {
+export default function OpenSettings ({ id }: { id: string }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   return (
 
@@ -12,16 +13,18 @@ export default function OpenSettings () {
       {isOpen && <Modal
         isOpen={isOpen}
         onClose={onClose}
-        size={'md'}
+        size={'full'}
         isCentered
       >
         <ModalOverlay />
-        <ModalContent className='min-h-96 max-h-[650px] overflow-y-scroll p-0'>
-          <ModalBody className='h-full px-2'>
-            <div className='w-1/3'>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus mollitia unde accusamus eaque, illum similique eos eligendi blanditiis fugiat numquam animi, dignissimos itaque, nemo ipsum optio tempore? Quos, suscipit earum!
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus mollitia unde accusamus eaque, illum similique eos eligendi blanditiis fugiat numquam animi, dignissimos itaque, nemo ipsum optio tempore? Quos, suscipit earum!
+        <ModalContent className='overflow-y-scroll !bg-transparent overflow-hidden flex justify-center items-center p-0 w-full'>
+          <ModalBody className='w-[900px] h-[500px] bg-white px-2 my-20'>
+            <div className='flex justify-end'>
+              <button onClick={onClose} className='bg-white rounded-full h-10 w-10 border flex justify-center items-center'>
+                <FiX />
+              </button>
             </div>
+            <CourseSettingsComponent id={id} />
           </ModalBody>
         </ModalContent>
       </Modal>}

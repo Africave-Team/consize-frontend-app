@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { getDatabase, ref, onValue, off } from "firebase/database"
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
-import { CourseStatistics, RTDBStudent, TrendStatisticsBody } from '@/type-definitions/secure.courses'
+import { Course, CourseStatistics, RTDBStudent, TrendStatisticsBody } from '@/type-definitions/secure.courses'
 import StatsCard from '@/components/Dashboard/StatsCard'
 import SearchStudents from '@/components/Dashboard/SearchStudents'
 import StudentsTable from '@/components/Dashboard/StudentsTable'
@@ -20,6 +20,8 @@ import StudentReviews from '@/components/Dashboard/StudentReviews'
 import CourseTrends from '@/components/Dashboard/CourseTrends'
 import ExportStats from '@/components/Dashboard/ExportStats'
 import OpenSettings from '@/components/Dashboard/OpenSettings'
+import { fetchSingleCourse } from '@/services/secure.courses.service'
+import { useQuery } from '@tanstack/react-query'
 
 const fields = [
   { description: 'Total number of students who registered on the course', unit: "", field: "enrolled", title: "Enrolled students" },
@@ -33,6 +35,11 @@ const fields = [
   { description: 'Time taken to complete a lesson, averaged over all enrolled users', unit: "minutes", field: "averageLessonDurationMinutes", title: "Avg. lesson duration" },
   { description: 'Avg. Time taken to complete a section in the course, averaged over all users', unit: "minutes", field: "averageBlockDurationMinutes", title: "Avg. section duration" },
 ]
+
+interface ApiResponse {
+  data: Course
+  message: string
+}
 
 export default function page ({ params }: { params: { id: string } }) {
   const { sidebarOpen } = useNavigationStore()
@@ -119,6 +126,17 @@ export default function page ({ params }: { params: { id: string } }) {
       current: 0,
     },
   })
+
+  const loadData = async function (payload: { course: string }) {
+    const data = await fetchSingleCourse(payload.course)
+    return data
+  }
+
+  const { data: courseDetails, isFetching, refetch } =
+    useQuery<ApiResponse>({
+      queryKey: ['course', params.id],
+      queryFn: () => loadData({ course: params.id })
+    })
 
   const { team } = useAuthStore()
 
@@ -282,7 +300,8 @@ export default function page ({ params }: { params: { id: string } }) {
     <Layout>
       <div className='w-full overflow-y-scroll  max-h-full'>
         <div className='flex-1 py-4'>
-          <div className='h-12 px-5 flex justify-end'>
+          <div className='h-12 px-5 mb-4 flex justify-between items-center'>
+            <div className='text-xl font-bold line-clamp-1'>{courseDetails?.data.title}</div>
             <Menu>
               <MenuButton type='button' className='bg-gray-100 rounded-full hover:bg-gray-100 h-10 w-10 flex items-center justify-center'>
                 <img src="/dots.svg" />
@@ -293,7 +312,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 <StudentReviews />
                 <CourseTrends />
                 <ExportStats courseId={params.id} stats={stats} fields={fields} />
-                <OpenSettings />
+                <OpenSettings id={params.id} />
               </MenuList>
             </Menu>
           </div>
