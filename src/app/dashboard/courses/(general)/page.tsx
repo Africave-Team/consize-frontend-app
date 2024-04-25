@@ -10,10 +10,12 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { fetchCourses } from '@/services/secure.courses.service'
 import { Course } from '@/type-definitions/secure.courses'
 import CoursesTable from '@/components/Courses/CoursesTable'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import { Select, Spinner } from '@chakra-ui/react'
+import { FiBookOpen, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { Menu, MenuButton, MenuItem, MenuList, Select, Spinner } from '@chakra-ui/react'
 import SearchCourses from '@/components/Courses/SearchCourses'
 import LoadingCourseSkeleton from '@/components/Courses/LoadingCourseSkeletons'
+import { useRouter } from 'next/navigation'
+import { GoStack } from 'react-icons/go'
 
 interface ApiResponse {
   data: Course[]
@@ -35,6 +37,8 @@ export default function page () {
   const { preferredListStyle, toggleListStyle, setPageTitle } = useNavigationStore()
   const [page, setPage] = useState(1)
   const [type, setType] = useState<PageType>(PageType.ALL)
+
+  const router = useRouter()
 
   const loadData = async function (payload: { pageParam: number, filter: string }) {
     const pageSize = 3
@@ -103,7 +107,13 @@ export default function page () {
                     })}
                   </Select>
                 </div>
-                <button type='button' className='text-sm flex justify-center items-center gap-2 h-10 w-32 text-white bg-[#0D1F23] rounded-lg'><FaPlus />Bundle</button>
+                <Menu>
+                  <MenuButton type='button' className='text-sm flex justify-center items-center gap-2 h-10 w-32 text-white bg-[#0D1F23] rounded-lg'><FaPlus className='text-sm mr-2' />Create new</MenuButton>
+                  <MenuList className='text-sm py-0' minWidth={'140px'}>
+                    <MenuItem onClick={() => router.push("/dashboard/courses/new")} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<FiBookOpen className='text-sm' />}>Course</MenuItem>
+                    <MenuItem onClick={() => router.push("/dashboard/courses/new")} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<GoStack className='text-sm' />}>Bundle</MenuItem>
+                  </MenuList>
+                </Menu>
                 <button onClick={toggleListStyle} className='h-10 w-10 border rounded-md group hover:bg-black flex justify-center items-center'>
                   {preferredListStyle === ListStyle.ROWS && <CiGrid2H className='text-2xl group-hover:text-white' />}
                   {preferredListStyle === ListStyle.GRID && <CiGrid41 className='text-2xl group-hover:text-white' />}
@@ -123,7 +133,6 @@ export default function page () {
             </div>}
           </div>
         </div>
-        <CreateCourse />
       </div>
     </Layout>
   )

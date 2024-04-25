@@ -56,7 +56,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                 await reload()
                 await refetch()
               }} />
-              <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
+              <button className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
                 <FiEdit2 />
               </button>
               {/* <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
@@ -77,7 +77,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                     {/* <button className='hover:bg-gray-100 rounded-lg h-10 w-10 group-hover:flex hidden justify-center items-center text-base'>
                       <FiEye />
                     </button> */}
-                    <button onClick={() => initiateCreateContent(lessonDetails.data.id, courseId, ContentTypeEnum.SECTION)} className='hover:bg-gray-100 rounded-lg h-10 w-10 group-hover:flex hidden justify-center items-center text-base'>
+                    <button onClick={() => initiateCreateContent(lessonDetails.data.id, courseId, ContentTypeEnum.SECTION)} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
                       <FiPlus />
                     </button>
                   </div>
@@ -99,7 +99,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                           </AccordionButton>
                           <div className='flex gap-2 items-center pr-3'>
                             <div className='flex gap-1 h-10 items-center'>
-                              <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
+                              <button className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
                                 <FiEye />
                               </button>
                               <EditBlockForm lessonId={lessonId} block={block} refetch={refetch} />
@@ -136,7 +136,9 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                           </div>}
                           <div className='mt-2'>
                             <label className='font-semibold text-sm' htmlFor="">{block.title}</label>
-                            {block.content && <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(block.content) }} />}
+                            <div className='list pl-3'>
+                              {block.content && <div className='text-sm list' dangerouslySetInnerHTML={{ __html: he.decode(block.content) }} />}
+                            </div>
                           </div>
                           {block.quiz ? <div className='mt-3 flex flex-col gap-2'>
                             <div>
@@ -194,7 +196,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                     {/* <button className='hover:bg-gray-100 group-hover:flex hidden rounded-lg h-10 w-10 justify-center items-center text-base'>
                       <FiEye />
                     </button> */}
-                    <button onClick={() => initiateCreateContent(lessonDetails.data.id, courseId, ContentTypeEnum.QUIZ)} className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
+                    <button onClick={() => initiateCreateContent(lessonDetails.data.id, courseId, ContentTypeEnum.QUIZ)} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
                       <FiPlus />
                     </button>
                   </div>

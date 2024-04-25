@@ -26,7 +26,7 @@ export default function DeleteLessonButton ({ courseId, refetch, lessonId }: { c
   })
   return (
     <div>
-      <button onClick={onOpen} className={`h-10 hover:bg-gray-100 group-hover:flex hidden rounded-lg justify-center items-center w-10`}>
+      <button onClick={onOpen} className={`h-10 hover:bg-gray-100 flex rounded-lg justify-center items-center w-10`}>
         <FiTrash2 />
       </button>
       {isOpen && <Modal

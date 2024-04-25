@@ -37,8 +37,14 @@ export default function page ({ params }: { params: { id: string } }) {
     })
 
   useEffect(() => {
-    if (!currentLesson && courseDetails) {
-      setCurrentLesson(courseDetails.data.lessons[0].id)
+    if (courseDetails) {
+      let topLesson = courseDetails.data.lessons[0]
+      if (topLesson) {
+        if (!currentLesson || currentLesson !== topLesson.id) {
+          setCurrentLesson(topLesson.id)
+
+        }
+      }
     }
   }, [currentLesson, courseDetails])
 

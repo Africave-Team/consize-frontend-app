@@ -117,6 +117,14 @@ html {
   @apply flex justify-center items-center
 }
 
+.list ul {
+  @apply !list-disc
+}
+
+.list ol {
+  @apply !list-decimal
+}
+
 .htm>p {
   white-space: nowrap;
   overflow-wrap: break-word;

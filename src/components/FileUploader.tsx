@@ -95,13 +95,13 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
               {...getRootProps()}
               className={`p-8 h-36 flex items-center justify-center border-dashed bg-[#D8E0E9]/20 border-2 ${isDragActive ? 'border-blue-500' : 'border-gray-300'} rounded-md text-center cursor-pointer`}
             >
-              ç
               <div className='h-full flex items-center flex-col justify-center'>
                 <div className="flex justify-center">
                   {isLoading ? <Spinner /> : <FiUploadCloud className='text-4xl' />}
                 </div>
-                <div className='text-center mt-3 font-semibold text-sm'>
-                  Choose a file or drag & drop it here
+                <div className='text-center mt-3 font-semibold flex flex-col text-sm'>
+                  <div>Choose {mimeTypes.length === 3 ? `a .png, .jpg, .jpeg or .mp4` : 'a'} file </div>
+                  <div>or drag & drop it here</div>
                 </div>
               </div>
             </div>

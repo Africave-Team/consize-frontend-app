@@ -139,7 +139,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
           </div>
           <div className='w-full'>
             <div className='flex justify-between items-center'>
-              <label htmlFor="">Course header media</label>
+              <label htmlFor="">Section header media</label>
             </div>
             <div className='min-h-36'>
               <FileUploader originalUrl={form.values.bodyMedia.url} mimeTypes={[FileTypes.IMAGE, FileTypes.AUDIO, FileTypes.VIDEO]} droppable={true} onUploadComplete={(val) => {

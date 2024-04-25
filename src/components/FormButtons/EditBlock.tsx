@@ -143,7 +143,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
 
   return (
     <div>
-      <button onClick={onOpen} className={`h-10 hover:bg-gray-100 rounded-lg hidden group-hover:flex justify-center items-center w-10`}>
+      <button onClick={onOpen} className={`h-10 hover:bg-gray-100 rounded-lg flex justify-center items-center w-10`}>
         <FiEdit2 />
       </button>
       {isOpen && <Modal
