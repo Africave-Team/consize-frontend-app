@@ -71,13 +71,15 @@ export default function page () {
             <FiPlus /> Add logo {isPending && <Spinner size={'sm'} />}
           </button>
         </div>
-        {teamInfo?.data.logo && <div className='h-40 mt-5 w-40 flex justify-start items-center'>
+        {isFetching ? <div className='h-40 w-40 flex justify-center items-center'>
+          <Spinner />
+        </div> : teamInfo?.data.logo && <div className='h-40 mt-5 w-40 flex justify-start items-center'>
           <div className='h-full relative'>
-            <img src={teamInfo.data.logo} className='h-40 w-full top-0 left-0' />
-            <div className='hover:bg-gray-200/20 h-40 group absolute w-full top-0 left-0 flex justify-center items-center'>
-              <button className='hidden bg-white rounded-lg p-1 group-hover:flex justify-center items-center'>
+            <img src={teamInfo.data.logo} className='h-40 w-full top-0 rounded-full left-0' />
+            <div className='hover:bg-gray-200/20 h-40 group absolute rounded-full w-full top-0 left-0 flex justify-center items-center'>
+              {/* <button className='hidden bg-white rounded-lg p-1 group-hover:flex justify-center items-center'>
                 <FiTrash2 className="" />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>}
