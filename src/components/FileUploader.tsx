@@ -82,18 +82,20 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
       <div className='flex justify-between items-center h-full'>
         <div className='w-full h-full'>
           {!droppable ? <div className='flex gap-1 w-full items-center border rounded-lg'>
-            <button onClick={handleClick} type='button' className='text-sm h-10 w-24 text-white bg-[#0D1F23] rounded-lg'>Select file</button>
+            <button onClick={handleClick} type='button' className='text-sm h-10 w-24 text-white bg-[#0D1F23] rounded-lg flex items-center justify-center gap-1'>Select file
+              {isLoading && <Spinner size={'sm'} />}
+            </button>
             <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>
               {originalUrl.length > 0 ? <a href={originalUrl} target="_blank" rel="noopener noreferrer">Preview</a> : 'No file selected'} <div className='w-10'></div>
             </div>
 
-            {/* <input id="upload" name="upload" {...getInputProps()} /> */}
+            <input id="upload" name="upload" {...getInputProps()} />
           </div> : <div className='h-full w-full'>
             <div
               {...getRootProps()}
               className={`p-8 h-36 flex items-center justify-center border-dashed bg-[#D8E0E9]/20 border-2 ${isDragActive ? 'border-blue-500' : 'border-gray-300'} rounded-md text-center cursor-pointer`}
             >
-              <input id="upload" name="upload" {...getInputProps()} />
+              ç
               <div className='h-full flex items-center flex-col justify-center'>
                 <div className="flex justify-center">
                   {isLoading ? <Spinner /> : <FiUploadCloud className='text-4xl' />}

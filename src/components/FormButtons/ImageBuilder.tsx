@@ -123,10 +123,10 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
                   </Tooltip>
                 </div>
               </div>
-              <div className='w-9/12 h-full'>
-                <div id="customHeaderImage" style={{ backgroundColor: data.bgColor }} className={`h-full w-full flex justify-start items-start p-4 border rounded-none ${data.bgPattern} bg-cover`}>
+              <div className='w-8/12 h-full'>
+                <div id="customHeaderImage" style={{ backgroundColor: data.bgColor }} className={`h-full w-full flex justify-center items-center p-4 border rounded-none ${data.bgPattern} bg-cover`}>
                   <div style={{ color: getContrastColor(data.bgColor) }} className='w-2/3 mt-5'>
-                    <h3 className='font-bold text-3xl'>{imageText}</h3>
+                    <h3 className='font-bold text-6xl'>{imageText}</h3>
                   </div>
                 </div>
               </div>

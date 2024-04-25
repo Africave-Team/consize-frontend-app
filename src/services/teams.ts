@@ -1,4 +1,4 @@
-import { ResetPasswordPayloadInterface } from '@/type-definitions/auth'
+import { ResetPasswordPayloadInterface, Team } from '@/type-definitions/auth'
 import http from './base'
 import { IResponse } from '@/type-definitions/IAxios'
 import { CreateTeam } from '@/type-definitions/teams'
@@ -29,6 +29,18 @@ export const resendInvite = async (userId: string): Promise<any> =>
 export const acceptTeamInvite = async (payload: ResetPasswordPayloadInterface): Promise<any> =>
   http.patch({
     url: `teams/invite`,
+    body: payload
+  })
+
+
+export const fetchMyTeamInfo = async (id: string): Promise<any> =>
+  http.get({
+    url: `teams/${id}`,
+  })
+
+export const updateMyTeamInfo = async (id: string, payload: Partial<Omit<Team, "id" | "owner">>): Promise<any> =>
+  http.put({
+    url: `teams/${id}`,
     body: payload
   })
 

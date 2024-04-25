@@ -5,7 +5,7 @@ export default function SettingsNav () {
   const items = [
     {
       title: "Profile",
-      path: "/dashboard/settings"
+      path: "/dashboard/settings/profile"
     },
     {
       title: "Teams",
@@ -20,8 +20,8 @@ export default function SettingsNav () {
       path: "/dashboard/settings/security"
     },
     {
-      title: "Certificates",
-      path: "/dashboard/settings/certificates"
+      title: "Certificate builder",
+      path: "/dashboard/settings/certificate-builder"
     },
     {
       title: "Surveys",
