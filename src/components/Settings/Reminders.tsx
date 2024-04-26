@@ -47,6 +47,51 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
     }
   })
 
+  const updateReminderCountBtn = function (increment: boolean) {
+    let reminderCount = form.values.reminderCount
+    if (increment) {
+      if (reminderCount === 5) return
+      reminderCount++
+    } else {
+      if (reminderCount === 1) return
+      reminderCount--
+    }
+    form.setFieldValue('reminderCount', reminderCount)
+  }
+
+  const updateInactivityCountBtn = function (increment: boolean) {
+    let period = { ...form.values.inactivityPeriod }
+    if (increment) {
+      period.value++
+    } else {
+      if (period.value === 0) return
+      period.value--
+    }
+    form.setFieldValue('inactivityPeriod', period)
+  }
+
+  const updateDropoutCountBtn = function (increment: boolean) {
+    let period = { ...form.values.dropoutWaitPeriod }
+    if (increment) {
+      period.value++
+    } else {
+      if (period.value === 0) return
+      period.value--
+    }
+    form.setFieldValue('dropoutWaitPeriod', period)
+  }
+
+  const updateReminderDurationBtn = function (increment: boolean) {
+    let period = { ...form.values.reminderDuration }
+    if (increment) {
+      period.value++
+    } else {
+      if (period.value === 0) return
+      period.value--
+    }
+    form.setFieldValue('reminderDuration', period)
+  }
+
   useEffect(() => {
     const newItems: number[] = []
     const diff = Math.ceil(13 / form.values.reminderCount)
@@ -99,18 +144,18 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
 
       <div className='flex mt-2 gap-2 flex-col'>
         <InputGroup className='w-full'>
-          <InputRightElement className='w-[85px] flex rounded-r-md'>
-            <button className='border-r hover:bg-gray-100 border-l rounded-r-md rounded-l-md h-full px-3'>
+          <InputRightElement className='w-[95px] flex gap-1 rounded-r-md'>
+            <button onClick={() => updateReminderCountBtn(false)} type='button' className='border rounded-md h-9 px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100'>
+            <button onClick={() => updateReminderCountBtn(true)} type='button' className='border rounded-md h-9 px-3'>
               <FiPlus />
             </button>
 
           </InputRightElement>
           <Input min={0} value={form.values.reminderCount} name="reminderCount" onChange={form.handleChange} max={5} type='number' placeholder='0' />
         </InputGroup>
-        <div className='grid grid-cols-6 gap-4 h-9'>
+        <div className='grid grid-cols-5 gap-4 h-9'>
           {
             scheduleGroups.map((e, i) => {
               return (
@@ -135,14 +180,14 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
 
       <div className='flex mt-2 gap-2'>
         <InputGroup className='w-full'>
-          <InputRightElement className='w-[128px] flex rounded-r-md'>
-            <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
+          <InputRightElement className='w-[150px] flex rounded-r-md gap-1'>
+            <div className='text-xs h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
               Hours
             </div>
-            <button className='border-r hover:bg-gray-100  rounded-r-md h-full px-3'>
+            <button type="button" onClick={() => updateInactivityCountBtn(false)} className='border rounded-md h-9 px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type="button" onClick={() => updateInactivityCountBtn(true)} className='border rounded-md h-9 px-3'>
               <FiPlus />
             </button>
 
@@ -159,14 +204,14 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
 
       <div className='flex mt-2 gap-2'>
         <InputGroup className='w-full'>
-          <InputRightElement className='w-[128px] flex rounded-r-md'>
-            <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
+          <InputRightElement className='w-[143px] flex rounded-r-md gap-1'>
+            <div className='text-xs h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
               Days
             </div>
-            <button className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
+            <button type='button' onClick={() => updateReminderDurationBtn(false)} className='border rounded-md h-9 px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type='button' onClick={() => updateReminderDurationBtn(true)} className='border rounded-md h-9 px-3'>
               <FiPlus />
             </button>
 
@@ -182,14 +227,14 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
 
       <div className='flex mt-2 gap-2'>
         <InputGroup className='w-1/2'>
-          <InputRightElement className='w-[128px] flex rounded-r-md'>
-            <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
+          <InputRightElement className='w-[143px] flex gap-1'>
+            <div className='text-xs h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
               Days
             </div>
-            <button className='border-r hover:bg-gray-100 rounded-r-md h-full px-3'>
+            <button type="button" onClick={() => updateDropoutCountBtn(false)} className='border rounded-md h-9 px-3'>
               <FiMinus />
             </button>
-            <button className='h-full hover:bg-gray-100 px-3'>
+            <button type="button" onClick={() => updateDropoutCountBtn(true)} className='border rounded-md h-9 px-3'>
               <FiPlus />
             </button>
 
