@@ -8,7 +8,7 @@ export default function DashboardNav () {
   return (
     <div className='h-16 border-b flex justify-between items-center px-5'>
       {team && <div>
-        {team.logo ? <img src={team.logo} /> : <Logo />}
+        {team.logo ? <img src={team.logo} className='h-10' /> : <Logo />}
       </div>}
     </div>
   )

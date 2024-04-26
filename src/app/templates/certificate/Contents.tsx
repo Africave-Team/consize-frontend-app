@@ -27,7 +27,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
   return (
     <div className='h-screen'>
       {!details.organizationName.toLowerCase().includes('wave') ?
-        <div className="template">
+        <div className="template h-[610px]">
           <img className="template-image"
             alt="Description of the image" id="template-image"
             src={bgUrl} />
@@ -44,17 +44,17 @@ export default function PageContents ({ details }: { details: DataInterface }) {
 
           </div>
           <div className="logo">
-            <img className="logo-image" alt="logo" id="logo-image"
-              src={details.logoUrl} />
+            {details.logoUrl && <img className="logo-image" alt="logo" id="logo-image"
+              src={details.logoUrl} />}
           </div>
           <div className="representative1">
             <span id="signature1">{details.signature1}</span> <br />
-            <span id="name1">{details.signatory1}</span>
+            {/* <span id="name1">{details.signatory1}</span> */}
 
           </div>
           <div className="representative2">
             <span id="signature2">{details.signature2}</span> <br />
-            <span id="name2">{details.signatory2}</span>
+            {/* <span id="name2">{details.signatory2}</span> */}
 
           </div>
         </div>
