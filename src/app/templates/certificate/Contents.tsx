@@ -66,7 +66,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                   src="/wave-stripe.svg" />
 
                 <div className='w-full flex justify-end px-20 py-10'>
-                  <img className="h-12 w-36" alt="logo" id="logo-image"
+                  <img className="h-16 w-16" alt="logo" id="logo-image"
                     src={details.logoUrl || "https://storage.googleapis.com/kippa-cdn-public/microlearn-images/Screenshot_2023-12-21_at_7.42.24_PM-removebg-preview.png"} />
                 </div>
               </div>
