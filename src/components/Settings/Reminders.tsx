@@ -40,7 +40,7 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
     onSubmit: async function (values) {
       await updateSettings({
         id, body: {
-          ...values
+          ...values, reminderSchedule: scheduleGroups.map(e => e.title)
         }
       })
       await refetch()
