@@ -31,7 +31,7 @@ export default function Sidebar () {
           <div className='h-full w-full flex justify-center items-center'><FiUsers /></div>
         </Tooltip>}
       </SidebarLink>
-      <SidebarLink href='/dashboard/settings'>
+      <SidebarLink href='/dashboard/settings/profile'>
         {sidebarOpen ? <div className='flex gap-8 items-center'><FiSettings /> Settings</div> : <Tooltip label='Settings' placement='right'>
           <div className='h-full w-full flex justify-center items-center'><FiSettings /></div>
         </Tooltip>}
