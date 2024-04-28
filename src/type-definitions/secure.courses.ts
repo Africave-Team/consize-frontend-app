@@ -1,4 +1,5 @@
 import { Team } from './auth'
+import { Distribution } from './callbacks'
 
 export enum MediaType {
   AUDIO = 'audio',
@@ -14,6 +15,7 @@ export interface CreateCoursePayload {
   bundle: boolean
   private: boolean
   headerMedia: Media
+  distribution: Distribution
   title: string
   description: string
   price?: number
@@ -114,6 +116,7 @@ export interface Course {
   courses: Course[]
   headerMedia: Media
   status: CourseStatus
+  distribution: Distribution
   free: boolean
   settings: CourseSettings
   bundle: boolean
