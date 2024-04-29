@@ -1,18 +1,14 @@
 'use client'
-import SiteNavBar from '@/components/siteNavBar'
-import Hero from '@/components/Hero'
-import Section1 from '@/components/Section1'
-import Section2 from '@/components/Section2'
-import Footer from '@/components/Footer'
-import Image from 'next/image'
+import { useEffect } from 'react'
 
 
 export default function Home () {
+  useEffect(() => {
+    location.href = location.origin + '/auth/login'
+  })
   return (
     <section className='h-screen overflow-y-scroll'>
-      <SiteNavBar />
-      <Hero />
-      <Footer />
+
     </section>
   )
 }
