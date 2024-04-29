@@ -20,7 +20,7 @@ export interface CreateCoursePayload {
   description: string
   price?: number
   audiences?: string
-  survey?: string
+  survey?: string | null
 }
 
 export interface TrendStatistics {

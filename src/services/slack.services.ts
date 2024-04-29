@@ -6,3 +6,15 @@ export const slackTokenExchange = async (code: string): Promise<any> =>
     body: { code }
   })
 
+
+export const channelsList = async (): Promise<any> =>
+  http.get({
+    url: `slack/channels.list`,
+  })
+
+
+export const membersList = async (): Promise<any> =>
+  http.get({
+    url: `slack/members.list`,
+  })
+
