@@ -39,10 +39,10 @@ export default function page ({ params }: { params: { id: string } }) {
   useEffect(() => {
     if (courseDetails) {
       let topLesson = courseDetails.data.lessons[0]
+      let lessons = courseDetails.data.lessons.map(e => e.id)
       if (topLesson) {
-        if (!currentLesson || currentLesson !== topLesson.id) {
+        if (!currentLesson || !lessons.includes(currentLesson)) {
           setCurrentLesson(topLesson.id)
-
         }
       }
     }

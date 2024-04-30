@@ -10,20 +10,35 @@ import { useFormik } from 'formik'
 import { Course, MediaType } from '@/type-definitions/secure.courses'
 import { createCourse } from '@/services/secure.courses.service'
 import { useRouter } from 'next/navigation'
-import { Spinner, useToast } from '@chakra-ui/react'
+import { Select, Spinner, useToast } from '@chakra-ui/react'
+import { Distribution } from '@/type-definitions/callbacks'
+import { useAuthStore } from '@/store/auth.store'
 
 
 const validationSchema = Yup.object({
   title: Yup.string().required(),
   description: Yup.string().required(),
+  distribution: Yup.string().required().oneOf(Object.values(Distribution)),
   headerMedia: Yup.object({
     mediaType: Yup.string().required(),
     url: Yup.string().required()
   }).required()
 })
 
+const courseDistributionOptions = [
+  {
+    value: Distribution.SLACK,
+    title: "Slack"
+  },
+  {
+    value: Distribution.WHATSAPP,
+    title: "Whatsapp"
+  }
+]
+
 export default function page () {
   const router = useRouter()
+  const { team } = useAuthStore()
   const toast = useToast()
   const form = useFormik({
     validationSchema,
@@ -32,6 +47,7 @@ export default function page () {
     initialValues: {
       title: "",
       description: "",
+      distribution: Distribution.SLACK,
       headerMedia: {
         mediaType: MediaType.IMAGE,
         url: ""
@@ -51,7 +67,17 @@ export default function page () {
         duration: 2000,
         isClosable: true,
       })
-      router.push(`/dashboard/courses/${data.id}/builder/lessons`)
+      let path = `/dashboard/courses/${data.id}/builder/lessons`
+      if (values.distribution === Distribution.SLACK) {
+        if (!team?.slackToken) {
+          path = `/dashboard/courses/${data.id}/builder/distribution-setup`
+        }
+      } else {
+        if (!team?.whatsappToken) {
+          path = `/dashboard/courses/${data.id}/builder/distribution-setup`
+        }
+      }
+      router.push(path)
     },
   })
   return (
@@ -72,8 +98,22 @@ export default function page () {
               <form onSubmit={form.handleSubmit} className='flex flex-col gap-4'>
                 <div>
                   <label htmlFor="title">Course title *</label>
-                  <input onChange={form.handleChange} onBlur={form.handleBlur} id="title" type="text" placeholder='Course title' className='h-14 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
+                  <input onChange={form.handleChange} onBlur={form.handleBlur} id="title" type="text" placeholder='Course title' className='h-12 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
                 </div>
+                <div>
+                  <label htmlFor="title">Course distribution *</label>
+                  <Select size={'md'} className='rounded-lg border-[#0D1F23] focus-visible:border-[#0D1F23] hover:border-[#0D1F23] focus-visible:shadow-none border-2 h-12' onChange={form.handleChange} onBlur={form.handleBlur} id="distribution">
+                    <option>Select distribution method</option>
+                    {courseDistributionOptions.map((tab, i) => {
+                      return (
+                        <option key={tab.value} value={tab.value}>
+                          {tab.title}
+                        </option>
+                      )
+                    })}
+                  </Select>
+                </div>
+
                 <div>
                   <label htmlFor="description">Course description *</label>
                   <CustomTinyMCEEditor field='description' maxLength={250} onChange={(value) => {

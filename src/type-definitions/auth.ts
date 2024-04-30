@@ -34,6 +34,8 @@ export interface LogoutPayloadInterface {
 export interface Team {
   name: string
   id: string
+  slackToken?: string
+  whatsappToken?: string
   owner: string
   logo?: string
 }
