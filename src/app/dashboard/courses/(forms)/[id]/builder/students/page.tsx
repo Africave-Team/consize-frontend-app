@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/auth.store'
 import { Distribution } from '@/type-definitions/callbacks'
 import { Course } from '@/type-definitions/secure.courses'
 import { SlackChannel, SlackUser } from '@/type-definitions/slack'
+import { SlackCreateCohortValidator } from '@/validators/SlackCreateCohort'
 import { Checkbox, FormControl, FormLabel, Modal, ModalBody, ModalContent, ModalOverlay, Spinner, useDisclosure, useToast } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -92,7 +93,7 @@ export default function page ({ params }: { params: { id: string } }) {
     setSelectedMembers(copy)
   }
 
-  const form = useFormik({
+  const slackCreateCohortForm = useFormik({
     initialValues: {
       agree: false,
       schedule: false,
@@ -100,25 +101,31 @@ export default function page ({ params }: { params: { id: string } }) {
       time: "",
       name: ""
     },
+    validateOnChange: true,
+    validationSchema: SlackCreateCohortValidator,
     onSubmit: async function (values) {
-      if (courseDetails && courseDetails.data) {
-        await createCohort({
-          ...values,
-          members: selectedMembers,
-          students: [],
-          courseId: courseDetails.data.id,
-          channels: selectedChannels,
-          distribution: courseDetails?.data.distribution,
-          date: values.schedule ? moment(values.date).format('YYYY-MM-DD') : ""
-        })
-        toast({
-          description: "Enrollments have been saved.",
-          title: "Completed",
-          status: 'success',
-          duration: 2000,
-          isClosable: true,
-        })
-        router.push(`/dashboard/courses/${params.id}/builder/publish`)
+      if (values.agree) {
+        if (courseDetails && courseDetails.data) {
+          await createCohort({
+            ...values,
+            members: selectedMembers,
+            students: [],
+            courseId: courseDetails.data.id,
+            channels: selectedChannels,
+            distribution: courseDetails?.data.distribution,
+            date: values.schedule ? moment(values.date).format('YYYY-MM-DD') : ""
+          })
+          toast({
+            description: "Enrollments have been saved.",
+            title: "Completed",
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          })
+          router.push(`/dashboard/courses/${params.id}/builder/publish`)
+        }
+      } else {
+        onClose()
       }
     },
   })
@@ -199,40 +206,40 @@ export default function page ({ params }: { params: { id: string } }) {
           <ModalOverlay />
           <ModalContent className='min-h-48 p-0'>
             <ModalBody className='h-80 px-5 py-5'>
-              <form className='flex flex-col' onSubmit={form.handleSubmit}>
+              <form className='flex flex-col' onSubmit={slackCreateCohortForm.handleSubmit}>
                 <div className='h-60'>
                   <div className='mt-3 text-sm'>
-                    <Checkbox name="agree" onChange={form.handleChange} isChecked={form.values.agree}>Are you sure you wish to invite these {selectedUsers} members to this course?</Checkbox>
+                    <Checkbox name="agree" onChange={slackCreateCohortForm.handleChange} isChecked={slackCreateCohortForm.values.agree}>Are you sure you wish to invite these {selectedUsers} members to this course?</Checkbox>
                   </div>
 
-                  {form.values.agree && <div>
+                  {slackCreateCohortForm.values.agree && <div>
                     <FormControl>
                       <FormLabel className='text-sm mt-3' htmlFor='name' requiredIndicator={true}>Name this cohort <span className='text-red-500 text-xs'>*</span></FormLabel>
-                      <input id="name" name="name" value={form.values.name} onChange={form.handleChange} type="text" placeholder='Cohort name' className='w-full px-3 h-12 border rounded-lg' />
+                      <input id="name" name="name" value={slackCreateCohortForm.values.name} onChange={slackCreateCohortForm.handleChange} type="text" placeholder='Cohort name' className='w-full px-3 h-12 border rounded-lg' />
+                      {slackCreateCohortForm.errors.name && <span className='text-xs text-red-400'>{slackCreateCohortForm.errors.name}</span>}
                     </FormControl>
                     <div className='mt-3 text-sm'>
-                      <Checkbox name="schedule" onChange={form.handleChange} isChecked={form.values.schedule}>Would you like to schedule their resumption at a later date?</Checkbox>
+                      <Checkbox name="schedule" onChange={slackCreateCohortForm.handleChange} isChecked={slackCreateCohortForm.values.schedule}>Would you like to schedule their resumption at a later date?</Checkbox>
                     </div>
-                    {form.values.schedule && <>
+                    {slackCreateCohortForm.values.schedule && <>
                       <FormControl>
                         <FormLabel className='text-sm mt-3' htmlFor='scheduledTime' requiredIndicator={true}>Schedule launch time <span className='text-red-500 text-xs'>*</span></FormLabel>
                         <div className='flex gap-3'>
                           <div className='w-1/2'>
-                            <input id="date" value={form.values.date} onChange={form.handleChange} type="date" className='w-full px-3 h-12 border rounded-lg' />
+                            <input id="date" value={slackCreateCohortForm.values.date} onChange={slackCreateCohortForm.handleChange} type="date" className='w-full px-3 h-12 border rounded-lg' />
                           </div>
                           <div className='w-1/2'>
-                            <input id="time" value={form.values.time} onChange={form.handleChange} type="time" className='w-full px-3 h-12 border rounded-lg' />
+                            <input id="time" value={slackCreateCohortForm.values.time} onChange={slackCreateCohortForm.handleChange} type="time" className='w-full px-3 h-12 border rounded-lg' />
                           </div>
                         </div>
                       </FormControl>
-                      {form.values.date}
                     </>}
                   </div>}
                 </div>
                 <div className='flex justify-end h-12 gap-4 mt-3 items-center'>
                   <button onClick={onClose} className='h-10 flex jus items-center hover:bg-gray-100 rounded-lg border px-4'>Cancel</button>
                   <button type="submit" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
-                    {form.isSubmitting && <Spinner size={'sm'} />}
+                    {slackCreateCohortForm.isSubmitting && <Spinner size={'sm'} />}
                   </button>
                 </div>
               </form>
