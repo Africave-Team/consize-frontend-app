@@ -12,6 +12,10 @@ export default function SettingsNav () {
       path: "/dashboard/settings/teams"
     },
     {
+      title: "Integrations",
+      path: "/dashboard/settings/integrations"
+    },
+    {
       title: "Subscriptions",
       path: "/dashboard/settings/subscriptions"
     },

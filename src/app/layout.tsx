@@ -4,6 +4,7 @@ import './globals.css'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider } from '@chakra-ui/react'
 import "react-datetime/css/react-datetime.css"
+import NextTopLoader from 'nextjs-toploader'
 
 import {
   QueryClientProvider,
@@ -26,6 +27,7 @@ export default function RootLayout ({
         <script src="/js/tinymce/tinymce.min.js" />
       </head>
       <body className='h-screen overflow-y-hidden w-screen overflow-x-hidden' suppressHydrationWarning>
+        <NextTopLoader color='#0D1F23' />
         <ChakraProvider>
           <CacheProvider>
             <QueryClientProvider client={queryClient}>
