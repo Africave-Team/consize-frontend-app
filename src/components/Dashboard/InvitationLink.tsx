@@ -83,7 +83,7 @@ export default function InvitationLink ({ course, isBundle }: { course: Course, 
     },
     validateOnChange: true,
     validationSchema: SlackCreateCohortValidator,
-    onSubmit: async function (values) {
+    onSubmit: async function (values, { resetForm }) {
       if (values.agree) {
         if (course) {
           await createCohort({
@@ -102,6 +102,8 @@ export default function InvitationLink ({ course, isBundle }: { course: Course, 
             duration: 2000,
             isClosable: true,
           })
+          setView("list")
+          resetForm()
           onClose()
         }
       } else {
