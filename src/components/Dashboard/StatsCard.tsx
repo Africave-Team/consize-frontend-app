@@ -48,27 +48,35 @@ export default function StatsCard ({ value, title, trends, latestTrend, descript
                     show: false
                   },
                 },
+                plotOptions: {
+                  bar: {
+                    horizontal: false,
+                    borderRadius: 5,
+                    columnWidth: "5%",
+                  }
+                },
                 legend: {
                   show: false
                 },
                 yaxis: {
                   labels: {
-                    show: true
+                    show: true,
+                    formatter: function (value) {
+                      // Format the y-axis labels to display with a specific number of decimal places
+                      return value.toFixed(1) // Adjust the number inside to set the desired decimal places
+                    },
                   },
-                  title: {
-                    text: yLabel
-                  }
                 },
                 xaxis: {
-                  labels: {
-                    show: true
-                  },
-                  categories: trends.map(e => e.date),
+                  categories: trends.map((e) => e.date),
                   title: {
-                    text: xLabel
+                    text: "Dates"
                   }
                 },
-              }} series={trends.map(e => e.value)} type="area" width={"100%"} height={200} />}
+              }} series={[{
+                name: "Value",
+                data: trends.map(e => e.value)
+              }]} type="bar" width={"100%"} height={200} />}
 
             {trends.length === 0 && <div className='h-[200px] w-full flex justify-center items-center'>
               No trends data available.
