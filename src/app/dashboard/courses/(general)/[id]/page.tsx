@@ -51,7 +51,7 @@ export default function page ({ params }: { params: { id: string } }) {
     averageCompletionPercentage: 0,
     dropouts: 0,
     completed: 0,
-    averageTestScore: 0,
+    averageTestScore: '0',
     averageCompletionDays: 0,
     averageCompletionMinutes: 0,
     averageCourseDurationSeconds: 0,
@@ -175,7 +175,7 @@ export default function page ({ params }: { params: { id: string } }) {
               copy.active = students.filter(e => !e.completed && !e.droppedOut).length
               copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
               copy.completed = students.filter(e => e.completed).length
-              copy.averageTestScore = (scores) / students.length
+              copy.averageTestScore = ((scores) / students.length).toFixed(2)
 
               copy.averageCourseProgress = students.reduce((acc, curr) => {
                 if (curr.progress) {
@@ -302,19 +302,22 @@ export default function page ({ params }: { params: { id: string } }) {
         <div className='flex-1 py-4'>
           <div className='h-12 px-5 mb-4 flex justify-between items-center'>
             <div className='text-xl font-bold line-clamp-1'>{courseDetails?.data.title}</div>
-            <Menu>
-              <MenuButton type='button' className='bg-gray-100 rounded-full hover:bg-gray-100 h-10 w-10 flex items-center justify-center'>
-                <img src="/dots.svg" />
-              </MenuButton>
-              <MenuList className='text-sm py-0' minWidth={'200px'}>
-                <Leaderboard students={students} />
-                <CourseContents courseId={params.id} />
-                <StudentReviews />
-                <CourseTrends />
-                <ExportStats courseId={params.id} stats={stats} fields={fields} />
-                <OpenSettings dark={true} id={params.id} />
-              </MenuList>
-            </Menu>
+            <div className='flex items-center gap-4'>
+              {courseDetails && courseDetails.data && <InvitationLink course={courseDetails.data} />}
+              <Menu>
+                <MenuButton type='button' className='bg-gray-100 rounded-full hover:bg-gray-100 h-10 w-10 flex items-center justify-center'>
+                  <img src="/dots.svg" />
+                </MenuButton>
+                <MenuList className='text-sm py-0' minWidth={'200px'}>
+                  <Leaderboard students={students} />
+                  <CourseContents courseId={params.id} />
+                  <StudentReviews />
+                  <CourseTrends />
+                  <ExportStats courseId={params.id} stats={stats} fields={fields} />
+                  <OpenSettings dark={true} id={params.id} />
+                </MenuList>
+              </Menu>
+            </div>
           </div>
           <div className={`px-4 w-full grid grid-cols-3 gap-3 ${sidebarOpen ? 'md:grid-cols-5' : 'md:grid-cols-6'}`} >
             {/* @ts-ignore */}
@@ -327,7 +330,6 @@ export default function page ({ params }: { params: { id: string } }) {
                 <div className='w-72'>
                   <SearchStudents courseId={params.id} students={students} />
                 </div>
-                <InvitationLink courseId={params.id} />
 
                 <ExportStudents courseId={params.id} students={students} />
               </div>
