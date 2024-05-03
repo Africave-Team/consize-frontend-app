@@ -133,7 +133,7 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
           }
 
         </div>
-      </> : <div className='h-8'>{originalUrl}</div>}
+      </> : <div className=''></div>}
 
     </div>
   )

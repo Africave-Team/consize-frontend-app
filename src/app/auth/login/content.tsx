@@ -86,9 +86,6 @@ export default function LoginHome () {
                     value={loginFormik.values.password} onBlur={loginFormik.handleBlur} />
                 </div>
                 <Button isLoading={loginFormik.isSubmitting} _hover={(!loginFormik.isValid || loginFormik.isSubmitting) ? { background: 'gray.300' } : {}} isDisabled={!loginFormik.isValid} type="submit" className="w-full text-black bg-primary-app disabled:bg-primary-app/25 hover:bg-primary-app focus:ring-4 focus:outline-none focus:ring-primary-app font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Sign in</Button>
-                <p className="text-sm font-light text-gray-500 text-center">
-                  <Link scroll={false} href="/auth/register" className="text-sm font-medium text-primary-600 hover:underline">Create an account?</Link>
-                </p>
               </form>
             </div>
           </div>

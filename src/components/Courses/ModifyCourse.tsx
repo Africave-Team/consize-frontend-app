@@ -5,17 +5,32 @@ import CustomTinyMCEEditor from '@/components/CustomTinyEditor'
 import FileUploader from '@/components/FileUploader'
 import ImageBuilder from '@/components/FormButtons/ImageBuilder'
 import { useFormik } from 'formik'
-import { Spinner, useToast } from '@chakra-ui/react'
+import { Select, Spinner, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { FileTypes } from '@/type-definitions/utils'
 import { updateCourse } from '@/services/secure.courses.service'
 import he from "he"
+import { Distribution } from '@/type-definitions/callbacks'
+import { useAuthStore } from '@/store/auth.store'
+
+
+const courseDistributionOptions = [
+  {
+    value: Distribution.SLACK,
+    title: "Slack"
+  },
+  {
+    value: Distribution.WHATSAPP,
+    title: "Whatsapp"
+  }
+]
 
 
 
 const validationSchema = Yup.object({
   title: Yup.string().required(),
   description: Yup.string().required(),
+  distribution: Yup.string().required().oneOf(Object.values(Distribution)),
   headerMedia: Yup.object({
     mediaType: Yup.string().required(),
     url: Yup.string().required()
@@ -25,11 +40,13 @@ const validationSchema = Yup.object({
 export default function ModifyCourse ({ course }: { course: Course }) {
   const router = useRouter()
   const toast = useToast()
+  const { team } = useAuthStore()
   const form = useFormik({
     validationSchema,
     validateOnMount: true,
     validateOnChange: true,
     initialValues: {
+      distribution: Distribution.SLACK,
       title: course.title,
       description: he.decode(course.description),
       headerMedia: course.headerMedia
@@ -48,7 +65,17 @@ export default function ModifyCourse ({ course }: { course: Course }) {
         duration: 2000,
         isClosable: true,
       })
-      router.push(`/dashboard/courses/${course.id}/builder/lessons`)
+      let path = `/dashboard/courses/${course.id}/builder/lessons`
+      if (values.distribution === Distribution.SLACK) {
+        if (!team?.slackToken) {
+          path = `/dashboard/courses/${course.id}/builder/distribution-setup`
+        }
+      } else {
+        if (!team?.whatsappToken) {
+          // path = `/dashboard/courses/${course.id}/builder/distribution-setup`
+        }
+      }
+      router.push(path)
     },
   })
   return (
@@ -66,6 +93,19 @@ export default function ModifyCourse ({ course }: { course: Course }) {
           <div>
             <label htmlFor="title">Course title *</label>
             <input onChange={form.handleChange} value={form.values.title} onBlur={form.handleBlur} name="title" id="title" type="text" placeholder='Course title' className='h-14 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
+          </div>
+          <div>
+            <label htmlFor="title">Course distribution *</label>
+            <Select size={'md'} className='rounded-lg border-[#0D1F23] focus-visible:border-[#0D1F23] hover:border-[#0D1F23] focus-visible:shadow-none border-2 h-12' onChange={form.handleChange} onBlur={form.handleBlur} id="distribution">
+              <option>Select distribution method</option>
+              {courseDistributionOptions.map((tab, i) => {
+                return (
+                  <option key={tab.value} value={tab.value}>
+                    {tab.title}
+                  </option>
+                )
+              })}
+            </Select>
           </div>
           <div>
             <label htmlFor="description">Course description *</label>

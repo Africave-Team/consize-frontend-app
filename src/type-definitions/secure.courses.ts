@@ -34,7 +34,7 @@ export interface CourseStatistics {
   averageCompletionPercentage: number
   dropouts: number
   completed: number
-  averageTestScore: number
+  averageTestScore: string
   averageCompletionDays: number
   averageCompletionMinutes: number
   averageCourseDurationSeconds: number

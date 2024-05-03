@@ -11,6 +11,8 @@ export interface callbackStore {
 
 
 export interface ICallbackStore extends callbackStore {
-  initiateSlack: (courseId: string) => void
-  initiateWhatsapp: (courseId: string) => void
+  initiateSlack: (courseId?: string) => void
+  initiateSlackAsync: (teamId?: string) => string
+  initiateSlackSettings: (teamId?: string) => void
+  initiateWhatsapp: (courseId?: string) => void
 }

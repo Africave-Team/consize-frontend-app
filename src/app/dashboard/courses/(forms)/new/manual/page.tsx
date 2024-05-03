@@ -74,7 +74,7 @@ export default function page () {
         }
       } else {
         if (!team?.whatsappToken) {
-          path = `/dashboard/courses/${data.id}/builder/distribution-setup`
+          // path = `/dashboard/courses/${data.id}/builder/distribution-setup`
         }
       }
       router.push(path)

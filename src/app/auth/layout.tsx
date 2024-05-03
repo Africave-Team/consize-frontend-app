@@ -9,12 +9,6 @@ export default function AuthLayout ({
 }: {
   children: React.ReactNode
 }) {
-  const { user, access, refresh } = useAuthStore()
-  const { setPageTitle } = useNavigationStore()
-  const router = useRouter()
-  useEffect(() => {
-    setPageTitle("Consize - Authentication")
-  }, [])
   return (
     <div>{children}</div>
   )

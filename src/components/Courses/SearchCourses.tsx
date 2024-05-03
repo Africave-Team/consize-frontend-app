@@ -42,7 +42,7 @@ export default function SearchCourses () {
         <ModalContent className='min-h-96 p-0'>
           <ModalBody className='h-96 px-2'>
             <div className='relative'>
-              <div className='pl-12 absolute top-0 left-0 flex h-14 font-semibold items-center text-lg'>{search.length === 0 ? 'Search courses' : ''}</div>
+              <div onClick={() => document.getElementById('search')?.focus()} className='pl-12 absolute top-0 left-0 flex h-14 font-semibold items-center text-lg'>{search.length === 0 ? 'Search courses' : ''}</div>
               <input onChange={(e) => setSearch(e.target.value)} placeholder='' id="search" type="text" className={`w-full bg-white  h-14 pl-12 pr-5 border font-semibold text-lg focus-visible:outline-[#0D1F23]`} />
               <div className='absolute left-0 top-0 h-14 w-12 flex justify-center items-center'>
                 <FaSearch className='text-xl' />
