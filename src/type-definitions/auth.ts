@@ -24,6 +24,8 @@ export interface ResetPasswordPayloadInterface {
 }
 
 export interface VerifyAccountPayloadInterface {
+  password: string
+  logo: string
   token: string
 }
 
@@ -34,6 +36,7 @@ export interface LogoutPayloadInterface {
 export interface Team {
   name: string
   id: string
+  verified: boolean
   slackToken?: string
   whatsappToken?: string
   owner: string

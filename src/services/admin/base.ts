@@ -149,7 +149,7 @@ class HttpFacade {
   get = async ({ url, query = {}, body = {}, headers = {} }: IGet) => {
     let py = { ...query }
     const queryString = qs.stringify(py)
-    const response = await this.http.get(`${url + '?' + queryString}`, { headers })
+    const response = await this.http.get(`${url + '?' + queryString}`, { headers, data: body })
     return response.data
   };
 

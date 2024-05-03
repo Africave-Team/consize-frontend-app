@@ -42,20 +42,22 @@ export default function DashboardPage () {
       const fetchData = async () => {
         onValue(projectStats, async (snapshot) => {
           const data: { [key: string]: CourseStatistics } = snapshot.val()
-          const result: CourseStatistics[] = Object.values(data)
-          console.log(result)
-          let copy = {
-            totalCourses: result.length,
-            active: 0,
-            completed: 0,
-            enrollments: 0
+          if (data) {
+            const result: CourseStatistics[] = Object.values(data)
+            console.log(result)
+            let copy = {
+              totalCourses: result.length,
+              active: 0,
+              completed: 0,
+              enrollments: 0
+            }
+            for (let ite of result) {
+              copy.active += ite.active
+              copy.completed += ite.completed
+              copy.enrollments += ite.enrolled
+            }
+            setStats(copy)
           }
-          for (let ite of result) {
-            copy.active += ite.active
-            copy.completed += ite.completed
-            copy.enrollments += ite.enrolled
-          }
-          setStats(copy)
         })
       }
       fetchData()

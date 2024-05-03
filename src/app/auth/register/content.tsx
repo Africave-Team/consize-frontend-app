@@ -8,10 +8,9 @@ import { useRouter } from 'next/navigation'
 import { Button, useToast } from '@chakra-ui/react'
 import { useAuthStore } from '@/store/auth.store'
 import KippaLogo from '@/components/Logo'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { register } from '@/services/auth.service'
 import { FiCheckCircle } from 'react-icons/fi'
-import { Access } from '@/type-definitions/auth'
 import Layout from '@/layouts/PageTransition'
 
 const LoginSchema = Yup.object().shape({

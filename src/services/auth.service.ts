@@ -29,7 +29,8 @@ export const resetPassword = async (payload: ResetPasswordPayloadInterface): Pro
 
 export const verifyAccount = async (payload: VerifyAccountPayloadInterface): Promise<any> =>
   http.post({
-    url: `auth/verify-email?token=${payload.token}`
+    url: `auth/verify-email`,
+    body: payload
   })
 
 export const sendVerificationEmail = async (): Promise<any> =>
