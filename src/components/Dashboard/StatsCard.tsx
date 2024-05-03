@@ -52,7 +52,7 @@ export default function StatsCard ({ value, title, trends, latestTrend, descript
                   bar: {
                     horizontal: false,
                     borderRadius: 5,
-                    columnWidth: "5%",
+                    columnWidth: "10%",
                   }
                 },
                 legend: {
@@ -71,12 +71,15 @@ export default function StatsCard ({ value, title, trends, latestTrend, descript
                   categories: trends.map((e) => e.date),
                   title: {
                     text: "Dates"
+                  },
+                  labels: {
+                    show: false
                   }
                 },
               }} series={[{
                 name: "Value",
                 data: trends.map(e => e.value)
-              }]} type="bar" width={"100%"} height={200} />}
+              }]} type="area" width={"100%"} height={200} />}
 
             {trends.length === 0 && <div className='h-[200px] w-full flex justify-center items-center'>
               No trends data available.
