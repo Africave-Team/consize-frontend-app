@@ -42,6 +42,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
     initialValues: {
       ...block,
       allowQuiz: !!block.quiz,
+      bodyMedia: block.bodyMedia || { url: "", mediaType: MediaType.IMAGE },
       quiz: block.quiz ? {
         question: block.quiz.question,
         correctAnswer: block.quiz.choices[block.quiz.correctAnswerIndex],
