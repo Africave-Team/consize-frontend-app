@@ -271,7 +271,7 @@ export default function page ({ params }: { params: { id: string, student_id: st
                   },
                 }} series={[{
                   name: "Scores",
-                  data: scores.map((d) => d)
+                  data: scores.map((d) => Number(d.toFixed(1)))
                 }]} type="bar" width={"100%"} height={320} />
             </div>
 
