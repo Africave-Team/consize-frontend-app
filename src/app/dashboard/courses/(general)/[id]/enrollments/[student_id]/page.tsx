@@ -36,7 +36,9 @@ export default function page ({ params }: { params: { id: string, student_id: st
   }, [])
 
   useEffect(() => {
-    setQuizCount(retakes.flat().length)
+    if (retakes.length > 0) {
+      setQuizCount(Math.max(...retakes.map(e => e.length)))
+    }
   }, [retakes])
 
   useEffect(() => {
@@ -158,12 +160,12 @@ export default function page ({ params }: { params: { id: string, student_id: st
                   xaxis: {
                     categories: lessonDurations.map((_, index) => `Lesson ${index + 1}`),
                     title: {
-                      text: "Duration in seconds"
+                      text: "Duration in minutes"
                     }
                   },
                 }} series={[{
                   name: "Duration",
-                  data: lessonDurations
+                  data: lessonDurations.map((e): number => Number(e.toFixed(2)))
                 }]} type="bar" width={"100%"} height={340} />
             </div>
             <div>
@@ -217,14 +219,14 @@ export default function page ({ params }: { params: { id: string, student_id: st
                         return item
                       }).map((_, index) => `Section ${index + 1}`) : blockDurations[blocksShowOption].map((_, index) => `Section ${index + 1}`),
                       title: {
-                        text: "Duration in seconds"
+                        text: "Duration in minutes"
                       }
                     },
                   }} series={[{
                     name: "Durations",
                     data: blocksShowOption === -1 ? blockDurations.flatMap((item, index) => {
-                      return item.map((val, ind) => val)
-                    }) : blockDurations[blocksShowOption].map((val) => val)
+                      return item.map((val, ind) => Number(val.toFixed(2)))
+                    }) : blockDurations[blocksShowOption].map((val) => Number(val.toFixed(2)))
                   }]} type="bar" width={"100%"} height={320} />
               </div>
             </div>
@@ -269,7 +271,7 @@ export default function page ({ params }: { params: { id: string, student_id: st
                   },
                 }} series={[{
                   name: "Scores",
-                  data: scores.map((d) => d)
+                  data: scores.map((d) => Number(d.toFixed(1)))
                 }]} type="bar" width={"100%"} height={320} />
             </div>
 
@@ -329,6 +331,11 @@ export default function page ({ params }: { params: { id: string, student_id: st
                         show: false
                       },
                     },
+                    dataLabels: {
+                      style: {
+                        colors: ['#000000'] // change the text color here, for example, black
+                      }
+                    },
                     plotOptions: {
                       heatmap: {
                         shadeIntensity: 0.5, // Adjust the intensity of colors
@@ -358,11 +365,11 @@ export default function page ({ params }: { params: { id: string, student_id: st
                       categories: new Array(quizCount).fill(0).map((_, index) => `Quiz ${index + 1}`),
                       max: 100,
                       title: {
-                        text: "Quiz durations"
+                        text: "Quiz durations in minutes"
                       }
                     },
                   }}
-                  series={quizDurations.map((item, index) => ({ name: `Lesson ${index + 1}`, data: item }))} type="heatmap" width={"100%"} height={320} />
+                  series={quizDurations.map((item, index) => ({ name: `Lesson ${index + 1}`, data: item.map((e): number => Number(e.toFixed(2))) }))} type="heatmap" width={"100%"} height={320} />
               </div>
               {/* {student.mcqStats ? <div className="grid grid-cols-2 chart gap-2">
               <div className='h-[250px] border py-1 px-1'>

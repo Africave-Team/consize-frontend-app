@@ -102,7 +102,7 @@ export default function StudentsTable ({ students, courseId }: { students: RTDBS
                   </td>
                   <td className="px-4 py-3 flex justify-center">
                     <div className='w-14'>
-                      {student.scores ? student.scores.reduce((a, b) => a + b) * 100 / student.scores.length : 0}%
+                      {student.scores ? (student.scores.reduce((a, b) => a + b) * 100 / student.scores.length).toFixed(1) : 0}%
                     </div>
                   </td>
                   <td className="px-4 py-3">{student.droppedOut ? 'Dropped out' : student.completed ? 'Completed' : 'Active'}</td>

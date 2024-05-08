@@ -42,7 +42,7 @@ export default function PublicCourses () {
       queryFn: () => loadData({ pageParam: page })
     })
   return <Layout>
-    <div className='h-screen overflow-y-scroll flex flex-col justify-between px-10 py-5'>
+    <div className='page-container-2 overflow-y-scroll flex flex-col justify-between px-10 py-5'>
       {isFetching ? <div className={`w-full grid grid-cols-3 gap-3`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
@@ -81,12 +81,12 @@ export default function PublicCourses () {
 
         </div>
       </div>}
-      {courseResults && courseResults.totalPages > 1 && <div className='flex h-10 justify-center text-base items-center gap-3'>
+      {courseResults && courseResults.totalPages > 1 && <div className='flex h-10 mt-5 justify-center text-base items-center gap-3'>
         <button onClick={() => setPage(page - 1)} disabled={courseResults?.page === 1}><FiChevronLeft /></button>
         <div className='text-sm'>Page {courseResults?.page} of {courseResults?.totalPages}</div>
         <button onClick={() => setPage(page + 1)} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>
       </div>}
-      <div className='h-40'></div>
+      <div className='h-96'></div>
     </div>
   </Layout>
 }
