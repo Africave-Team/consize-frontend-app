@@ -95,6 +95,11 @@ html {
   overflow: hidden;
 }
 
+.page-container-2 {
+  height: calc(100vh - 60px);
+  overflow: scroll;
+}
+
 .course-list-container {
   min-height: calc(100vh-160px);
 }
