@@ -15,7 +15,6 @@ export interface CreateCoursePayload {
   bundle: boolean
   private: boolean
   headerMedia: Media
-  distribution: Distribution
   title: string
   description: string
   price?: number
@@ -112,6 +111,7 @@ export interface Course {
   title: string
   description: string
   owner: string
+  shortCode: string
   lessons: Lesson[]
   courses: Course[]
   headerMedia: Media
@@ -215,6 +215,7 @@ export interface Student {
   otherNames: string
   phoneNumber: string
   email: string
+  tz: string
 }
 
 export interface StudentRecord extends Student {

@@ -106,7 +106,8 @@ export default function WholeForm (params: { id: string }) {
           email: values.email,
           firstName: values.firstName,
           otherNames: values.otherNames,
-          phoneNumber: verifyPhoneForm.values.phoneNumber.replace('+', '')
+          phoneNumber: verifyPhoneForm.values.phoneNumber.replace('+', ''),
+          tz: Intl.DateTimeFormat().resolvedOptions().timeZone
         })
       } catch (error) {
 
@@ -134,7 +135,7 @@ export default function WholeForm (params: { id: string }) {
   })
 
   const registerMutation = useMutation({
-    mutationFn: (payload: { email: string, firstName: string, otherNames: string, phoneNumber: string }) => {
+    mutationFn: (payload: { email: string, firstName: string, otherNames: string, phoneNumber: string, tz: string }) => {
       return registerStudent(payload)
     },
     onSuccess: async () => {

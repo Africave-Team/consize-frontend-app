@@ -144,3 +144,15 @@ export const bulkAddStudents = async (payload: { body: StudentDataForm[] }): Pro
     url: `students/bulk-save`,
     body: { students: payload.body }
   })
+
+export const testCourseSlack = async (payload: { slackId: string, course: string }): Promise<any> =>
+  http.post({
+    url: `students/test-course/slack`,
+    body: payload
+  })
+
+export const testCourseWhatsapp = async (payload: { phoneNumber: string, course: string }): Promise<any> =>
+  http.post({
+    url: `students/test-course/whatsapp`,
+    body: payload
+  })

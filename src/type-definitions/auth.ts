@@ -1,3 +1,5 @@
+import { Distribution } from './callbacks'
+
 export interface LoginPayloadInterface {
   email: string
   password: string
@@ -33,10 +35,18 @@ export interface LogoutPayloadInterface {
   refreshToken: string
 }
 
+export interface DistributionChannel {
+  channel: Distribution,
+  enabled: boolean
+  token?: string
+}
+
 export interface Team {
   name: string
   id: string
   verified: boolean
+  shortCode: string
+  channels: DistributionChannel[]
   slackToken?: string
   whatsappToken?: string
   owner: string

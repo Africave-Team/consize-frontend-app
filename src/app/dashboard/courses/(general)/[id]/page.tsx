@@ -22,6 +22,7 @@ import ExportStats from '@/components/Dashboard/ExportStats'
 import OpenSettings from '@/components/Dashboard/OpenSettings'
 import { fetchSingleCourse } from '@/services/secure.courses.service'
 import { useQuery } from '@tanstack/react-query'
+import { Distribution } from '@/type-definitions/callbacks'
 
 const fields = [
   { description: 'Total number of students who registered on the course', unit: "", field: "enrolled", title: "Enrolled students" },
@@ -295,6 +296,8 @@ export default function page ({ params }: { params: { id: string } }) {
       }
     }
   }, [team, params.id])
+
+
 
   return (
     <Layout>

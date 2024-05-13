@@ -31,7 +31,7 @@ export const enrollStudent = async (studentId: string, courseId: string): Promis
   })
 
 
-export const registerStudent = async (payload: { email: string, firstName: string, otherNames: string, phoneNumber: string }): Promise<any> =>
+export const registerStudent = async (payload: { email: string, firstName: string, otherNames: string, phoneNumber: string, tz: string }): Promise<any> =>
   http.post({
     url: `students/`,
     body: {

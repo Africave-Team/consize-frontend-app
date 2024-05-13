@@ -6,3 +6,15 @@ export const createCohort = async (payload: CreateCohortinterface): Promise<any>
     url: `cohorts/`,
     body: payload
   })
+
+
+export const getCourseCohorts = async (courseId: string): Promise<any> =>
+  http.get({
+    url: `cohorts/${courseId}`,
+  })
+
+
+export const deleteCourseCohort = async (cohortId: string): Promise<any> =>
+  http.delete({
+    url: `cohorts/${cohortId}`,
+  })

@@ -12,8 +12,8 @@ export default function SettingsNav () {
       path: "/dashboard/settings/teams"
     },
     {
-      title: "Integrations",
-      path: "/dashboard/settings/integrations"
+      title: "Channels",
+      path: "/dashboard/settings/channels"
     },
     {
       title: "Subscriptions",
