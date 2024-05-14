@@ -182,7 +182,7 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
         <InputGroup className='w-full'>
           <InputRightElement className='w-[150px] flex rounded-r-md gap-1'>
             <div className='text-xs h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
-              Hours
+              Minutes
             </div>
             <button type="button" onClick={() => updateInactivityCountBtn(false)} className='border rounded-md h-9 px-3'>
               <FiMinus />

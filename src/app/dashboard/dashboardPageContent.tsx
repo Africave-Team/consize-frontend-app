@@ -7,6 +7,8 @@ import { getDatabase, ref, onValue, off } from "firebase/database"
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
 import { useAuthStore } from '@/store/auth.store'
+import TeamQRCode from '@/components/Dashboard/TeamQRCode'
+import { Distribution } from '@/type-definitions/callbacks'
 
 interface TeamStatistics {
   totalCourses: number
@@ -22,6 +24,7 @@ export default function DashboardPage () {
     completed: 0,
     enrollments: 0
   })
+  const [showTeamQR, setShowteamQR] = useState<boolean>(false)
   const { team } = useAuthStore()
   const { setPageTitle } = useNavigationStore()
   useEffect(() => {
@@ -52,9 +55,10 @@ export default function DashboardPage () {
               enrollments: 0
             }
             for (let ite of result) {
-              copy.active += ite.active
-              copy.completed += ite.completed
-              copy.enrollments += ite.enrolled
+              let students = Object.values(ite.students)
+              copy.active += students.filter(e => e.progress < 100 && !e.droppedOut).length
+              copy.completed += students.filter(e => e.progress === 100 && !e.droppedOut).length
+              copy.enrollments += students.length
             }
             setStats(copy)
           }
@@ -70,11 +74,20 @@ export default function DashboardPage () {
       }
     }
   }, [team])
+
+  useEffect(() => {
+    if (team && team.channels) {
+      let item = team.channels.find(e => e.channel === Distribution.WHATSAPP)
+      if (item && item.enabled) {
+        setShowteamQR(true)
+      }
+    }
+  }, [team])
   return (
     <Layout>
       <div className='w-full overflow-y-scroll max-h-full'>
         <div className='w-full'>
-          <div className='grid md:grid-cols-4 grid-cols-2'>
+          <div className='grid grid-cols-3'>
             <div className='h-20 p-4 border'>{stats.totalCourses}
               <div className='font-semibold text-sm'>Courses</div>
             </div>
@@ -83,51 +96,14 @@ export default function DashboardPage () {
             </div>
             <div className='h-20 p-4 border'>{stats.active}
               <div className='font-semibold text-sm'>Active students</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.completed}
-              <div className='font-semibold text-sm'>Completed students</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.totalCourses}
-              <div className='font-semibold text-sm'>Courses</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.enrollments}
-              <div className='font-semibold text-sm'>Total enrollments</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.active}
-              <div className='font-semibold text-sm'>Active students</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.completed}
-              <div className='font-semibold text-sm'>Completed students</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.totalCourses}
-              <div className='font-semibold text-sm'>Courses</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.enrollments}
-              <div className='font-semibold text-sm'>Total enrollments</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.active}
-              <div className='font-semibold text-sm'>Active students</div>
-            </div>
-            <div className='h-20 p-4 border'>{stats.completed}
-              <div className='font-semibold text-sm'>Completed students</div>
             </div>
           </div>
-          <div className='grid grid-cols-1 gap-5 p-4 min-h-[55vh] md:grid-cols-2'>
-            <div>
-              <h3>Trending courses</h3>
-              <div className='flex mt-4 flex-col w-full'>
-                <div className='h-10 hover:border-[#0D1F23] border-2 flex items-center px-3 w-full'>
-                  Customer Service Training
-                </div>
-              </div>
+          <div className='flex justify-between'>
+            <div className='grid flex-1 grid-cols-1 gap-5 p-4 min-h-[12vh]'>
+
             </div>
-            <div>
-              <h3>Top performers</h3>
-              <div className='flex mt-4 flex-col w-full'>
-                <div className='h-10 hover:border-[#0D1F23] border-2 flex items-center px-3 w-full'>
-                  James Imabe
-                </div>
-              </div>
+            <div className='h-96 border w-1/3 flex items-center justify-center p-5'>
+              {showTeamQR ? <>{team && <TeamQRCode teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@
 import ViewCourseDetails from '@/components/Courses/ViewCourseDetails'
 import PhoneInput from '@/components/PhoneInput'
 import Layout from '@/layouts/PageTransition'
-import { fetchSingleCourse, updateCourse } from '@/services/secure.courses.service'
+import { fetchSingleCourse, testCourseSlack, testCourseWhatsapp, updateCourse } from '@/services/secure.courses.service'
 import { membersList } from '@/services/slack.services'
 import { Distribution } from '@/type-definitions/callbacks'
 import { Course, CourseStatus, CreateCoursePayload } from '@/type-definitions/secure.courses'
@@ -10,7 +10,7 @@ import { SlackUser } from '@/type-definitions/slack'
 import { Select, Spinner } from '@chakra-ui/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 
 
 interface ApiResponse {
@@ -20,6 +20,10 @@ interface ApiResponse {
 
 
 export default function page ({ params }: { params: { id: string } }) {
+  const [channel, setChannel] = useState("")
+  const [slackId, setSlackId] = useState("")
+  const [testing, setTesting] = useState(false)
+  const [phoneNumber, setPhoneNumber] = useState("")
   const router = useRouter()
   const loadData = async function (payload: { course: string }) {
     const data = await fetchSingleCourse(payload.course)
@@ -55,6 +59,21 @@ export default function page ({ params }: { params: { id: string } }) {
       queryKey: ['slack-person'],
       queryFn: () => loadSlackContent()
     })
+
+
+  const startTestCourse = async function () {
+    setTesting(true)
+    if (channel === Distribution.SLACK) {
+      if (slackId) {
+        await testCourseSlack({ slackId, course: params.id })
+      }
+    } else {
+      if (phoneNumber) {
+        await testCourseWhatsapp({ phoneNumber, course: params.id })
+      }
+    }
+    setTesting(false)
+  }
 
   const publishCourse = async function () {
     if (courseDetails) {
@@ -125,24 +144,31 @@ export default function page ({ params }: { params: { id: string } }) {
 
                   <div>
                     <div className='my-1 text-sm'>Do you want to try the course before publishing it?</div>
-                    {courseDetails.data.distribution === Distribution.WHATSAPP && <div className='relative'>
+                    <div>
+                      <Select onChange={(val) => setChannel(val.target.value)} className='h-12' value={channel}>
+                        <option value={""}>Select a channel</option>
+                        <option value={"slack"}>Preview on slack</option>
+                        <option value={"whatsapp"}>Preview on whatsapp</option>
+                      </Select>
+                    </div>
+                    {channel === Distribution.WHATSAPP && <div className='relative mt-2'>
                       <div className='absolute w-full top-0 left-0'>
-                        <PhoneInput value='' onChange={() => { }} />
+                        <PhoneInput value={phoneNumber} onChange={(e) => setPhoneNumber(e)} />
                       </div>
-                      <button className='h-12 text-white absolute top-0 px-5 bg-primary-dark right-0'>
-                        Send
+                      <button disabled={!phoneNumber || phoneNumber.length < 9} onClick={startTestCourse} className='h-10 text-white absolute top-1 right-2 px-5 disabled:bg-gray-600 bg-primary-dark rounded-lg'>
+                        Send {testing && <Spinner size={'xs'} />}
                       </button>
                     </div>}
 
-                    {courseDetails.data.distribution === Distribution.SLACK && slackData?.members && <div className='relative'>
+                    {channel === Distribution.SLACK && slackData?.members && <div className='relative mt-2'>
                       <div className='absolute w-full top-0 left-0'>
-                        <Select className='h-14'>
+                        <Select value={slackId} onChange={(e) => setSlackId(e.target.value)} className='h-12'>
                           <option value="">Selec a workspace member</option>
                           {slackData.members.map(e => (<option value={e.id}>{e.profile.real_name}</option>))}
                         </Select>
                       </div>
-                      <button className='h-12 text-white absolute top-1 right-2 px-5 bg-primary-dark rounded-lg'>
-                        Send
+                      <button disabled={slackId.length == 0} onClick={startTestCourse} className='h-10 text-white absolute top-1 right-2 px-5 disabled:bg-gray-600 bg-primary-dark rounded-lg'>
+                        Send {testing && <Spinner size={'xs'} />}
                       </button>
                     </div>}
 

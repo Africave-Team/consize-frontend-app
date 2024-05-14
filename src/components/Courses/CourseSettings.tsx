@@ -55,7 +55,7 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
     }
   ]
 
-  const loadTabbedPage = function (settings: CourseSettings) {
+  const loadTabbedPage = function (settings: CourseSettings, course: Course) {
     switch (current) {
       case "fields":
         return <EnrollmentFormFields fields={settings.enrollmentFormFields} id={settings.id} refetch={refetch} />
@@ -66,7 +66,7 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
       case "reminders":
         return <Reminders refetch={refetch} settings={settings} />
       case "groups":
-        return <LearnerGroups fields={settings.enrollmentFormFields} maxEnrollments={settings.metadata.maxEnrollments} refetch={refetch} groups={settings.learnerGroups} settingsId={settings.id} />
+        return <LearnerGroups course={course} fields={settings.enrollmentFormFields} maxEnrollments={settings.metadata.maxEnrollments} refetch={refetch} groups={settings.learnerGroups} settingsId={settings.id} />
 
       default:
         break
@@ -81,7 +81,7 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
           </button>))}
         </div>
         <div className='w-8/12 border p-5 rounded-lg min-h-[70vh] overflow-y-scroll'>
-          {loadTabbedPage(courseDetails.data.settings)}
+          {loadTabbedPage(courseDetails.data.settings, courseDetails.data)}
         </div>
       </div>}
     </div>
