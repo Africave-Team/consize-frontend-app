@@ -138,7 +138,7 @@ export default function EditQuizForm ({ refetch, quiz }: { quiz: Quiz, refetch: 
               </div>
               <div className='h-14 w-full'>
                 <div className='justify-end flex h-full items-center gap-2'>
-                  <button onClick={() => close()} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
+                  <button onClick={() => onClose()} className='bg-gray-100 h-10 rounded-lg text-primary-dark px-5 text-sm'>Cancel</button>
                   <button disabled={!form.isValid} type='submit' className='text-sm px-5 h-10 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Save section
                     {form.isSubmitting && <Spinner size={'sm'} />}
                   </button>
