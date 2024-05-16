@@ -15,7 +15,7 @@ export default function CourseQRCode ({ shortCode, courseName, teamName }: { sho
         width: 350,
         color: {
           dark: "#0D1F23",
-          light: "#1FFF69"
+          light: "#fff"
         }
       }}
 
