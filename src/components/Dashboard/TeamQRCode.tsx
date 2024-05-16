@@ -15,15 +15,7 @@ export default function TeamQRCode ({ shortCode, teamName, teamLogo }: { shortCo
         width: 350,
         color: {
           dark: "#0D1F23",
-          light: "#1FFF69"
-        }
-      }}
-      logo={{
-        src: teamLogo,
-        options: {
-          width: 100,
-          x: undefined,
-          y: undefined,
+          light: "#fff"
         }
       }}
     />

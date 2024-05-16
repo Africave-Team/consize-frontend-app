@@ -5,6 +5,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
 import CourseMenu from './CourseMenu'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function GridItem ({ course }: { course: Course }) {
   const [stats, setStats] = useState<CourseStatistics | null>(null)
@@ -34,17 +35,19 @@ export default function GridItem ({ course }: { course: Course }) {
   return (
     <div className='h-72 border-2 cursor-pointer rounded-lg hover:border-[#0D1F23]'>
       <div className='h-40 bg-black w-full rounded-t-lg relative'>
-        {course.headerMedia && course.headerMedia.url && <img onClick={() => router.push(`/dashboard/courses/${course.id}`)} src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute rounded-t-lg' alt="" />}
+        {course.headerMedia && course.headerMedia.url && <Link href={`/dashboard/courses/${course.id}`}>
+          <img src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute rounded-t-lg' alt="" />
+        </Link>}
         <div className='absolute top-0 right-0 h-20 w-20'>
           <div className='flex justify-end px-3 py-2'>
             <CourseMenu course={course} />
           </div>
         </div>
       </div>
-      <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='w-full h-16 p-2 font-semibold'>
+      <Link href={`/dashboard/courses/${course.id}`} className='w-full h-16 p-2 font-semibold'>
         {course.title}
-      </div>
-      <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='w-full p-2 flex gap-4 items-center text-sm'>
+      </Link>
+      <Link href={`/dashboard/courses/${course.id}`} className='w-full p-2 flex gap-4 items-center text-sm'>
         {(course.status === CourseStatus.COMPLETED || course.status === CourseStatus.PUBLISHED) && <>
           <div className=''>
             <div className='font-semibold'>Enrollments</div>
@@ -61,7 +64,7 @@ export default function GridItem ({ course }: { course: Course }) {
             <div>{course.bundle ? 'Bundle' : 'Course'}</div>
           </div>
         </>}
-      </div>
+      </Link>
     </div>
   )
 }
