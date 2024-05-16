@@ -41,7 +41,7 @@ export default function page () {
   const router = useRouter()
 
   const loadData = async function (payload: { pageParam: number, filter: string }) {
-    const pageSize = 3
+    const pageSize = 10
     const data = await fetchCourses({ page: payload.pageParam, pageSize, filter: payload.filter })
     return data
   }
@@ -115,8 +115,8 @@ export default function page () {
                   </MenuList>
                 </Menu>
                 <button onClick={toggleListStyle} className='h-10 w-10 border rounded-md group hover:bg-black flex justify-center items-center'>
-                  {preferredListStyle === ListStyle.ROWS && <CiGrid2H className='text-2xl group-hover:text-white' />}
-                  {preferredListStyle === ListStyle.GRID && <CiGrid41 className='text-2xl group-hover:text-white' />}
+                  {preferredListStyle !== ListStyle.ROWS && <CiGrid2H className='text-2xl group-hover:text-white' />}
+                  {preferredListStyle !== ListStyle.GRID && <CiGrid41 className='text-2xl group-hover:text-white' />}
                   {/* <CiGrid41 className='text-2xl' /> */}
                 </button>
               </div>

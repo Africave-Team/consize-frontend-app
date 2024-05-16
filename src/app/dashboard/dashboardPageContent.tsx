@@ -55,10 +55,12 @@ export default function DashboardPage () {
               enrollments: 0
             }
             for (let ite of result) {
-              let students = Object.values(ite.students)
-              copy.active += students.filter(e => e.progress < 100 && !e.droppedOut).length
-              copy.completed += students.filter(e => e.progress === 100 && !e.droppedOut).length
-              copy.enrollments += students.length
+              if (ite.students) {
+                let students = Object.values(ite.students)
+                copy.active += students.filter(e => e.progress < 100 && !e.droppedOut).length
+                copy.completed += students.filter(e => e.progress === 100 && !e.droppedOut).length
+                copy.enrollments += students.length
+              }
             }
             setStats(copy)
           }

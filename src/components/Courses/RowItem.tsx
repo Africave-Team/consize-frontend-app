@@ -5,6 +5,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
 import CourseMenu from './CourseMenu'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 
 export default function RowItem ({ course }: { course: Course }) {
@@ -35,11 +36,11 @@ export default function RowItem ({ course }: { course: Course }) {
 
   return (
     <div className='h-16 w-full border-2 cursor-pointer rounded-lg hover:border-[#0D1F23] flex justify-between items-center'>
-      <div onClick={() => router.push(`/dashboard/courses/${course.id}`)} className='px-3 w-2/3 h-full flex items-center truncate'>
+      <Link href={`/dashboard/courses/${course.id}`} className='px-3 w-2/3 h-full flex items-center truncate'>
         <div className='font-semibold'>{course.title}</div>
-      </div>
+      </Link>
       <div className='w-1/3 p-2 h-full flex gap-4 items-center justify-end text-sm'>
-        <div className='w-1/2 flex gap-10 ' onClick={() => router.push(`/dashboard/courses/${course.id}`)}>
+        <Link href={`/dashboard/courses/${course.id}`} className='w-1/2 flex gap-10 '>
           {(course.status === CourseStatus.COMPLETED || course.status === CourseStatus.PUBLISHED) && <>
             <div className=''>
               <div className='font-semibold'>Enrollments</div>
@@ -56,7 +57,7 @@ export default function RowItem ({ course }: { course: Course }) {
               <div>{course.bundle ? 'Bundle' : 'Course'}</div>
             </div>
           </>}
-        </div>
+        </Link>
 
         <CourseMenu course={course} />
       </div>
