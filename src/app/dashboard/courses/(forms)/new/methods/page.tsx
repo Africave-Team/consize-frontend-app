@@ -2,6 +2,8 @@
 import React from 'react'
 import Layout from '@/layouts/PageTransition'
 import { useRouter } from 'next/navigation'
+import AIIcon from '@/components/icons/AI'
+import Link from 'next/link'
 
 export default function page () {
   const router = useRouter()
@@ -19,7 +21,7 @@ export default function page () {
             </div>
           </div>
           <div className='w-full flex md:flex-row flex-col gap-3'>
-            <div className='w-full p-3 md:w-1/3 h-[400px] border-2 hover:border-[#0D1F23] hover:border-2 rounded-md flex flex-col gap-2'>
+            <div className='w-full p-3 md:w-1/3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
               <div className='bg-[url(/ai-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
               </div>
               <div className='h-[180px]'>
@@ -28,14 +30,15 @@ export default function page () {
                   Just put the course name and it creates the complete course for you within 2 minutes. You can edit it afterwards.
                 </div>
               </div>
-              <button onClick={() => router.push('/dashboard/courses/new/ai')} className='w-full text-white bg-[#0D1F23] disabled:bg-gray-300 hover:bg-[#0D1F23]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
+              <Link href='/dashboard/courses/new/ai' className='w-full text-[#0D1F23] bg-[#1FFF6999] disabled:bg-gray-300 hover:bg-[#1FFF6999]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
                 <div className='flex w-full justify-center gap-1'>
-                  <img loading="lazy" src="/ai-icon.svg" alt="" />
+                  {/* <img loading="lazy" src="/ai-icon-dark-2.svg" alt="" /> */}
+                  <AIIcon className='h-5 w-5 stroke-black fill-black' />
                   Get started with Kippa AI
                 </div>
-              </button>
+              </Link>
             </div>
-            <div className='w-full p-3 md:w-1/3 h-[400px] border-2 hover:border-[#0D1F23] hover:border-2 rounded-md flex flex-col gap-2'>
+            <div className='w-full p-3 md:w-1/3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
               <div className='bg-[url(/scratch-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
               </div>
               <div className='h-[180px]'>
@@ -44,11 +47,11 @@ export default function page () {
                   Manually add your course content. Our AI shall be at your assistance along the way to help you with content based on your cues. Best way if you want to create a course from scratch.
                 </div>
               </div>
-              <button onClick={() => router.push('/dashboard/courses/new/manual')} className='w-full text-white bg-[#0D1F23] disabled:bg-gray-300 hover:bg-[#0D1F23]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
+              <Link href='/dashboard/courses/new/manual' className='w-full text-[#0D1F23] bg-[#1FFF6999] disabled:bg-gray-300 hover:bg-[#1FFF6999]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
                 Start from scratch
-              </button>
+              </Link>
             </div>
-            <div className='w-full p-3 md:w-1/3 h-[400px] border-2 hover:border-[#0D1F23] hover:border-2 rounded-md flex flex-col gap-2'>
+            <div className='w-full p-3 md:w-1/3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
               <div className='bg-[url(/doc-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
               </div>
               <div className='h-[180px]'>
@@ -57,7 +60,7 @@ export default function page () {
                   Upload your existing course material - PDF, PPT or doc and our AI shall create a micro course using the same. Even a few line of thoughts jotted down in a doc shall be enough to get you started, and you can edit it afterwards on our platform.
                 </div>
               </div>
-              <button disabled className='w-full text-white bg-[#0D1F23] disabled:bg-gray-300 hover:bg-[#0D1F23]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
+              <button disabled className='w-full bg-[#1FFF6999] text-[#0D1F23] disabled:bg-gray-300 hover:bg-[#1FFF6999]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
                 Upload documents (coming soon)
               </button>
             </div>
