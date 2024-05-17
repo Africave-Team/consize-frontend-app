@@ -3,7 +3,7 @@ import { useQRCode } from 'next-qrcode'
 
 export default function TeamQRCode ({ shortCode, teamName, teamLogo }: { shortCode: string, teamName: string, teamLogo: string }) {
   const { Canvas } = useQRCode()
-  const message = `Hello consize, \nI want to see courses offered by *${teamName}*.\n_${shortCode}_`
+  const message = `Hello Consize, \nI want to see courses offered by *${teamName}* (id: _${shortCode}_)`
   const url = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER}?text=${encodeURIComponent(message)}`
   return (
     <Canvas
