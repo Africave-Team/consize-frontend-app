@@ -6,7 +6,7 @@ import { firebaseConfig } from '@/utils/rtdb-config'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Skeleton, Spinner } from '@chakra-ui/react'
-import { generateCourseOutlineAI } from '@/services/secure.courses.service'
+import { createCourseAI, generateCourseOutlineAI } from '@/services/secure.courses.service'
 import { FiEdit3 } from 'react-icons/fi'
 import Link from 'next/link'
 interface JobData {
@@ -49,20 +49,20 @@ export default function page ({ params }: { params: { id: string } }) {
     }
     setLoading(true)
     const database = getDatabase(app)
-    const today = moment().format('DD-MM-YYYY')
-    const path = ref(database, `ai-jobs/${today}/` + params.id)
+    const path = ref(database, `ai-jobs/` + params.id)
     const fetchData = async () => {
       onValue(path, async (snapshot) => {
         const data: JobData = await snapshot.val()
         setJob(data)
-        setLoading(false)
+        if (data.status === "FINISHED" && data.result) {
+          setLoading(false)
+        }
       })
     }
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
-      const today = moment().format('DD-MM-YYYY')
-      const path = ref(database, `ai-jobs/${today}/` + params.id)
+      const path = ref(database, `ai-jobs/` + params.id)
       off(path)
     }
   }, [params.id])
@@ -73,6 +73,16 @@ export default function page ({ params }: { params: { id: string } }) {
       lessonCount: job.lessonCount,
       jobId: params.id
     })
+  }
+
+  const createCourse = async function () {
+    setSubmitting(true)
+    await createCourseAI({ jobId: params.id })
+    setSubmitting(false)
+    let doc = document.getElementById("next")
+    if (doc) {
+      doc.click()
+    }
   }
   return (
 
@@ -119,7 +129,7 @@ export default function page ({ params }: { params: { id: string } }) {
                     <button onClick={() => generateOutline(job)} className='text-sm px-7 mt-3 h-12 items-center justify-center bg-primary-dark font-medium text-white flex gap-1 disabled:bg-primary-app/60 rounded-3xl'>Try again</button>
                   </div> : <div className='flex flex-col gap-3 w-full'>
                     <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
-                      {Object.entries(job.result.lessons).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
+                      {job.result && Object.entries(job.result.lessons).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
                         <div className='flex justify-between items-center border border-[#D8E0E9] shadow rounded-lg h-14'>
                           <AccordionButton className='h-full hover:!bg-transparent flex gap-2'>
                             <div className='h-10 w-10 rounded-full bg-primary-dark flex text-white font-semibold justify-center items-center'>{index + 1}</div>
@@ -152,10 +162,11 @@ export default function page ({ params }: { params: { id: string } }) {
                       <Link href="/dashboard/courses/new/ai" className='text-sm px-7 h-12 border items-center justify-center text-primary-dark font-medium bg-white flex gap-1 rounded-3xl'>
                         Back
                       </Link>
-                      <Link href={`/dashboard/courses/${params.id}/builder/ai/finish`} className='text-sm px-7 h-12 items-center justify-center text-primary-dark font-medium bg-primary-app flex gap-1 disabled:bg-primary-app/60 rounded-3xl'>
+                      <button onClick={createCourse} className='text-sm px-7 h-12 items-center justify-center text-primary-dark font-medium bg-primary-app flex gap-1 disabled:bg-primary-app/60 rounded-3xl'>
                         Create course
                         {isSubmitting && <Spinner size={'sm'} />}
-                      </Link>
+                      </button>
+                      <Link href={`/dashboard/courses/${params.id}/builder/ai/finish`} id="next" className='hidden' />
                     </div>
                   </div>}
                 </>}

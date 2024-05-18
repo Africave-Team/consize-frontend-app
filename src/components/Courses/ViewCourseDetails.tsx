@@ -4,6 +4,7 @@ import he from "he"
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Tooltip } from '@chakra-ui/react'
 import CourseMenu from './CourseMenu'
 import { FiUploadCloud } from 'react-icons/fi'
+import { PiArrowBendDownRightLight } from 'react-icons/pi'
 
 export default function ViewCourseDetails ({ course }: { course: Course }) {
   return (
@@ -34,7 +35,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
       </div>
       <div className='text-base font-normal min-h-12 line-clamp-4' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }} />
 
-      <div>
+      <div className='mt-4'>
         <Accordion allowMultiple defaultIndex={[]}>
           <AccordionItem>
             <h2>
@@ -46,10 +47,55 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-              commodo consequat.
+              <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
+                {course.lessons.map((value, index) => <AccordionItem className='border-none' key={value.id}>
+                  <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
+                    <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
+                      <div className='flex flex-col items-start'>
+                        <div className='text-sm text-black font-semibold'>{value.title}</div>
+                      </div>
+                    </AccordionButton>
+                    <div className='flex items-center gap-2 h-full'>
+                      <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </div>
+                  </div>
+                  <AccordionPanel className='px-0 py-2'>
+                    <div className='flex flex-col gap-2'>
+                      {value.blocks.map((block, index) => <div key={block.id} className='flex'>
+                        {<>
+                          <div className='w-10 flex justify-center py-3'>
+                            <PiArrowBendDownRightLight className='text-2xl font-bold' />
+                          </div>
+                          <div className='min-h-10 flex-1 rounded-lg py-1'>
+                            <Accordion className='flex flex-col w-full pl-0' defaultIndex={[0]} allowMultiple>
+                              <AccordionItem className='border-none pl-0' key={block.id}>
+                                <div className='flex justify-between items-center rounded-lg h-10'>
+                                  <AccordionButton className='h-full hover:!bg-transparent pl-0 flex gap-2'>
+                                    <div className='flex flex-col items-start'>
+                                      <div className='text-sm text-black font-semibold' >Section {index + 1}: {block.title}</div>
+                                    </div>
+                                  </AccordionButton>
+                                  <div className='flex items-center gap-2 h-full'>
+                                    <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                                      <AccordionIcon />
+                                    </AccordionButton>
+                                  </div>
+                                </div>
+                                <AccordionPanel className='px-0 py-2'>
+                                  {block.content && <div>
+                                    <div dangerouslySetInnerHTML={{ __html: block.content }} />
+                                  </div>}
+                                </AccordionPanel>
+                              </AccordionItem>
+                            </Accordion>
+                          </div></>}
+                      </div>)}
+                    </div>
+                  </AccordionPanel>
+                </AccordionItem>)}
+              </Accordion>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -62,10 +108,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-              commodo consequat.
+              No assessments at this moment
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -78,10 +121,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-              commodo consequat.
+              Survey information goes here
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

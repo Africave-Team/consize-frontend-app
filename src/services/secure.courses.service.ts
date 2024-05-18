@@ -9,7 +9,7 @@ export const createCourse = async (payload: CreateCoursePayload): Promise<any> =
     url: `courses/`,
     body: { ...payload }
   })
-export const createCourseAI = async (payload: { title: string, lessonCount: number }): Promise<any> =>
+export const createCourseAI = async (payload: { jobId: string }): Promise<any> =>
   http.post({
     url: `courses/ai`,
     body: { ...payload }
