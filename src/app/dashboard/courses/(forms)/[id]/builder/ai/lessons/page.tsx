@@ -54,9 +54,7 @@ export default function page ({ params }: { params: { id: string } }) {
       onValue(path, async (snapshot) => {
         const data: JobData = await snapshot.val()
         setJob(data)
-        if (data.status === "FINISHED" && data.result) {
-          setLoading(false)
-        }
+        setLoading(false)
       })
     }
     fetchData()
@@ -103,11 +101,10 @@ export default function page ({ params }: { params: { id: string } }) {
             </div>
 
             <div className='w-3/5 mt-8 border border-[#D8E0E9] shadow p-6 rounded-lg'>
-              {isLoading && <div className='flex flex-col gap-2'>
+              {isLoading ? <div className='flex flex-col gap-2'>
                 <Skeleton className='h-14 w-full rounded-lg' />
                 <Skeleton className='h-14 w-full rounded-lg' />
-              </div>}
-              {job && <div>
+              </div> : job && <div>
                 <div className='flex h-8 justify-between items'>
                   <div className='text-base text-[#334155]'>{job.status === "FINISHED" && `${job.lessonCount} lessons added`}</div>
                   <div className={`text-sm text-[#64748B] ${(job.status === "RUNNING" || job.status === "RETRYING") && 'italic'}`}>
