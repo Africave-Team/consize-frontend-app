@@ -20,3 +20,8 @@ export interface CourseMgtStoreInterface {
   initiateCreateContent: (lessonId: string, courseId: string, contentType: ContentTypeEnum, blockId?: string) => void
   closeCreateContent: () => void
 }
+
+export enum OptionButtons {
+  SUGGEST = 'aisuggest',
+  IMPROVE = 'aiimprove'
+}

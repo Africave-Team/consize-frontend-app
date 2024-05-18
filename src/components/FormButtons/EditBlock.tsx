@@ -16,6 +16,7 @@ import { addBlockQuiz, addLessonBlock, updateLessonBlock, updateQuiz } from '@/s
 import { useCourseMgtStore } from '@/store/course.management.store'
 import { convertToWhatsAppString } from '@/utils/string-formatters'
 import mime from "mime-types"
+import { OptionButtons } from '@/type-definitions/course.mgt'
 
 
 
@@ -151,7 +152,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        size={'lg'}
+        size={'xl'}
       >
         <ModalOverlay />
         <ModalContent className='h-[85vh] p-0'>
@@ -171,7 +172,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
                     <label htmlFor="description">Section content *</label>
                     <CustomTinyMCEEditor field='content' maxLength={allowedContentLength()} onChange={(value) => {
                       form.setFieldValue("content", value)
-                    }} placeholder='Enter the content of this section here' value={form.values.content} aiOptionButtons={[]} />
+                    }} placeholder='Enter the content of this section here' value={form.values.content} aiOptionButtons={[OptionButtons.IMPROVE, OptionButtons.SUGGEST]} />
                   </div>
                   <div className='w-full'>
                     <div className='flex justify-between items-center'>

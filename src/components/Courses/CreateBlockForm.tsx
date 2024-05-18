@@ -12,6 +12,7 @@ import { addBlockQuiz, addLessonBlock } from '@/services/secure.courses.service'
 import { useCourseMgtStore } from '@/store/course.management.store'
 import { convertToWhatsAppString } from '@/utils/string-formatters'
 import mime from "mime-types"
+import { OptionButtons } from '@/type-definitions/course.mgt'
 
 
 const validationSchema = Yup.object({
@@ -135,7 +136,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
             <label htmlFor="description">Section content *</label>
             <CustomTinyMCEEditor field='content' maxLength={allowedContentLength()} onChange={(value) => {
               form.setFieldValue("content", value)
-            }} placeholder='Enter the content of this section here' value={form.values.content} aiOptionButtons={[]} />
+            }} placeholder='Enter the content of this section here' value={form.values.content} aiOptionButtons={[OptionButtons.IMPROVE, OptionButtons.SUGGEST]} />
           </div>
           <div className='w-full'>
             <div className='flex justify-between items-center'>
@@ -187,7 +188,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
                 <label htmlFor="description">Wrong answer context *</label>
                 <CustomTinyMCEEditor field='wrongAnswerContext' maxLength={150} onChange={(value) => {
                   form.setFieldValue("quiz.wrongAnswerContext", value)
-                }} placeholder='Enter the message we should send when the user answers wrongly' value={form.values.quiz.wrongAnswerContext} aiOptionButtons={[]} />
+                }} placeholder='Enter the message we should send when the user answers wrongly' value={form.values.quiz.wrongAnswerContext} aiOptionButtons={[OptionButtons.IMPROVE, OptionButtons.SUGGEST]} />
               </div>
 
             </>}

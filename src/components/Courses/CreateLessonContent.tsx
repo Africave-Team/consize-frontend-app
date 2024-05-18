@@ -13,7 +13,7 @@ export default function CreateLessonSection ({ open, refetch }: { open: boolean,
       isOpen={open}
       onClose={closeCreateContent}
       isCentered
-      size={'lg'}
+      size={'xl'}
     >
       <ModalOverlay />
       <ModalContent className='h-[85vh] p-0'>

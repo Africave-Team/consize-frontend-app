@@ -4,6 +4,8 @@ import { Editor as TinyMCEEditor } from 'tinymce'
 import { Spinner, Tooltip } from '@chakra-ui/react'
 import { stripHtmlTags } from '@/utils/string-formatters'
 import he from "he"
+import { OptionButtons } from '@/type-definitions/course.mgt'
+import AIIcon from './icons/AI'
 
 
 interface TinyMCEEditorProps {
@@ -11,7 +13,7 @@ interface TinyMCEEditorProps {
   value: string
   placeholder: string
   maxLength: number,
-  aiOptionButtons?: string[]
+  aiOptionButtons?: OptionButtons[]
   onChange: (plain: string) => void
   aiProgress?: boolean
 }
@@ -52,22 +54,28 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
 
   }, [])
 
+  useEffect(() => {
+    const sentences = stripHtmlTags(he.decode(value)).split(/[.!?]+/)
+    const filteredSentences = sentences.filter(sentence => sentence.trim() !== '')
+    setSentences(filteredSentences.length)
+  }, [value])
 
 
-  // const getButtonContent = (type: OptionButtons) => {
-  //   if (type === 'aiimprove') {
-  //     return isMobile ? 'AI Improve' : 'Improve with AI'
-  //   } else {
-  //     return isMobile ? 'AI Generate' : 'Generate with AI'
-  //   }
-  // }
-  // const getButtonTooltip = (type: OptionButtons) => {
-  //   if (type === 'aiimprove') {
-  //     return "Improve content with AI"
-  //   } else {
-  //     return "Generate content with AI"
-  //   }
-  // }
+
+  const getButtonContent = (type: OptionButtons) => {
+    if (type === 'aiimprove') {
+      return isMobile ? 'AI Improve' : 'Improve with AI'
+    } else {
+      return isMobile ? 'AI Generate' : 'Generate text with AI'
+    }
+  }
+  const getButtonTooltip = (type: OptionButtons) => {
+    if (type === 'aiimprove') {
+      return "Improve content with AI"
+    } else {
+      return "Generate content with AI"
+    }
+  }
 
   const getToolbarButtons = () => {
     // Return the generated toolbar string
@@ -135,7 +143,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
               value={value}
             />
           </div>
-          {/* {editorRef && <div className='absolute px-3 -bottom-1 gap-5 flex items-center left-[120px] h-9 bg-[#F8FAFC] w-[400px] z-50'>
+          {editorRef && <div className='absolute px-3 top-1 gap-5 flex items-center left-[200px] h-9 bg-[#F8FAFC] w-[250px] z-50'>
             {aiOptionButtons.map((type: OptionButtons, index) => {
               if (type === OptionButtons.IMPROVE) {
                 if (sentences >= 2) {
@@ -143,9 +151,8 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                     <Tooltip label={getButtonTooltip(OptionButtons.IMPROVE)}>
                       <button disabled={aiProgress && currentAIAction === OptionButtons.IMPROVE} onClick={() => {
                         setCurrentAIAction(OptionButtons.IMPROVE)
-                        onAIQueryButtonClick(OptionButtons.IMPROVE)
-                      }} type='button' className='text-primary-500 disabled:bg-primary-50 py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
-                        <img loading="lazy" src="/ai-icon-dark.svg" alt="" />
+                      }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
+                        <AIIcon className='fill-[#0CDA50] w-5 h-5' />
                         {getButtonContent(OptionButtons.IMPROVE)}
                         {aiProgress && currentAIAction === OptionButtons.IMPROVE && <Spinner size={'xs'} />}
                       </button>
@@ -160,9 +167,8 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                     <Tooltip label={getButtonTooltip(OptionButtons.SUGGEST)}>
                       <button disabled={aiProgress && currentAIAction === OptionButtons.SUGGEST} onClick={() => {
                         setCurrentAIAction(OptionButtons.SUGGEST)
-                        onAIQueryButtonClick(OptionButtons.SUGGEST)
-                      }} type='button' className='text-primary-500 disabled:bg-primary-50 py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
-                        <img loading="lazy" src="/ai-icon-dark.svg" alt="" />
+                      }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
+                        <AIIcon className='fill-[#0CDA50] w-5 h-5' />
                         {getButtonContent(OptionButtons.SUGGEST)}
                         {aiProgress && currentAIAction === OptionButtons.SUGGEST && <Spinner size={'xs'} />}
                       </button>
@@ -174,7 +180,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
               }
             })
             }
-          </div>} */}
+          </div>}
         </div>
         <div className='flex justify-end items-center text-xs mt-1.5 gap-1'>
           <span>{count}/{maxLength}</span>

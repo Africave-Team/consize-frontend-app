@@ -34,7 +34,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
           <div className="to-cetrify">
             This is to certify that
           </div>
-          <div className="name w-full" id="name">
+          <div className="name w-full capitalize" id="name">
             {details.studentName}
           </div>
           <div className="certificate-text">

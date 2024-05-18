@@ -31,8 +31,8 @@ export default function PageContents ({ details }: { details: DataInterface }) {
             return (
               <div key={`leader-${index}`} className={`leaderboard-item ${item.isCurrentUser ? 'current-user' : ''}`}>
                 <span className="rank">{item.rank}</span>
-                <span className="name">{item.name}</span>
-                <span className="score">{item.score}</span>
+                <span className="name capitalize">{item.name}</span>
+                <span className="score">{item.score.toFixed(0)}</span>
               </div>
             )
           })

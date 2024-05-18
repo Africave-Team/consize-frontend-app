@@ -64,7 +64,7 @@ html {
 }
 
 .tox .tox-editor-container {
-  flex-direction: column-reverse !important;
+  flex-direction: column !important;
 }
 
 .tox .tox-editor-header,
