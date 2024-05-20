@@ -14,10 +14,20 @@ import DeleteLessonButton from './DeleteLesson'
 import EditBlockForm from '../FormButtons/EditBlock'
 import EditQuizForm from '../FormButtons/EditQuiz'
 import { useRouter } from 'next/navigation'
+import { stripHtmlTags } from '@/utils/string-formatters'
 
 interface ApiResponse {
   data: LessonData
   message: string
+}
+
+function findFirstNonexistentElement (arrA: string[], arrB: string[]) {
+  for (let i = 0; i < arrA.length; i++) {
+    if (!arrB.includes(arrA[i])) {
+      return arrA[i]
+    }
+  }
+  return null // If all elements of arrA exist in arrB
 }
 
 export default function LessonContentView ({ lessonId, courseId, reload }: { lessonId: string, courseId: string, reload: () => Promise<any> }) {
@@ -196,7 +206,17 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                     {/* <button className='hover:bg-gray-100 group-hover:flex hidden rounded-lg h-10 w-10 justify-center items-center text-base'>
                       <FiEye />
                     </button> */}
-                    <button onClick={() => initiateCreateContent(lessonDetails.data.id, courseId, ContentTypeEnum.QUIZ)} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
+                    <button onClick={() => {
+                      let quizBlocks = lessonDetails.data.quizzes.filter(e => e !== undefined).map(e => e.block)
+                      let blockIds = lessonDetails.data.blocks.map(e => e.id) // @ts-ignore
+                      const next = findFirstNonexistentElement(blockIds, quizBlocks)
+                      let index = Number((Math.random() * (lessonDetails.data.blocks.length - 1)).toFixed(0))
+                      if (next !== null) {
+                        index = blockIds.findIndex(e => e === next)
+                      }
+                      let block = lessonDetails.data.blocks[index]
+                      initiateCreateContent(lessonDetails.data.id, courseId, ContentTypeEnum.QUIZ, block.id, stripHtmlTags(he.decode(block.content)))
+                    }} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
                       <FiPlus />
                     </button>
                   </div>
@@ -211,6 +231,14 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                 </div>}
                 <Accordion defaultIndex={[]} className='space-y-3' allowMultiple>
                   {lessonDetails.data.quizzes.map((quiz) => {
+                    let random = Number((Math.random() * (lessonDetails.data.blocks.length - 1)).toFixed(0))
+                    if (quiz.block) {
+                      let index = lessonDetails.data.blocks.findIndex(e => e.id === quiz.block)
+                      if (index >= 0) {
+                        random = index
+                      }
+                    }
+                    let block = lessonDetails.data.blocks[random]
                     return (
                       <AccordionItem className='rounded-md border'>
                         <div className='flex group'>
@@ -222,7 +250,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                               {/* <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
                                 <FiEye />
                               </button> */}
-                              <EditQuizForm quiz={quiz} refetch={async () => {
+                              <EditQuizForm block={block.id} quiz={quiz} content={block.content} refetch={async () => {
                                 refetch()
                                 reload()
                               }} />

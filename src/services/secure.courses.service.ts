@@ -60,6 +60,46 @@ export const addLessonBlock = async (payload: AddBlock): Promise<any> =>
     body: { ...payload.block }
   })
 
+export const rewriteBlockContent = async (payload: {
+  lessonId: string
+  courseId: string
+  seedTitle: string
+  seedContent: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/rewrite-section`,
+    body: { ...payload }
+  })
+
+export const suggestBlockContent = async (payload: {
+  lessonId: string
+  courseId: string
+  seedTitle: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/generate-section`,
+    body: { ...payload }
+  })
+
+
+export const rewriteBlockQuiz = async (payload: {
+  isFollowup: boolean
+  content: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/rewrite-quiz`,
+    body: { ...payload }
+  })
+
+export const suggestBlockQuiz = async (payload: {
+  isFollowup: boolean
+  content: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/generate-quiz`,
+    body: { ...payload }
+  })
+
 export const updateLessonBlock = async (payload: {
   blockId: string, update: Partial<Block>
 }): Promise<any> =>

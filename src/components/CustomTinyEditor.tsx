@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Editor as TinyMCEEditor } from 'tinymce'
-import { Spinner, Tooltip } from '@chakra-ui/react'
+import { Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Spinner, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { stripHtmlTags } from '@/utils/string-formatters'
 import he from "he"
 import { OptionButtons } from '@/type-definitions/course.mgt'
 import AIIcon from './icons/AI'
+import { PiArrowsClockwiseBold, PiCheckBold } from 'react-icons/pi'
+import { QuizUnformed } from '@/type-definitions/secure.courses'
 
 
 interface TinyMCEEditorProps {
@@ -16,10 +18,18 @@ interface TinyMCEEditorProps {
   aiOptionButtons?: OptionButtons[]
   onChange: (plain: string) => void
   aiProgress?: boolean
+  onAIQueryButtonClick?: (action: OptionButtons) => Promise<void>
+  improvement?: boolean
+  improvementResult?: string
+  closeImprovement?: () => void
+  quiz?: QuizUnformed | null
+  acceptQuiz?: (quiz: QuizUnformed) => void
+  isFollowup?: boolean
 }
 
-const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [], value, field, onChange, placeholder, maxLength, aiProgress }) => {
+const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [], acceptQuiz, value, onAIQueryButtonClick, improvement, closeImprovement, improvementResult, onChange, placeholder, maxLength, aiProgress, quiz, isFollowup }) => {
   const [count, setCount] = useState<number>(0)
+  const { isOpen, onToggle, onClose } = useDisclosure()
   const [sentences, setSentences] = useState<number>(0)
   const [isMobile, setIsMobile] = useState(false)
   const [currentAIAction, setCurrentAIAction] = useState<string | null>(null)
@@ -65,15 +75,23 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
   const getButtonContent = (type: OptionButtons) => {
     if (type === 'aiimprove') {
       return isMobile ? 'AI Improve' : 'Improve with AI'
-    } else {
+    } else if (type === "aisuggest") {
       return isMobile ? 'AI Generate' : 'Generate text with AI'
+    } else if (type === "aisuggest-quiz") {
+      return isMobile ? 'AI Generate' : 'Generate quiz with AI'
+    } else if (type === "aiimprove-quiz") {
+      return isMobile ? 'AI Improve' : 'Improve quiz with AI'
     }
   }
   const getButtonTooltip = (type: OptionButtons) => {
     if (type === 'aiimprove') {
       return "Improve content with AI"
-    } else {
+    } else if (type === "aisuggest") {
       return "Generate content with AI"
+    } else if (type === "aisuggest-quiz") {
+      return 'Generate quiz with AI'
+    } else if (type === "aiimprove-quiz") {
+      return 'Improve quiz with AI'
     }
   }
 
@@ -106,6 +124,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                 placeholder,
                 menubar: '',
                 height: 150,
+                license_key: "gpl",
                 plugins: 'emoticons lists',
                 toolbar: getToolbarButtons(),
                 content_style: `
@@ -140,40 +159,225 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                   // })
                 }
               }}
-              value={value}
+              value={value.replace(/&lt;p>/, "").replace(/&lt;\/p>/g, (match, offset, original) => {
+                const isLastOccurrence = original.lastIndexOf(match) === offset
+                return isLastOccurrence ? "" : match
+              })}
             />
           </div>
-          {editorRef && <div className='absolute px-3 top-1 gap-5 flex items-center left-[200px] h-9 bg-[#F8FAFC] w-[250px] z-50'>
+          {editorRef && aiOptionButtons.length > 0 && <div className='absolute px-3 -bottom-1 gap-5 flex items-center left-[190px] h-9 bg-[#F8FAFC] w-[260px] z-50'>
             {aiOptionButtons.map((type: OptionButtons, index) => {
               if (type === OptionButtons.IMPROVE) {
                 if (sentences >= 2) {
+                  return <div className='' key={`button-ai-${index}`}>
+                    <Popover closeOnEsc={false} closeOnBlur={false} isOpen={improvement} onClose={() => closeImprovement && closeImprovement()} placement='bottom'>
+                      <PopoverTrigger>
+                        <span>
+                          <Tooltip label={getButtonTooltip(OptionButtons.IMPROVE)}>
+                            <button disabled={aiProgress || improvement} onClick={() => {
+                              setCurrentAIAction(OptionButtons.IMPROVE)
+                              if (onAIQueryButtonClick) {
+                                onAIQueryButtonClick(OptionButtons.IMPROVE)
+                              }
+                            }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
+                              <AIIcon className='fill-[#0CDA50] w-5 h-5' />
+                              {getButtonContent(OptionButtons.IMPROVE)}
+                            </button>
+                          </Tooltip>
+                        </span>
+                      </PopoverTrigger>
+                      <PopoverContent className='!rounded-xl w-[520px] !left-0'>
+                        <PopoverArrow />
+                        <PopoverBody className='flex flex-col p-0'>
+                          <div className='h-8 border-b px-4 flex gap-1 text-sm text-[#64748B] justify-start items-center'>
+                            <AIIcon className='fill-[#64748B] h-5 w-5' /> {aiProgress ? <div className='flex gap-2 items-center'><span className='italic'>Generating text...</span><Spinner size={'xs'} /></div> : <span>Text generated.</span>}
+                          </div>
+                          <div className='min-h-10 px-4 text-sm py-1' dangerouslySetInnerHTML={{ __html: improvementResult || "" }} />
+                          <div className='h-12 px-4 border-t flex justify-between items-center'>
+                            <button type='button' onClick={() => closeImprovement && closeImprovement()} className='px-4 h-8 rounded-2xl border'>Cancel</button>
+                            <div className='h-full flex gap-2 items-center'>
+                              <button type='button' disabled={aiProgress} onClick={() => onAIQueryButtonClick && onAIQueryButtonClick(OptionButtons.IMPROVE)} className='h-8 px-4 flex items-center justify-center gap-2 font-medium bg-[#EAECF0] rounded-3xl text-sm'>
+                                <PiArrowsClockwiseBold />
+                                Regenerate
+                              </button>
+
+                              <button type='button' disabled={aiProgress} onClick={() => { closeImprovement && closeImprovement(); onChange(improvementResult || value) }} className='h-8 px-4 flex items-center text-white justify-center gap-2 font-medium bg-[#334155] rounded-3xl text-sm'>
+                                <PiCheckBold />
+                                Accept changes
+                              </button>
+                            </div>
+                          </div>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+
+                  </div>
+                }
+                return <div key={`button-ai-${index}`}></div>
+              } else if (type === OptionButtons.SUGGEST) {
+                if (sentences < 2) {
                   return <div key={`button-ai-${index}`}>
-                    <Tooltip label={getButtonTooltip(OptionButtons.IMPROVE)}>
-                      <button disabled={aiProgress && currentAIAction === OptionButtons.IMPROVE} onClick={() => {
-                        setCurrentAIAction(OptionButtons.IMPROVE)
+                    <Tooltip label={getButtonTooltip(OptionButtons.SUGGEST)}>
+                      <button disabled={aiProgress && currentAIAction === OptionButtons.SUGGEST} onClick={() => {
+                        setCurrentAIAction(OptionButtons.SUGGEST)
+                        if (onAIQueryButtonClick) {
+                          onAIQueryButtonClick(OptionButtons.SUGGEST)
+                        }
                       }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
                         <AIIcon className='fill-[#0CDA50] w-5 h-5' />
-                        {getButtonContent(OptionButtons.IMPROVE)}
-                        {aiProgress && currentAIAction === OptionButtons.IMPROVE && <Spinner size={'xs'} />}
+                        {getButtonContent(OptionButtons.SUGGEST)}
+                        {aiProgress && <Spinner size={'xs'} />}
                       </button>
 
                     </Tooltip>
                   </div>
                 }
                 return <div key={`button-ai-${index}`}></div>
-              } else {
-                if (sentences < 2) {
-                  return <div key={`button-ai-${index}`}>
-                    <Tooltip label={getButtonTooltip(OptionButtons.SUGGEST)}>
-                      <button disabled={aiProgress && currentAIAction === OptionButtons.SUGGEST} onClick={() => {
-                        setCurrentAIAction(OptionButtons.SUGGEST)
-                      }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
-                        <AIIcon className='fill-[#0CDA50] w-5 h-5' />
-                        {getButtonContent(OptionButtons.SUGGEST)}
-                        {aiProgress && currentAIAction === OptionButtons.SUGGEST && <Spinner size={'xs'} />}
-                      </button>
+              } else if (type === OptionButtons.IMPROVEQUIZ) {
+                if (value.length > 10) {
+                  return <div className='' key={`button-ai-${index}`}>
+                    <Popover closeOnEsc={false} closeOnBlur={false} isOpen={improvement} onClose={() => closeImprovement && closeImprovement()} placement='bottom'>
+                      <PopoverTrigger>
+                        <span>
+                          <Tooltip label={getButtonTooltip(OptionButtons.IMPROVEQUIZ)}>
+                            <button disabled={aiProgress || improvement} onClick={() => {
+                              setCurrentAIAction(OptionButtons.IMPROVEQUIZ)
+                              if (onAIQueryButtonClick) {
+                                onAIQueryButtonClick(OptionButtons.IMPROVEQUIZ)
+                              }
+                            }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
+                              <AIIcon className='fill-[#0CDA50] w-5 h-5' />
+                              {getButtonContent(OptionButtons.IMPROVEQUIZ)}
+                            </button>
+                          </Tooltip>
+                        </span>
+                      </PopoverTrigger>
+                      <PopoverContent className='!rounded-xl w-[520px] !left-0'>
+                        <PopoverArrow />
+                        <PopoverBody className='flex flex-col p-0'>
+                          <div className='h-8 border-b px-4 flex gap-1 text-sm text-[#64748B] justify-start items-center'>
+                            <AIIcon className='fill-[#64748B] h-5 w-5' /> {aiProgress ? <div className='flex gap-2 items-center'><span className='italic'>Generating quiz...</span><Spinner size={'xs'} /></div> : <span>Quiz generated.</span>}
+                          </div>
+                          <div className='min-h-10 px-4 text-sm py-1'>
+                            {quiz && <>
+                              <div>
+                                <label className='font-semibold text-sm' htmlFor="">Question</label>
+                                <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.question) }} />
+                              </div>
 
-                    </Tooltip>
+
+                              {!isFollowup ? <>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Choices</label>
+                                  {quiz.options.map((e) => <div key={e} className='text-sm'>A: {e}</div>)}
+                                </div>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
+                                  <div className='text-sm'>{quiz.options[Number(quiz.correct_answer)]}</div>
+                                </div>
+                              </> : <>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Choices</label>
+                                  <div className='text-sm'>A: Yes</div>
+                                  <div className='text-sm'>B: No</div>
+                                </div>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
+                                  <div className='text-sm'>{quiz.correct_answer}</div>
+                                </div>
+                              </>}
+                              <div>
+                                <label className='font-semibold text-sm' htmlFor="">Message to send when they get it correctly</label>
+                                <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.explanation) }} />
+                              </div>
+                            </>}
+                          </div>
+                          <div className='h-12 px-4 border-t flex justify-between items-center'>
+                            <button type='button' onClick={() => closeImprovement && closeImprovement()} className='px-4 h-8 rounded-2xl border'>Cancel</button>
+                            <div className='h-full flex gap-2 items-center'>
+                              <button type='button' disabled={aiProgress} onClick={() => onAIQueryButtonClick && onAIQueryButtonClick(OptionButtons.IMPROVEQUIZ)} className='h-8 px-4 flex items-center justify-center gap-2 font-medium bg-[#EAECF0] rounded-3xl text-sm'>
+                                <PiArrowsClockwiseBold />
+                                Regenerate
+                              </button>
+
+                              <button type='button' disabled={aiProgress} onClick={() => { acceptQuiz && quiz && acceptQuiz(quiz) }} className='h-8 px-4 flex items-center text-white justify-center gap-2 font-medium bg-[#334155] rounded-3xl text-sm'>
+                                <PiCheckBold />
+                                Accept changes
+                              </button>
+                            </div>
+                          </div>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+
+                  </div>
+                }
+                return <div key={`button-ai-${index}`}></div>
+              } else if (type === OptionButtons.SUGGESTQUIZ) {
+                if (value.length < 10) {
+                  return <div key={`button-ai-${index}`}>
+                    <Popover closeOnEsc={false} closeOnBlur={false} isOpen={improvement} onClose={() => closeImprovement && closeImprovement()} placement='bottom'>
+                      <PopoverTrigger>
+                        <span>
+                          <Tooltip label={getButtonTooltip(OptionButtons.SUGGESTQUIZ)}>
+                            <button disabled={aiProgress || improvement} onClick={() => {
+                              setCurrentAIAction(OptionButtons.SUGGESTQUIZ)
+                              if (onAIQueryButtonClick) {
+                                onAIQueryButtonClick(OptionButtons.SUGGESTQUIZ)
+                              }
+                            }} type='button' className='text-[#0CDA50] py-2 px-2 items-center text-sm flex gap-2 font-semibold'>
+                              <AIIcon className='fill-[#0CDA50] w-5 h-5' />
+                              {getButtonContent(OptionButtons.SUGGESTQUIZ)}
+                            </button>
+                          </Tooltip>
+                        </span>
+                      </PopoverTrigger>
+                      <PopoverContent className='!rounded-xl w-[520px] !left-0'>
+                        <PopoverArrow />
+                        <PopoverBody className='flex flex-col p-0'>
+                          <div className='h-8 border-b px-4 flex gap-1 text-sm text-[#64748B] justify-start items-center'>
+                            <AIIcon className='fill-[#64748B] h-5 w-5' /> {aiProgress ? <div className='flex gap-2 items-center'><span className='italic'>Generating quiz...</span><Spinner size={'xs'} /></div> : <span>Quiz generated.</span>}
+                          </div>
+                          <div className='min-h-10 px-4 text-sm py-1'>
+                            {quiz && <>
+                              <div>
+                                <label className='font-semibold text-sm' htmlFor="">Question</label>
+                                <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.question) }} />
+                              </div>
+
+
+                              <div>
+                                <label className='font-semibold text-sm' htmlFor="">Choices</label>
+                                <div className='text-sm'>A: Yes</div>
+                                <div className='text-sm'>B: No</div>
+                              </div>
+                              <div>
+                                <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
+                                <div className='text-sm'>{quiz.correct_answer}</div>
+                              </div>
+                              <div>
+                                <label className='font-semibold text-sm' htmlFor="">Message to send when they get it correctly</label>
+                                <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.explanation) }} />
+                              </div>
+                            </>}
+                          </div>
+                          <div className='h-12 px-4 border-t flex justify-between items-center'>
+                            <button type='button' onClick={() => closeImprovement && closeImprovement()} className='px-4 h-8 rounded-2xl border'>Cancel</button>
+                            <div className='h-full flex gap-2 items-center'>
+                              <button type='button' disabled={aiProgress} onClick={() => onAIQueryButtonClick && onAIQueryButtonClick(OptionButtons.SUGGESTQUIZ)} className='h-8 px-4 flex items-center justify-center gap-2 font-medium bg-[#EAECF0] rounded-3xl text-sm'>
+                                <PiArrowsClockwiseBold />
+                                Regenerate
+                              </button>
+
+                              <button type='button' disabled={aiProgress} onClick={() => { acceptQuiz && quiz && acceptQuiz(quiz) }} className='h-8 px-4 flex items-center text-white justify-center gap-2 font-medium bg-[#334155] rounded-3xl text-sm'>
+                                <PiCheckBold />
+                                Accept changes
+                              </button>
+                            </div>
+                          </div>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
                   </div>
                 }
                 return <div key={`button-ai-${index}`}></div>

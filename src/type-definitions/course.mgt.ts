@@ -9,6 +9,7 @@ export interface CreateLessonContent {
   courseId: string
   contentType: ContentTypeEnum
   blockId?: string
+  content?: string
 }
 export interface CourseMgtStoreInterface {
   currentLesson?: string
@@ -17,11 +18,13 @@ export interface CourseMgtStoreInterface {
 
   setReloadLesson: (val: boolean) => void
   setCurrentLesson: (lessonId: string) => void
-  initiateCreateContent: (lessonId: string, courseId: string, contentType: ContentTypeEnum, blockId?: string) => void
+  initiateCreateContent: (lessonId: string, courseId: string, contentType: ContentTypeEnum, blockId?: string, content?: string) => void
   closeCreateContent: () => void
 }
 
 export enum OptionButtons {
   SUGGEST = 'aisuggest',
-  IMPROVE = 'aiimprove'
+  IMPROVE = 'aiimprove',
+  SUGGESTQUIZ = 'aisuggest-quiz',
+  IMPROVEQUIZ = 'aiimprove-quiz'
 }
