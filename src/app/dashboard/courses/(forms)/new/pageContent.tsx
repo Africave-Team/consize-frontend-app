@@ -2,6 +2,7 @@
 import Logo from '@/components/Logo'
 import Layout from '@/layouts/PageTransition'
 import localFont from 'next/font/local'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 const myFont = localFont({ src: '../../../../../fonts/rgs-1.ttf' })
@@ -71,9 +72,9 @@ export default function TeamsSettingsPage () {
               </div>
 
               <div className=' pt-5 pb-16 flex justify-center'>
-                <button onClick={() => router.push("/dashboard/courses/new/methods")} className='py-3 px-5 w-1/2 bg-[#0D1F23] rounded-lg text-sm text-white'>
+                <Link href="/dashboard/courses/new/methods" className='py-3 px-5 w-1/2 bg-primary-app rounded-3xl flex justify-center items-center text-sm text-primary-dark font-medium'>
                   Get started
-                </button>
+                </Link>
               </div>
             </div>
           </div>

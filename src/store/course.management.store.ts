@@ -13,11 +13,11 @@ export const useCourseMgtStore = create(
         set({ reloadLesson: val })
       },
 
-      initiateCreateContent (lessonId, courseId, contentType, blockId) {
+      initiateCreateContent (lessonId, courseId, contentType, blockId, content) {
         set({
           createContent: {
             open: true,
-            lessonId, contentType, courseId, blockId
+            lessonId, contentType, courseId, blockId, content
           },
           currentLesson: lessonId
         })

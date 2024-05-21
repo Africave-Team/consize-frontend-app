@@ -9,6 +9,17 @@ export const createCourse = async (payload: CreateCoursePayload): Promise<any> =
     url: `courses/`,
     body: { ...payload }
   })
+export const createCourseAI = async (payload: { jobId: string }): Promise<any> =>
+  http.post({
+    url: `courses/ai`,
+    body: { ...payload }
+  })
+
+export const generateCourseOutlineAI = async (payload: { title: string, lessonCount: number, jobId?: string }): Promise<any> =>
+  http.post({
+    url: `courses/ai/generate-outline`,
+    body: { ...payload }
+  })
 
 export const updateCourse = async (payload: Partial<CreateCoursePayload>, id: string): Promise<any> =>
   http.put({
@@ -47,6 +58,46 @@ export const addLessonBlock = async (payload: AddBlock): Promise<any> =>
   http.post({
     url: `blocks/${payload.courseId}/${payload.lessonId}`,
     body: { ...payload.block }
+  })
+
+export const rewriteBlockContent = async (payload: {
+  lessonId: string
+  courseId: string
+  seedTitle: string
+  seedContent: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/rewrite-section`,
+    body: { ...payload }
+  })
+
+export const suggestBlockContent = async (payload: {
+  lessonId: string
+  courseId: string
+  seedTitle: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/generate-section`,
+    body: { ...payload }
+  })
+
+
+export const rewriteBlockQuiz = async (payload: {
+  isFollowup: boolean
+  content: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/rewrite-quiz`,
+    body: { ...payload }
+  })
+
+export const suggestBlockQuiz = async (payload: {
+  isFollowup: boolean
+  content: string
+}): Promise<any> =>
+  http.post({
+    url: `ai/generate-quiz`,
+    body: { ...payload }
   })
 
 export const updateLessonBlock = async (payload: {

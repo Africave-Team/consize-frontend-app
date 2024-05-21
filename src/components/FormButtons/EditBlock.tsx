@@ -2,7 +2,7 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spinner
 import React, { useState } from 'react'
 import { FiEdit2 } from 'react-icons/fi'
 import { useFormik } from 'formik'
-import { Block } from '@/type-definitions/secure.courses'
+import { Block, QuizUnformed } from '@/type-definitions/secure.courses'
 
 import * as Yup from 'yup'
 import CustomTinyMCEEditor from '@/components/CustomTinyEditor'
@@ -12,10 +12,10 @@ import FileUploader from '../FileUploader'
 import { MediaType } from '@/type-definitions/secure.courses'
 import { FileTypes } from '@/type-definitions/utils'
 import RadioCard from '../RadioCard'
-import { addBlockQuiz, addLessonBlock, updateLessonBlock, updateQuiz } from '@/services/secure.courses.service'
-import { useCourseMgtStore } from '@/store/course.management.store'
-import { convertToWhatsAppString } from '@/utils/string-formatters'
+import { addBlockQuiz, addLessonBlock, rewriteBlockContent, rewriteBlockQuiz, suggestBlockContent, suggestBlockQuiz, updateLessonBlock, updateQuiz } from '@/services/secure.courses.service'
+import { convertToWhatsAppString, stripHtmlTags } from '@/utils/string-formatters'
 import mime from "mime-types"
+import { OptionButtons } from '@/type-definitions/course.mgt'
 
 
 
@@ -37,6 +37,12 @@ const validationSchema = Yup.object({
 
 export default function EditBlockForm ({ refetch, block, lessonId }: { block: Block, refetch: () => Promise<any>, lessonId: string }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const [improvementOpen, setImprovementOpen] = useState(false)
+  const [improvedText, setimprovedText] = useState("")
+  const [improvementQuizOpen, setImprovementQuizOpen] = useState(false)
+  const [improvedQuiz, setImprovedQuiz] = useState<QuizUnformed | null>(null)
+  const [aiProgress, setAiProgress] = useState(false)
+
   const toast = useToast()
   const form = useFormik({
     initialValues: {
@@ -45,7 +51,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
       bodyMedia: block.bodyMedia || { url: "", mediaType: MediaType.IMAGE },
       quiz: block.quiz ? {
         question: block.quiz.question,
-        correctAnswer: block.quiz.choices[block.quiz.correctAnswerIndex],
+        correctAnswer: block.quiz.choices[block.quiz.correctAnswerIndex].toLowerCase(),
         correctAnswerContext: block.quiz.correctAnswerContext,
         wrongAnswerContext: block.quiz.wrongAnswerContext
       } : {
@@ -68,7 +74,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
           // update quiz
           quizId = block.quiz.id
           let choices = ["yes", "no"]
-          let correctIndex = choices.indexOf(values.quiz.correctAnswer)
+          let correctIndex = choices.indexOf(values.quiz.correctAnswer.toLowerCase())
           await updateQuiz({
             id: quizId, body: {
               choices,
@@ -141,6 +147,62 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
     return total
   }
 
+  const handleAIButton = async (type: OptionButtons) => {
+    // check if title is present
+    let title = form.values.title
+    if (title.length < 5) {
+      toast({
+        status: "info",
+        title: "Provide a title for this section",
+        description: "We need you to provide us a title for this section in order for ConsizeAI to go to work."
+      })
+      return
+    }
+    if (type === OptionButtons.SUGGEST) {
+      setAiProgress(true)
+      const { message, data } = await suggestBlockContent({
+        lessonId, courseId: block.course, seedTitle: title
+      })
+      form.setFieldValue("content", data.sectionContent)
+      setAiProgress(false)
+    } else if (type === OptionButtons.IMPROVE) {
+      setImprovementOpen(true)
+      setAiProgress(true)
+      const { message, data } = await rewriteBlockContent({
+        lessonId, courseId: block.course, seedTitle: title, seedContent: stripHtmlTags(he.decode(form.values.content))
+      })
+      setimprovedText(data.sectionContent)
+      setAiProgress(false)
+    } else if (type === OptionButtons.SUGGESTQUIZ) {
+      setImprovementQuizOpen(true)
+      setAiProgress(true)
+      const { message, data } = await suggestBlockQuiz({
+        content: stripHtmlTags(he.decode(form.values.content)),
+        isFollowup: true
+      })
+      setImprovedQuiz(data)
+      setAiProgress(false)
+    } else if (type === OptionButtons.IMPROVEQUIZ) {
+      setImprovementQuizOpen(true)
+      setAiProgress(true)
+      const { message, data } = await rewriteBlockQuiz({
+        content: stripHtmlTags(he.decode(form.values.content)),
+        isFollowup: true
+      })
+      setImprovedQuiz(data)
+      setAiProgress(false)
+    }
+  }
+
+  const acceptQuiz = function (quiz: QuizUnformed) {
+    form.setFieldValue("quiz.question", quiz.question)
+    form.setFieldValue("quiz.choices", quiz.options)
+    form.setFieldValue("quiz.correctAnswer", quiz.correct_answer)
+    form.setFieldValue("quiz.correctAnswerContext", quiz.explanation)
+    form.setFieldValue("quiz.wrongAnswerContext", quiz.explanation)
+    setImprovementQuizOpen(false)
+  }
+
 
   return (
     <div>
@@ -151,17 +213,17 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        size={'lg'}
+        size={'xl'}
       >
         <ModalOverlay />
-        <ModalContent className='h-[85vh] p-0'>
-          <ModalBody className='h-48 px-2 py-5'>
+        <ModalContent className='min-h-[85vh] p-0'>
+          <ModalBody className=' px-2 py-5'>
             <form onSubmit={form.handleSubmit} className='w-full h-full p-3 flex flex-col justify-between'>
               <div className='flex justify-between items-center h-10'>
                 <div className='font-semibold text-lg'>Update this section</div>
                 <div className={`font-semibold text-sm flex gap-1 items-center ${contentLength() <= 1000 ? 'text-green-500' : 'text-red-500'}`}>Total content length {contentLength()}:{contentLength() <= 1000 ? 'Good' : 'Bad'}</div>
               </div>
-              <div className='mt-4 flex-1 overflow-y-scroll' id="parent">
+              <div className='mt-4 flex-1' id="parent">
                 <div className='flex flex-col gap-4'>
                   <div>
                     <label htmlFor="title">Section title *</label>
@@ -169,9 +231,9 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
                   </div>
                   <div>
                     <label htmlFor="description">Section content *</label>
-                    <CustomTinyMCEEditor field='content' maxLength={allowedContentLength()} onChange={(value) => {
+                    <CustomTinyMCEEditor improvement={improvementOpen} closeImprovement={() => setImprovementOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={allowedContentLength()} onChange={(value) => {
                       form.setFieldValue("content", value)
-                    }} placeholder='Enter the content of this section here' value={form.values.content} aiOptionButtons={[]} />
+                    }} improvementResult={improvedText} aiProgress={aiProgress} placeholder='Enter the content of this section here' value={form.values.content} aiOptionButtons={[OptionButtons.IMPROVE, OptionButtons.SUGGEST]} />
                   </div>
                   <div className='w-full'>
                     <div className='flex justify-between items-center'>
@@ -191,13 +253,13 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
                     </Checkbox>
                   </div>
 
-                  <div className={`transition-all duration-500 flex flex-col gap-3 ${form.values.allowQuiz ? 'h-[500px]' : 'h-0'}`}>
+                  <div className={`transition-all duration-500 flex flex-col gap-3 ${form.values.allowQuiz ? 'min-h-[500px]' : 'h-0'}`}>
                     {form.values.allowQuiz && <>
                       <div>
                         <label htmlFor="description">Question *</label>
-                        <CustomTinyMCEEditor field='content' maxLength={150} onChange={(value) => {
+                        <CustomTinyMCEEditor improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
                           form.setFieldValue("quiz.question", value)
-                        }} placeholder='Enter the follow-up question for this section here' value={form.values.quiz.question} aiOptionButtons={[]} />
+                        }} aiProgress={aiProgress} quiz={improvedQuiz} acceptQuiz={acceptQuiz} placeholder='Enter the follow-up question for this section here' value={form.values.quiz.question} aiOptionButtons={[OptionButtons.SUGGESTQUIZ, OptionButtons.IMPROVEQUIZ]} />
                       </div>
                       <div>
                         <label htmlFor="">Correct answer</label>

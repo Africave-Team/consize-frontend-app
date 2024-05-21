@@ -13,10 +13,10 @@ export default function CreateLessonSection ({ open, refetch }: { open: boolean,
       isOpen={open}
       onClose={closeCreateContent}
       isCentered
-      size={'lg'}
+      size={'xl'}
     >
       <ModalOverlay />
-      <ModalContent className='h-[85vh] p-0'>
+      <ModalContent className='min-h-[85vh] p-0'>
         <ModalBody className='px-2 h-full'>
           <div className='h-full'>
             {createContent && createContent.contentType === ContentTypeEnum.SECTION && <NewBlockForm close={async (reload) => {

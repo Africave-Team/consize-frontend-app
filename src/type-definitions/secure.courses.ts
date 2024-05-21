@@ -176,6 +176,14 @@ export interface Quiz {
   correctAnswerIndex: number
   revisitChunk?: string
   hint?: string
+  block?: string
+}
+export interface QuizUnformed {
+  question: string
+  explanation: string
+  options: string[]
+  correct_answer: string
+  hint?: string
 }
 export interface AddBlockQuiz {
   courseId: string

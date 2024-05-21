@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup'
+import he from "he"
 import CustomTinyMCEEditor from '@/components/CustomTinyEditor'
 import { useFormik } from 'formik'
 import { Select, Spinner, useToast } from '@chakra-ui/react'
-import { addLessonQuiz } from '@/services/secure.courses.service'
+import { addLessonQuiz, rewriteBlockQuiz, suggestBlockQuiz } from '@/services/secure.courses.service'
 import { useCourseMgtStore } from '@/store/course.management.store'
+import { QuizUnformed } from '@/type-definitions/secure.courses'
+import { OptionButtons } from '@/type-definitions/course.mgt'
+import { stripHtmlTags } from '@/utils/string-formatters'
+import { delay } from '@/utils/tools'
 
 
 const validationSchema = Yup.object({
@@ -20,6 +25,9 @@ const validationSchema = Yup.object({
 
 export default function NewQuizForm ({ courseId, close }: { courseId: string, close: (reload?: boolean) => void }) {
   const { createContent } = useCourseMgtStore()
+  const [improvementQuizOpen, setImprovementQuizOpen] = useState(false)
+  const [improvedQuiz, setImprovedQuiz] = useState<QuizUnformed | null>(null)
+  const [aiProgress, setAiProgress] = useState(false)
   const toast = useToast()
   const form = useFormik({
     validationSchema,
@@ -63,6 +71,48 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
     },
   })
 
+  const handleAIButton = async (type: OptionButtons) => {
+    if (!createContent || !createContent.content) {
+      return
+    }
+    // check if title is present
+    if (type === OptionButtons.SUGGESTQUIZ) {
+      setImprovementQuizOpen(true)
+      setAiProgress(true)
+      const { message, data } = await suggestBlockQuiz({
+        content: stripHtmlTags(he.decode(createContent.content)),
+        isFollowup: false
+      })
+      setImprovedQuiz(data)
+      setAiProgress(false)
+    } else if (type === OptionButtons.IMPROVEQUIZ) {
+      setImprovementQuizOpen(true)
+      setAiProgress(true)
+      const { data } = await rewriteBlockQuiz({
+        content: stripHtmlTags(he.decode(createContent.content)),
+        isFollowup: false
+      })
+      setImprovedQuiz(data)
+      setAiProgress(false)
+    }
+  }
+
+  const acceptQuiz = async function (quiz: QuizUnformed) {
+    form.setFieldValue("question", quiz.question)
+    form.setFieldValue("choices", quiz.options)
+    form.setFieldValue("hint", quiz.hint)
+    form.setFieldValue("correctAnswer", quiz.options[Number(quiz.correct_answer)])
+    form.setFieldValue("correctAnswerContext", quiz.explanation)
+    form.setFieldValue("wrongAnswerContext", quiz.explanation)
+    setImprovementQuizOpen(false)
+    const item = document.getElementById('choices[2]')
+    if (item) {
+      item.focus()
+      await delay(100)
+      item.blur()
+    }
+  }
+
   return (
     <form onSubmit={form.handleSubmit} className='w-full h-full p-3 flex flex-col justify-between'>
       <div className='flex justify-between items-center h-10'>
@@ -72,12 +122,12 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
         <div className='flex flex-col gap-4'>
           <div>
             <label htmlFor="description">Question *</label>
-            <CustomTinyMCEEditor field='question' maxLength={150} onChange={(value) => {
+            <CustomTinyMCEEditor improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
               form.setFieldValue("question", value)
-            }} placeholder='Enter the follow-up question for this section here' value={form.values.question} aiOptionButtons={[]} />
+            }} aiProgress={aiProgress} quiz={improvedQuiz} acceptQuiz={acceptQuiz} placeholder='Enter the quiz question for this section here' value={form.values.question} aiOptionButtons={[OptionButtons.SUGGESTQUIZ, OptionButtons.IMPROVEQUIZ]} />
           </div>
           <div id="wrongAnswer" className='mt-2'>
-            <label htmlFor="description">Hint (optional)</label>
+            <label htmlFor="description">Hint *</label>
             <CustomTinyMCEEditor field='hint' maxLength={150} onChange={(value) => {
               form.setFieldValue("hint", value)
             }} placeholder='Enter a hint for the student' value={form.values.hint} aiOptionButtons={[]} />
