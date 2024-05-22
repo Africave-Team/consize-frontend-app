@@ -118,12 +118,19 @@ export default function page ({ params }: { params: { id: string } }) {
                     <Spinner color='#64748B' size={'sm'} />
                   </div>)}
                 </div> : <>
-                  {job.status === "FAILED" ? <div className='w-full p-2 font-medium bg-red-500 min-h-12  text-white'>
-                    <p className='text-xs'>ConsizeAI failed to generate your course outline due to the following reasons</p>
-
-                    <p className='mt-2 text-sm'>{job.error}</p>
-                    <p className='mt-2 text-xs'>Click the following button to try again</p>
-                    <button onClick={() => generateOutline(job)} className='text-sm px-7 mt-3 h-12 items-center justify-center bg-primary-dark font-medium text-white flex gap-1 disabled:bg-primary-app/60 rounded-3xl'>Try again</button>
+                  {job.status === "FAILED" ? <div className='flex flex-col gap-4'>
+                    <div className='bg-[#EF444414] min-h-20 w-full rounded-lg p-4'>
+                      <div className='font-semibold text-[#EF4444] text-sm'>Error generating outline</div>
+                      <div className='text-[#EF4444] text-sm'>ConsizeAI encountered an error while generating your course outline. Please try again.</div>
+                    </div>
+                    <div className='justify-end gap-2 flex'>
+                      <Link href="/dashboard/courses/new/ai" className='text-sm px-7 h-12 border items-center justify-center text-primary-dark font-medium bg-white flex gap-1 rounded-3xl'>
+                        Back
+                      </Link>
+                      <button onClick={() => generateOutline(job)} className='text-sm px-7 h-12 items-center justify-center text-primary-dark font-medium bg-primary-app flex gap-1 disabled:bg-primary-app/60 rounded-3xl'>
+                        Try again
+                      </button>
+                    </div>
                   </div> : <div className='flex flex-col gap-3 w-full'>
                     <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
                       {job.result && Object.entries(job.result.lessons).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
