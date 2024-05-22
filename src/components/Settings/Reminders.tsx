@@ -155,7 +155,7 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
           </InputRightElement>
           <Input min={0} value={form.values.reminderCount} name="reminderCount" onChange={form.handleChange} max={5} type='number' placeholder='0' />
         </InputGroup>
-        <div className='grid grid-cols-5 gap-4 h-9'>
+        <div className='grid grid-cols-5 gap-4 min-h-9'>
           {
             scheduleGroups.map((e, i) => {
               return (
