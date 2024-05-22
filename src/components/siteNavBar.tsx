@@ -62,57 +62,19 @@ export default function SiteNavBar () {
           <ul
             className="list-style-none mr-auto text-sm flex flex-col pl-0 lg:mt-1 lg:flex-row lg:justify-center flex-1"
             data-te-navbar-nav-ref>
-            {/* <li
-              className="my-4 pl-2 lg:my-0 lg:pl-2 lg:pr-1"
-              data-te-nav-item-ref>
-              <Link
-                className="text-[#334155] hover:text-[#334155] focus:text-[#334155] disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
-                aria-current="page"
-                href="/products"
-                data-te-nav-link-ref>Solutions</Link>
-            </li> */}
             <li
               className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"
               data-te-nav-item-ref>
               <Link
                 className="text-[#334155] hover:text-[#334155] focus:text-[#334155] disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
                 aria-current="page"
-                href="/courses"
-                data-te-nav-link-ref>Courses</Link>
-            </li>
-            <li
-              className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"
-              data-te-nav-item-ref>
-              <Link
-                className="text-[#334155] hover:text-[#334155] focus:text-[#334155] disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
-                aria-current="page"
-                href="/courses"
-                data-te-nav-link-ref>Pricing</Link>
-            </li>
-            <li
-              className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"
-              data-te-nav-item-ref>
-              <Link
-                className="text-[#334155] hover:text-[#334155] focus:text-[#334155] disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
-                aria-current="page"
-                href="/courses"
+                href="https://calendly.com/ketan-vuov/meet-consize"
+                target='__blank'
                 data-te-nav-link-ref>Contact us</Link>
-            </li>
-            <li
-              className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"
-              data-te-nav-item-ref>
-              <Link
-                className="text-[#334155] hover:text-[#334155] focus:text-[#334155] disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
-                aria-current="page"
-                href="/courses"
-                data-te-nav-link-ref>Blog</Link>
             </li>
           </ul>
 
           <div className="flex items-center gap-3 md:mt-0 mt-3">
-            <Button className='bg-gray-200 gap-1 py-2 w-32 flex items-center rounded-3xl text-sm' >For students
-              <FiArrowRight />
-            </Button>
             <Button className='bg-primary-app text-black hover:bg-primary-app/80 rounded-3xl w-24 py-2 text-sm' onClick={() => router.push('/auth/login')}>Sign in</Button>
           </div>
         </div>
