@@ -64,7 +64,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
             if (result) {
               console.log(result)
               const students = Object.values(result).length
-              if (students === courseResults.data.settings.metadata.maxEnrollments) {
+              if (students >= courseResults.data.settings.metadata.maxEnrollments) {
                 setMaxEnrollmentReached(true)
               }
             }
