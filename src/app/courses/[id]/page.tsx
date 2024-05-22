@@ -24,6 +24,8 @@ interface ApiResponse {
 
 export default function SinglePublicCourses ({ params }: { params: { id: string } }) {
   const { setPageTitle } = useNavigationStore()
+  const [loading, setLoading] = useState(false)
+  const [maxEnrollmentReached, setMaxEnrollmentReached] = useState(false)
 
   useEffect(() => {
     setPageTitle("Consize - Courses")
@@ -49,6 +51,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
     }
     const database = getDatabase(app)
     if (courseResults && courseResults.data) {
+      setLoading(true)
       let { owner: team, id } = courseResults.data
 
       if (team) {
@@ -58,7 +61,14 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
             const result: {
               [id: string]: RTDBStudent
             } | null = snapshot.val()
-
+            if (result) {
+              console.log(result)
+              const students = Object.values(result).length
+              if (students === courseResults.data.settings.metadata.maxEnrollments) {
+                setMaxEnrollmentReached(true)
+              }
+            }
+            setLoading(false)
           })
         }
         fetchData()
@@ -78,7 +88,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
   }, [courseResults])
   return <Layout>
     <div className='flex flex-col justify-between'>
-      {isFetching ? <div className={`w-full`}>
+      {isFetching || loading ? <div className={`w-full`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
@@ -200,7 +210,10 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                 <div className='text-sm text-gray-500'>
                   Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                 </div>
-                <WholeForm id={params.id} />
+                {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                  <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
+                  <div className='text-[#EF4444] text-sm'>The maximum allowed students on this course has already been reached.</div>
+                </div> : <WholeForm id={params.id} />}
               </div>
             </div>
           </div>
