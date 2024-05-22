@@ -121,7 +121,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
   })
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: 'correctAnswer',
+    name: 'quiz.correctAnswer',
     defaultValue: form.values.quiz.correctAnswer,
     onChange: (val) => {
       form.setFieldValue("quiz.correctAnswer", val)
@@ -196,8 +196,8 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
 
   const acceptQuiz = function (quiz: QuizUnformed) {
     form.setFieldValue("quiz.question", quiz.question)
-    form.setFieldValue("quiz.choices", quiz.options)
-    form.setFieldValue("quiz.correctAnswer", quiz.correct_answer)
+    form.setFieldValue("quiz.choices", quiz.options.map(e => e.toLowerCase()))
+    form.setFieldValue("quiz.correctAnswer", quiz.correct_answer.toLowerCase())
     form.setFieldValue("quiz.correctAnswerContext", quiz.explanation)
     form.setFieldValue("quiz.wrongAnswerContext", quiz.explanation)
     setImprovementQuizOpen(false)
@@ -257,19 +257,22 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
                     {form.values.allowQuiz && <>
                       <div>
                         <label htmlFor="description">Question *</label>
-                        <CustomTinyMCEEditor improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
+                        <CustomTinyMCEEditor isFollowup={true} improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
                           form.setFieldValue("quiz.question", value)
                         }} aiProgress={aiProgress} quiz={improvedQuiz} acceptQuiz={acceptQuiz} placeholder='Enter the follow-up question for this section here' value={form.values.quiz.question} aiOptionButtons={[OptionButtons.SUGGESTQUIZ, OptionButtons.IMPROVEQUIZ]} />
                       </div>
                       <div>
                         <label htmlFor="">Correct answer</label>
-                        <div className='flex mt-1 w-full gap-3' {...group}>
+                        <div className='flex mt-1 w-full gap-3'>
                           {["yes", "no"].map((value) => {
-                            const radio = getRadioProps({ value })
                             return (
-                              <RadioCard key={value} {...radio}>
-                                {value}
-                              </RadioCard>
+                              <div onClick={() => {
+                                form.setFieldValue('quiz.correctAnswer', value)
+                              }} className={`capitalize cursor-pointer w-1/2 border-2 ${form.values.quiz.correctAnswer === value ? 'border-[#0CDA50] text-[#0CDA50]' : 'text-primary-dark border-primary-dark'} rounded-md h-10 gap-2 flex justify-start items-center px-3`} key={value}>
+                                <div className={`flex justify-center items-center h-4 w-4 rounded-full border ${form.values.quiz.correctAnswer === value ? 'border-[#0CDA50]' : 'border-primary-dark'} `}>
+                                  <div className={`h-2 w-2 rounded-full ${form.values.quiz.correctAnswer === value ? 'bg-[#0CDA50]' : 'bg-primary-dark'}`}></div>
+                                </div>{value}
+                              </div>
                             )
                           })}
                         </div>

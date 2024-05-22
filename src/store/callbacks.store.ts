@@ -3,7 +3,7 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { useAuthStore } from './auth.store'
 
-const SLACK_URL = `https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_APP_ID}&scope=channels:read,chat:write,groups:read,im:read,groups:write,mpim:write,im:write,users:read`
+const SLACK_URL = `https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_APP_ID}&scope=channels:read,chat:write,groups:read,im:read,groups:write,mpim:write,im:write,users:read,links:write,links.embed:write,links:read`
 
 
 

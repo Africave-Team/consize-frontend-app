@@ -269,7 +269,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                               {!isFollowup ? <>
                                 <div>
                                   <label className='font-semibold text-sm' htmlFor="">Choices</label>
-                                  {quiz.options.map((e) => <div key={e} className='text-sm'>A: {e}</div>)}
+                                  {quiz.options.map((e, i) => <div key={e} className='text-sm'>{['A', 'B', 'C'][i]}: {e}</div>)}
                                 </div>
                                 <div>
                                   <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
