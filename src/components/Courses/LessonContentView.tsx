@@ -207,7 +207,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                       <FiEye />
                     </button> */}
                     <button onClick={() => {
-                      let quizBlocks = lessonDetails.data.quizzes.filter(e => e !== undefined).map(e => e.block)
+                      let quizBlocks = lessonDetails.data.quizzes.filter(e => e.block !== undefined).map(e => e.block)
                       let blockIds = lessonDetails.data.blocks.map(e => e.id) // @ts-ignore
                       const next = findFirstNonexistentElement(blockIds, quizBlocks)
                       let index = Number((Math.random() * (lessonDetails.data.blocks.length - 1)).toFixed(0))
