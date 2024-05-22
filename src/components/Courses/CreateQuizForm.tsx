@@ -52,6 +52,7 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
             choices,
             hint: values.hint,
             question: values.question,
+            block: createContent.blockId,
             revisitChunk: `${values.correctAnswerContext}`,
             correctAnswerIndex: correctIndex,
             correctAnswerContext: values.correctAnswerContext,

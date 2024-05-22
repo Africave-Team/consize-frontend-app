@@ -1,9 +1,12 @@
 'use client'
 import { fetchSinglePublishedCourse } from '@/services/public.courses.service'
-import { PublicCourse } from '@/type-definitions/secure.courses'
+import { PublicCourse, RTDBStudent } from '@/type-definitions/secure.courses'
 import { Icon, Skeleton } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import { getDatabase, ref, onValue, off } from "firebase/database"
+import { initializeApp, getApps, getApp } from 'firebase/app'
+import { firebaseConfig } from '@/utils/rtdb-config'
 import he from "he"
 import { IoChevronForward, IoBookOutline } from "react-icons/io5"
 import Layout from '@/layouts/PageTransition'
@@ -36,6 +39,43 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
       queryKey: ['one-course', params.id],
       queryFn: () => loadData()
     })
+
+  useEffect(() => {
+    let app: any
+    if (getApps().length === 0) {
+      app = initializeApp(firebaseConfig)
+    } else {
+      app = getApp()
+    }
+    const database = getDatabase(app)
+    if (courseResults && courseResults.data) {
+      let { owner: team, id } = courseResults.data
+
+      if (team) {
+        const studentPath = ref(database, 'course-statistics/' + team.id + '/' + id + '/students')
+        const fetchData = async () => {
+          onValue(studentPath, async (snapshot) => {
+            const result: {
+              [id: string]: RTDBStudent
+            } | null = snapshot.val()
+
+          })
+        }
+        fetchData()
+      }
+
+    }
+
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      if (courseResults && courseResults.data) {
+        let { owner: team, id } = courseResults.data
+        const projectStats = ref(database, 'course-statistics/' + team.id + '/' + id)
+        off(projectStats)
+      }
+    }
+  }, [courseResults])
   return <Layout>
     <div className='flex flex-col justify-between'>
       {isFetching ? <div className={`w-full`}>
