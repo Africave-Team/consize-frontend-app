@@ -197,7 +197,10 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                   <div className='text-sm text-gray-500'>
                     Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                   </div>
-                  <WholeForm id={params.id} />
+                  {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                    <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
+                    <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
+                  </div> : <WholeForm id={params.id} />}
                 </div>
               </div>
             </div>
@@ -212,7 +215,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                 </div>
                 {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                   <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
-                  <div className='text-[#EF4444] text-sm'>The maximum allowed students on this course has already been reached.</div>
+                  <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
                 </div> : <WholeForm id={params.id} />}
               </div>
             </div>
