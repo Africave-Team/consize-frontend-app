@@ -16,11 +16,11 @@ export default function Sidebar () {
       <button onClick={toggleSidebar} className={`flex hover:bg-gray-100 items-center ${sidebarOpen ? 'justify-start px-8' : 'justify-center'} w-full border-b h-16`}>
         {sidebarOpen ? <FiChevronLeft /> : <FiChevronRight />}
       </button>
-      <SidebarLink href='/dashboard'>
+      {/* <SidebarLink href='/dashboard'>
         {sidebarOpen ? <div className='flex gap-8 items-center'><RxDashboard /> Dashboard</div> : <Tooltip label='Dashboard' placement='right'>
           <div className='h-full w-full flex justify-center items-center'><RxDashboard /></div>
         </Tooltip>}
-      </SidebarLink>
+      </SidebarLink> */}
       <SidebarLink href='/dashboard/courses'>
         {sidebarOpen ? <div className='flex gap-8 items-center'><FiBookOpen /> Courses</div> : <Tooltip label='Courses' placement='right'>
           <div className='h-full w-full flex justify-center items-center'><FiBookOpen /></div>

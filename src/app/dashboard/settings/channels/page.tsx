@@ -13,6 +13,7 @@ import { FaSquareWhatsapp } from "react-icons/fa6"
 import { AiFillSlackCircle } from "react-icons/ai"
 import { Distribution } from '@/type-definitions/callbacks'
 import { queryClient } from '@/utils/react-query'
+import TeamQRCode from '@/components/Dashboard/TeamQRCode'
 
 
 interface ApiResponse {
@@ -21,6 +22,7 @@ interface ApiResponse {
 export default function IntegrationSettings () {
   const [progress, setProgress] = useState(false)
   const { team, setTeam } = useAuthStore()
+  const [showTeamQR, setShowteamQR] = useState<boolean>(false)
   const { initiateSlackSettings, initiateSlackAsync } = useCallbackStore()
 
   const { mutateAsync, isPending } = useMutation({
@@ -77,12 +79,21 @@ export default function IntegrationSettings () {
       setTeam(teamInfo.data)
     }
   }, [isFetching, teamInfo])
+
+  useEffect(() => {
+    if (teamInfo && teamInfo.data && teamInfo.data.channels) {
+      let item = teamInfo.data.channels.find(e => e.channel === Distribution.WHATSAPP)
+      if (item && item.enabled) {
+        setShowteamQR(true)
+      }
+    }
+  }, [teamInfo])
   return (
     <Layout>
       <div className='w-full overflow-y-scroll h-screen p-4'>
-        <div className='h-[700px] w-full'>
-          <div className='flex flex-col gap-10'>
-            <div>
+        <div className='h-[700px] w-full flex gap-3'>
+          <div className='flex w-2/3 flex-col gap-10'>
+            <div className=''>
               <div className='text-lg font-semibold flex items-center gap-4'>Distribution channel integrations
                 {isFetching && <Spinner size={'sm'} />}
               </div>
@@ -118,8 +129,11 @@ export default function IntegrationSettings () {
                 </div>}
               </div>
             </div>
+            <div className='h-52'></div>
           </div>
-          <div className='h-52'></div>
+          <div className='w-1/3'>
+            {showTeamQR ? <>{team && <TeamQRCode teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
+          </div>
         </div>
       </div>
     </Layout>

@@ -176,7 +176,7 @@ export default function page ({ params }: { params: { id: string } }) {
               copy.active = students.filter(e => !e.completed && !e.droppedOut).length
               copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
               copy.completed = students.filter(e => e.completed).length
-              copy.averageTestScore = ((scores) / students.length).toFixed(2)
+              copy.averageTestScore = (students.length === 0 || scores === 0) ? '0' : ((scores) / students.length).toFixed(2)
 
               copy.averageCourseProgress = students.reduce((acc, curr) => {
                 if (curr.progress) {

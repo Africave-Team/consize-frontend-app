@@ -1,8 +1,8 @@
 // Import your Client Component
 import HomePage from './dashboardPageContent'
-import { cookies } from 'next/headers'
 
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Consize Learning',
@@ -12,5 +12,6 @@ export const metadata: Metadata = {
 export default async function HomePageServer () {
   // Fetch data directly in a Server Component
   // Forward fetched data to your Client Component
+  redirect("/dashboard/courses")
   return <HomePage />
 }
