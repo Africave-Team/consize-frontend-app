@@ -4,8 +4,8 @@ import HomePage from './pageContent'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Home - Kippa Learning',
-  description: 'Kippa learning',
+  title: 'Home - Consize Learning',
+  description: 'Consize learning',
 }
 
 export default async function HomePageServer () {

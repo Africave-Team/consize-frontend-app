@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import AcceptInvitation from './InvitationContent'
 
 export const metadata: Metadata = {
-  title: 'Kippa - Accept invitation',
-  description: 'Kippa learning',
+  title: 'Consize - Accept invitation',
+  description: 'Consize learning',
 }
 
 

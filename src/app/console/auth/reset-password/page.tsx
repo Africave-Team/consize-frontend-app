@@ -3,8 +3,8 @@ import LogoutPageContent from './content'
 import LoginHome from './content'
 
 export const metadata: Metadata = {
-  title: 'Kippa - Reset password',
-  description: 'Kippa learning',
+  title: 'Consize - Reset password',
+  description: 'Consize learning',
 }
 
 

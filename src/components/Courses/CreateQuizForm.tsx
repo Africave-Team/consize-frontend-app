@@ -122,7 +122,7 @@ export default function NewQuizForm ({ courseId, close }: { courseId: string, cl
         <div className='flex flex-col gap-4'>
           <div>
             <label htmlFor="description">Question *</label>
-            <CustomTinyMCEEditor improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
+            <CustomTinyMCEEditor isFollowup={false} improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
               form.setFieldValue("question", value)
             }} aiProgress={aiProgress} quiz={improvedQuiz} acceptQuiz={acceptQuiz} placeholder='Enter the quiz question for this section here' value={form.values.question} aiOptionButtons={[OptionButtons.SUGGESTQUIZ, OptionButtons.IMPROVEQUIZ]} />
           </div>

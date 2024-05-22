@@ -34,7 +34,7 @@ export default function page () {
                 <div className='flex w-full justify-center gap-1'>
                   {/* <img loading="lazy" src="/ai-icon-dark-2.svg" alt="" /> */}
                   <AIIcon className='h-5 w-5 stroke-black fill-black' />
-                  Get started with Kippa AI
+                  Get started with ConsizeAI
                 </div>
               </Link>
             </div>

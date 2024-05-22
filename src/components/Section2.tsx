@@ -27,13 +27,13 @@ export default function Section2 () {
             <span className="text-[#14B8A6]"> shouldn&apos;t be a chore</span>
           </div>
 
-          <p className='text-md text-[#334155] w-full md:w-4/5'>Learning tends to be lengthy and often takes place on tools we rarely remember to use. That’s why learners prefer Kippa to any other learning method, including in-person training.</p>
+          <p className='text-md text-[#334155] w-full md:w-4/5'>Learning tends to be lengthy and often takes place on tools we rarely remember to use. That’s why learners prefer Consize to any other learning method, including in-person training.</p>
 
           <div className='bg-[#E8EAEE66] bg-opacity-40 md:p-5 px-3 py-2 min-h-[100px] rounded-lg mt-5 w-full md:w-11/12 flex justify-start gap-5'>
             <img loading='lazy' src="/curlies.png" className='h-16' />
             <div>
               <p className='mt-2 text-[#334155]'>
-                Kippa simplifies content into actionable lessons, quizzes, and nudges using platforms that people use everyday.
+                Consize simplifies content into actionable lessons, quizzes, and nudges using platforms that people use everyday.
               </p>
             </div>
           </div>
@@ -55,14 +55,14 @@ export default function Section2 () {
 
           <p className='text-md text-[#334155] w-full md:w-4/5'>
             Eliminate the friction between learners and learning material.
-            That is why outcome metrics via Kippa are much higher than any other learning method.
+            That is why outcome metrics via Consize are much higher than any other learning method.
           </p>
 
           <div className='bg-[#FD86FF]/25 md:p-5 px-3 py-2 min-h-[100px] rounded-lg mt-5 w-full flex justify-start gap-5'>
             <img loading='lazy' src="/wsapp2.png" className='h-16' />
             <div>
               <p className='mt-2 text-[#334155]'>
-                Kippa injects your learning material into contexts where your learners already spend time, so there are minimal barriers.
+                Consize injects your learning material into contexts where your learners already spend time, so there are minimal barriers.
               </p>
             </div>
           </div>

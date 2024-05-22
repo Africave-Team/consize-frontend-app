@@ -3,8 +3,8 @@ import LogoutPageContent from './content'
 import LoginHome from './content'
 
 export const metadata: Metadata = {
-  title: 'Kippa - Login',
-  description: 'Kippa learning',
+  title: 'Consize - Login',
+  description: 'Consize learning',
 }
 
 export default async function Login () {

@@ -3,7 +3,7 @@ import AcceptInvitation from './InvitationContent'
 
 export const metadata: Metadata = {
   title: 'Consize - Accept invitation',
-  description: 'Kippa learning',
+  description: 'Consize learning',
 }
 
 

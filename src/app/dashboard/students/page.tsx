@@ -4,7 +4,7 @@ import PageContent from './studentsPage'
 
 export const metadata: Metadata = {
   title: 'Students - Consize',
-  description: 'Kippa learning',
+  description: 'Consize learning',
 }
 
 export default async function HomePageServer () {

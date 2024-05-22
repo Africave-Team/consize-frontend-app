@@ -29,7 +29,7 @@ export default function Section1 () {
           Launch in 60 minutes
         </div>
         <div className="text-2xl md:text-3xl lg:text-3xl text-center md:text-start mt-3">
-          <span className="text-black">Kippa turns a 2-hour video course</span>
+          <span className="text-black">Consize turns a 2-hour video course</span>
           <span className="text-primary-500"> into one quick lesson a day</span>
         </div>
         {/* <Button className='text-white bg-primary-500 mt-8 px-5 py-2 rounded-md'>Try a sample course</Button> */}

@@ -346,15 +346,26 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                               </div>
 
 
-                              <div>
-                                <label className='font-semibold text-sm' htmlFor="">Choices</label>
-                                <div className='text-sm'>A: Yes</div>
-                                <div className='text-sm'>B: No</div>
-                              </div>
-                              <div>
-                                <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
-                                <div className='text-sm'>{quiz.correct_answer}</div>
-                              </div>
+                              {!isFollowup ? <>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Choices</label>
+                                  {quiz.options.map((e, i) => <div key={e} className='text-sm'>{['A', 'B', 'C'][i]}: {e}</div>)}
+                                </div>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
+                                  <div className='text-sm'>{quiz.options[Number(quiz.correct_answer)]}</div>
+                                </div>
+                              </> : <>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Choices</label>
+                                  <div className='text-sm'>A: Yes</div>
+                                  <div className='text-sm'>B: No</div>
+                                </div>
+                                <div>
+                                  <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
+                                  <div className='text-sm'>{quiz.correct_answer}</div>
+                                </div>
+                              </>}
                               <div>
                                 <label className='font-semibold text-sm' htmlFor="">Message to send when they get it correctly</label>
                                 <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.explanation) }} />

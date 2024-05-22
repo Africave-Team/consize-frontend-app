@@ -5,8 +5,8 @@ import { cookies } from 'next/headers'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Dashboard - Kippa Learning',
-  description: 'Kippa learning',
+  title: 'Dashboard - Consize Learning',
+  description: 'Consize learning',
 }
 
 export default async function HomePageServer () {
