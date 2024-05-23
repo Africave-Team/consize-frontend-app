@@ -260,7 +260,7 @@ export default function WholeForm (params: { id: string }) {
           </div>
           <div className='w-full mt-2 text-center'>
             {isMobileScreen ? <div className='w-full text-center'>
-              <a href='https://wa.me/+2348029098202' target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
+              <a href={`https://wa.me/+${process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER}`} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
                 <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
                 Continue in WhatsApp</a>
             </div> : <p className='text-sm'>
