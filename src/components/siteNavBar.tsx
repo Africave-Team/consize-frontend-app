@@ -21,7 +21,7 @@ export default function SiteNavBar () {
   }
   return (
     <nav
-      className="relative flex w-full flex-wrap items-center justify-between bg-[#FBFBFB] py-3 md:px-10"
+      className="relative min-h-16 flex w-full flex-wrap items-center justify-between bg-[#FBFBFB] py-3 md:px-10"
       data-te-navbar-ref>
       <div className="flex w-full flex-wrap items-center justify-between px-3">
         <div>
@@ -75,7 +75,7 @@ export default function SiteNavBar () {
           </ul>
 
           <div className="flex items-center gap-3 md:mt-0 mt-3">
-            <Button className='bg-primary-app text-black hover:bg-primary-app/80 rounded-3xl w-24 py-2 text-sm' onClick={() => router.push('/auth/login')}>Sign in</Button>
+            <Link href={"/auth/login"} className='bg-primary-app text-black hover:bg-primary-app/80 rounded-3xl font-medium w-24 py-2 text-sm flex justify-center items-center h-11'>Sign in</Link>
           </div>
         </div>
       </div>

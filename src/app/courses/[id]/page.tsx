@@ -15,6 +15,7 @@ import WholeForm from '@/components/Enrollment/WholeForm'
 import Link from 'next/link'
 import { FiClock, FiDollarSign } from 'react-icons/fi'
 import { RiWhatsappLine } from 'react-icons/ri'
+import MainFooter from '@/components/navigations/MainFooter'
 
 
 interface ApiResponse {
@@ -86,6 +87,13 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
       }
     }
   }, [courseResults])
+
+  const goToForm = function () {
+    const element = document.getElementById('small-form')
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
   return <Layout>
     <div className='flex flex-col justify-between'>
       {isFetching || loading ? <div className={`w-full`}>
@@ -94,17 +102,17 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
         </div>
       </div> : <div className={`w-full h-[900px] overflow-y-scroll`}>
         <div className="relative h-[900px]">
-          <div className='border w-full absolute top-0 left-0'>
-            <div className='h-[390px] md:h-[300px] w-full bg-hero-pattern'>
+          <div className='w-full absolute top-0 left-0'>
+            <div className='h-[300px] md:h-[300px] w-full bg-hero-pattern'>
               <div className='bg-[url(/lines3.svg)] bg-cover h-full w-full'></div>
             </div>
           </div>
           <div className='absolute top-10 h-full md:left-10 left-0 md:right-10 right-0 flex gap-6 justify-between'>
-            <div className='flex-1 md:h-[100vh] h-[280vh]'>
-              <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#B9B5FB]'>
+            <div className='flex-1 md:min-h-[50vh] min-h-[140vh]'>
+              <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#AAF0C4]'>
                 <Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /> {courseResults?.data?.owner.name}
               </div>
-              <div className='mt-4 w-full md:h-[200px] h-[350px]'>
+              <div className='mt-4 w-full md:h-[250px] h-[350px]'>
                 <div className='md:px-16 px-5 w-full md:w-4/6'>
                   <h1 className='font-semibold text-xl text-white line-clamp-2'>
                     {courseResults?.data?.title}
@@ -112,7 +120,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                   <p className='text-sm line-clamp-4 text-white/80 mt-3' dangerouslySetInnerHTML={{ __html: he.decode(courseResults?.data?.description || "") }} />
                 </div>
                 <div className='w-full mt-3 overflow-x-hidden select-none overflow-y-hidden'>
-                  <div className='flex gap-2 min-w-[550px] py-3 text-xs md:flex-row flex-col'>
+                  <div className='flex gap-2 min-w-full md:min-w-[550px] py-3 text-xs md:flex-row flex-col'>
                     <div className='md:hidden flex gap-2'>
                       <div className='bg-white bg-opacity-10 text-white px-2 h-7 md:ml-16 ml-5 w-16 rounded-2xl flex gap-2 justify-start items-center'>
                         <Icon as={FiDollarSign} />
@@ -152,13 +160,22 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                     </div>
                   </div>
                 </div>
+                <div className='w-full px-5 py-10 h-28 flex items-center bg-hero-pattern-btn md:hidden'>
+                  <button onClick={goToForm} className='h-10 font-medium w-full shadow-md bg-[#1FFF69] rounded-2xl'>
+                    Enroll for free
+                  </button>
+                </div>
               </div>
               <div className='text-black py-5 px-5 w-full'>
                 <div className='rounded-lg w-full md:px-4 py-4 px-2'>
                   <div className='flex justify-start md:flex-row flex-col items-start md:items-center w-full gap-2 md:gap-10'>
 
                     <div className='md:h-72 h-80 md:mb-0 mb-8 px-10 md:w-[450px] flex justify-center w-full items-center'>
-                      <img loading="lazy" src="/wsapp-phone.png" alt="whatsapp-icon" className='md:h-64 md:w-40 h-80 w-40' />
+                      <div className='w-40 md:h-72 h-80 rounded-lg relative'>
+                        <img loading="lazy" src="/wsapp-phone.png" alt="whatsapp-icon" className='w-full h-full absolute' />
+                        <img loading="lazy" src="/app-mockup.jpg" alt="whatsapp-icon" className='w-[140px] md:h-[237px] h-[267px] rounded-lg left-2.5 top-5 absolute' />
+
+                      </div>
                     </div>
                     <div>
                       <h1 className='font-semibold text-md text-[#0A5C53]'>
@@ -188,9 +205,31 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                   })}
                 </div>
               </div>
-              <div className='w-full px-5 md:hidden rounded-lg shadow-sm bg-white flex flex-col'>
+              <div id="small-form" className='w-full px-5 py-16 md:hidden'>
+                <div className='rounded-xl border min-h-[480px] shadow-sm bg-white md:flex md:flex-col'>
+                  <div className='h-52 rounded-t-lg w-full'>
+                    <img src={courseResults?.data.headerMedia.url} loading='lazy' className='h-full rounded-t-xl w-full' />
+                  </div>
+                  <div className='px-5 py-3'>
+                    <div className='font-semibold text-base'>Enroll into this course</div>
+                    <div className='text-sm text-gray-500'>
+                      Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
+                    </div>
+                    {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                      <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
+                      <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
+                    </div> : <WholeForm id={params.id} />}
+                  </div>
+                </div>
+              </div>
+              <div className='pb-12 md:hidden'>
+                <MainFooter />
+              </div>
+            </div>
+            <div className='w-[400px] hidden md:block'>
+              <div className='rounded-xl border min-h-[480px] shadow-sm bg-white md:flex md:flex-col'>
                 <div className='h-52 rounded-t-lg w-full'>
-                  <img src={courseResults?.data.headerMedia.url} loading='lazy' className='h-full rounded-t-lg w-full' />
+                  <img src={courseResults?.data.headerMedia.url} loading='lazy' className='h-full rounded-t-xl w-full' />
                 </div>
                 <div className='px-5 py-3'>
                   <div className='font-semibold text-base'>Enroll into this course</div>
@@ -204,25 +243,14 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                 </div>
               </div>
             </div>
-            <div className='w-[480px] hidden rounded-lg shadow-sm bg-white md:flex md:flex-col'>
-              <div className='h-52 rounded-t-lg w-full'>
-                <img src={courseResults?.data.headerMedia.url} loading='lazy' className='h-full rounded-t-lg w-full' />
-              </div>
-              <div className='px-5 py-3'>
-                <div className='font-semibold text-base'>Enroll into this course</div>
-                <div className='text-sm text-gray-500'>
-                  Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
-                </div>
-                {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
-                  <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
-                  <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                </div> : <WholeForm id={params.id} />}
-              </div>
-            </div>
           </div>
         </div>
-        <div className='h-[300px]'></div>
+        <div className='h-[200px] hidden md:block'></div>
+        <div className='pb-32 hidden md:block'>
+          <MainFooter />
+        </div>
       </div>}
+
     </div>
   </Layout>
 }

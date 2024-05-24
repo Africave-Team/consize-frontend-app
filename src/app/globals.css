@@ -96,8 +96,15 @@ html {
 }
 
 .page-container-2 {
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   overflow: scroll;
+}
+
+.gradient-text-1 {
+  background: linear-gradient(to right, #1EFF69, #00BAEF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .course-list-container {

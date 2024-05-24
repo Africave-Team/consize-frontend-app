@@ -187,7 +187,7 @@ export default function WholeForm (params: { id: string }) {
               verifyPhoneForm.handleChange("phoneNumber")(val)
             }
           }} />
-          {!verifyPhoneForm.values.completed && <button disabled={!verifyPhoneForm.isValid || verifyPhoneForm.isSubmitting} type='submit' className='text-sm rounded-lg px-10 w-full h-12 mt-2 border items-center justify-center text-white bg-[#0D1F23] flex font-medium gap-1 disabled:bg-[#0D1F23]/60'>Continue
+          {!verifyPhoneForm.values.completed && <button disabled={!verifyPhoneForm.isValid || verifyPhoneForm.isSubmitting} type='submit' className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-semibold gap-1 disabled:bg-[#1FFF69]/40'>Continue
             {verifyPhoneForm.isSubmitting && <Spinner size={'sm'} />}
           </button>}
         </form>
@@ -197,7 +197,7 @@ export default function WholeForm (params: { id: string }) {
             <div className='h-6 mt-3 text-base'>
               Enroll as <span className='font-semibold uppercase'>{verifyPhoneForm.values.user.firstName} {verifyPhoneForm.values.user.otherNames}?</span>
             </div>
-            <button onClick={enrollStudentHandler} type='button' disabled={enrollMutation.isPending} className='text-sm rounded-lg px-10 w-full h-12 mt-2 border items-center justify-center text-white bg-[#0D1F23] flex font-medium gap-1 disabled:bg-[#0D1F23]/60'>
+            <button onClick={enrollStudentHandler} type='button' disabled={enrollMutation.isPending} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
               Enroll for free {enrollMutation.isPending && <Spinner size={'sm'} />}
             </button>
           </div>}
@@ -215,7 +215,7 @@ export default function WholeForm (params: { id: string }) {
               </PinInput>
             </HStack>
             {/* <input name="code" id="code" onChange={completeVerifyPhoneForm.handleChange} value={completeVerifyPhoneForm.values.code} type="text" className='text-base font-semibold h-12 px-3 w-full mt-2 rounded-md border' placeholder='Enter your one-time-passcode' /> */}
-            <button onClick={enrollStudentHandler} type='submit' disabled={!completeVerifyPhoneForm.isValid || completeVerifyPhoneForm.isSubmitting || enrollMutation.isPending} className='text-sm rounded-lg px-10 w-full h-12 mt-2 border items-center justify-center text-white bg-[#0D1F23] flex font-medium gap-1 disabled:bg-[#0D1F23]/60'>
+            <button onClick={enrollStudentHandler} type='submit' disabled={!completeVerifyPhoneForm.isValid || completeVerifyPhoneForm.isSubmitting || enrollMutation.isPending} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
               Verify & enroll {(enrollMutation.isPending || completeVerifyPhoneForm.isSubmitting) && <Spinner size={'sm'} />}
             </button>
           </form>}
@@ -244,7 +244,7 @@ export default function WholeForm (params: { id: string }) {
                 </span>
               </Checkbox>
             </div>
-            <button onClick={enrollStudentHandler} type='submit' disabled={!registerStudentForm.isValid || registerStudentForm.isSubmitting || registerMutation.isPending} className='text-sm rounded-lg px-10 w-full h-12 mt-2 border items-center justify-center text-white bg-[#0D1F23] flex font-medium gap-1 disabled:bg-[#0D1F23]/60'>
+            <button onClick={enrollStudentHandler} type='submit' disabled={!registerStudentForm.isValid || registerStudentForm.isSubmitting || registerMutation.isPending} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
               Register for free {(registerMutation.isPending || registerStudentForm.isSubmitting) && <Spinner size={'sm'} />}
             </button>
           </form>}
