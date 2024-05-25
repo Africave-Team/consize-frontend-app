@@ -103,7 +103,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
       </div> : <div className={`w-full h-[900px] overflow-y-scroll`}>
         <div className="relative h-[900px]">
           <div className='w-full absolute top-0 left-0'>
-            <div className='h-[380px] md:h-[300px] w-full md:bg-hero-pattern bg-hero-pattern-2'>
+            <div className='min-h-[380px] md:min-h-[280px] w-full md:bg-hero-pattern bg-hero-pattern-2'>
               <div className='bg-[url(/lines3.svg)] bg-cover h-full w-full'></div>
             </div>
           </div>
@@ -112,12 +112,13 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
               <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#AAF0C4]'>
                 <Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /> {courseResults?.data?.owner.name}
               </div>
-              <div className='mt-4 w-full md:h-[250px] h-[350px]'>
+              <div className='mt-4 w-full md:min-h-[250px] min-h-[350px]'>
                 <div className='md:px-16 px-5 w-full md:w-4/6'>
                   <h1 className='font-semibold text-xl text-white line-clamp-2'>
                     {courseResults?.data?.title}
                   </h1>
-                  <p className='text-sm line-clamp-4 text-white/80 mt-3' dangerouslySetInnerHTML={{ __html: he.decode(courseResults?.data?.description || "") }} />
+                  <p className='text-sm line-clamp-4 h-20 text-white/80 mt-3' dangerouslySetInnerHTML={{ __html: he.decode(`${courseResults?.data?.description}` || "") }} />
+
                 </div>
                 <div className='w-full mt-3 overflow-x-hidden select-none overflow-y-hidden'>
                   <div className='flex gap-2 min-w-full md:min-w-[550px] py-3 text-xs md:flex-row flex-col'>
