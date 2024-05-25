@@ -30,7 +30,6 @@ const courseDistributionOptions = [
 const validationSchema = Yup.object({
   title: Yup.string().required(),
   description: Yup.string().required(),
-  distribution: Yup.string().required().oneOf(Object.values(Distribution)),
   headerMedia: Yup.object({
     mediaType: Yup.string().required(),
     url: Yup.string().required()
