@@ -164,8 +164,10 @@ export default function page ({ params }: { params: { id: string } }) {
             if (result.students) {
               const students = Object.entries(result.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 })).filter(e => e.lessons)
               setStudents(students)
+              let quizes = 0
               const scores = students.reduce((acc, curr) => {
                 if (curr.scores && curr.scores.length > 0) {
+                  quizes = Math.max(curr.scores.length, quizes)
                   let total = curr.scores.reduce((a, b) => a + b, 0)
                   return acc + total
                 } else {
@@ -176,7 +178,7 @@ export default function page ({ params }: { params: { id: string } }) {
               copy.active = students.filter(e => !e.completed && !e.droppedOut).length
               copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
               copy.completed = students.filter(e => e.completed).length
-              copy.averageTestScore = (students.length === 0 || scores === 0) ? '0' : ((scores) / students.length).toFixed(2)
+              copy.averageTestScore = (students.length === 0 || scores === 0) ? '0' : (((scores / quizes) * 100) / students.length).toFixed(2)
 
               copy.averageCourseProgress = students.reduce((acc, curr) => {
                 if (curr.progress) {
