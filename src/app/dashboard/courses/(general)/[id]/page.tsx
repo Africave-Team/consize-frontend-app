@@ -192,7 +192,13 @@ export default function page ({ params }: { params: { id: string } }) {
                   if (lessons.length === 0) {
                     return acc
                   } else {
-                    let total = lessons.reduce((a, b) => a + b.duration, 0)
+                    let total = 0
+                    for (let lesson of lessons) {
+                      if (lesson.blocks) {
+                        let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + curr.duration, 0)
+                        total += value
+                      }
+                    }
                     return acc + (total / 60)
                   }
                 } else {
@@ -231,9 +237,13 @@ export default function page ({ params }: { params: { id: string } }) {
                     return acc
                   } else {
                     lessonCount += lessons.length
-                    let total = lessons.map(e => {
-                      return e.duration / 60
-                    }).reduce((a, b) => a + b, 0)
+                    let total = 0
+                    for (let lesson of lessons) {
+                      if (lesson.blocks) {
+                        let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + curr.duration, 0)
+                        total += value
+                      }
+                    }
                     return acc + total
                   }
                 } else {
