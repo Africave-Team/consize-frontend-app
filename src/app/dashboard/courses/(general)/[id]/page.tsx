@@ -244,7 +244,7 @@ export default function page ({ params }: { params: { id: string } }) {
                         total += value
                       }
                     }
-                    return acc + total
+                    return acc + (total / 60)
                   }
                 } else {
                   return acc
