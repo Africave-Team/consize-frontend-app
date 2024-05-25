@@ -63,7 +63,7 @@ export default function ModifyCourse ({ course }: { course: Course }) {
         duration: 2000,
         isClosable: true,
       })
-      let path = `/dashboard/courses/${course.id}/builder/lessons`
+      let path = `/dashboard/courses/${course.id}/builder/outline`
       router.push(path)
     },
   })
