@@ -28,7 +28,7 @@ export default function page ({ params }: { params: { id: string } }) {
     <Layout>
       <div className='w-full overflow-y-scroll  max-h-full'>
         <div className='flex-1 flex justify-center md:py-10'>
-          <div className='px-4 w-full md:w-2/5'>
+          <div className='px-4 w-full md:w-[600px]'>
             {courseDetails && <ViewCourseDetails course={courseDetails?.data} />}
           </div>
         </div>

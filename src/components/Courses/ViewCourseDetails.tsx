@@ -30,16 +30,16 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
       <div className='h-96'>
         <img src={course.headerMedia.url} className='w-full h-full' alt="" />
       </div>
-      <div className='font-bold text-xl my-2'>
+      <div className='font-bold text-xl my-2 px-3'>
         {course.title}
       </div>
-      <div className='text-base font-normal min-h-12 line-clamp-4' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }} />
+      <div className='text-base px-3 font-normal min-h-12 line-clamp-4' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }} />
 
       <div className='mt-4'>
         <Accordion allowMultiple defaultIndex={[]}>
           <AccordionItem>
             <h2>
-              <AccordionButton className='pl-0'>
+              <AccordionButton className='px-3'>
                 <Box as="span" flex='1' textAlign='left'>
                   Course lessons
                 </Box>
@@ -98,9 +98,9 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
               </Accordion>
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem>
+          {/* <AccordionItem>
             <h2>
-              <AccordionButton className='pl-0'>
+              <AccordionButton className='px-3'>
                 <Box as="span" flex='1' textAlign='left'>
                   Course assessments
                 </Box>
@@ -113,7 +113,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
           </AccordionItem>
           <AccordionItem>
             <h2>
-              <AccordionButton className='pl-0'>
+              <AccordionButton className='px-3'>
                 <Box as="span" flex='1' textAlign='left'>
                   Course surveys
                 </Box>
@@ -123,7 +123,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
             <AccordionPanel pb={4}>
               Survey information goes here
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> */}
         </Accordion>
       </div>
     </div>
