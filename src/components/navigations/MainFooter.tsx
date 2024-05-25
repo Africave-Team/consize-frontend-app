@@ -7,8 +7,8 @@ export default function MainFooter () {
   return (
     <div className='px-10 pt-5 pb-10 mt-10 bg-[#0D1F23] w-full flex flex-col'>
       <div className='min-h-36 w-full flex justify-between md:flex-row gap-10 md:gap-2 flex-col items-center'>
-        <div className='flex-1 flex gap-3 items-center'>
-          <img src="/icon.svg" className='h-6 w-6' alt="" />
+        <div className='flex-1 flex gap-3 md:items-center items-start'>
+          <img src="/icon.svg" className='h-6 w-6 md:mt-0 mt-2' alt="" />
           <div className={`text-white font-medium text-4xl ${myFont.className}`}>Consize is <span className='gradient-text-1'>free to try</span> for as long as you like</div>
         </div>
         <div className='w-80 h-12 flex gap-3'>

@@ -10,6 +10,7 @@ import Layout from '@/layouts/PageTransition'
 import { useNavigationStore } from '@/store/navigation.store'
 import { useRouter } from 'next/navigation'
 import MainFooter from '@/components/navigations/MainFooter'
+import Link from 'next/link'
 
 
 interface ApiResponse {
@@ -44,7 +45,7 @@ export default function PublicCourses () {
     })
   return <Layout>
     <div className='h-[900px] overflow-scroll bg-white flex flex-col justify-between'>
-      {isFetching ? <div className={`w-full grid grid-cols-3 gap-3 px-10 py-5`}>
+      {isFetching ? <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-3 px-10 py-5`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
@@ -68,9 +69,9 @@ export default function PublicCourses () {
           <h1 className='font-semibold text-lg'>Courses</h1>
           <p className='text-sm text-[#64748B]'>{courseResults?.data.length} results on consize</p>
         </div>
-        <div className={`w-full grid grid-cols-3 gap-3`}>
+        <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-3`}>
 
-          {courseResults?.data.map((course) => <div onClick={() => router.push(`/courses/${course.id}`)} className='h-96 shadow-sm border cursor-pointer rounded-lg flex flex-col'>
+          {courseResults?.data.map((course) => <Link href={`/courses/${course.id}`} className='h-96 shadow-sm border cursor-pointer rounded-lg flex flex-col'>
             <div className='h-60 border rounded-t-lg'>
               <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />
             </div>
@@ -78,7 +79,7 @@ export default function PublicCourses () {
               <div className='text-base font-semibold'>{course.title}</div>
               <div className='line-clamp-4 text-sm' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }} />
             </div>
-          </div>)}
+          </Link>)}
 
         </div>
       </div>}
@@ -90,6 +91,7 @@ export default function PublicCourses () {
       <div className='h-96'></div>
       <div className='pb-32'>
         <MainFooter />
+        <div className='h-20'></div>
       </div>
     </div>
 

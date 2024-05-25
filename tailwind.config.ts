@@ -20,6 +20,8 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         'hero-pattern':
           "linear-gradient(to left, #1FFF69, #00524F)",
+        'hero-pattern-2':
+          "linear-gradient(to bottom left, #1FFF69, #00524F 90%)",
         'hero-pattern-btn':
           "linear-gradient(to right, #00524F 0%, #1FFF69 100%)",
       },

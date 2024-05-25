@@ -103,7 +103,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
       </div> : <div className={`w-full h-[900px] overflow-y-scroll`}>
         <div className="relative h-[900px]">
           <div className='w-full absolute top-0 left-0'>
-            <div className='h-[300px] md:h-[300px] w-full bg-hero-pattern'>
+            <div className='h-[380px] md:h-[300px] w-full md:bg-hero-pattern bg-hero-pattern-2'>
               <div className='bg-[url(/lines3.svg)] bg-cover h-full w-full'></div>
             </div>
           </div>
@@ -159,11 +159,11 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                       <span>Delivered through WhatsApp</span>
                     </div>
                   </div>
-                </div>
-                <div className='w-full px-5 py-10 h-28 flex items-center bg-hero-pattern-btn md:hidden'>
-                  <button onClick={goToForm} className='h-10 font-medium w-full shadow-md bg-[#1FFF69] rounded-2xl'>
-                    Enroll for free
-                  </button>
+                  <div className='w-full px-5 py-5 h-16 flex items-center md:hidden'>
+                    <button onClick={goToForm} className='h-10 font-medium w-full shadow-md bg-[#1FFF69] rounded-2xl'>
+                      Enroll for free
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className='text-black py-5 px-5 w-full'>
@@ -224,6 +224,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
               </div>
               <div className='pb-12 md:hidden'>
                 <MainFooter />
+                <div className='h-40'></div>
               </div>
             </div>
             <div className='w-[400px] hidden md:block'>
@@ -245,9 +246,10 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
             </div>
           </div>
         </div>
-        <div className='h-[200px] hidden md:block'></div>
-        <div className='pb-32 hidden md:block'>
+        <div className='h-[150px] hidden md:block'></div>
+        <div className='pb-36 hidden md:block'>
           <MainFooter />
+          <div className='h-20'></div>
         </div>
       </div>}
 
