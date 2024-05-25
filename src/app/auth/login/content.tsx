@@ -41,7 +41,7 @@ export default function LoginHome () {
           duration: 5000,
           isClosable: true,
         })
-        router.push("/dashboard")
+        router.push("/dashboard/courses")
       } catch (error) {
         toast({
           title: 'Failed.',
