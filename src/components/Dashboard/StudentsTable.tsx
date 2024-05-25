@@ -89,7 +89,7 @@ export default function StudentsTable ({ students, courseId }: { students: RTDBS
             {
               data.map((student: RTDBStudent) => {
                 return <tr key={student.id} className="border-b hover:bg-gray-100 cursor-pointer" onClick={() => router.push(`/dashboard/courses/${courseId}/enrollments/${student.id}`)}>
-                  <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{student.name}</th>
+                  <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap capitalize">{student.name}</th>
                   <td className="px-4 py-3">{student.phoneNumber}
 
                   </td>
