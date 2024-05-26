@@ -107,7 +107,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
               <div className='bg-[url(/lines3.svg)] bg-cover h-full w-full'></div>
             </div>
           </div>
-          <div className='absolute top-10 h-full md:left-10 left-0 md:right-10 right-0 flex gap-6 justify-between'>
+          <div className='absolute w-full px-5 top-10 h-full md:left-10 left-0 md:right-10 right-0 flex gap-6 justify-between'>
             <div className='flex-1 md:min-h-[50vh] min-h-[140vh]'>
               <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#AAF0C4]'>
                 <Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /> {courseResults?.data?.owner.name}
