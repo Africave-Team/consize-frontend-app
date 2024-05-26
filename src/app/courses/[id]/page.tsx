@@ -100,7 +100,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
-      </div> : <div className={`w-full h-[900px] overflow-y-scroll`}>
+      </div> : <div className={`w-full h-[900px] overflow-y-scroll overflow-x-hidden`}>
         <div className="relative h-[900px]">
           <div className='w-full absolute top-0 left-0'>
             <div className='min-h-[420px] md:min-h-[280px] w-full md:bg-hero-pattern bg-hero-pattern-2'>
