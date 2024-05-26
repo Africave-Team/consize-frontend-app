@@ -44,7 +44,7 @@ export default function PublicCourses () {
       queryFn: () => loadData({ pageParam: page })
     })
   return <Layout>
-    <div className='h-[900px] overflow-scroll bg-white flex flex-col justify-between'>
+    <div className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
       {isFetching ? <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-3 px-10 py-5`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
@@ -64,14 +64,14 @@ export default function PublicCourses () {
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
-      </div> : <div className='px-10 py-5'>
-        <div className='mb-3'>
+      </div> : <div className='h-[100vh] py-5'>
+        <div className='mb-3 md:px-10 px-5'>
           <h1 className='font-semibold text-lg'>Courses</h1>
           <p className='text-sm text-[#64748B]'>{courseResults?.data.length} results on consize</p>
         </div>
-        <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-3`}>
+        <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-3`}>
 
-          {courseResults?.data.map((course) => <Link href={`/courses/${course.id}`} className='h-96 shadow-sm border cursor-pointer rounded-lg flex flex-col'>
+          {courseResults?.data.map((course) => <Link href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
             <div className='h-60 border rounded-t-lg'>
               <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />
             </div>
@@ -82,17 +82,13 @@ export default function PublicCourses () {
           </Link>)}
 
         </div>
-      </div>}
-      {courseResults && courseResults.totalPages > 1 && <div className='flex h-10 mt-5 justify-center text-base items-center gap-3'>
-        <button onClick={() => setPage(page - 1)} disabled={courseResults?.page === 1}><FiChevronLeft /></button>
-        <div className='text-sm'>Page {courseResults?.page} of {courseResults?.totalPages}</div>
-        <button onClick={() => setPage(page + 1)} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>
-      </div>}
-      <div className='h-96'></div>
-      <div className='pb-32'>
+        {courseResults && courseResults.totalPages > 1 && <div className='flex h-10 my-5 justify-center text-base items-center gap-3'>
+          <button onClick={() => setPage(page - 1)} disabled={courseResults?.page === 1}><FiChevronLeft /></button>
+          <div className='text-sm'>Page {courseResults?.page} of {courseResults?.totalPages}</div>
+          <button onClick={() => setPage(page + 1)} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>
+        </div>}
         <MainFooter />
-        <div className='h-20'></div>
-      </div>
+      </div>}
     </div>
 
   </Layout>
