@@ -89,13 +89,18 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
   }, [courseResults])
 
   const goToForm = function () {
+    const container = document.getElementById('scroll-container')
     const element = document.getElementById('small-form')
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+    if (element && container) {
+      container.scroll({
+        top: element.offsetTop,
+        left: 0,
+        behavior: 'smooth'
+      })
     }
   }
   return <Layout>
-    <div className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
+    <div id="scroll-container" className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
       {isFetching ? <div className={`w-full h-full`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
