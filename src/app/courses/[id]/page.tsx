@@ -103,7 +103,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
       </div> : <div className={`w-full h-[900px] overflow-y-scroll`}>
         <div className="relative h-[900px]">
           <div className='w-full absolute top-0 left-0'>
-            <div className='min-h-[450px] md:min-h-[280px] w-full md:bg-hero-pattern bg-hero-pattern-2'>
+            <div className='min-h-[420px] md:min-h-[280px] w-full md:bg-hero-pattern bg-hero-pattern-2'>
               <div className='bg-[url(/lines3.svg)] bg-cover h-full w-full'></div>
             </div>
           </div>
@@ -225,7 +225,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
               </div>
               <div className='pb-12 md:hidden'>
                 <MainFooter />
-                <div className='h-40'></div>
+                {/* <div className='h-20'></div> */}
               </div>
             </div>
             <div className='w-[400px] hidden md:block'>
