@@ -65,7 +65,9 @@ class HttpFacade {
 
     const refreshToken = async () => {
       try {
-
+        if (!useAuthStore.getState().refresh?.token) {
+          throw new Error("invalid refresh token")
+        }
         const response = await this.http.post('/auth/refresh-tokens', {
           "refreshToken": useAuthStore.getState().refresh?.token
         })
