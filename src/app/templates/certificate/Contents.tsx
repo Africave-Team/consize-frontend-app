@@ -130,12 +130,12 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                 </div>
               </div>
 
-              <div className='flex flex-col items-start mt-10'>
-                <div className='uppercase font-bold text-3xl'>Certificate of completion</div>
+              <div className='flex flex-col items-start mt-7'>
+                <div className={`uppercase font-bold text-3xl ${brandFont.className}`}>Certificate of completion</div>
                 <div className='font-medium text-xl mt-2'>This is to certify that</div>
               </div>
               <div className='flex flex-col w-full items-start mt-2'>
-                <div className={`h-14 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${brandFont.className}`}>
+                <div className={`h-14 px-1 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${brandFont.className}`}>
                   {data.studentName}
                 </div>
               </div>
