@@ -21,7 +21,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
   return (
     <div className="leaderboard">
       <div className="leaderboard-header">
-        <h1>Lesson Leaderboard</h1>
+        <h1>Course Leaderboard</h1>
         <p>{details.courseName}</p>
         <p>Organization: {details.organizationName}</p>
       </div>

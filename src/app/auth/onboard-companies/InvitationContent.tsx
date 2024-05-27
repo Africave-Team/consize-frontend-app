@@ -13,7 +13,7 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string()
     .required('Provide a password').min(5),
   logo: Yup.string()
-    .required('Upload a logo').url("logo is required to be a url"),
+    .optional(),
 })
 
 

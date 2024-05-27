@@ -112,7 +112,7 @@ export default function page () {
                   <MenuButton type='button' className='text-sm flex justify-center items-center gap-2 h-10 w-32 text-white bg-[#0D1F23] rounded-lg'><FaPlus className='text-sm mr-2' />Create new</MenuButton>
                   <MenuList className='text-sm py-0' minWidth={'140px'}>
                     <MenuItem as={Link} href="/dashboard/courses/new" className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<FiBookOpen className='text-sm' />}>Course</MenuItem>
-                    <MenuItem href="/dashboard/courses/new" as={Link} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<GoStack className='text-sm' />}>Bundle</MenuItem>
+                    {/* <MenuItem href="/dashboard/courses/new" as={Link} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<GoStack className='text-sm' />}>Bundle</MenuItem> */}
                   </MenuList>
                 </Menu>
                 <button onClick={toggleListStyle} className='h-10 w-10 border rounded-md group hover:bg-black flex justify-center items-center'>

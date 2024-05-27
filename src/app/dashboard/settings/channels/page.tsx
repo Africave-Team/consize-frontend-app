@@ -118,7 +118,7 @@ export default function IntegrationSettings () {
                         {isPending && <Spinner size={'sm'} />}
                       </button>
                       {channel.channel === Distribution.SLACK && !channel.enabled && <>
-                        <div className='text-sm mt-2 font-medium'>Or share authorization link with whoever has permission to install consize into your workspace</div>
+                        <div className='text-sm mt-2 font-medium'>Or share authorization link with the admin of your slack workspace</div>
                         <div className='flex mt-1 items-center gap-3'>
                           <CopyToClipboardButton message='Slack authorization link copied' useLink={true} link={initiateSlackAsync()} targetSelector='abc' />
                         </div>
