@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import type { IPut, IGet, IPost, IPatch, IDelete, IPostMultipart } from '@/type-definitions/IAxios'
 import { useAuthStore } from '@/store/auth.store'
+import { redirect } from 'next/navigation'
 
 
 class HttpFacade {
@@ -92,7 +93,11 @@ class HttpFacade {
             return this.http(originalRequest)
           } catch (error) {
             // Handle token refresh error
-            useAuthStore.setState({ access: undefined, refresh: undefined, user: undefined, team: undefined })
+            if (typeof window !== undefined) {
+              window.location.href = "/auth/logout"
+            } else {
+              redirect("/auth/logout")
+            }
             // For example, log the user out or redirect to login page
             console.error('Error refreshing token:', error)
             // Redirect to login page or log the user out
@@ -117,7 +122,11 @@ class HttpFacade {
             return this.http(originalRequest)
           } catch (error) {
             // Handle token refresh error
-            useAuthStore.setState({ access: undefined, refresh: undefined, user: undefined, team: undefined })
+            if (typeof window !== undefined) {
+              window.location.href = "/auth/logout"
+            } else {
+              redirect("/auth/logout")
+            }
             // For example, log the user out or redirect to login page
             console.error('Error refreshing token:', error)
             // Redirect to login page or log the user out
