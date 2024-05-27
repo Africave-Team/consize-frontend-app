@@ -160,7 +160,7 @@ export default function page ({ params }: { params: { id: string, student_id: st
                   xaxis: {
                     categories: lessonDurations.map((_, index) => `Lesson ${index + 1}`),
                     title: {
-                      text: "Duration in minutes"
+                      text: "Duration in seconds"
                     }
                   },
                 }} series={[{
@@ -219,7 +219,7 @@ export default function page ({ params }: { params: { id: string, student_id: st
                         return item
                       }).map((_, index) => `Section ${index + 1}`) : blockDurations[blocksShowOption].map((_, index) => `Section ${index + 1}`),
                       title: {
-                        text: "Duration in minutes"
+                        text: "Duration in seconds"
                       }
                     },
                   }} series={[{
@@ -365,7 +365,7 @@ export default function page ({ params }: { params: { id: string, student_id: st
                       categories: new Array(quizCount).fill(0).map((_, index) => `Quiz ${index + 1}`),
                       max: 100,
                       title: {
-                        text: "Quiz durations in minutes"
+                        text: "Quiz durations in seconds"
                       }
                     },
                   }}
