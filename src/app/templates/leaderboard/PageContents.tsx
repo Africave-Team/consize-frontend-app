@@ -19,13 +19,18 @@ interface DataInterface {
 
 export default function PageContents ({ details }: { details: DataInterface }) {
   return (
-    <div className="leaderboard">
+    <div className="leaderboard h-[100vh] overflow-y-scroll">
       <div className="leaderboard-header">
         <h1>Course Leaderboard</h1>
         <p>{details.courseName}</p>
         <p>Organization: {details.organizationName}</p>
       </div>
       <div className="leaderboard-list" id="leaderboardList">
+        <div className={`leaderboard-item current-user`}>
+          <span className="rank">Rank</span>
+          <span className="name">Name</span>
+          <span className="score">Score</span>
+        </div>
         {
           details.leaderboard.map((item: Item, index: number) => {
             return (
