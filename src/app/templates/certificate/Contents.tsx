@@ -161,7 +161,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                     {moment().format('Do MMMM, YYYY')}
                   </div>
                 </div>
-                <Logo className='h-8' />
+                <Logo className='h-6' />
               </div>
             </div>
           </div>
