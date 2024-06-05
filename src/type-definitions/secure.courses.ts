@@ -327,6 +327,12 @@ export interface Period {
   type: PeriodTypes
 }
 
+export interface CourseResumptionSettings {
+  enableImmediate: boolean
+  enabledDateTimeSetup: boolean
+  days: number
+  time: string
+}
 
 export interface CourseSettings {
   id: string
@@ -343,6 +349,7 @@ export interface CourseSettings {
   // How many hours of learner inactivity before the next reminder (to continue) gets sent out?
   inactivityPeriod: Period
   dropoutEvent: DropoutEvents
+  resumption: CourseResumptionSettings | null
 }
 
 export interface LearnerGroupPayload {
@@ -367,4 +374,5 @@ export interface CourseSettingsPayload {
   // How many hours of learner inactivity before the next reminder (to continue) gets sent out?
   inactivityPeriod: Period
   dropoutEvent: DropoutEvents
+  resumption: CourseResumptionSettings
 }

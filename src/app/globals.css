@@ -111,6 +111,10 @@ html {
   min-height: calc(100vh-160px);
 }
 
+.datetime input {
+  @apply px-3 border rounded-lg h-10 text-sm
+}
+
 
 /* bg templates */
 .default-bg-spiral-1 {

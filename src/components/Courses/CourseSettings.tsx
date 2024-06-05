@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
+import CourseResumption from '../Settings/CourseResumption'
 
 interface ApiResponse {
   data: Course
@@ -46,6 +47,10 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
       value: "metadata"
     },
     {
+      title: "Resumption settings",
+      value: "resumption"
+    },
+    {
       title: "Set routine reminders",
       value: "reminders"
     },
@@ -63,6 +68,8 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
         return <Resources refetch={refetch} resources={settings.courseMaterials} id={settings.id} />
       case "metadata":
         return <Metadata refetch={refetch} metadata={settings.metadata} id={settings.id} />
+      case "resumption":
+        return <CourseResumption refetch={refetch} settings={settings.resumption} id={settings.id} />
       case "reminders":
         return <Reminders refetch={refetch} settings={settings} />
       case "groups":
