@@ -22,7 +22,7 @@ export default function TeamsSettingsPage () {
           teamId: team.id
         })
       } else {
-        window.open("https://calendly.com/ketan-vuov/meet-consize", "_blank")
+        window.open("https://calendly.com/consize-demo/60min", "_blank")
       }
     }
   }

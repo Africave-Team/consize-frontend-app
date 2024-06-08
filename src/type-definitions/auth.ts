@@ -1,4 +1,5 @@
 import { Distribution } from './callbacks'
+import { Subscription } from './subscriptions'
 
 export interface LoginPayloadInterface {
   email: string
@@ -138,6 +139,7 @@ export interface authStore {
   refresh?: TokenPayload
   user?: User
   team?: Team
+  subscription?: Subscription
 }
 
 

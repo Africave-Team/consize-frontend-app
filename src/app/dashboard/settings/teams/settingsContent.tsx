@@ -9,6 +9,7 @@ import { Button, ButtonGroup, Spinner, Tooltip } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { FiRefreshCw, FiTrash2 } from 'react-icons/fi'
 import { useAuthStore } from '@/store/auth.store'
+import { Plan } from '@/type-definitions/subscriptions'
 
 interface ResultData extends QueryResult {
   results: User[]
@@ -23,7 +24,8 @@ interface ApiResponse {
 }
 export default function TeamsSettingsPage () {
   const [page, setPage] = useState(1)
-  const { user, team } = useAuthStore()
+  const [currentPlan, setCurrentPlan] = useState<Plan | null>(null)
+  const { user, team, subscription } = useAuthStore()
   const loadData = async function ({ pageParam }: { pageParam: number }) {
     const result = await myTeamMembers(pageParam)
     return result
@@ -50,6 +52,14 @@ export default function TeamsSettingsPage () {
     }
   })
 
+  useEffect(() => {
+    if (subscription) {
+      if (typeof subscription.plan !== "string") {
+        setCurrentPlan(subscription.plan)
+      }
+    }
+  }, [subscription])
+
   return (
     <Layout>
       <div className='w-full overflow-y-scroll max-h-full p-4 flex'>
@@ -59,10 +69,9 @@ export default function TeamsSettingsPage () {
               Team members <div className='text-black bg-primary-app h-6 w-6 text-sm rounded-full flex justify-center items-center'>{members?.totalResults}</div>
               {(isFetching || resendMutation.isPending || deleteMemberMutation.isPending) && <Spinner size={'sm'} />}
             </div>
-
-            <InviteTeamMember onRefresh={async () => {
+            {currentPlan && currentPlan.price === 0 && members && members.totalResults < 2 && <InviteTeamMember onRefresh={async () => {
               refetch()
-            }} />
+            }} />}
           </div>
           <div className='flex gap-3 items-center font-semibold h-12 px-3 border mt-3 text-sm shadow-md'>
             <div className='w-3/5'>Full name</div>
