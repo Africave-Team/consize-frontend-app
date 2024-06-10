@@ -29,7 +29,7 @@ export default function SubscriptionIndicator () {
     )
   }
   return (
-    <Link className={`min-w-32 border rounded-3xl flex justify-center items-center h-10 font-semibold bg-primary-dark text-white`} href="/dashboard/settings/subscriptions">
+    <Link className={`min-w-32 border px-5 rounded-3xl flex justify-center items-center h-10 font-semibold bg-primary-dark text-white`} href="/dashboard/settings/subscriptions">
       {typeof subscription?.plan === "string" ? subscription?.plan : subscription?.plan.name}
     </Link>
   )
