@@ -6,7 +6,7 @@ export const useNavigationStore = create(
   persist<NavigationStore>(
     (set, get) => ({
       sidebarOpen: false,
-      preferredListStyle: ListStyle.ROWS,
+      preferredListStyle: ListStyle.GRID,
       pageTitle: "Dashboard - Home",
 
 

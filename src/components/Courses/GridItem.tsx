@@ -23,7 +23,7 @@ export default function GridItem ({ course }: { course: Course }) {
       onValue(projectStats, async (snapshot) => {
         const data: CourseStatistics = await snapshot.val()
         if (data && data.students) {
-          const students = Object.entries(data.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 })).filter(e => e.lessons)
+          const students = Object.entries(data.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 }))
           setStats({ ...data, enrolled: students.length, active: students.filter(e => !e.completed && !e.droppedOut).length })
         }
       })
