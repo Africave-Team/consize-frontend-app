@@ -100,7 +100,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                 <Accordion defaultIndex={[]} className='space-y-3' allowMultiple>
                   {lessonDetails.data.blocks.map((block) => {
                     return (
-                      <AccordionItem className='rounded-md border'>
+                      <AccordionItem key={block.id} className='rounded-md border'>
                         <div className='flex group'>
                           <AccordionButton className='hover:bg-white'>
                             <Box className='font-semibold text-sm line-clamp-1' as="span" flex='1' textAlign='left'>
@@ -136,10 +136,11 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                             }
                             {
                               block.bodyMedia.mediaType === MediaType.VIDEO && <>
-                                <video className='h-52 w-full' controls>
-                                  <source src={block.bodyMedia.url} />
-                                  Your browser does not support the video tag.
-                                </video>
+                                <iframe
+                                  className='h-52 w-full'
+                                  src={`${location.origin}/embed?url=${block.bodyMedia.url}`}
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                ></iframe>
                               </>
                             }
                             {block.bodyMedia.mediaType === MediaType.IMAGE && <img className='h-52 w-full' src={block.bodyMedia.url} />}
@@ -240,7 +241,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                     }
                     let block = lessonDetails.data.blocks[random]
                     return (
-                      <AccordionItem className='rounded-md border'>
+                      <AccordionItem key={quiz.id} className='rounded-md border'>
                         <div className='flex group'>
                           <AccordionButton className='hover:bg-white'>
                             <Box className='font-semibold text-sm line-clamp-1' as="span" flex='1' textAlign='left' dangerouslySetInnerHTML={{ __html: he.decode(quiz.question) }} />

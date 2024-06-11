@@ -16,6 +16,7 @@ import { queryClient } from '@/utils/react-query'
 
 export const dynamic = 'force-dynamic'
 import { extendTheme } from '@chakra-ui/react'
+import { usePathname } from 'next/navigation'
 
 const customTheme = extendTheme({
   colors: {
@@ -41,12 +42,14 @@ export default function RootLayout ({
   children: React.ReactNode
 }) {
 
+  const path = usePathname()
+
   return (
     <html lang="en">
       <head>
         <script src="/js/tinymce/tinymce.min.js" />
       </head>
-      <body className='h-screen overflow-y-hidden w-screen overflow-x-hidden' suppressHydrationWarning>
+      {path === "/embed" ? <body suppressHydrationWarning className='h-screen w-screen'>{children}</body> : <body className='h-screen overflow-y-hidden w-screen overflow-x-hidden' suppressHydrationWarning>
         <NextTopLoader color='#0D1F23' />
         <ChakraProvider theme={customTheme}>
           <CacheProvider>
@@ -57,7 +60,7 @@ export default function RootLayout ({
             </QueryClientProvider>
           </CacheProvider>
         </ChakraProvider>
-      </body>
+      </body>}
     </html>
   )
 }
