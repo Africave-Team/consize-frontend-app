@@ -1,10 +1,11 @@
 import { fetchSingleLesson } from '@/services/secure.courses.service'
 import { LessonData, MediaType } from '@/type-definitions/secure.courses'
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spinner } from '@chakra-ui/react'
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Editable, EditableInput, EditablePreview, Spinner, useEditableControls } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import he from 'he'
 import React, { useEffect } from 'react'
-import { FiArrowRight, FiEdit2, FiEye, FiMinus, FiPlus, FiTrash2, FiX } from 'react-icons/fi'
+import { updateLesson } from '@/services/lessons.service'
+import { FiArrowRight, FiCheck, FiEdit2, FiEye, FiMinus, FiPlus, FiTrash2, FiX } from 'react-icons/fi'
 import DeleteLessonBlockButton from '../FormButtons/DeleteBlock'
 import { useCourseMgtStore } from '@/store/course.management.store'
 import { ContentTypeEnum } from '@/type-definitions/course.mgt'
@@ -54,21 +55,58 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
     }
   }, [reloadLesson])
 
+  const EditableControls = function () {
+    const {
+      isEditing,
+      getSubmitButtonProps,
+      getCancelButtonProps,
+      getEditButtonProps,
+    } = useEditableControls()
+    return isEditing ? <>
+      <button {...getCancelButtonProps()} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
+        <FiX />
+      </button>
+      <button {...getSubmitButtonProps()} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
+        <FiCheck />
+      </button>
+    </> : <button {...getEditButtonProps()} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
+      <FiEdit2 />
+    </button>
+
+  }
+
+  const handleEditLesson = async function (value: string) {
+    if (lessonDetails) {
+      await updateLesson({
+        lesson: {
+          title: value
+        }, lessonId: lessonDetails.data.id, courseId
+      })
+      refetch()
+      reload()
+    }
+  }
+
   return (
     <div>
       {lessonDetails && lessonDetails.data && <div className='h-screen flex gap-3'>
         <div className='h-screen w-3/5 overflow-y-scroll' >
-          <div className='h-10 w-full border text-sm group font-semibold rounded-lg mt-3 pl-4 pr-2 flex items-center justify-between'>
-            {lessonDetails.data.title}
-            <div className='flex gap-1 h-10'>
-
+          <div className='h-12 w-full border text-sm group font-semibold rounded-lg mt-3 pl-4 pr-2 flex items-center justify-between'>
+            <Editable onSubmit={handleEditLesson} defaultValue={lessonDetails.data.title} className='flex flex-1 justify-between'>
+              <div className='flex items-center flex-1'>
+                <EditablePreview />
+                <EditableInput />
+              </div>
+              <div className='w-24 flex justify-end items-center gap-1'>
+                <EditableControls />
+              </div>
+            </Editable>
+            <div className='flex w-12 gap-1 h-10'>
               <DeleteLessonButton courseId={courseId} lessonId={lessonId} refetch={async () => {
                 await reload()
                 await refetch()
               }} />
-              <button className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
-                <FiEdit2 />
-              </button>
+
               {/* <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
                 <FiEye />
               </button> */}
@@ -138,7 +176,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                               block.bodyMedia.mediaType === MediaType.VIDEO && <>
                                 <iframe
                                   className='h-52 w-full'
-                                  src={`${location.origin}/embed?url=${block.bodyMedia.url}`}
+                                  src={`${location.origin}/embed/${block.bodyMedia.url.replace('https://storage.googleapis.com/kippa-cdn-public/microlearn-images/', '').replace('.mp4', '')}`}
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 ></iframe>
                               </>
