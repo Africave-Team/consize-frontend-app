@@ -23,7 +23,7 @@ export default function StudentsPageContent () {
 
   const { data: members, isFetching, refetch } =
     useQuery<ApiResponse>({
-      queryKey: ['members', page],
+      queryKey: ['students', page],
       queryFn: () => loadData({ pageParam: page })
     })
   return (

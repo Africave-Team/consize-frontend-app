@@ -35,7 +35,10 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
     }
     if (file) {
       const formData = new FormData()
-      formData.append("file", file)
+      const originalName = file.name
+      const fileExtension = originalName.substring(originalName.lastIndexOf('.'))
+      let timestamp = new Date().getTime()
+      formData.append("file", file, `${timestamp}${fileExtension}`)
       // upload and return the url to the parent
       setIsLoading(true)
       const { data } = await uploadFile(formData)
