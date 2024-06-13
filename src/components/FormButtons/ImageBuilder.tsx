@@ -64,6 +64,7 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
     if (divToCapture) {
       const formData = new FormData()
       // get file url
+      setProgress(true)
       const canvas = await html2canvas(divToCapture, {
         scale: 5
       })
@@ -71,17 +72,18 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
       canvas.toBlob(async (blob) => {
         if (blob) {
           setProgress(true)
-          const file = new File([blob], imageText.toLowerCase() + '-header-image.jpeg', { type: 'image/jpeg' })
+          let timestamp = new Date().getTime()
+          const file = new File([blob], timestamp + '-header-image.jpeg', { type: 'image/jpeg' })
           formData.append("file", file)
           const { data } = await uploadFile(formData)
           if (data) {
-            setProgress(true)
             onFileUploaded(data)
             onClose()
           }
+          setProgress(false)
         }
       })
-
+      setProgress(false)
     } else {
       throw new Error("No template image selected.")
     }
