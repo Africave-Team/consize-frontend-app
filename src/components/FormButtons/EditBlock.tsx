@@ -1,5 +1,5 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spinner, useDisclosure, useToast } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FiEdit2 } from 'react-icons/fi'
 import { useFormik } from 'formik'
 import { Block, QuizUnformed } from '@/type-definitions/secure.courses'
@@ -16,6 +16,7 @@ import { addBlockQuiz, addLessonBlock, rewriteBlockContent, rewriteBlockQuiz, su
 import { convertToWhatsAppString, stripHtmlTags } from '@/utils/string-formatters'
 import mime from "mime-types"
 import { OptionButtons } from '@/type-definitions/course.mgt'
+import InfoPopover from '../Dashboard/InfoPopover'
 
 
 
@@ -48,7 +49,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
     initialValues: {
       ...block,
       allowQuiz: !!block.quiz,
-      bodyMedia: block.bodyMedia || { url: "", mediaType: MediaType.IMAGE },
+      bodyMedia: block.bodyMedia || { url: "", mediaType: MediaType.IMAGE, embedUrl: "" },
       quiz: block.quiz ? {
         question: block.quiz.question,
         correctAnswer: block.quiz.choices[block.quiz.correctAnswerIndex].toLowerCase(),
@@ -62,12 +63,6 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
       }
     },
     onSubmit: async function (values) {
-      if (values.bodyMedia && values.bodyMedia.url) {
-        const mimeType = mime.lookup(values.bodyMedia.url)
-        if (mimeType) {
-          values.bodyMedia.mediaType = mimeType.split('/')[0] as MediaType
-        }
-      }
       let quizId
       if (values.allowQuiz) {
         if (!!block.quiz) {
@@ -100,6 +95,7 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
           quizId = data.id
         }
       }
+      debugger
       await updateLessonBlock({
         blockId: block.id, update: {
           title: values.title,
@@ -203,6 +199,16 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
     setImprovementQuizOpen(false)
   }
 
+  useEffect(() => {
+    if (form.values.bodyMedia && form.values.bodyMedia.url) {
+      const mimeType = mime.lookup(form.values.bodyMedia.url)
+      if (mimeType) {
+        let type = mimeType.split('/')[0] as MediaType
+        form.setFieldValue('bodyMedia.mediaType', type)
+      }
+    }
+  }, [form.values.bodyMedia.url])
+
 
   return (
     <div>
@@ -245,6 +251,12 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
                       }} previewable={true} />
                     </div>
                   </div>
+
+                  {form.values.bodyMedia.mediaType && form.values.bodyMedia.mediaType === MediaType.VIDEO && <div>
+                    <label className='flex gap-2 mb-1 items-center' htmlFor="bodyMedia.embedUrl">Youtube embed url <InfoPopover message={"This is only required if you intend to deliver this course through Slack."} /></label>
+                    <input onChange={form.handleChange} value={form.values.bodyMedia.embedUrl} onBlur={form.handleBlur} name="bodyMedia.embedUrl" id="bodyMedia.embedUrl" type="text" placeholder='Paste the youtube embed url here' className='h-14 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
+                  </div>}
+
                   <div className='flex gap-2 items-center flex-row-reverse justify-end'>
                     <Checkbox onChange={(val) => {
                       form.setFieldValue('allowQuiz', val.target.checked)

@@ -13,6 +13,7 @@ import { useCourseMgtStore } from '@/store/course.management.store'
 import { convertToWhatsAppString, stripHtmlTags } from '@/utils/string-formatters'
 import mime from "mime-types"
 import { OptionButtons } from '@/type-definitions/course.mgt'
+import InfoPopover from '../Dashboard/InfoPopover'
 
 
 const validationSchema = Yup.object({
@@ -49,7 +50,8 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
       content: "",
       bodyMedia: {
         mediaType: MediaType.IMAGE,
-        url: ""
+        url: "",
+        embedUrl: ""
       },
       quiz: {
         question: "",
@@ -60,12 +62,6 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
     },
     onSubmit: async function (values) {
       if (createContent) {
-        if (values.bodyMedia && values.bodyMedia.url) {
-          const mimeType = mime.lookup(values.bodyMedia.url)
-          if (mimeType) {
-            values.bodyMedia.mediaType = mimeType.split('/')[0] as MediaType
-          }
-        }
         const { message, data } = await addLessonBlock({
           lessonId: createContent.lessonId, courseId, block: {
             title: values.title,
@@ -203,6 +199,16 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
     setImprovementQuizOpen(false)
   }
 
+  useEffect(() => {
+    if (form.values.bodyMedia && form.values.bodyMedia.url) {
+      const mimeType = mime.lookup(form.values.bodyMedia.url)
+      if (mimeType) {
+        let type = mimeType.split('/')[0] as MediaType
+        form.setFieldValue('bodyMedia.mediaType', type)
+      }
+    }
+  }, [form.values.bodyMedia.url])
+
   return (
     <form onSubmit={form.handleSubmit} className='w-full h-full p-3 flex flex-col justify-between'>
       <div className='flex justify-between items-center h-10'>
@@ -231,6 +237,10 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
               }} previewable={true} />
             </div>
           </div>
+          {form.values.bodyMedia.mediaType && form.values.bodyMedia.mediaType === MediaType.VIDEO && <div>
+            <label className='flex gap-2 mb-1 items-center' htmlFor="embedUrl">Youtube embed url <InfoPopover message={"This is only required if you intend to deliver this course through Slack."} /></label>
+            <input onChange={form.handleChange} value={form.values.bodyMedia.embedUrl} onBlur={form.handleBlur} name="bodyMedia.embedUrl" id="bodyMedia.embedUrl" type="text" placeholder='Paste the youtube embed url here' className='h-14 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
+          </div>}
           <div className='flex gap-2 items-center flex-row-reverse justify-end'>
             <Checkbox onChange={(val) => {
               form.setFieldValue('allowQuiz', val.target.checked)

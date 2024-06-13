@@ -9,6 +9,7 @@ export enum MediaType {
 export interface Media {
   mediaType: MediaType
   url: string
+  embedUrl?: string
 }
 export interface CreateCoursePayload {
   free: boolean
