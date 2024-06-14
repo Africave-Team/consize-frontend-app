@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 
-export default function RowItem ({ course }: { course: Course }) {
+export default function RowItem ({ course, studentId }: { course: Course, studentId?: string }) {
   const [stats, setStats] = useState<CourseStatistics | null>(null)
   const router = useRouter()
   useEffect(() => {
@@ -36,10 +36,10 @@ export default function RowItem ({ course }: { course: Course }) {
 
   return (
     <div className='h-16 w-full border-2 cursor-pointer rounded-lg hover:border-[#0D1F23] flex justify-between items-center'>
-      <Link href={`/dashboard/courses/${course.id}`} className='px-3 w-2/3 h-full flex items-center truncate'>
+      <Link href={!studentId ? `/dashboard/courses/${course.id}` : `/dashboard/courses/${course.id}/enrollments/${studentId}`} className='px-3 w-2/3 h-full flex items-center truncate'>
         <div className='font-semibold'>{course.title}</div>
       </Link>
-      <div className='w-1/3 p-2 h-full flex gap-4 items-center justify-end text-sm'>
+      {!studentId && <div className='w-1/3 p-2 h-full flex gap-4 items-center justify-end text-sm'>
         <Link href={`/dashboard/courses/${course.id}`} className='w-1/2 flex gap-10 '>
           {(course.status === CourseStatus.COMPLETED || course.status === CourseStatus.PUBLISHED) && <>
             <div className=''>
@@ -60,7 +60,7 @@ export default function RowItem ({ course }: { course: Course }) {
         </Link>
 
         <CourseMenu course={course} />
-      </div>
+      </div>}
 
     </div>
   )
