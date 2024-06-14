@@ -302,7 +302,7 @@ export interface LearnerGroup {
   launchTimes: LearnerGroupLaunchTime | null
 }
 
-export interface Student {
+export interface StudentRecord {
   id: string
   verified: boolean
   rejected: boolean
