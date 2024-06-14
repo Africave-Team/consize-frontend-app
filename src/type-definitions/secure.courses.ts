@@ -289,6 +289,8 @@ export interface RTDBStudent {
   }
 }
 
+
+
 export interface StudentDataForm extends Student {
   custom?: any
 }
@@ -299,6 +301,23 @@ export interface LearnerGroup {
   members: StudentRecord[]
   launchTimes: LearnerGroupLaunchTime | null
 }
+
+export interface Student {
+  id: string
+  verified: boolean
+  rejected: boolean
+  firstName: string
+  otherNames: string
+  phoneNumber: string
+  slackId: string
+  channelId: string
+  email: string
+  tz: string
+  custom?: any
+  createdAt: Date
+  updatedAt: Date
+}
+
 
 export interface LearnerGroupLaunchTime {
   launchTime: Date
