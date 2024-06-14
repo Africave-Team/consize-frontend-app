@@ -1,4 +1,4 @@
-import { Student } from '@/type-definitions/secure.courses'
+import { StudentRecord as Student } from '@/type-definitions/secure.courses'
 import { Modal, ModalBody, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
