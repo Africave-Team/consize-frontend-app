@@ -326,7 +326,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 <MenuList className='text-sm py-0' minWidth={'200px'}>
                   <Leaderboard students={students} />
                   <CourseContents courseId={params.id} />
-                  <StudentReviews />
+                  <StudentReviews courseId={params.id} />
                   <CourseTrends />
                   <ExportStats courseId={params.id} stats={stats} fields={fields} />
                   <OpenSettings dark={true} id={params.id} />
