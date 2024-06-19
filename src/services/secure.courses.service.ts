@@ -9,6 +9,17 @@ export const createCourse = async (payload: CreateCoursePayload): Promise<any> =
     url: `courses/`,
     body: { ...payload }
   })
+
+
+export const duplicateCourse = async (payload: {
+  title: string,
+  description: string,
+  headerMediaUrl: string
+}, courseId: string): Promise<any> =>
+  http.post({
+    url: `courses/${courseId}`,
+    body: { ...payload }
+  })
 export const createCourseAI = async (payload: { jobId: string }): Promise<any> =>
   http.post({
     url: `courses/ai`,
@@ -184,6 +195,12 @@ export const removeLearnerGroup = async (payload: { id: string, groupId: string 
     url: `courses/settings/remove-learner-group/${payload.id}/${payload.groupId}`
   })
 
+export const deleteCourse = async (courseId: string): Promise<any> => {
+  return http.delete({
+    url: `courses/${courseId}`
+  })
+}
+
 
 
 
@@ -207,3 +224,4 @@ export const testCourseWhatsapp = async (payload: { phoneNumber: string, course:
     url: `students/test-course/whatsapp`,
     body: payload
   })
+

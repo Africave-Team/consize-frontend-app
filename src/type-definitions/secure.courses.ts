@@ -242,7 +242,7 @@ interface Trend {
   value: number
 }
 
-interface TrendItem {
+export interface TrendItem {
   trends: Trend[]
   current: number
 }

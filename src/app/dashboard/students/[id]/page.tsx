@@ -81,7 +81,7 @@ export default function SingleStudentPage ({ params }: { params: { id: string } 
               active,
               dropouts,
               completed,
-              averageTestScore: scores / scoresCount,
+              averageTestScore: ((scores / scoresCount) * 100).toFixed(1) + '%',
             })
           }
         })

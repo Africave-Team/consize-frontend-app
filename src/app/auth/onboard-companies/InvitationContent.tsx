@@ -11,7 +11,11 @@ import { FileTypes } from '@/type-definitions/utils'
 
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
-    .required('Provide a password').min(5),
+    .required('Provide a password')
+    .min(5, 'Password must be at least 5 characters long'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Passwords must match')
+    .required('Please confirm your password'),
   logo: Yup.string()
     .optional(),
 })
@@ -23,6 +27,7 @@ export default function OnboardCompany ({ token }: { token: string }) {
   const loginFormik = useFormik({
     initialValues: {
       password: '',
+      confirmPassword: '',
       logo: ''
     },
     validationSchema: LoginSchema,
@@ -77,6 +82,20 @@ export default function OnboardCompany ({ token }: { token: string }) {
                   </div>
                   <input autoComplete='password' type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus-visible:!ring-primary-app focus-visible:!border-primary-app block w-full p-2.5 " onChange={loginFormik.handleChange}
                     value={loginFormik.values.password} onBlur={loginFormik.handleBlur} />
+                  <span className='text-sm text-red-400'>
+                    {loginFormik.errors.password}
+                  </span>
+                </div>
+
+                <div>
+                  <div className='flex justify-between items-center'>
+                    <label htmlFor="confirmPassword" className="block mb-1 text-sm font-medium text-gray-900">Retype password</label>
+                  </div>
+                  <input autoComplete='confirmPassword' type="password" name="confirmPassword" id="confirmPassword" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus-visible:!ring-primary-app focus-visible:!border-primary-app block w-full p-2.5 " onChange={loginFormik.handleChange}
+                    value={loginFormik.values.confirmPassword} onBlur={loginFormik.handleBlur} />
+                  <span className='text-sm text-red-400'>
+                    {loginFormik.errors.confirmPassword}
+                  </span>
                 </div>
 
                 <div>
