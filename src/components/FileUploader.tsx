@@ -13,9 +13,10 @@ interface Props {
   originalUrl: string
   droppable?: boolean
   previewable?: boolean
+  buttonOnly?: boolean
 
 }
-export default function FileUploader ({ droppable, mimeTypes, previewable, originalUrl, onUploadComplete }: Props) {
+export default function FileUploader ({ droppable, mimeTypes, previewable, originalUrl, onUploadComplete, buttonOnly }: Props) {
   const [accept, setAccept] = useState({})
   const [fileType, setFileType] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -88,9 +89,9 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
             <button onClick={handleClick} type='button' className='text-sm h-10 w-24 text-white bg-[#0D1F23] rounded-lg flex items-center justify-center gap-1'>Select file
               {isLoading && <Spinner size={'sm'} />}
             </button>
-            <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>
+            {!buttonOnly && <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>
               {originalUrl.length > 0 ? <a href={originalUrl} target="_blank" rel="noopener noreferrer">Preview</a> : 'No file selected'} <div className='w-10'></div>
-            </div>
+            </div>}
 
             <input id="upload" name="upload" {...getInputProps()} />
           </div> : <div className='h-full w-full'>
