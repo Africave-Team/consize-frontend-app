@@ -32,7 +32,7 @@ export default function ReviewCharts ({ courseId }: { courseId: string }) {
   return (
     <div>
       <div className='font-bold text-lg uppercase mb-2'>
-        All student reviews
+        Charts
       </div>
       {isFetching ? <div className='flex flex-col gap-3'>
         <Skeleton className='w-full h-44' />
