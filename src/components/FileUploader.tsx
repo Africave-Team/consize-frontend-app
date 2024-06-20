@@ -86,7 +86,7 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
       <div className='flex justify-between items-center h-full'>
         <div className='w-full h-full'>
           {!droppable ? <div className='flex gap-1 w-full items-center border rounded-lg'>
-            <button onClick={handleClick} type='button' className='text-sm h-10 w-24 text-white bg-[#0D1F23] rounded-lg flex items-center justify-center gap-1'>Select file
+            <button onClick={handleClick} type='button' className='text-sm h-10 min-w-24 px-5 text-white bg-[#0D1F23] rounded-lg flex items-center justify-center gap-1'>Select file
               {isLoading && <Spinner size={'sm'} />}
             </button>
             {!buttonOnly && <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>

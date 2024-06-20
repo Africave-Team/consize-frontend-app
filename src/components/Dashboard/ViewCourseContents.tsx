@@ -12,7 +12,7 @@ interface ApiResponse {
   message: string
 }
 
-export default function CourseContents ({ courseId }: { courseId: string }) {
+export default function CourseContents ({ courseId, children }: { courseId: string, children?: React.ReactNode }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const options = ['A', 'B', 'C', 'D', 'E', 'F']
 
@@ -31,7 +31,7 @@ export default function CourseContents ({ courseId }: { courseId: string }) {
   return (
 
     <>
-      <MenuItem onClick={onOpen} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<FiBookOpen className='text-sm' />}>Course contents</MenuItem>
+      {!children ? <MenuItem onClick={onOpen} className='hover:bg-primary-dark/90 bg-primary-dark text-white' icon={<FiBookOpen className='text-sm' />}>Course contents</MenuItem> : <div onClick={onOpen}>{children}</div>}
 
       {isOpen && <Modal
         isOpen={isOpen}
