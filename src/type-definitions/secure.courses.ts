@@ -18,9 +18,11 @@ export interface CreateCoursePayload {
   headerMedia: Media
   title: string
   description: string
+  status?: CourseStatus
   price?: number
   audiences?: string
   survey?: string | null
+  courses?: string[]
 }
 
 export interface TrendStatistics {

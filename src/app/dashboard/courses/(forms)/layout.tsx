@@ -19,7 +19,7 @@ export default function GeneralCoursesPageLayout ({
           </Link>
           <div className='font-semibold text-base'>
             {
-              path.includes('builder') ? 'Update a course' : path.includes('duplicate') ? 'Duplicate a course' : 'Create a course'
+              path.includes('builder') ? 'Update a course' : path.includes('duplicate') ? 'Duplicate a course' : path.includes('bundle') ? 'Create a course bundle' : 'Create a course'
             }
           </div>
         </div>

@@ -49,7 +49,7 @@ export const fetchSingleCourse = async (course: string): Promise<any> =>
     url: `courses/${course}`
   })
 
-export const searchCourses = async (payload: { search: string }): Promise<any> =>
+export const searchCourses = async (payload: { search: string, filter?: string }): Promise<any> =>
   http.get({
     url: `courses/search`,
     query: payload
