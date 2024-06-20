@@ -23,6 +23,11 @@ export const deleteSurveyRequest = async (id: string): Promise<any> =>
   http.delete({
     url: `survey/${id}`
   })
+
+export const fetchSurveyRequest = async (id: string): Promise<any> =>
+  http.get({
+    url: `survey/${id}`
+  })
 export const fetchSurveys = async () =>
   http.get({
     url: "survey/"

@@ -53,7 +53,6 @@ export default function CreateBundlePageContent () {
     onSubmit: async function (values) {
       const { data, message }: { message: string, data: Course } = await createCourse({
         ...values,
-        status: CourseStatus.PUBLISHED,
         free: true,
         bundle: true,
         private: false,
@@ -65,7 +64,7 @@ export default function CreateBundlePageContent () {
         duration: 2000,
         isClosable: true,
       })
-      let path = `/dashboard/courses/`
+      let path = `/dashboard/courses/${data.id}/builder/publish`
       router.push(path)
     },
   })

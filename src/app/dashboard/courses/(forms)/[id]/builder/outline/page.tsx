@@ -15,6 +15,7 @@ import CreateLessonSection from '@/components/Courses/CreateLessonContent'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spinner } from '@chakra-ui/react'
 import { FiEdit2, FiEye, FiPlus, FiTrash2 } from 'react-icons/fi'
 import LessonContentView from '@/components/Courses/LessonContentView'
+import CourseSurveyCard from '@/components/Courses/CourseSurveyCard'
 
 interface ApiResponse {
   data: Course
@@ -69,6 +70,7 @@ export default function page ({ params }: { params: { id: string } }) {
               </div>}
               {courseDetails.data.lessons.map((lesson, index) => <LessonCard key={lesson.id} index={index} lesson={lesson} refetch={refetch} courseId={courseDetails.data.id} />)}
               <CreateLessonButton courseId={courseDetails.data.id} refetch={refetch} full={true} />
+              <CourseSurveyCard surveyId={courseDetails.data.survey} courseId={courseDetails.data.id} />
             </div>
           </div>
           <div className='flex-1 h-full px-5'>
