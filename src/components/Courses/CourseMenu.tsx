@@ -17,7 +17,7 @@ export default function CourseMenu ({ course, single }: { course: Course, single
         {(course.status === CourseStatus.PUBLISHED || course.status === CourseStatus.COMPLETED) && <MenuItem as={Link} href={`/dashboard/courses/${course.id}`} className='hover:bg-gray-100' icon={<FiEye className='text-sm' />}>View {course.bundle ? 'bundle' : 'course'} stats</MenuItem>}
         <MenuItem as={Link} href={`/dashboard/courses/${course.id}/duplicate`} className='hover:bg-gray-100' icon={<HiOutlineDuplicate className='text-sm' />}>Duplicate {course.bundle ? 'bundle' : 'course'}</MenuItem>
         {!single && <MenuItem as={Link} href={`/dashboard/courses/${course.id}/builder`} className='hover:bg-gray-100' icon={<FiEdit2 className='text-sm' />}>Edit {course.bundle ? 'bundle' : 'course'}</MenuItem>}
-        {single && <MenuItem as={Link} href={`/dashboard/courses/${course.id}/builder/${!course.bundle ? 'course-info' : 'bundle'}`} className='hover:bg-gray-100' icon={<FiEdit2 className='text-sm' />}>Edit {course.bundle ? 'bundle' : 'course'} in builder</MenuItem>}
+        {single && !course.bundle && <MenuItem as={Link} href={`/dashboard/courses/${course.id}/builder/${!course.bundle ? 'course-info' : 'bundle'}`} className='hover:bg-gray-100' icon={<FiEdit2 className='text-sm' />}>Edit {course.bundle ? 'bundle' : 'course'} in builder</MenuItem>}
         <OpenSettings id={course.id} />
         <DeleteCourseMenu id={course.id} label={`Delete ${course.bundle ? 'bundle' : 'course'}`} />
       </MenuList>
