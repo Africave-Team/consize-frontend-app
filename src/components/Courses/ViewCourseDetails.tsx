@@ -124,6 +124,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
                   </div>
                   <AccordionPanel className='px-3 py-2'>
                     <div className='flex flex-col gap-2'>
+                      <div className='my-4 font-medium text-base'>All lessons in this course</div>
                       <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
                         {value.lessons.map((lesson, index) => <AccordionItem className='border-none' key={lesson.id}>
                           <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
