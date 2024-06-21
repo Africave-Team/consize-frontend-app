@@ -137,7 +137,6 @@ export default function page ({ params }: { params: { id: string } }) {
               {job && <div>
                 <div className='flex justify-between items-center h-10 w-full'>
                   <div className='font-semibold text-lg'>Lessons</div>
-                  <div>Edit</div>
                 </div>
                 <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
                   {Object.entries(job.progress).map(([key, value], index) => <AccordionItem className='border-none' key={key}>

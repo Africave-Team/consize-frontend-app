@@ -16,6 +16,7 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { FiEdit2, FiEye, FiPlus, FiTrash2 } from 'react-icons/fi'
 import LessonContentView from '@/components/Courses/LessonContentView'
 import CourseSurveyCard from '@/components/Courses/CourseSurveyCard'
+import UpdateCourseButton from '@/components/FormButtons/EditCourseButton'
 
 interface ApiResponse {
   data: Course
@@ -53,16 +54,12 @@ export default function page ({ params }: { params: { id: string } }) {
 
     <Layout>
       <div className='w-full overflow-y-scroll border min-h-screen'>
-        {/* {isFetching && <div className='h-40 flex justify-center items-center'>
-          <Spinner />
-        </div>} */}
         {courseDetails && courseDetails.data && <div className='flex w-full h-screen overflow-hidden'>
           <div className='w-[370px] border-r h-full overflow-y-scroll px-2'>
             <div className='flex w-full h-12 items-center justify-between'>
               <div className='font-medium text-lg'>Lessons</div>
-              {/* {courseDetails.data.lessons.length > 0 && <button className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
-                <FiEye />
-              </button>} */}
+              {courseDetails.data && <UpdateCourseButton course={courseDetails.data} />}
+
             </div>
             <div className='flex flex-col w-full gap-3'>
               {courseDetails.data.lessons.length === 0 && <div className='h-10 flex justify-center items-center'>

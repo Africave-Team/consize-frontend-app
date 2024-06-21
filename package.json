@@ -38,6 +38,7 @@
     "google-spreadsheet": "^4.1.1",
     "gsap": "^3.12.3",
     "he": "^1.2.0",
+    "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.1",
     "mime-types": "^2.1.35",

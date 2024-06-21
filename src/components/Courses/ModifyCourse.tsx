@@ -10,22 +10,7 @@ import { useRouter } from 'next/navigation'
 import { FileTypes } from '@/type-definitions/utils'
 import { updateCourse } from '@/services/secure.courses.service'
 import he from "he"
-import { Distribution } from '@/type-definitions/callbacks'
-import { useAuthStore } from '@/store/auth.store'
-
-
-const courseDistributionOptions = [
-  {
-    value: Distribution.SLACK,
-    title: "Slack"
-  },
-  {
-    value: Distribution.WHATSAPP,
-    title: "Whatsapp"
-  }
-]
-
-
+import { queryClient } from '@/utils/react-query'
 
 const validationSchema = Yup.object({
   title: Yup.string().required(),
@@ -36,7 +21,7 @@ const validationSchema = Yup.object({
   }).required()
 })
 
-export default function ModifyCourse ({ course }: { course: Course }) {
+export default function ModifyCourse ({ course, full, onFinish }: { course: Course, full?: boolean, onFinish?: () => void }) {
   const router = useRouter()
   const toast = useToast()
   const form = useFormik({
@@ -62,12 +47,17 @@ export default function ModifyCourse ({ course }: { course: Course }) {
         duration: 2000,
         isClosable: true,
       })
-      let path = `/dashboard/courses/${course.id}/builder/outline`
-      router.push(path)
+      if (onFinish) {
+        queryClient.invalidateQueries({ queryKey: ['course', course.id] })
+        onFinish()
+      } else {
+        let path = `/dashboard/courses/${course.id}/builder/outline`
+        router.push(path)
+      }
     },
   })
   return (
-    <div className='px-4 w-full md:w-4/5'>
+    <div className={`px-4 w-full ${!full && 'md:w-4/5'}`}>
       <div className='flex py-2 justify-between md:items-center md:flex-row flex-col gap-1'>
         <div className='font-semibold md:text-2xl text-xl'>
           Update course information
@@ -76,7 +66,7 @@ export default function ModifyCourse ({ course }: { course: Course }) {
       <div>
         In this step, we'll ask you the name of your course and what it’s about.
       </div>
-      <div className='w-3/5 mt-5'>
+      <div className={`${full ? 'w-full' : 'w-3/5'} mt-5`}>
         <form onSubmit={form.handleSubmit} className='flex flex-col gap-4'>
           <div>
             <label htmlFor="title">Course title *</label>
@@ -88,12 +78,12 @@ export default function ModifyCourse ({ course }: { course: Course }) {
               form.setFieldValue("description", value)
             }} placeholder='Describe your course for us' value={form.values.description} aiOptionButtons={[]} />
           </div>
-          <div className='w-[640px]'>
+          <div className='w-full'>
             <div className='flex justify-between items-center'>
               <label htmlFor="">Course header image</label>
               <ImageBuilder imageText={form.values.title} onFileUploaded={(val) => {
                 form.setFieldValue("headerMedia.url", val)
-              }} label='Build header' />
+              }} label='Build header' description={form.values.description} />
             </div>
             <FileUploader originalUrl={form.values.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={(val) => {
               form.setFieldValue("headerMedia.url", val)
