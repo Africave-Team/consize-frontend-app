@@ -60,7 +60,7 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
       const data = await toPng(divToCapture)
       const blob = await (await fetch(data)).blob()
       let timestamp = new Date().getTime()
-      const file = new File([blob], timestamp + '-header-image.jpeg', { type: 'image/jpeg' })
+      const file = new File([blob], timestamp + '-header-image.png', { type: 'image/png' })
       formData.append("file", file)
       const { data: uploadData } = await uploadFile(formData)
       if (uploadData) {

@@ -18,8 +18,8 @@ export default function UpdateCourseButton ({ course }: { course: Course }) {
         size={'xl'}
       >
         <ModalOverlay />
-        <ModalContent className=''>
-          <ModalBody className=''>
+        <ModalContent className='p-0'>
+          <ModalBody className='p-0'>
             <ModifyCourse course={course} full={true} onFinish={onClose} />
           </ModalBody>
         </ModalContent>

@@ -63,9 +63,9 @@ export default function ModifyCourse ({ course, full, onFinish }: { course: Cour
           Update course information
         </div>
       </div>
-      <div>
+      {!full && <div>
         In this step, we'll ask you the name of your course and what it’s about.
-      </div>
+      </div>}
       <div className={`${full ? 'w-full' : 'w-3/5'} mt-5`}>
         <form onSubmit={form.handleSubmit} className='flex flex-col gap-4'>
           <div>
