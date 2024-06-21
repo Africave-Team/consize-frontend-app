@@ -3,6 +3,7 @@ import PageContents from './pageContent'
 interface DataInterface {
   courseName: string
   organizationName: string
+  description: string
 }
 
 export default function Page ({ searchParams }: { searchParams: any }) {
