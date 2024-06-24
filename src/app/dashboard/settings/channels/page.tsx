@@ -2,7 +2,7 @@
 import CopyToClipboardButton from '@/components/CopyToClipboard'
 import { fetchMyTeamInfo, updateMyTeamInfo } from '@/services/teams'
 import Layout from '@/layouts/PageTransition'
-import { slackUninstall } from '@/services/slack.services'
+import { facebookTokenExchangeWithToken, slackUninstall } from '@/services/slack.services'
 import { useAuthStore } from '@/store/auth.store'
 import { useCallbackStore } from '@/store/callbacks.store'
 import { Skeleton, Spinner } from '@chakra-ui/react'
@@ -14,6 +14,7 @@ import { AiFillSlackCircle } from "react-icons/ai"
 import { Distribution } from '@/type-definitions/callbacks'
 import { queryClient } from '@/utils/react-query'
 import TeamQRCode from '@/components/Dashboard/TeamQRCode'
+import { Facebook, FacebookLoginResponse, WindowWithFB } from '@/type-definitions/facebook'
 
 
 interface ApiResponse {
@@ -44,6 +45,11 @@ export default function IntegrationSettings () {
   }
 
   const handleChannelButtonClick = async function (channel: DistributionChannel) {
+    if (channel.channel === Distribution.WHATSAPP) {
+      // console.log("https://web.facebook.com/v18.0/dialog/oauth?app_id=1057351731954710&cbt=1719041303381&channel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dfc7d495b5ed3508ca%26domain%3Dapp.consize.localhost%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fapp.consize.localhost%252Ff65b5f35da2327fd9%26relation%3Dopener&client_id=1057351731954710&config_id=1102240047637820&display=popup&domain=app.consize.localhost&e2e=%7B%7D&fallback_redirect_uri=https%3A%2F%2Fapp.consize.localhost%2Fdashboard%2Fsettings%2Fchannels&locale=en_US&logger_id=f77bc272adf73d03d&origin=1&override_default_response_type=true&redirect_uri=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df1ceddabae906db59%26domain%3Dapp.consize.localhost%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fapp.consize.localhost%252Ff65b5f35da2327fd9%26relation%3Dopener%26frame%3Dfeb99ed5bae6c86d1&response_type=code&sdk=joey&version=v18.0")
+      launchWhatsAppSignup()
+      return
+    }
     if (channel.enabled) {
       UninstallApp({
         ...channel,
@@ -58,6 +64,43 @@ export default function IntegrationSettings () {
           enabled: true,
         })
       }
+    }
+  }
+
+  function launchWhatsAppSignup (): void {
+    try {
+      // Type assertion for FB object (if necessary)
+      const FB: Facebook | undefined = (window as WindowWithFB).FB // Type cast for FB object
+      if (FB) {
+        FB.init({
+          appId: '1057351731954710',
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: 'v18.0',
+        })
+
+        try {
+          FB.login(
+            (response: FacebookLoginResponse) => {
+              if (response.authResponse) {
+                // Use the access token to call the debug_token API and get the shared WABA's ID
+                facebookTokenExchangeWithToken(response.authResponse.code)
+              } else {
+                console.log('User cancelled login or did not fully authorize.')
+              }
+            },
+            {
+              config_id: '1102240047637820', // configuration ID from previous step
+              response_type: 'code', // must be set to 'code' for System User access token
+              override_default_response_type: true,
+            }
+          )
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    } catch (error) {
+      console.error(error) // Use console.error for potential runtime errors
     }
   }
 
