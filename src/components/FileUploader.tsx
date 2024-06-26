@@ -9,14 +9,15 @@ import { MediaType } from '@/type-definitions/secure.courses'
 
 interface Props {
   mimeTypes: FileTypes[]
-  onUploadComplete: (url: string) => void
-  originalUrl: string
+  onUploadComplete: (url: string | string[]) => void
+  originalUrl: string | string[]
   droppable?: boolean
   previewable?: boolean
   buttonOnly?: boolean
+  multiple?: boolean
 
 }
-export default function FileUploader ({ droppable, mimeTypes, previewable, originalUrl, onUploadComplete, buttonOnly }: Props) {
+export default function FileUploader ({ droppable, mimeTypes, previewable, originalUrl, onUploadComplete, buttonOnly, multiple }: Props) {
   const [accept, setAccept] = useState({})
   const [fileType, setFileType] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -25,30 +26,38 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
   const maxFileSize = 15 * 1024 * 1024
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0]
-    if (file.size > maxFileSize) {
-      toast({
-        title: "Error",
-        description: 'File size exceeds the maximum allowed size',
-        status: "error"
-      })
-      return
-    }
-    if (file) {
-      const formData = new FormData()
-      const originalName = file.name
-      const fileExtension = originalName.substring(originalName.lastIndexOf('.'))
-      let timestamp = new Date().getTime()
-      formData.append("file", file, `${timestamp}${fileExtension}`)
-      // upload and return the url to the parent
-      setIsLoading(true)
-      const { data } = await uploadFile(formData)
-      if (data) {
-        onUploadComplete(data)
+    let files: File[] = []
+    for (let file of acceptedFiles) {
+      if (file.size > maxFileSize) {
+        toast({
+          title: "Error",
+          description: 'File size exceeds the maximum allowed size',
+          status: "error"
+        })
+        return
       }
+      if (file) {
+        files.push(file)
+      }
+      setIsLoading(true)
+      let urls: string[] = []
+      await Promise.all(files.map(async (file) => {
+        const formData = new FormData()
+        const originalName = file.name
+        const fileExtension = originalName.substring(originalName.lastIndexOf('.'))
+        let timestamp = new Date().getTime()
+        formData.append("file", file, `${timestamp}${fileExtension}`)
+        // upload and return the url to the parent
+        const { data } = await uploadFile(formData)
+        if (data) {
+          urls.push(data)
+        }
+        return file
+      }))
       setIsLoading(false)
+      onUploadComplete(multiple ? urls : urls[0])
     }
-  }, [])
+  }, [multiple])
 
   const onFileChange = useCallback((acceptedFiles: File[]) => {
 
@@ -63,9 +72,11 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
   }, [mimeTypes])
 
   useEffect(() => {
-    const type = mime.lookup(originalUrl)
-    if (type) {
-      setFileType(type)
+    if (!Array.isArray(originalUrl)) {
+      const type = mime.lookup(originalUrl)
+      if (type) {
+        setFileType(type)
+      }
     }
   }, [originalUrl])
 
@@ -79,7 +90,8 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     maxFiles: 1,
-    accept
+    accept,
+    multiple
   })
   return (
     <div className='flex flex-col w-full h-full'>
@@ -89,8 +101,8 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
             <button onClick={handleClick} type='button' className='text-sm h-10 min-w-24 px-5 text-white bg-[#0D1F23] rounded-lg flex items-center justify-center gap-1'>Select file
               {isLoading && <Spinner size={'sm'} />}
             </button>
-            {!buttonOnly && <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>
-              {originalUrl.length > 0 ? <a href={originalUrl} target="_blank" rel="noopener noreferrer">Preview</a> : 'No file selected'} <div className='w-10'></div>
+            {!buttonOnly && !multiple && <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>
+              {!Array.isArray(originalUrl) && originalUrl.length > 0 ? <a href={originalUrl} target="_blank" rel="noopener noreferrer">Preview</a> : 'No file selected'} <div className='w-10'></div>
             </div>}
 
             <input id="upload" name="upload" {...getInputProps()} />
@@ -114,7 +126,7 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
           </div>}
         </div>
       </div>
-      {(originalUrl.length > 0 && originalUrl.startsWith('https')) && previewable ? <>
+      {(!Array.isArray(originalUrl) && originalUrl.length > 0 && originalUrl.startsWith('https')) && previewable ? <>
         <div className='rounded-lg w-full border mt-2'>
           {
             fileType.includes(MediaType.IMAGE) && <img src={originalUrl} className='h-80 w-full rounded-md' />
@@ -139,7 +151,11 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
           }
 
         </div>
-      </> : <div className=''></div>}
+      </> : (Array.isArray(originalUrl)) && previewable && multiple ? <div className='flex flex-col gap-2'>
+        {originalUrl.map((url) => <div key={url} className='h-10 px-4 flex items-center border'>
+          {url}
+        </div>)}
+      </div> : <div className=''></div>}
 
     </div>
   )

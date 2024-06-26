@@ -90,9 +90,11 @@ export default function page ({ params }: { params: { id: string } }) {
     const fetchData = async () => {
       onValue(path, async (snapshot) => {
         const data: JobData = await snapshot.val()
-        setJob(data)
-        if (data.progress) {
-          setLoading(false)
+        if (data) {
+          setJob(data)
+          if (data.progress) {
+            setLoading(false)
+          }
         }
       })
     }
@@ -130,16 +132,15 @@ export default function page ({ params }: { params: { id: string } }) {
             </div>
 
             <div className='w-3/5 mt-8 border border-[#D8E0E9] shadow p-6 rounded-lg'>
-              {isLoading && <div className='flex flex-col gap-2'>
+              {isLoading ? <div className='flex flex-col gap-2'>
                 <Skeleton className='h-14 w-full rounded-lg' />
                 <Skeleton className='h-14 w-full rounded-lg' />
-              </div>}
-              {job && <div>
+              </div> : job && <div>
                 <div className='flex justify-between items-center h-10 w-full'>
                   <div className='font-semibold text-lg'>Lessons</div>
                 </div>
                 <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
-                  {Object.entries(job.progress).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
+                  {job.progress && Object.entries(job.progress).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
                     <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
                       <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
                         <div className='flex flex-col items-start'>
@@ -157,7 +158,7 @@ export default function page ({ params }: { params: { id: string } }) {
                     </div>
                     <AccordionPanel className='px-0 py-2'>
                       <div className='flex flex-col gap-2'>
-                        {Object.entries(value).map(([key, value], index) => <div key={key} className='flex'>
+                        {value && Object.entries(value).map(([key, value], index) => <div key={key} className='flex'>
                           {<>
                             <div className='w-10 flex justify-center py-3'>
                               <PiArrowBendDownRightLight className='text-2xl font-bold' />
