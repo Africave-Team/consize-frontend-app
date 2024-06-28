@@ -237,10 +237,10 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
               }} previewable={true} />
             </div>
           </div>
-          {form.values.bodyMedia.mediaType && form.values.bodyMedia.mediaType === MediaType.VIDEO && <div>
+          {/* {form.values.bodyMedia.mediaType && form.values.bodyMedia.mediaType === MediaType.VIDEO && <div>
             <label className='flex gap-2 mb-1 items-center' htmlFor="embedUrl">Youtube embed url <InfoPopover message={"This is only required if you intend to deliver this course through Slack."} /></label>
             <input onChange={form.handleChange} value={form.values.bodyMedia.embedUrl} onBlur={form.handleBlur} name="bodyMedia.embedUrl" id="bodyMedia.embedUrl" type="text" placeholder='Paste the youtube embed url here' className='h-14 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
-          </div>}
+          </div>} */}
           <div className='flex gap-2 items-center flex-row-reverse justify-end'>
             <Checkbox onChange={(val) => {
               form.setFieldValue('allowQuiz', val.target.checked)

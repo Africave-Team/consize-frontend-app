@@ -25,7 +25,7 @@ export default function TeamSurveys () {
           <div className='h-full flex items-center font-bold text-lg'>
             Your team&apos;s surveys
           </div>
-          <CreateSurveyButton onFinish={refetch} />
+          <CreateSurveyButton onFinish={() => refetch()} />
         </div>
         <div>
 

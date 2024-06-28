@@ -5,6 +5,7 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import CourseMenu from './CourseMenu'
 import { FiUploadCloud } from 'react-icons/fi'
 import { PiArrowBendDownRightLight } from 'react-icons/pi'
+import CourseSurveyCard from './CourseSurveyCard'
 
 export default function ViewCourseDetails ({ course }: { course: Course }) {
   return (
@@ -37,7 +38,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
 
       <div className='mt-4'>
         <Accordion allowMultiple defaultIndex={[]}>
-          <AccordionItem>
+          {!course.bundle ? <AccordionItem>
             <h2>
               <AccordionButton className='px-3'>
                 <Box as="span" flex='1' textAlign='left'>
@@ -97,7 +98,88 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
                 </AccordionItem>)}
               </Accordion>
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> : <AccordionItem>
+            <h2>
+              <AccordionButton className='px-3'>
+                <Box as="span" flex='1' textAlign='left'>
+                  Bundle courses
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
+                {course.courses.map((value, index) => <AccordionItem className='border-none' key={value.id}>
+                  <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
+                    <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
+                      <div className='flex flex-col items-start'>
+                        <div className='text-sm text-black font-semibold'>{value.title}</div>
+                      </div>
+                    </AccordionButton>
+                    <div className='flex items-center gap-2 h-full'>
+                      <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </div>
+                  </div>
+                  <AccordionPanel className='px-3 py-2'>
+                    <div className='flex flex-col gap-2'>
+                      <div className='my-4 font-medium text-base'>All lessons in this course</div>
+                      <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
+                        {value.lessons.map((lesson, index) => <AccordionItem className='border-none' key={lesson.id}>
+                          <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
+                            <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
+                              <div className='flex flex-col items-start'>
+                                <div className='text-sm text-black font-semibold'>{lesson.title}</div>
+                              </div>
+                            </AccordionButton>
+                            <div className='flex items-center gap-2 h-full'>
+                              <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                                <AccordionIcon />
+                              </AccordionButton>
+                            </div>
+                          </div>
+                          <AccordionPanel className='px-4 py-2'>
+                            <div className='flex flex-col gap-2'>
+                              {lesson.blocks.map((block, index) => <div key={block.id} className='flex'>
+                                {<>
+                                  <div className='w-10 flex justify-center py-3'>
+                                    <PiArrowBendDownRightLight className='text-2xl font-bold' />
+                                  </div>
+                                  <div className='min-h-10 flex-1 rounded-lg py-1'>
+                                    <Accordion className='flex flex-col w-full pl-0' defaultIndex={[0]} allowMultiple>
+                                      <AccordionItem className='border-none pl-0' key={block.id}>
+                                        <div className='flex justify-between items-center rounded-lg h-10'>
+                                          <AccordionButton className='h-full hover:!bg-transparent pl-0 flex gap-2'>
+                                            <div className='flex flex-col items-start'>
+                                              <div className='text-sm text-black font-semibold' >Section {index + 1}: {block.title}</div>
+                                            </div>
+                                          </AccordionButton>
+                                          <div className='flex items-center gap-2 h-full'>
+                                            <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                                              <AccordionIcon />
+                                            </AccordionButton>
+                                          </div>
+                                        </div>
+                                        <AccordionPanel className='px-0 py-2'>
+                                          {block.content && <div>
+                                            <div dangerouslySetInnerHTML={{ __html: he.decode(block.content) }} />
+                                          </div>}
+                                        </AccordionPanel>
+                                      </AccordionItem>
+                                    </Accordion>
+                                  </div></>}
+                              </div>)}
+                            </div>
+                          </AccordionPanel>
+                        </AccordionItem>)}
+                      </Accordion>
+                    </div>
+                  </AccordionPanel>
+                </AccordionItem>)}
+              </Accordion>
+            </AccordionPanel>
+          </AccordionItem>}
           {/* <AccordionItem>
             <h2>
               <AccordionButton className='px-3'>
@@ -110,7 +192,7 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
             <AccordionPanel pb={4}>
               No assessments at this moment
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> */}
           <AccordionItem>
             <h2>
               <AccordionButton className='px-3'>
@@ -121,9 +203,9 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              Survey information goes here
+              {course && <CourseSurveyCard surveyId={course.survey} courseId={course.id} />}
             </AccordionPanel>
-          </AccordionItem> */}
+          </AccordionItem>
         </Accordion>
       </div>
     </div>

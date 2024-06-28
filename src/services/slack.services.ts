@@ -20,6 +20,12 @@ export const slackTokenExchangeWithToken = async (code: string, token: string): 
     }
   })
 
+export const facebookTokenExchangeWithToken = async (code: string): Promise<any> =>
+  http.post({
+    url: `whatsapp/token-exchange`,
+    body: { code },
+  })
+
 
 export const channelsList = async (): Promise<any> =>
   http.get({

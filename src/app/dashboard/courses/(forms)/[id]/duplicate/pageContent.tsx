@@ -66,7 +66,10 @@ export default function DuplicateCoursePage ({ courseId }: { courseId: string })
         duration: 2000,
         isClosable: true,
       })
-      let path = `/dashboard/courses/`
+      let path = `/dashboard/courses/${data.id}/builder/outline`
+      if (courseDetails?.data.bundle) {
+        path = `/dashboard/courses/${data.id}/builder/publish`
+      }
       router.push(path)
     },
   })
@@ -155,7 +158,7 @@ export default function DuplicateCoursePage ({ courseId }: { courseId: string })
               </div>}
             </div>
             <div className='justify-end flex mt-5'>
-              <button disabled={!form.isValid} type='submit' className='text-sm px-8 h-12 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Finish
+              <button type='submit' className='text-sm px-8 h-12 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Continue
                 {form.isSubmitting && <Spinner size={'sm'} />}
               </button>
             </div>

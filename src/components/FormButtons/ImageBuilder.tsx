@@ -13,19 +13,23 @@ import {
   Spinner,
 } from '@chakra-ui/react'
 import html2canvas from 'html2canvas'
+import { toPng } from "html-to-image"
 import * as Yup from 'yup'
 import React, { useEffect, useState } from 'react'
-import { useFormik } from 'formik'
 import uploadFile from '@/services/upload.service'
+import CustomHeaderImage from '../CustomHeaderImage'
+import { useAuthStore } from '@/store/auth.store'
 interface Props {
   imageText: string
   onFileUploaded: (url: string) => void
   label?: string
   title?: string
+  description?: string
 }
-export default function ImageBuilder ({ onFileUploaded, label = "Build image", title = "Build your course header image", imageText }: Props) {
+export default function ImageBuilder ({ onFileUploaded, label = "Build image", title = "Build your course header image", imageText, description }: Props) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [progress, setProgress] = useState(false)
+  const { team } = useAuthStore()
   const [bgImageUrls] = useState<{ url: string; name: string }[]>([
     {
       name: "Spiral lines I",
@@ -45,18 +49,6 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
     bgImage: "",
     bgPattern: "default-bg-spiral-3"
   })
-  function getContrastColor (hexColor: string) {
-    // Convert hex to RGB
-    const r = parseInt(hexColor.slice(1, 3), 16)
-    const g = parseInt(hexColor.slice(3, 5), 16)
-    const b = parseInt(hexColor.slice(5, 7), 16)
-
-    // Calculate luminance
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-
-    // Choose white or black based on luminance
-    return luminance > 0.5 ? '#000000' : '#ffffff'
-  }
 
   const saveBuiltImage = async function () {
     const divToCapture = document.getElementById('customHeaderImage')
@@ -65,24 +57,16 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
       const formData = new FormData()
       // get file url
       setProgress(true)
-      const canvas = await html2canvas(divToCapture, {
-        scale: 5
-      })
-
-      canvas.toBlob(async (blob) => {
-        if (blob) {
-          setProgress(true)
-          let timestamp = new Date().getTime()
-          const file = new File([blob], timestamp + '-header-image.jpeg', { type: 'image/jpeg' })
-          formData.append("file", file)
-          const { data } = await uploadFile(formData)
-          if (data) {
-            onFileUploaded(data)
-            onClose()
-          }
-          setProgress(false)
-        }
-      })
+      const data = await toPng(divToCapture)
+      const blob = await (await fetch(data)).blob()
+      let timestamp = new Date().getTime()
+      const file = new File([blob], timestamp + '-header-image.png', { type: 'image/png' })
+      formData.append("file", file)
+      const { data: uploadData } = await uploadFile(formData)
+      if (uploadData) {
+        onFileUploaded(uploadData)
+        onClose()
+      }
       setProgress(false)
     } else {
       throw new Error("No template image selected.")
@@ -126,11 +110,7 @@ export default function ImageBuilder ({ onFileUploaded, label = "Build image", t
                 </div>
               </div>
               <div className='w-8/12 h-full'>
-                <div id="customHeaderImage" style={{ backgroundColor: data.bgColor }} className={`h-full w-full flex justify-center items-center p-4 border rounded-none ${data.bgPattern} bg-cover`}>
-                  <div style={{ color: getContrastColor(data.bgColor) }} className='w-2/3 mt-5'>
-                    <h3 className='font-bold text-6xl'>{imageText}</h3>
-                  </div>
-                </div>
+                <CustomHeaderImage teamName={team?.name} description={description} bgPattern={data.bgPattern} imageText={imageText} bgColor={data.bgColor} />
               </div>
             </div>
           </DrawerBody>

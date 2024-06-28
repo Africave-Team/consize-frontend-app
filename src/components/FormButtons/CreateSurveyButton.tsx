@@ -29,7 +29,7 @@ const validationSchema = Yup.object({
   questions: Yup.array().of(questionSchema).min(1)
 })
 
-export default function CreateSurveyButton ({ onFinish }: { onFinish: () => void }) {
+export default function CreateSurveyButton ({ onFinish }: { onFinish: (createdSurveyId?: string) => void }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const toast = useToast()
   const form = useFormik<{ questions: SurveyQuestion[], title: string }>({
@@ -42,10 +42,10 @@ export default function CreateSurveyButton ({ onFinish }: { onFinish: () => void
       questions: []
     },
     async onSubmit (values, formikHelpers) {
-      await createSurveyRequest(values)
+      const res = await createSurveyRequest(values)
       onClose()
       formikHelpers.resetForm()
-      onFinish()
+      onFinish(res.data.id)
       toast({
         title: 'Finished',
         description: "Survey has been created",

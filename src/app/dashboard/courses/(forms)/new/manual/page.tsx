@@ -97,7 +97,7 @@ export default function page () {
                 <div className='w-[640px]'>
                   <div className='flex justify-between items-center'>
                     <label htmlFor="">Course header image</label>
-                    <ImageBuilder imageText={form.values.title} onFileUploaded={(val) => {
+                    <ImageBuilder imageText={form.values.title} title={form.values.description} onFileUploaded={(val) => {
                       form.setFieldValue("headerMedia.url", val)
                     }} label='Build header' />
                   </div>

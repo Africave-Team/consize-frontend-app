@@ -1,4 +1,5 @@
 "use client"
+import CourseSurveyCard from '@/components/Courses/CourseSurveyCard'
 import ViewCourseDetails from '@/components/Courses/ViewCourseDetails'
 import PhoneInput from '@/components/PhoneInput'
 import Layout from '@/layouts/PageTransition'
@@ -36,7 +37,7 @@ export default function page ({ params }: { params: { id: string } }) {
     })
 
   const updateMutation = useMutation({
-    mutationFn: (data: { id: string, payload: Partial<CreateCoursePayload> | Partial<Course> }) => updateCourse({
+    mutationFn: (data: { id: string, payload: Partial<CreateCoursePayload> }) => updateCourse({
       ...data.payload
     }, data.id)
   })
@@ -132,17 +133,16 @@ export default function page ({ params }: { params: { id: string } }) {
                     </div>
                     <div className='mt-1 text-sm'>You may set your course as private and it will only be visible to people you share it with. Public courses get listed on our public repository for potential students to discover</div>
                   </div>
-
-                  {!courseDetails.data.survey && <div>
+                  {/* {!courseDetails.data.survey && <div>
                     <button disabled={updateMutation.isPending} onClick={attachSurvey} className='bg-primary-dark h-12 rounded-md text-white font-medium w-full'>Attach default survey</button>
                     <div className='mt-1 text-sm'>This survey will be presented to your students at the end of the course to help gauge their opinions on this course.</div>
                   </div>}
                   {courseDetails.data.survey && <div>
                     <button disabled={updateMutation.isPending} onClick={detachSurvey} className='bg-primary-dark h-12 rounded-md text-white font-medium w-full'>Detatch default survey</button>
                     <div className='mt-1 text-sm'>This survey will no longer to sent to this course&apos;s students to gauge their acceptance of the course..</div>
-                  </div>}
+                  </div>} */}
 
-                  <div>
+                  {/* <div>
                     <div className='my-1 text-sm'>Do you want to try the course before publishing it?</div>
                     <div>
                       <Select onChange={(val) => setChannel(val.target.value)} className='h-12' value={channel}>
@@ -172,7 +172,7 @@ export default function page ({ params }: { params: { id: string } }) {
                       </button>
                     </div>}
 
-                  </div>
+                  </div> */}
 
                 </div>}
               </div>
