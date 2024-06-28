@@ -3,15 +3,17 @@ import Layout from '@/layouts/PageTransition'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Course } from '@/type-definitions/secure.courses'
-import { generateCourseOutlineAI } from '@/services/secure.courses.service'
+import { generateCourseOutlineFile } from '@/services/secure.courses.service'
 import { useRouter } from 'next/navigation'
 import { Spinner, useToast } from '@chakra-ui/react'
 import Link from 'next/link'
+import FileUploader from '@/components/FileUploader'
+import { FileTypes } from '@/type-definitions/utils'
 
 
 const validationSchema = Yup.object({
   title: Yup.string().required(),
-  lessonCount: Yup.number().required(),
+  files: Yup.array().of(Yup.string().required()),
 })
 
 export default function page () {
@@ -23,14 +25,14 @@ export default function page () {
     validateOnChange: true,
     initialValues: {
       title: "",
-      lessonCount: 5,
+      files: [],
       id: ""
     },
     onSubmit: async function (values, { setFieldValue }) {
       try {
-        const { data }: { data: Course } = await generateCourseOutlineAI({
+        const { data }: { data: Course } = await generateCourseOutlineFile({
           title: values.title,
-          lessonCount: values.lessonCount
+          files: values.files
         })
         toast({
           title: "Completed",
@@ -38,7 +40,7 @@ export default function page () {
           duration: 2000,
           isClosable: true,
         })
-        router.push(`/dashboard/courses/${data.id}/builder/ai/lessons`)
+        router.push(`/dashboard/courses/${data.id}/builder/ai/finish`)
       } catch (error) {
         console.log(error)
       }
@@ -67,10 +69,9 @@ export default function page () {
                   <label htmlFor="title">Course title *</label>
                   <input value={form.values.title} onChange={form.handleChange} onBlur={form.handleBlur} id="title" type="text" placeholder='Course title' className='h-12 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
                 </div>
-                <div>
-                  <label htmlFor="title">How many lessons do you want to generate? *</label>
-                  <input value={form.values.lessonCount} onChange={form.handleChange} onBlur={form.handleBlur} id="lessonCount" type="number" placeholder='Number of lessons' className='h-12 px-4 focus-visible:outline-none w-full rounded-lg border-2 border-[#0D1F23]' />
-                </div>
+                <FileUploader originalUrl={form.values.files} mimeTypes={[FileTypes.PDF]} droppable={false} onUploadComplete={(val) => {
+                  form.setFieldValue("files", val)
+                }} previewable={true} buttonOnly={true} multiple={true} />
 
                 <div className='justify-end gap-2 flex'>
                   <Link href="/dashboard/courses/new/methods" className='text-sm px-7 h-12 border items-center justify-center text-primary-dark font-medium bg-white flex gap-1 rounded-3xl'>

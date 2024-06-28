@@ -32,6 +32,12 @@ export const generateCourseOutlineAI = async (payload: { title: string, lessonCo
     body: { ...payload }
   })
 
+export const generateCourseOutlineFile = async (payload: { title: string, files: string[], jobId?: string }): Promise<any> =>
+  http.post({
+    url: `courses/ai/generate-outline-from-file`,
+    body: { ...payload }
+  })
+
 export const updateCourse = async (payload: Partial<CreateCoursePayload>, id: string): Promise<any> =>
   http.put({
     url: `courses/${id}`,
