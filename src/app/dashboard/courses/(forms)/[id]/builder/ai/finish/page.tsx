@@ -11,6 +11,8 @@ import { FiEdit3, FiTrash2 } from 'react-icons/fi'
 import EditBlockForm from '@/components/FormButtons/EditBlock'
 import { MediaType } from '@/type-definitions/secure.courses'
 import Link from 'next/link'
+import Countdown, { zeroPad } from 'react-countdown'
+import moment from 'moment'
 
 interface FinalResult {
   section: {
@@ -132,13 +134,20 @@ export default function page ({ params }: { params: { id: string } }) {
             </div>
 
             <div className='w-3/5 mt-8 border border-[#D8E0E9] shadow p-6 rounded-lg'>
+              <div className='flex justify-between items-center h-10 w-full'>
+                <div className='font-semibold text-lg'>Lessons</div>
+                {(isLoading || job?.status === "RUNNING" || job?.status === "RETRYING") && <div className='flex justify-center'>
+                  <Countdown date={moment().add(30, 'minutes').valueOf()} renderer={({ minutes, seconds }) => (
+                    <div className='text-sm'>
+                      {minutes} minutes, {zeroPad(seconds)} seconds
+                    </div>
+                  )} />
+                </div>}
+              </div>
               {isLoading ? <div className='flex flex-col gap-2'>
                 <Skeleton className='h-14 w-full rounded-lg' />
                 <Skeleton className='h-14 w-full rounded-lg' />
               </div> : job && <div>
-                <div className='flex justify-between items-center h-10 w-full'>
-                  <div className='font-semibold text-lg'>Lessons</div>
-                </div>
                 <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
                   {job.progress && Object.entries(job.progress).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
                     <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>

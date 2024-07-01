@@ -119,7 +119,7 @@ export default function CourseSurveyCard ({ courseId, surveyId }: { courseId: st
               <FiTrash2 />
             </button>
           </div>}
-          {!surveyDetails || !surveyDetails.data && <div onClick={onOpen} className='text-sm cursor-pointer font-medium'>Click here to set a survey for this course</div>}
+          {!surveyDetails || !surveyDetails.data && <div onClick={onOpen} className='text-sm cursor-pointer text-center font-medium'>Add survey</div>}
         </div>
       }
 
