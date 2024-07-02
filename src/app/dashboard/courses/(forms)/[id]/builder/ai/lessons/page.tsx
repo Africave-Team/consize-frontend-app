@@ -9,6 +9,7 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { createCourseAI, generateCourseOutlineAI } from '@/services/secure.courses.service'
 import { FiEdit3 } from 'react-icons/fi'
 import Link from 'next/link'
+import Countdown, { zeroPad } from 'react-countdown'
 interface JobData {
   title: string
   start: string | null
