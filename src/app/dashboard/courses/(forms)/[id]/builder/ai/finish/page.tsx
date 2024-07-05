@@ -3,7 +3,7 @@ import Layout from '@/layouts/PageTransition'
 import { getDatabase, ref, onValue, off } from "firebase/database"
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PiArrowBendDownRightLight } from "react-icons/pi"
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Skeleton, Spinner } from '@chakra-ui/react'
 import { generateCourseOutlineAI } from '@/services/secure.courses.service'
@@ -79,6 +79,7 @@ export default function page ({ params }: { params: { id: string } }) {
   const [job, setJob] = useState<JobData | null>(null)
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
   const [isLoading, setLoading] = useState<boolean>(false)
+  const timerRef = useRef(moment().add(30, 'minutes').valueOf())
   useEffect(() => {
     let app: any
     if (getApps().length === 0) {
@@ -137,7 +138,7 @@ export default function page ({ params }: { params: { id: string } }) {
               <div className='flex justify-between items-center h-10 w-full'>
                 <div className='font-semibold text-lg'>Lessons</div>
                 {(isLoading || job?.status === "RUNNING" || job?.status === "RETRYING") && <div className='flex justify-center'>
-                  <Countdown date={moment().add(30, 'minutes').valueOf()} renderer={({ minutes, seconds }) => (
+                  <Countdown date={timerRef.current} renderer={({ minutes, seconds }) => (
                     <div className='text-sm'>
                       {minutes} minutes, {zeroPad(seconds)} seconds
                     </div>
@@ -149,7 +150,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 <Skeleton className='h-14 w-full rounded-lg' />
               </div> : job && <div>
                 <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
-                  {job.progress && Object.entries(job.progress).map(([key, value], index) => <AccordionItem className='border-none' key={key}>
+                  {job.progress && Object.entries(job.progress).reverse().map(([key, value], index) => <AccordionItem className='border-none' key={key}>
                     <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
                       <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
                         <div className='flex flex-col items-start'>
@@ -167,7 +168,7 @@ export default function page ({ params }: { params: { id: string } }) {
                     </div>
                     <AccordionPanel className='px-0 py-2'>
                       <div className='flex flex-col gap-2'>
-                        {value && Object.entries(value).map(([key, value], index) => <div key={key} className='flex'>
+                        {value && Object.entries(value).reverse().map(([key, value], index) => <div key={key} className='flex'>
                           {<>
                             <div className='w-10 flex justify-center py-3'>
                               <PiArrowBendDownRightLight className='text-2xl font-bold' />
