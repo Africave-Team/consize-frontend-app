@@ -60,9 +60,9 @@ export default function page () {
                   Upload your existing course material - PDF, PPT or doc and our AI shall create a micro course using the same. Even a few line of thoughts jotted down in a doc shall be enough to get you started, and you can edit it afterwards on our platform.
                 </div>
               </div>
-              <button disabled className='w-full bg-[#1FFF6999] text-[#0D1F23] disabled:bg-gray-300 hover:bg-[#1FFF6999]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
-                Upload documents (coming soon)
-              </button>
+              <Link href="/dashboard/courses/new/document-upload" className='w-full bg-[#1FFF6999] text-[#0D1F23] disabled:bg-gray-300 hover:bg-[#1FFF6999]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
+                Upload documents
+              </Link>
             </div>
           </div>
           <div className='md:h-0 h-[250px]'></div>

@@ -1,18 +1,12 @@
 "use client"
-import CustomTinyMCEEditor from '@/components/CustomTinyEditor'
-import FileUploader from '@/components/FileUploader'
-import ImageBuilder from '@/components/FormButtons/ImageBuilder'
 import Layout from '@/layouts/PageTransition'
-import { FileTypes } from '@/type-definitions/utils'
-import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { Course, MediaType } from '@/type-definitions/secure.courses'
-import { createCourse, createCourseAI, generateCourseOutlineAI } from '@/services/secure.courses.service'
+import { Course } from '@/type-definitions/secure.courses'
+import { generateCourseOutlineAI } from '@/services/secure.courses.service'
 import { useRouter } from 'next/navigation'
 import { Spinner, useToast } from '@chakra-ui/react'
 import Link from 'next/link'
-import { delay } from '@/utils/tools'
 
 
 const validationSchema = Yup.object({
