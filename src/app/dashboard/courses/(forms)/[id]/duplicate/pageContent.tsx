@@ -147,8 +147,8 @@ export default function DuplicateCoursePage ({ courseId }: { courseId: string })
               </div>
             </Editable>
             <div className=''>
-              {form.values.headerMedia.url.startsWith('https://') && <div className='h-96 rounded-md w-full group relative'>
-                <img src={form.values.headerMedia.url} className='h-full w-full rounded-md absolute left-0 top-0' />
+              <div className='h-96 rounded-md w-full group relative'>
+                {form.values.headerMedia.url.startsWith('https://') ? <img src={form.values.headerMedia.url} className='h-full w-full rounded-md absolute left-0 top-0' /> : <div className='h-full bg-gray-100'></div>}
                 <div className='absolute top-4 right-4 hidden gap-2 group-hover:flex'>
                   <FileUploader buttonOnly={true} originalUrl={form.values.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={(val) => {
                     form.setFieldValue("headerMedia.url", val)
@@ -157,7 +157,7 @@ export default function DuplicateCoursePage ({ courseId }: { courseId: string })
                     form.setFieldValue("headerMedia.url", val)
                   }} label='Generate Image' />
                 </div>
-              </div>}
+              </div>
             </div>
             <div className='justify-end flex mt-5'>
               <button type='submit' className='text-sm px-8 h-12 border items-center justify-center text-white bg-[#0D1F23] flex gap-1 disabled:bg-[#0D1F23]/60 rounded-lg'>Continue
