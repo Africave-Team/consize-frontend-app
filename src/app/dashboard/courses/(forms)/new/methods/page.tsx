@@ -4,13 +4,14 @@ import Layout from '@/layouts/PageTransition'
 import { useRouter } from 'next/navigation'
 import AIIcon from '@/components/icons/AI'
 import Link from 'next/link'
+import LibrarySelector from '@/components/FormButtons/LibrarySelector'
 
 export default function page () {
   const router = useRouter()
   return (
     <Layout>
-      <div className='flex-1 flex justify-center md:py-10'>
-        <div className='px-4 w-full md:w-4/5'>
+      <div className='h-full  flex justify-center md:py-10'>
+        <div className='px-4 w-full md:w-4/5 h-full overflow-y-scroll'>
           <div className='flex py-5 justify-between md:items-center md:flex-row flex-col gap-1'>
             <div className='font-semibold md:text-2xl text-xl'>
               Start here
@@ -20,8 +21,8 @@ export default function page () {
               how you would like to get started.
             </div>
           </div>
-          <div className='w-full flex md:flex-row flex-col gap-3'>
-            <div className='w-full p-3 md:w-1/3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
+          <div className='w-full grid grid-cols-1 md:grid-cols-3 gap-3'>
+            <div className='w-full p-3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
               <div className='bg-[url(/ai-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
               </div>
               <div className='h-[180px]'>
@@ -38,7 +39,7 @@ export default function page () {
                 </div>
               </Link>
             </div>
-            <div className='w-full p-3 md:w-1/3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
+            <div className='w-full p-3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
               <div className='bg-[url(/scratch-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
               </div>
               <div className='h-[180px]'>
@@ -51,7 +52,7 @@ export default function page () {
                 Start from scratch
               </Link>
             </div>
-            <div className='w-full p-3 md:w-1/3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
+            <div className='w-full p-3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
               <div className='bg-[url(/doc-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
               </div>
               <div className='h-[180px]'>
@@ -63,6 +64,18 @@ export default function page () {
               <Link href="/dashboard/courses/new/document-upload" className='w-full bg-[#1FFF6999] text-[#0D1F23] disabled:bg-gray-300 hover:bg-[#1FFF6999]/70 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'>
                 Upload documents
               </Link>
+            </div>
+
+            <div className='w-full p-3 h-[400px] border-4 hover:border-[#1FFF6999] hover:border-4 rounded-xl flex flex-col gap-2'>
+              <div className='bg-[url(/ai-method.png)] bg-no-repeat bg-cover bg-center h-[200px] rounded-md'>
+              </div>
+              <div className='h-[180px]'>
+                <h2 className='text-lg font-medium'>Choose one from our library</h2>
+                <div className='text-sm mt-1'>
+                  Search our extensive course library to find a course that closely resembles what you want and just edit it to match your requirements
+                </div>
+              </div>
+              <LibrarySelector />
             </div>
           </div>
           <div className='md:h-0 h-[250px]'></div>
