@@ -28,7 +28,7 @@ const validationSchema = Yup.object({
   }).required()
 })
 
-export default function DuplicateCoursePage ({ courseId }: { courseId: string }) {
+export default function CreateCourseFromTemplatePage ({ courseId }: { courseId: string }) {
   const loadData = async function (payload: { course: string }) {
     const data = await fetchSingleCourse(payload.course)
     return data
@@ -60,7 +60,7 @@ export default function DuplicateCoursePage ({ courseId }: { courseId: string })
         title: values.title
       }, courseId)
       toast({
-        description: message,
+        description: "Course created successfully",
         title: "Completed",
         status: 'success',
         duration: 2000,

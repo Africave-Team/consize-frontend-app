@@ -1,7 +1,7 @@
 'use client'
 import { fetchPublishedCourses } from '@/services/public.courses.service'
 import { Course } from '@/type-definitions/secure.courses'
-import { Skeleton } from '@chakra-ui/react'
+import { Skeleton, Spinner } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import he from "he"
@@ -11,6 +11,8 @@ import { useNavigationStore } from '@/store/navigation.store'
 import { useRouter } from 'next/navigation'
 import MainFooter from '@/components/navigations/MainFooter'
 import Link from 'next/link'
+import { useFormik } from 'formik'
+import { FaSearch } from 'react-icons/fa'
 
 
 interface ApiResponse {
@@ -32,19 +34,47 @@ export default function PublicCourses () {
     setPageTitle("Consize - Courses")
   }, [])
 
-  const loadData = async function (payload: { pageParam: number }) {
+  const form = useFormik({
+    initialValues: {
+      search: ""
+    },
+    onSubmit: async function () {
+
+    },
+  })
+
+  const loadData = async function (payload: { pageParam: number, search?: string }) {
     const pageSize = 9
-    const data = await fetchPublishedCourses({ page: payload.pageParam, pageSize })
+    const data = await fetchPublishedCourses({ page: payload.pageParam, pageSize, search: payload.search })
     return data
   }
 
   const { data: courseResults, isFetching, refetch } =
     useQuery<ApiResponse>({
-      queryKey: ['courses', { page }],
-      queryFn: () => loadData({ pageParam: page })
+      queryKey: ['courses', { page, search: form.values.search }],
+      queryFn: () => loadData({ pageParam: page, search: form.values.search })
     })
   return <Layout>
     <div className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
+      <div className='flex mt-3 mb-5 justify-between flex-col md:px-10 px-5 md:flex-row md:items-center'>
+        <div className=''>
+          <h1 className='font-semibold text-lg'>Courses</h1>
+          <p className='text-sm text-[#64748B]'>{courseResults?.data.length || 0} results on consize</p>
+        </div>
+        <form className='w-full md:w-1/2 border' onSubmit={form.handleSubmit}>
+          {/* search form here */}
+          <div className='relative'>
+            <div onClick={() => document.getElementById('search')?.focus()} className='pl-12 absolute top-0 left-0 flex h-14 font-semibold items-center text-base'>{form.values.search.length === 0 ? 'Search courses' : ''}</div>
+            <input onChange={form.handleChange} onBlur={form.handleBlur} name="search" value={form.values.search} placeholder='' id="search" type="text" className={`w-full bg-white  h-14 pl-12 pr-5 border font-semibold text-lg focus-visible:outline-[#0D1F23]`} />
+            <div className='absolute left-0 top-0 h-14 w-12 flex justify-center items-center'>
+              <FaSearch className='text-xl' />
+            </div>
+            <div className='absolute right-0 top-0 h-14 w-12 flex justify-center items-center'>
+              {isFetching && <Spinner size={'md'} className='text-xl' />}
+            </div>
+          </div>
+        </form>
+      </div>
       {isFetching ? <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-3 px-10 py-5`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
@@ -65,15 +95,11 @@ export default function PublicCourses () {
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
       </div> : <div className='h-[100vh] py-5'>
-        <div className='mb-3 md:px-10 px-5'>
-          <h1 className='font-semibold text-lg'>Courses</h1>
-          <p className='text-sm text-[#64748B]'>{courseResults?.data.length} results on consize</p>
-        </div>
         <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-3`}>
 
           {courseResults?.data.map((course) => <Link href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
-            <div className='h-60 border rounded-t-lg'>
-              <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />
+            <div className='h-60 border rounded-t-lg bg-gray-100'>
+              {course.headerMedia && course.headerMedia.url && <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />}
             </div>
             <div className='px-2 py-1'>
               <div className='text-base font-semibold'>{course.title}</div>

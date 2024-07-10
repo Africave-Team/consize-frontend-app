@@ -61,6 +61,12 @@ export const searchCourses = async (payload: { search: string, filter?: string }
     query: payload
   })
 
+export const findLibraryCourses = async (payload: { search: string, library: 0 | 1 }): Promise<any> =>
+  http.get({
+    url: `courses/public/all`,
+    query: payload
+  })
+
 
 // lessons
 export const fetchSingleLesson = async (course: string, lesson: string): Promise<any> =>

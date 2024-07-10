@@ -55,6 +55,7 @@ export interface PaginationPayload {
   page: number
   pageSize: number
   filter: string
+  search?: string
 }
 
 
