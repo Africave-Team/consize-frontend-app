@@ -25,7 +25,6 @@ export default function LibrarySelector () {
       search: ""
     },
     onSubmit: async function () {
-      onClose()
     },
   })
 
@@ -161,6 +160,31 @@ export default function LibrarySelector () {
                                               <AccordionPanel className='px-0 py-2'>
                                                 {block.content && <div>
                                                   <div dangerouslySetInnerHTML={{ __html: block.content }} />
+                                                </div>}
+                                                {block.quiz && <div>
+                                                  <div>
+                                                    <label className='font-semibold text-sm' htmlFor="">Question</label>
+                                                    <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(block.quiz.question) }} />
+                                                  </div>
+
+
+                                                  <div>
+                                                    <label className='font-semibold text-sm' htmlFor="">Choices</label>
+                                                    <div className='text-sm'>A: Yes</div>
+                                                    <div className='text-sm'>B: No</div>
+                                                  </div>
+                                                  <div>
+                                                    <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
+                                                    <div className='text-sm'>{["Yes", "No"][block.quiz.correctAnswerIndex]}</div>
+                                                  </div>
+                                                  <div>
+                                                    <label className='font-semibold text-sm' htmlFor="">Message to send when they get it correctly</label>
+                                                    <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(block.quiz.correctAnswerContext) }} />
+                                                  </div>
+                                                  <div>
+                                                    <label className='font-semibold text-sm' htmlFor="">Message to send when they get it wrong</label>
+                                                    <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(block.quiz.wrongAnswerContext) }} />
+                                                  </div>
                                                 </div>}
                                               </AccordionPanel>
                                             </AccordionItem>
