@@ -56,8 +56,8 @@ export default function PublicCourses () {
     })
   return <Layout>
     <div className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
-      <div className='flex justify-between flex-col md:px-10 px-5 md:flex-row md:items-center'>
-        <div className='mb-3'>
+      <div className='flex mt-3 mb-5 justify-between flex-col md:px-10 px-5 md:flex-row md:items-center'>
+        <div className=''>
           <h1 className='font-semibold text-lg'>Courses</h1>
           <p className='text-sm text-[#64748B]'>{courseResults?.data.length || 0} results on consize</p>
         </div>
