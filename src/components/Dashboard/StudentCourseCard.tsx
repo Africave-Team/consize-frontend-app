@@ -26,8 +26,8 @@ export default function StudentCourseCard ({ courseId, studentId }: { courseId: 
       queryFn: () => loadData({ course: courseId })
     })
   return (
-    <div>
+    <>
       {preferredListStyle === ListStyle.GRID ? courseDetails ? <GridItem studentId={studentId} course={courseDetails.data} /> : <></> : courseDetails ? <RowItem studentId={studentId} course={courseDetails.data} /> : <></>}
-    </div>
+    </>
   )
 }
