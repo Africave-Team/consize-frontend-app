@@ -55,6 +55,7 @@ export default function page ({ params }: { params: { id: string } }) {
       onValue(path, async (snapshot) => {
         const data: JobData = await snapshot.val()
         setJob(data)
+        console.log(data)
         setLoading(false)
       })
     }

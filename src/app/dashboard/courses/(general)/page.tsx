@@ -39,10 +39,8 @@ export default function page () {
   const [page, setPage] = useState(1)
   const [type, setType] = useState<PageType>(PageType.ALL)
 
-  const router = useRouter()
-
   const loadData = async function (payload: { pageParam: number, filter: string }) {
-    const pageSize = 10
+    const pageSize = 12
     const data = await fetchCourses({ page: payload.pageParam, pageSize, filter: payload.filter })
     return data
   }
