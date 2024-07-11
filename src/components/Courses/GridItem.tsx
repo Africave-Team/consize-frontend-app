@@ -34,7 +34,7 @@ export default function GridItem ({ course, studentId }: { course: Course, stude
   }, [course.id])
   return (
     <div className='min-h-56 border-2 cursor-pointer rounded-lg hover:border-[#0D1F23]'>
-      <div className='h-40 bg-black w-full rounded-t-lg relative'>
+      <div className='h-40 mb-2 bg-black w-full rounded-t-lg relative'>
         {course.headerMedia && course.headerMedia.url && <Link href={!studentId ? `/dashboard/courses/${course.id}` : `/dashboard/courses/${course.id}/enrollments/${studentId}`}>
           <img src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute rounded-t-lg' alt="" />
         </Link>}
@@ -44,9 +44,11 @@ export default function GridItem ({ course, studentId }: { course: Course, stude
           </div>
         </div>}
       </div>
-      <Link href={!studentId ? `/dashboard/courses/${course.id}` : `/dashboard/courses/${course.id}/enrollments/${studentId}`} className='w-full h-16 p-2 font-semibold'>
-        {course.title}
-      </Link>
+      <div className='w-full overflow-hidden whitespace-nowrap text-ellipsis p-2 font-semibold'>
+        <Link href={!studentId ? `/dashboard/courses/${course.id}` : `/dashboard/courses/${course.id}/enrollments/${studentId}`} className=''>
+          {course.title}
+        </Link>
+      </div>
       {!studentId && <Link href={`/dashboard/courses/${course.id}`} className='w-full p-2 flex gap-4 items-center text-sm'>
         {(course.status === CourseStatus.COMPLETED || course.status === CourseStatus.PUBLISHED) && <>
           <div className=''>

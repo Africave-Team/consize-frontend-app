@@ -132,6 +132,7 @@ export default function page ({ params }: { params: { id: string } }) {
           if (data.progress) {
             setLoading(false)
           }
+          console.log(data)
         }
       })
     }
@@ -184,7 +185,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 <Skeleton className='h-14 w-full rounded-lg' />
               </div> : job && <div>
                 <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
-                  {job.progress && Object.keys(job.progress).map((key, index) => {
+                  {job.progress && Object.keys(job.progress).filter(e => !isNaN(Number(e))).map((key, index) => {
                     const lessonData = job.progress[key]
                     const lessonName = Object.keys(lessonData)[0]
                     const sections = lessonData[lessonName]
@@ -210,8 +211,49 @@ export default function page ({ params }: { params: { id: string } }) {
                         </div>
                         <AccordionPanel className='px-0 py-2'>
                           <div className='flex flex-col gap-2'>
-                            {sections && Object.entries(sections).map(([key, value], index) => {
-                              const sectionData = sections[key]
+                            {sections && Array.isArray(sections) ? <>
+                              {sections.map((value, index) => {
+                                const sectionName = Object.keys(value)[0]
+                                const section = value[sectionName]
+                                return (
+                                  <div key={sectionName} className='flex'>
+                                    {<>
+                                      <div className='w-10 flex justify-center py-3'>
+                                        <PiArrowBendDownRightLight className='text-2xl font-bold' />
+                                      </div>
+                                      <div className='min-h-10 flex-1 rounded-lg py-1'>
+                                        <Accordion className='flex flex-col w-full pl-0' defaultIndex={[0]} allowMultiple>
+                                          <AccordionItem className='border-none pl-0' key={sectionName}>
+                                            <div className='flex justify-between items-center rounded-lg h-10'>
+                                              <AccordionButton className='h-full hover:!bg-transparent pl-0 flex gap-2'>
+                                                <div className='flex flex-col items-start'>
+                                                  <div className='text-sm text-black font-semibold' >Section {index + 1}: {sectionName}</div>
+                                                </div>
+                                              </AccordionButton>
+                                              <div className='flex items-center gap-2 h-full'>
+                                                {section && (section.status === "RUNNING" || section.status === "RETRYING") ? <Spinner className='mr-5' size={'sm'} /> : <>
+                                                  <button className='h-8 w-8 rounded-full bg-gray-100 flex justify-center items-center'>
+                                                    <FiTrash2 />
+                                                  </button>
+                                                  <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                                                    <AccordionIcon />
+                                                  </AccordionButton>
+                                                </>}
+                                              </div>
+                                            </div>
+                                            {section && section.status === "FINISHED" && section.result && <AccordionPanel className='px-0 py-2'>
+                                              {section.result.section && <div>
+                                                <div dangerouslySetInnerHTML={{ __html: section.result.section.sectionContent }} />
+                                              </div>}
+                                            </AccordionPanel>}
+                                          </AccordionItem>
+                                        </Accordion>
+                                      </div></>}
+                                  </div>
+                                )
+                              })}
+                            </> : Object.entries(sections).map(([_, value], index) => {
+                              const sectionData = value
                               const sectionName = Object.keys(sectionData)[0]
                               const section = sectionData[sectionName]
                               return (

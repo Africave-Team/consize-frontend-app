@@ -131,6 +131,15 @@ export default function WholeForm (params: { id: string }) {
       verifyPhoneForm.resetForm()
       completeVerifyPhoneForm.resetForm()
       setEnrolled(true)
+    },
+    onError: (error) => {
+      toast({
+        title: 'Enrollment failed.',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
     }
   })
 
