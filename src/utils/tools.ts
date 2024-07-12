@@ -4,3 +4,5 @@ export function delay (ms: number) {
     setTimeout(resolve, ms)
   })
 }
+
+export const COOKIE_AUTH_KEY = "CONSIZE:AUTH:COOKIE"
