@@ -11,7 +11,7 @@ interface DataInterface {
 export default function PageContents ({ details }: { details: DataInterface }) {
   return (
     <div className="h-screen w-screen overflow-y-scroll flex justify-center items-center">
-      <div className="course-header h-[60vh] w-[60vw]">
+      <div className="course-header">
         <CustomHeaderImage bgColor='#27107a' bgPattern='default-bg-spiral-3' imageText={details.courseName} description={details.description} teamName={details.organizationName} />
       </div>
     </div>
