@@ -6,6 +6,8 @@ import { firebaseConfig } from '@/utils/rtdb-config'
 import CourseMenu from './CourseMenu'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { GoStack } from 'react-icons/go'
+import { FiBookOpen } from 'react-icons/fi'
 
 export default function GridItem ({ course, studentId }: { course: Course, studentId?: string }) {
   const [stats, setStats] = useState<CourseStatistics | null>(null)
@@ -38,7 +40,9 @@ export default function GridItem ({ course, studentId }: { course: Course, stude
         {course.headerMedia && course.headerMedia.url && <Link href={!studentId ? `/dashboard/courses/${course.id}` : `/dashboard/courses/${course.id}/enrollments/${studentId}`}>
           <img src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute rounded-t-lg' alt="" />
         </Link>}
-        {!studentId && <div className='absolute top-0 right-0 h-20 w-20'>
+        {!studentId && <div className='absolute top-0 right-0 h-14 min-w-20 flex items-center'>
+          {!course.bundle ? <FiBookOpen className='text-sm text-white' /> :
+            <GoStack className='text-sm text-white' />}
           <div className='flex justify-end px-3 py-2'>
             <CourseMenu course={course} />
           </div>

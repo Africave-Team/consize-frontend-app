@@ -101,7 +101,7 @@ export default function page () {
                       form.setFieldValue("headerMedia.url", val)
                     }} label='Build header' />
                   </div>
-                  <FileUploader originalUrl={form.values.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={(val) => {
+                  <FileUploader header={true} originalUrl={form.values.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={(val) => {
                     form.setFieldValue("headerMedia.url", val)
                   }} previewable={true} />
                 </div>

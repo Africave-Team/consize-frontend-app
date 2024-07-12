@@ -15,9 +15,10 @@ interface Props {
   previewable?: boolean
   buttonOnly?: boolean
   multiple?: boolean
+  header?: boolean
 
 }
-export default function FileUploader ({ droppable, mimeTypes, previewable, originalUrl, onUploadComplete, buttonOnly, multiple }: Props) {
+export default function FileUploader ({ droppable, mimeTypes, previewable, originalUrl, onUploadComplete, buttonOnly, multiple, header }: Props) {
   const [accept, setAccept] = useState({})
   const [fileType, setFileType] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -25,20 +26,58 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
 
   const maxFileSize = 15 * 1024 * 1024
 
+  const checkAspectRatio = (file: File): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      const minAspectRatio = 0.5 // for example, height/width >= 0.5
+      const maxAspectRatio = 2 // for example, height/width <= 2
+      reader.onload = (e) => {
+        const img = new Image()
+        img.onload = () => {
+          const width = img.width
+          const height = img.height
+          const aspectRatio = height / width
+          if (aspectRatio < minAspectRatio || aspectRatio > maxAspectRatio) {
+            toast({
+              title: "Error",
+              description: 'Image aspect ratio is not within the allowed range',
+              status: "error"
+            })
+            reject(new Error('Image aspect ratio is not within the allowed range'))
+          } else {
+            resolve()
+          }
+        }
+        img.src = e.target?.result as string
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     let files: File[] = []
     for (let file of acceptedFiles) {
-      if (file.size > maxFileSize) {
-        toast({
-          title: "Error",
-          description: 'File size exceeds the maximum allowed size',
-          status: "error"
-        })
-        return
-      }
       if (file) {
-        files.push(file)
+        if (file.size > maxFileSize) {
+          toast({
+            title: "Error",
+            description: 'File size exceeds the maximum allowed size',
+            status: "error"
+          })
+          return
+        }
+        if (header) {
+          try {
+            await checkAspectRatio(file)
+            files.push(file)
+          } catch (error) {
+          }
+        } else {
+          files.push(file)
+        }
       }
+    }
+    if (files.length > 0) {
       setIsLoading(true)
       let urls: string[] = []
       await Promise.all(files.map(async (file) => {
@@ -104,7 +143,6 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
             {!buttonOnly && !multiple && <div className='h-10 truncate overflow-hidden flex-1 text-sm px-3 flex items-center'>
               {!Array.isArray(originalUrl) && originalUrl.length > 0 ? <a href={originalUrl} target="_blank" rel="noopener noreferrer">Preview</a> : 'No file selected'} <div className='w-10'></div>
             </div>}
-
             <input id="upload" name="upload" {...getInputProps()} />
           </div> : <div className='h-full w-full'>
             <div
@@ -120,10 +158,12 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
                 <div className='text-center mt-3 font-semibold flex flex-col text-sm'>
                   <div>Choose {mimeTypes.length === 3 ? `a .png, .jpg, .jpeg or .mp4` : 'a'} file </div>
                   <div>or drag & drop it here</div>
+
                 </div>
               </div>
             </div>
           </div>}
+          {header && !buttonOnly && <div className='text-sm'>Best to upload images of dimensions close to 1500 × 840</div>}
         </div>
       </div>
       {(!Array.isArray(originalUrl) && originalUrl.length > 0 && originalUrl.startsWith('https')) && previewable ? <>

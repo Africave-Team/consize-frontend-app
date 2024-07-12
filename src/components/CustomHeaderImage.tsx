@@ -15,7 +15,7 @@ export default function CustomHeaderImage ({ bgColor, imageText, bgPattern, team
     return luminance > 0.5 ? '#000000' : '#ffffff'
   }
   return (
-    <div id="customHeaderImage" style={{ backgroundColor: bgColor }} className={`h-full w-full overflow-visible box-border flex items-center p-4 border rounded-none ${bgPattern} bg-cover`}>
+    <div id="customHeaderImage" style={{ backgroundColor: bgColor }} className={`h-[350px] w-[720px] overflow-visible box-border flex items-center p-4 border rounded-none ${bgPattern} bg-cover`}>
       <div style={{ color: getContrastColor(bgColor) }} className='text-start w-4/5 px-5 py-10'>
         {teamName && <div>{teamName}</div>}
         <h3 className='font-bold text-3xl'>{imageText}</h3>

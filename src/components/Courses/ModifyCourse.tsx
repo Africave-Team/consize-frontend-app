@@ -85,7 +85,7 @@ export default function ModifyCourse ({ course, full, onFinish }: { course: Cour
                 form.setFieldValue("headerMedia.url", val)
               }} label='Build header' description={form.values.description} />
             </div>
-            <FileUploader originalUrl={form.values.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={(val) => {
+            <FileUploader header={true} originalUrl={form.values.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={(val) => {
               form.setFieldValue("headerMedia.url", val)
             }} previewable={true} />
           </div>
