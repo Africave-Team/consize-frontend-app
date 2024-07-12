@@ -6,6 +6,8 @@ import { firebaseConfig } from '@/utils/rtdb-config'
 import CourseMenu from './CourseMenu'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { FiBookOpen } from 'react-icons/fi'
+import { GoStack } from 'react-icons/go'
 
 
 export default function RowItem ({ course, studentId }: { course: Course, studentId?: string }) {
@@ -58,7 +60,8 @@ export default function RowItem ({ course, studentId }: { course: Course, studen
             </div>
           </>}
         </Link>
-
+        {!course.bundle ? <FiBookOpen title='Course' className='text-lg ' /> :
+          <GoStack title='Bundle' className='text-lg ' />}
         <CourseMenu course={course} />
       </div>}
 

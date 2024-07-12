@@ -1,13 +1,29 @@
-import { Course, CourseStatus } from '@/type-definitions/secure.courses'
-import React from 'react'
+import { Course, CourseStatus, CreateCoursePayload } from '@/type-definitions/secure.courses'
+import React, { useState } from 'react'
 import he from "he"
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Tooltip } from '@chakra-ui/react'
 import CourseMenu from './CourseMenu'
 import { FiUploadCloud } from 'react-icons/fi'
 import { PiArrowBendDownRightLight } from 'react-icons/pi'
 import CourseSurveyCard from './CourseSurveyCard'
+import ImageBuilder from '../FormButtons/ImageBuilder'
+import FileUploader from '../FileUploader'
+import { FileTypes } from '@/type-definitions/utils'
+import { useMutation } from '@tanstack/react-query'
+import { updateCourse } from '@/services/secure.courses.service'
+import { queryClient } from '@/utils/react-query'
 
-export default function ViewCourseDetails ({ course }: { course: Course }) {
+export default function ViewCourseDetails ({ course, editablePhoto }: { course: Course, editablePhoto?: boolean }) {
+
+  const [courseInfo, setCourseInfo] = useState(course)
+  const updateMutation = useMutation({
+    mutationFn: (data: { id: string, payload: Partial<CreateCoursePayload> }) => updateCourse({
+      ...data.payload
+    }, data.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['course', course.id] })
+    }
+  })
   return (
     <div className='min-h-40'>
       <div className='h-10 w-full border rounded-t flex justify-between items-center'>
@@ -28,8 +44,44 @@ export default function ViewCourseDetails ({ course }: { course: Course }) {
           <CourseMenu single={true} course={course} />
         </div>
       </div>
-      <div className='h-96'>
-        <img src={course.headerMedia.url} className='w-full h-full' alt="" />
+      <div className='h-96 relative group'>
+        <img src={courseInfo.headerMedia.url} className='w-full h-full absolute' alt="" />
+        {editablePhoto && <div className='absolute right-0 h-14 min-w-32 p-2 group-hover:flex hidden gap-3'>
+          <FileUploader header={true} originalUrl={course.headerMedia.url} mimeTypes={[FileTypes.IMAGE]} droppable={false} onUploadComplete={async (val) => {
+            if (!Array.isArray(val)) {
+              setCourseInfo({
+                ...course, headerMedia: {
+                  mediaType: course.headerMedia.mediaType,
+                  url: val
+                }
+              })
+              await updateMutation.mutateAsync({
+                id: course.id, payload: {
+                  headerMedia: {
+                    mediaType: course.headerMedia.mediaType,
+                    url: val
+                  }
+                }
+              })
+            }
+          }} previewable={false} multiple={false} buttonOnly={true} />
+          <ImageBuilder imageText={course.title} onFileUploaded={async (val) => {
+            setCourseInfo({
+              ...course, headerMedia: {
+                mediaType: course.headerMedia.mediaType,
+                url: val
+              }
+            })
+            await updateMutation.mutateAsync({
+              id: course.id, payload: {
+                headerMedia: {
+                  mediaType: course.headerMedia.mediaType,
+                  url: val
+                }
+              }
+            })
+          }} label='Build header' description={course.description} />
+        </div>}
       </div>
       <div className='font-bold text-xl my-2 px-3'>
         {course.title}

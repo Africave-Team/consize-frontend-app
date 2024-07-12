@@ -117,7 +117,7 @@ export default function page ({ params }: { params: { id: string } }) {
             <div className='flex gap-5 mt-10'>
               <div className='w-1/2'>
                 <div className='w-full'>
-                  {courseDetails && <ViewCourseDetails course={courseDetails?.data} />}
+                  {courseDetails && <ViewCourseDetails editablePhoto={true} course={courseDetails?.data} />}
                 </div>
               </div>
               <div className='flex justify-center w-1/2'>
@@ -133,14 +133,6 @@ export default function page ({ params }: { params: { id: string } }) {
                     </div>
                     <div className='mt-1 text-sm'>You may set your course as private and it will only be visible to people you share it with. Public courses get listed on our public repository for potential students to discover</div>
                   </div>
-                  {/* {!courseDetails.data.survey && <div>
-                    <button disabled={updateMutation.isPending} onClick={attachSurvey} className='bg-primary-dark h-12 rounded-md text-white font-medium w-full'>Attach default survey</button>
-                    <div className='mt-1 text-sm'>This survey will be presented to your students at the end of the course to help gauge their opinions on this course.</div>
-                  </div>}
-                  {courseDetails.data.survey && <div>
-                    <button disabled={updateMutation.isPending} onClick={detachSurvey} className='bg-primary-dark h-12 rounded-md text-white font-medium w-full'>Detatch default survey</button>
-                    <div className='mt-1 text-sm'>This survey will no longer to sent to this course&apos;s students to gauge their acceptance of the course..</div>
-                  </div>} */}
 
                   {/* <div>
                     <div className='my-1 text-sm'>Do you want to try the course before publishing it?</div>
