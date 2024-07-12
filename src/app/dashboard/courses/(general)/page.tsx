@@ -125,7 +125,7 @@ export default function page () {
                 <CoursesTable courses={courseResults?.data || []} />
               </div>}
             </div>
-            {courseResults && courseResults?.totalPages > 1 && <div className='flex justify-center text-base items-center gap-3'>
+            {courseResults && courseResults?.totalPages > 1 && <div className='flex justify-center text-base items-center gap-3 pb-20'>
               <button onClick={() => setPage(page - 1)} disabled={courseResults?.page === 1}><FiChevronLeft /></button>
               <div className='text-sm'>Page {courseResults?.page} of {courseResults?.totalPages}</div>
               <button onClick={() => setPage(page + 1)} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>

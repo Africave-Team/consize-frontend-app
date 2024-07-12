@@ -8,6 +8,10 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.course-image {
+  aspect-ratio: 4 / 3;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

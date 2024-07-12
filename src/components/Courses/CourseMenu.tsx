@@ -10,7 +10,7 @@ import DeleteCourseMenu from '../Dashboard/DeleteCourseMenu'
 export default function CourseMenu ({ course, single }: { course: Course, single?: boolean }) {
   return (
     <Menu>
-      <MenuButton type='button' className='bg-gray-100 rounded-full hover:bg-gray-100 h-10 w-10 flex items-center justify-center'>
+      <MenuButton type='button' className='bg-gray-100 rounded-full hover:bg-gray-100 h-8 w-8 flex items-center justify-center'>
         <img src="/dots.svg" />
       </MenuButton>
       <MenuList className='text-sm' minWidth={'200px'}>
