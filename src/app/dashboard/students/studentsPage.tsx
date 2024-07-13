@@ -7,7 +7,6 @@ import { StudentRecord as Student } from '@/type-definitions/secure.courses'
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
-import Pagination from "@/components/Pagination"
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
