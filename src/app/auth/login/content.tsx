@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-
+import { setCookie } from 'nookies'
 import { useFormik } from "formik"
 import * as Yup from 'yup'
 import { Button, useToast } from '@chakra-ui/react'
@@ -9,6 +9,7 @@ import KippaLogo from '@/components/Logo'
 import Layout from '@/layouts/PageTransition'
 import { login } from '@/services/auth.service'
 import { useRouter } from 'next/navigation'
+import { COOKIE_AUTH_KEY } from '@/utils/tools'
 
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
@@ -34,6 +35,9 @@ export default function LoginHome () {
         setAccess(result.tokens)
         setUser(result.user)
         setTeam(result.team)
+        setCookie(null, COOKIE_AUTH_KEY, result.tokens.access.token, {
+          path: "/"
+        })
         toast({
           title: 'Finished.',
           description: "Login completed successfully",

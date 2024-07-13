@@ -169,7 +169,7 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
       {(!Array.isArray(originalUrl) && originalUrl.length > 0 && originalUrl.startsWith('https')) && previewable ? <>
         <div className='rounded-lg w-full border mt-2'>
           {
-            fileType.includes(MediaType.IMAGE) && <img src={originalUrl} className='h-80 w-full rounded-md' />
+            fileType.includes(MediaType.IMAGE) && <img src={originalUrl} className='h-full w-full rounded-md' />
           }
 
           {

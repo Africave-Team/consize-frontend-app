@@ -111,7 +111,7 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
             <div className='absolute top-0 left-0 h-full w-full md:bg-hero-pattern bg-hero-pattern-2'>
               <div className='bg-[url(/lines3.svg)] bg-cover pt-10 pb-5 h-full w-full flex flex-col'>
                 <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#AAF0C4]'>
-                  <Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /> {courseResults?.data?.owner.name}
+                  {(location.host.startsWith('app.') || location.host.startsWith('staging-app.')) ? <><Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /></> : <><Link href={`/teams/${courseResults?.data.owner.id}`}>{courseResults?.data?.owner.name}</Link> <Icon as={IoChevronForward} /></>}{courseResults?.data?.title}
                 </div>
                 <div className='mt-4 w-full md:min-h-[250px] min-h-[350px]'>
                   <div className='md:px-16 px-5 w-full md:w-4/6'>

@@ -7,6 +7,8 @@ import Layout from '@/layouts/PageTransition'
 import { Spinner } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { logout } from '@/services/auth.service'
+import { destroyCookie } from 'nookies'
+import { COOKIE_AUTH_KEY } from '@/utils/tools'
 
 
 export default function page () {
@@ -16,6 +18,9 @@ export default function page () {
     if (refresh) {
       await logout({
         refreshToken: refresh?.token
+      })
+      destroyCookie(null, COOKIE_AUTH_KEY, {
+        path: "/"
       })
     }
     await logoutAccount()

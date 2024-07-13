@@ -1,7 +1,7 @@
 import { ResetPasswordPayloadInterface, Team } from '@/type-definitions/auth'
 import http from './base'
 import { IResponse } from '@/type-definitions/IAxios'
-import { CreateTeam } from '@/type-definitions/teams'
+import { CreateTeam, TeamWithOwner } from '@/type-definitions/teams'
 
 export const myTeamMembers = async (page: number): Promise<any> =>
   http.get({
@@ -44,5 +44,11 @@ export const updateMyTeamInfo = async (id: string, payload: Partial<Omit<Team, "
     body: payload
   })
 
+
+
+export const resolveMyTeamInfo = async (code: string): Promise<IResponse<TeamWithOwner>> =>
+  http.get({
+    url: `teams/resolve/${code}`
+  })
 
 

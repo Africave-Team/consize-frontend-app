@@ -13,6 +13,7 @@ import MainFooter from '@/components/navigations/MainFooter'
 import Link from 'next/link'
 import { useFormik } from 'formik'
 import { FaSearch } from 'react-icons/fa'
+import { resolveMyTeamInfo } from '@/services/teams'
 import { debounce } from '@/utils/tools'
 
 
@@ -25,15 +26,36 @@ interface ApiResponse {
   message: string
 }
 
-export default function PublicCourses () {
+export default function TeamPublicCourses ({ params }: { params: { teamId: string } }) {
   const { setPageTitle } = useNavigationStore()
-  const [page, setPage] = useState(1)
-  const [param, setParam] = useState<{ pageParam: number, search?: string }>({ pageParam: 1 })
+
+  const [param, setParam] = useState<{ pageParam: number, search?: string, team: string }>({ pageParam: 1, team: params.teamId })
 
   const router = useRouter()
 
   useEffect(() => {
     setPageTitle("Consize - Courses")
+  }, [])
+
+  const [companyCode, setCompanyName] = useState<string>("test")
+
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["company_info", companyCode],
+    queryFn: () => resolveMyTeamInfo(companyCode)
+  })
+
+
+  useEffect(() => {
+    let host = location.hostname
+    host = host.replace('app.', '').replace('staging-app.', '')
+    let parts = host.split('.')
+    parts.pop()
+    parts.pop()
+    if (parts.length > 0) {
+      let subdomain = parts[0]
+      setCompanyName(subdomain)
+    }
   }, [])
 
   const form = useFormik({
@@ -45,9 +67,9 @@ export default function PublicCourses () {
     },
   })
 
-  const loadData = async function (payload: { pageParam: number, search?: string }) {
+  const loadData = async function (payload: { pageParam: number, search?: string, team: string }) {
     const pageSize = 9
-    const data = await fetchPublishedCourses({ page: payload.pageParam, pageSize, search: payload.search })
+    const data = await fetchPublishedCourses({ page: payload.pageParam, pageSize, search: payload.search, team: payload.team })
     return data
   }
 
@@ -71,12 +93,13 @@ export default function PublicCourses () {
     form.handleChange(e)
     debouncedSetParam(e.target.value)
   }
+
   return <Layout>
     <div className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
       <div className='flex mt-3 mb-5 justify-between flex-col md:px-10 px-5 md:flex-row md:items-center'>
         <div className=''>
-          <h1 className='font-semibold text-lg'>Courses</h1>
-          <p className='text-sm text-[#64748B]'>{courseResults?.data.length || 0} results on consize</p>
+          <h1 className='font-semibold text-lg'>{data && data.data ? `${data.data.name} Courses` : `Courses`}</h1>
+          <p className='text-sm text-[#64748B]'>{courseResults?.totalResults || 0} {data && data.data ? `courses naintained by ${data.data.name}` : `results on consize`}</p>
         </div>
         <form className='w-full md:w-1/2 border' onSubmit={form.handleSubmit}>
           {/* search form here */}
@@ -114,7 +137,7 @@ export default function PublicCourses () {
       </div> : <div className='h-[100vh] py-5'>
         <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-3`}>
 
-          {courseResults?.data.map((course) => <Link href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
+          {courseResults?.data.map((course) => <Link key={course.id} href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
             <div className='h-60 border rounded-t-lg bg-gray-100'>
               {course.headerMedia && course.headerMedia.url && <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />}
             </div>
@@ -126,9 +149,9 @@ export default function PublicCourses () {
 
         </div>
         {courseResults && courseResults.totalPages > 1 && <div className='flex h-10 my-5 justify-center text-base items-center gap-3'>
-          <button onClick={() => setPage(page - 1)} disabled={courseResults?.page === 1}><FiChevronLeft /></button>
+          <button onClick={() => setParam({ ...param, pageParam: param.pageParam - 1 })} disabled={courseResults?.page === 1}><FiChevronLeft /></button>
           <div className='text-sm'>Page {courseResults?.page} of {courseResults?.totalPages}</div>
-          <button onClick={() => setPage(page + 1)} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>
+          <button onClick={() => setParam({ ...param, pageParam: param.pageParam + 1 })} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>
         </div>}
         <MainFooter />
       </div>}
