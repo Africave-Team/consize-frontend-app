@@ -33,7 +33,12 @@ export default function LoginHome () {
       try {
         // validate
         await LoginSchema.validate(values)
-        const result = await login({ ...values, shortCode: companyCode })
+        let val = { ...values }
+        if (companyCode !== "test") {
+          // @ts-ignore
+          val = { ...values, shortCode: companyCode }
+        }
+        const result = await login(val)
         setAccess(result.tokens)
         setUser(result.user)
         setTeam(result.team)
@@ -69,8 +74,6 @@ export default function LoginHome () {
     if (parts.length > 0) {
       let subdomain = parts[0]
       setCompanyName(subdomain)
-    } else {
-      location.href = location.origin + '/courses'
     }
   }, [])
   return (
