@@ -115,7 +115,7 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
           </div>
         </form>
       </div>
-      {isFetching ? <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-3 px-10 py-5`}>
+      {isFetching ? <div className={`w-full grid grid-cols-1 md:grid-cols-3 gap-4 px-10 py-5`}>
         <div className='h-96'>
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
@@ -135,9 +135,9 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
       </div> : <div className='h-[100vh] py-5'>
-        <div className='h-[98vh] w-full'>
+        <div className='min-h-[98vh] w-full'>
 
-          {courseResults && courseResults.data.length > 0 ? <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-3`}>
+          {courseResults && courseResults.data.length > 0 ? <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-4`}>
 
             {courseResults?.data.map((course) => <Link key={course.id} href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
               <div className='h-60 border rounded-t-lg bg-gray-100'>
