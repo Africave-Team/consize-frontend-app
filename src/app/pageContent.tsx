@@ -39,8 +39,10 @@ export default function Home () {
   return (
     <section className='h-screen'>
       <SiteNavBar />
-      <div className='page-container !p-0 flex justify-center items-center'>
-        {isLoading ? <Spinner /> : <>
+      <div className='page-container !p-0 flex justify-center items-center bg-[url(https://a.slack-edge.com/80588/img/404/marrakesh-meadow-80.jpg)]'>
+        {isLoading ? <div className='h-12 w-12 bg-white rounded-full flex items-center justify-center'>
+          <Spinner className='' />
+        </div> : <>
           {data?.data ? <></> : <TeamNotFound />}
         </>}
       </div>

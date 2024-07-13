@@ -1,4 +1,5 @@
 import React from 'react'
+import { FiAlertTriangle } from 'react-icons/fi'
 
 export default function TeamNotFound () {
   const home = () => {
@@ -13,11 +14,15 @@ export default function TeamNotFound () {
     }
   }
   return (
-    <div className='w-full md:w-1/3 border shadow-md h-96 p-4'>
-      <div>
-        Something went wrong
+    <div className='w-full md:w-1/3 bg-white rounded-md border shadow-md h-56 p-4'>
+      <div className='flex items-center justify-center gap-3 font-bold text-2xl'>
+        <FiAlertTriangle className='text-primary-app' />
+        There&apos;s been a glitch
       </div>
-      <a href={home()}>Go back home</a>
+      <div className='mt-4'>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas cupiditate maxime provident eligendi mollitia unde est molestias labore veniam accusamus numquam, iure fugit quis et quisquam architecto consectetur eaque alias?
+        <a className='ml-2 text-purple-500' href={home()}>Go back home</a>
+      </div>
     </div>
   )
 }
