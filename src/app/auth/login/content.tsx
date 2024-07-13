@@ -10,6 +10,7 @@ import Layout from '@/layouts/PageTransition'
 import { login } from '@/services/auth.service'
 import { useRouter } from 'next/navigation'
 import { COOKIE_AUTH_KEY } from '@/utils/tools'
+import { useEffect, useState } from 'react'
 
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
@@ -19,6 +20,7 @@ const LoginSchema = Yup.object().shape({
 
 
 export default function LoginHome () {
+  const [companyCode, setCompanyName] = useState<string>("test")
   const toast = useToast()
   const { setAccess, setUser, setTeam } = useAuthStore()
   const router = useRouter()
@@ -31,7 +33,12 @@ export default function LoginHome () {
       try {
         // validate
         await LoginSchema.validate(values)
-        const result = await login(values)
+        let val = { ...values }
+        if (companyCode !== "test") {
+          // @ts-ignore
+          val = { ...values, shortCode: companyCode }
+        }
+        const result = await login(val)
         setAccess(result.tokens)
         setUser(result.user)
         setTeam(result.team)
@@ -57,6 +64,18 @@ export default function LoginHome () {
       }
     },
   })
+
+  useEffect(() => {
+    let host = location.hostname
+    host = host.replace('app.', '').replace('staging-app.', '')
+    let parts = host.split('.')
+    parts.pop()
+    parts.pop()
+    if (parts.length > 0) {
+      let subdomain = parts[0]
+      setCompanyName(subdomain)
+    }
+  }, [])
   return (
     <Layout>
       <section id="box" className="bg-gray-100">

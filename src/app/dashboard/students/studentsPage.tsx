@@ -7,6 +7,7 @@ import { StudentRecord as Student } from '@/type-definitions/secure.courses'
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
+import Pagination from "@/components/Pagination"
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -22,6 +23,7 @@ interface ApiResponse {
 
 export default function StudentsPageContent () {
   const [page, setPage] = useState(1)
+  const [pages, setPages] = useState<number[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -39,16 +41,26 @@ export default function StudentsPageContent () {
   useEffect(() => {
     if (data) {
       setStudents(data.data)
+      let range = 10
+      let start = 0
+      if (page > 8) {
+        start = page - 5
+      } else if (page > 5) {
+        start = page - 3
+      }
+
+      setPages(Array.from({ length: data.totalPages }, (_, i) => i + 1).slice(start, start + range))
     }
-  }, [data])
+  }, [data, page])
   useEffect(() => {
     if (searchParams.get("page")) {
-      setPage(Number(searchParams.get("page")))
+      let pg = Number(searchParams.get("page"))
+      setPage(pg)
     }
   }, [searchParams.get("page")])
   return (
     <Layout>
-      <div className='w-full'>
+      <div className='w-full overflow-y-scroll  max-h-full'>
         <div className='w-full px-5 py-10'>
           <div className='flex justify-end items-center gap-4 pb-5'>
             <div className='w-72'>
@@ -96,7 +108,9 @@ export default function StudentsPageContent () {
                         <td className="px-4 py-3">{student.phoneNumber}</td>
                         <td className="px-4 py-3">{student.email || '---'}</td>
                         <td className="px-4 py-3">{student.slackId ? "Slack" : "Whatsapp"}</td>
-                        <Link href={`/dashboard/students/${student.id}`} id={student.id} />
+                        <td>
+                          <Link href={`/dashboard/students/${student.id}`} id={student.id} />
+                        </td>
                       </tr>
                     })
                   }
@@ -107,14 +121,14 @@ export default function StudentsPageContent () {
             {data && data.totalPages > 1 && <div className='flex justify-center py-4'>
               <ButtonGroup variant='outline' isAttached>
                 <Button as={Link} href={`/dashboard/students?page=${page - 1}`} isDisabled={page === 1} className='font-medium' size={'sm'}>Previous</Button>
-                {new Array(data.totalPages).fill(0).map((_, i) => {
-                  if ((i + 1) === page) {
+                {pages.map((i) => {
+                  if ((i) === page) {
                     return (
-                      <Button as={Link} href={`/dashboard/students?page=${page + 1}`} className={`!font-medium bg-gray-200`} key={i} size={'sm'}>{i + 1}</Button>
+                      <Button as={Link} href={`/dashboard/students?page=${page}`} className={`!font-medium bg-gray-200`} key={i} size={'sm'}>{i}</Button>
                     )
                   } else {
                     return (
-                      <Button as={Link} href={`/dashboard/students?page=${page + 1}`} className='!font-medium' key={i} size={'sm'}>{i + 1}</Button>
+                      <Button as={Link} href={`/dashboard/students?page=${i}`} className='!font-medium' key={i} size={'sm'}>{i}</Button>
                     )
                   }
                 })}

@@ -5,7 +5,7 @@ import { Skeleton, Spinner } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from 'react'
 import he from "he"
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FiAlertTriangle, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import Layout from '@/layouts/PageTransition'
 import { useNavigationStore } from '@/store/navigation.store'
 import { useRouter } from 'next/navigation'
@@ -112,18 +112,31 @@ export default function PublicCourses () {
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
       </div> : <div className='h-[100vh] py-5'>
-        <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-3`}>
+        <div className='min-h-[98vh] w-full'>
 
-          {courseResults?.data.map((course) => <Link href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
-            <div className='h-60 border rounded-t-lg bg-gray-100'>
-              {course.headerMedia && course.headerMedia.url && <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />}
-            </div>
-            <div className='px-2 py-1'>
-              <div className='text-base font-semibold'>{course.title}</div>
-              <div className='line-clamp-4 text-sm' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }} />
-            </div>
-          </Link>)}
+          {courseResults && courseResults.data.length > 0 ? <div className={`w-full grid md:px-10 px-5 grid-cols-1 md:grid-cols-3 gap-3`}>
 
+            {courseResults?.data.map((course) => <Link key={course.id} href={`/courses/${course.id}`} className='h-[420px] shadow-sm border cursor-pointer rounded-lg flex flex-col'>
+              <div className='h-60 border rounded-t-lg bg-gray-100'>
+                {course.headerMedia && course.headerMedia.url && <img src={course.headerMedia.url} loading='lazy' className='h-full w-full rounded-t-lg' />}
+              </div>
+              <div className='px-2 py-1'>
+                <div className='text-base mt-1 font-semibold'>{course.title}</div>
+                <div className='line-clamp-4 text-sm' dangerouslySetInnerHTML={{ __html: he.decode(course.description) }} />
+              </div>
+            </Link>)}
+
+          </div> : <div className='w-full h-full flex justify-center pt-40'>
+            <div className='h-32 w-1/3 border shadow-sm p-4'>
+              <div className='flex items-center justify-center gap-3 font-bold text-2xl'>
+                <FiAlertTriangle className='text-primary-app' />
+                There&apos;s been a glitch
+              </div>
+              <div className='mt-4'>
+                There are no courses that match your search query
+              </div>
+            </div>
+          </div>}
         </div>
         {courseResults && courseResults.totalPages > 1 && <div className='flex h-10 my-5 justify-center text-base items-center gap-3'>
           <button onClick={() => setPage(page - 1)} disabled={courseResults?.page === 1}><FiChevronLeft /></button>

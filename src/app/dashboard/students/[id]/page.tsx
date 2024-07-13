@@ -54,7 +54,7 @@ export default function SingleStudentPage ({ params }: { params: { id: string } 
             let totalEnrolled = published.filter(e => e.students[params.id])
             let active = 0, dropouts = 0, completed = 0, scores = 0, scoresCount = 0
             let courses = []
-            for (let course of published) {
+            for (let course of totalEnrolled) {
               let record = course.students[params.id]
               if (record) {
                 if (record.droppedOut) {
@@ -115,7 +115,7 @@ export default function SingleStudentPage ({ params }: { params: { id: string } 
               {/* <CiGrid41 className='text-2xl' /> */}
             </button>
           </div>
-          <div className={preferredListStyle === ListStyle.GRID ? `w-full grid grid-cols-3 gap-3` : `w-full grid grid-cols-1 gap-3`}>
+          <div className={preferredListStyle === ListStyle.GRID ? `w-full grid grid-cols-3 gap-y-3 gap-x-8` : `w-full grid grid-cols-1 gap-3`}>
             {courses.map(e => (<StudentCourseCard studentId={params.id} courseId={e} />))}
           </div>
         </div>

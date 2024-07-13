@@ -4,6 +4,7 @@ import { Subscription } from './subscriptions'
 export interface LoginPayloadInterface {
   email: string
   password: string
+  shortCode?: string
 }
 
 export interface RegistrerPayloadInterface {
