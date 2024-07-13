@@ -1,6 +1,5 @@
 "use client"
 import SearchMainStudents from '@/components/Dashboard/SearchMainStudents'
-import SortStudentItems from '@/components/Dashboard/SortStudentItems'
 import Layout from '@/layouts/PageTransition'
 import { studentsList } from '@/services/students'
 import { StudentRecord as Student } from '@/type-definitions/secure.courses'
