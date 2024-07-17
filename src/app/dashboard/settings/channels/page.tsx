@@ -12,6 +12,7 @@ import { DistributionChannel, Team } from '@/type-definitions/auth'
 import { FaSquareWhatsapp } from "react-icons/fa6"
 import { AiFillSlackCircle } from "react-icons/ai"
 import { Distribution } from '@/type-definitions/callbacks'
+import { FaFacebook } from "react-icons/fa6"
 import { queryClient } from '@/utils/react-query'
 import TeamQRCode from '@/components/Dashboard/TeamQRCode'
 import { Facebook, FacebookLoginResponse, WindowWithFB } from '@/type-definitions/facebook'
@@ -21,7 +22,7 @@ interface ApiResponse {
   data: Team
 }
 export default function IntegrationSettings () {
-  const [progress, setProgress] = useState(false)
+  const [progress, setProgress] = useState<{ [key: string]: boolean }>({ slack: false, whatsapp: false })
   const { team, setTeam } = useAuthStore()
   const [showTeamQR, setShowteamQR] = useState<boolean>(false)
   const { initiateSlackSettings, initiateSlackAsync } = useCallbackStore()
@@ -35,21 +36,21 @@ export default function IntegrationSettings () {
 
   const UninstallApp = async function (channel: DistributionChannel) {
     if (team) {
+      let pro = { ...progress }
+      pro[channel.channel] = true
+      setProgress(pro)
       const channels = [...team.channels]
       let index = channels.findIndex(e => e.channel === channel.channel)
       if (index >= 0) {
         channels[index] = channel
       }
       await mutateAsync({ id: team.id, payload: { channels } })
+      pro[channel.channel] = false
+      setProgress(pro)
     }
   }
 
   const handleChannelButtonClick = async function (channel: DistributionChannel) {
-    if (channel.channel === Distribution.WHATSAPP) {
-      // console.log("https://web.facebook.com/v18.0/dialog/oauth?app_id=1057351731954710&cbt=1719041303381&channel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dfc7d495b5ed3508ca%26domain%3Dapp.consize.localhost%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fapp.consize.localhost%252Ff65b5f35da2327fd9%26relation%3Dopener&client_id=1057351731954710&config_id=1102240047637820&display=popup&domain=app.consize.localhost&e2e=%7B%7D&fallback_redirect_uri=https%3A%2F%2Fapp.consize.localhost%2Fdashboard%2Fsettings%2Fchannels&locale=en_US&logger_id=f77bc272adf73d03d&origin=1&override_default_response_type=true&redirect_uri=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df1ceddabae906db59%26domain%3Dapp.consize.localhost%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fapp.consize.localhost%252Ff65b5f35da2327fd9%26relation%3Dopener%26frame%3Dfeb99ed5bae6c86d1&response_type=code&sdk=joey&version=v18.0")
-      launchWhatsAppSignup()
-      return
-    }
     if (channel.enabled) {
       UninstallApp({
         ...channel,
@@ -146,20 +147,30 @@ export default function IntegrationSettings () {
                   <Skeleton className='h-32 rounded-lg' />
                 </div> : <div className='flex flex-col gap-5'>
 
-                  {teamInfo?.data?.channels.map((channel) => (<div key={channel.channel} className='flex flex-col gap-1 min-h-32 w-1/3'>
+                  {teamInfo?.data?.channels.map((channel) => (<div key={channel.channel} className='flex flex-col gap-1 min-h-32'>
                     <div>
                       <div className='text-lg font-semibold capitalize'>{channel.channel} integration</div>
-                      <div className='text-sm'>
+                      <div className='text-sm w-1/3'>
                         {`Integrate ${channel.channel} to enable you to distribute content to your students via ${channel.channel}.`}
                       </div>
                     </div>
                     <div>
-                      <button onClick={() => {
-                        handleChannelButtonClick(channel)
-                      }} className='border py-1 px-3 flex gap-2 items-center justify-center rounded-md hover:bg-gray-100 text-sm'>
-                        {channel.channel === Distribution.SLACK ? <AiFillSlackCircle className='text-2xl' /> : <FaSquareWhatsapp className='text-2xl' />} {channel.enabled ? "Disable" : "Enable"}
-                        {isPending && <Spinner size={'sm'} />}
-                      </button>
+                      <div className='flex gap-3 items-start'>
+                        <button onClick={() => {
+                          handleChannelButtonClick(channel)
+                        }} className='border py-1 px-3 flex gap-2 items-center justify-center rounded-md hover:bg-gray-100 text-sm'>
+                          {channel.channel === Distribution.SLACK ? <AiFillSlackCircle className='text-2xl' /> : <FaSquareWhatsapp className='text-2xl' />} {channel.enabled ? "Disable" : "Enable"}
+                          {progress[channel.channel] && <Spinner size={'sm'} />}
+                        </button>
+                        {channel.channel === Distribution.WHATSAPP && channel.enabled && <div className='flex flex-col'>
+                          <div className='flex items-center gap-3'>
+                            <button onClick={launchWhatsAppSignup} className='py-1 px-3 rounded-md flex items-center text-white bg-[#1a77f2] justify-center gap-2'>
+                              <FaFacebook /> Continue with Facebook
+                            </button>
+                          </div>
+                          <div className='text-xs w-2/3 font-normal'>Or connect your very own facebook business account to send messages with your own number</div>
+                        </div>}
+                      </div>
                       {channel.channel === Distribution.SLACK && !channel.enabled && <>
                         <div className='text-sm mt-2 font-medium'>Or share authorization link with the admin of your slack workspace</div>
                         <div className='flex mt-1 items-center gap-3'>
