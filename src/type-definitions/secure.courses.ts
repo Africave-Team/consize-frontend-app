@@ -269,6 +269,7 @@ export interface RTDBStudent {
   name: string,
   completed?: boolean
   droppedOut?: boolean
+  anonymous?: boolean
   progress: number
   certificate?: string
   phoneNumber: string

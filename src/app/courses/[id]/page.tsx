@@ -23,7 +23,7 @@ interface ApiResponse {
   message: string
 }
 
-export default function SinglePublicCourses ({ params }: { params: { id: string } }) {
+export default function SinglePublicCourses ({ params, searchParams }: { params: { id: string }, searchParams: { tryout?: boolean } }) {
   const { setPageTitle } = useNavigationStore()
   const [loading, setLoading] = useState(false)
   const [maxEnrollmentReached, setMaxEnrollmentReached] = useState(false)
@@ -181,8 +181,8 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                     <div className='text-sm text-gray-500'>
                       Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                     </div>
-                    {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
-                      <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
+                    {searchParams && searchParams.tryout ? <WholeForm tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                      <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                       <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
                     </div> : <WholeForm id={params.id} />}
                   </div>
@@ -243,8 +243,8 @@ export default function SinglePublicCourses ({ params }: { params: { id: string 
                 <div className='text-sm text-gray-500'>
                   Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                 </div>
-                {maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
-                  <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment breach</div>
+                {searchParams && searchParams.tryout ? <WholeForm tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                  <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                   <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
                 </div> : <WholeForm id={params.id} />}
               </div>

@@ -70,7 +70,7 @@ export default function page ({ params }: { params: { id: string } }) {
       }
     } else {
       if (phoneNumber) {
-        await testCourseWhatsapp({ phoneNumber, course: params.id })
+        await testCourseWhatsapp({ phoneNumber, course: params.id, tz: Intl.DateTimeFormat().resolvedOptions().timeZone })
       }
     }
     setTesting(false)
