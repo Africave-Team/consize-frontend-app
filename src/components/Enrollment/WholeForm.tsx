@@ -39,6 +39,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean }) {
       completed: false,
       userFound: false,
       otpField: false,
+      agree: false,
       registerationForm: false,
       user: {
         verified: null,
@@ -214,7 +215,16 @@ export default function WholeForm (params: { id: string, tryout?: boolean }) {
               verifyPhoneForm.handleChange("phoneNumber")(val)
             }
           }} />
-          {!verifyPhoneForm.values.completed && <button disabled={!verifyPhoneForm.isValid || verifyPhoneForm.isSubmitting} type='submit' className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-semibold gap-1 disabled:bg-[#1FFF69]/40'>Continue
+          {params.tryout && <div className='w-full mt-2'>
+            <Checkbox className='flex items-center' size="md" name='agree' id='agree' onChange={(e) => {
+              verifyPhoneForm.setFieldValue('agree', e.target.checked)
+            }} isChecked={verifyPhoneForm.values.agree}>
+              <span className='text-xs'>
+                I agree to receive this course from Consize on WhatsApp
+              </span>
+            </Checkbox>
+          </div>}
+          {!verifyPhoneForm.values.completed && <button disabled={!verifyPhoneForm.isValid || verifyPhoneForm.isSubmitting || (!verifyPhoneForm.values.agree && params.tryout)} type='submit' className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-semibold gap-1 disabled:bg-[#1FFF69]/40'>Continue
             {verifyPhoneForm.isSubmitting && <Spinner size={'sm'} />}
           </button>}
         </form>
