@@ -231,7 +231,7 @@ export const testCourseSlack = async (payload: { slackId: string, course: string
     body: payload
   })
 
-export const testCourseWhatsapp = async (payload: { phoneNumber: string, course: string }): Promise<any> =>
+export const testCourseWhatsapp = async (payload: { phoneNumber: string, course: string, tz: string }): Promise<any> =>
   http.post({
     url: `students/test-course/whatsapp`,
     body: payload

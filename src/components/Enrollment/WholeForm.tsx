@@ -9,6 +9,7 @@ import { RequestError } from '@/type-definitions/IAxios'
 import { useMutation } from '@tanstack/react-query'
 import { isMobile } from 'react-device-detect'
 import { RiWhatsappLine } from 'react-icons/ri'
+import { testCourseWhatsapp } from '@/services/secure.courses.service'
 
 const phoneRegExp = /^\+[1-9]\d{1,14}$/
 const validatePhoneVerification = Yup.object({
@@ -26,7 +27,7 @@ const validateRegisteration = Yup.object({
   agree: Yup.boolean().oneOf([true])
 })
 
-export default function WholeForm (params: { id: string }) {
+export default function WholeForm (params: { id: string, tryout?: boolean }) {
   const [enrolled, setEnrolled] = useState(false)
   const toast = useToast()
   const verifyPhoneForm = useFormik({
@@ -48,11 +49,28 @@ export default function WholeForm (params: { id: string }) {
     },
     onSubmit: async function (values, { setFieldValue }) {
       try {
-        const result = await verifyStudentPhone(values.phoneNumber.replace('+', ''))
-        setFieldValue("completed", true)
-        if (result.data && result.data.verified) {
-          setFieldValue("user", result.data)
-          setFieldValue("userFound", true)
+        if (params.tryout) {
+          await testCourseWhatsapp({
+            tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            phoneNumber: values.phoneNumber.replace('+', ''),
+            course: params.id
+          })
+          toast({
+            title: 'Enrollment complete.',
+            description: "You have successfully enrolled for  this course",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+          verifyPhoneForm.resetForm()
+          setEnrolled(true)
+        } else {
+          const result = await verifyStudentPhone(values.phoneNumber.replace('+', ''))
+          setFieldValue("completed", true)
+          if (result.data && result.data.verified) {
+            setFieldValue("user", result.data)
+            setFieldValue("userFound", true)
+          }
         }
       } catch (error) {
         let { code } = error as RequestError

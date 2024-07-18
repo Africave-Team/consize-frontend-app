@@ -161,7 +161,7 @@ export default function page ({ params }: { params: { id: string } }) {
           if (result) {
             let copy = { ...result }
             if (result.students) {
-              const students = Object.entries(result.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 }))
+              const students = Object.entries(result.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 })).filter(e => !e.anonymous)
               setStudents(students)
               let quizes = 0
               const scores = students.reduce((acc, curr) => {
