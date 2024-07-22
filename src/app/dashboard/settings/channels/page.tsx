@@ -16,6 +16,7 @@ import { FaFacebook } from "react-icons/fa6"
 import { queryClient } from '@/utils/react-query'
 import TeamQRCode from '@/components/Dashboard/TeamQRCode'
 import { Facebook, FacebookLoginResponse, WindowWithFB } from '@/type-definitions/facebook'
+import FacebookSignupListener from '@/components/FacebookMessageListener'
 
 
 interface ApiResponse {
@@ -84,6 +85,7 @@ export default function IntegrationSettings () {
           FB.login(
             (response: FacebookLoginResponse) => {
               if (response.authResponse) {
+                console.log(response)
                 // Use the access token to call the debug_token API and get the shared WABA's ID
                 facebookTokenExchangeWithToken(response.authResponse.code)
               } else {
@@ -93,7 +95,11 @@ export default function IntegrationSettings () {
             {
               config_id: '1102240047637820', // configuration ID from previous step
               response_type: 'code', // must be set to 'code' for System User access token
-              override_default_response_type: true,
+              "override_default_response_type": true, // when true, any response types passed in the "response_type" will take precedence over the default types
+              "extras": {
+                "feature": "whatsapp_embedded_signup",
+                "sessionInfoVersion": 3  //  Receive Session Logging Info
+              }
             }
           )
         } catch (error) {
@@ -189,6 +195,7 @@ export default function IntegrationSettings () {
             {showTeamQR ? <>{team && <TeamQRCode teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
           </div>
         </div>
+        <FacebookSignupListener />
       </div>
     </Layout>
   )

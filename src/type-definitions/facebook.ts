@@ -30,6 +30,7 @@ export interface FacebookLoginOptions {
   config_id: string
   response_type: string
   override_default_response_type?: boolean
+  extras?: any
 }
 
 // Interface for Window object (if FB is not globally defined)
