@@ -105,7 +105,7 @@ export default function page ({ params }: { params: { id: string } }) {
       trends: [
 
       ],
-      current: 100,
+      current: 0,
     },
     averageCompletionMinutes: {
       trends: [
@@ -177,7 +177,7 @@ export default function page ({ params }: { params: { id: string } }) {
               copy.active = students.filter(e => !e.completed && !e.droppedOut).length
               copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
               copy.completed = students.filter(e => e.completed).length
-              copy.averageTestScore = (students.length === 0 || scores === 0) ? '0' : (((scores / quizes) * 100) / students.length).toFixed(2)
+              copy.averageTestScore = isNaN(scores / quizes) ? '0' : (((scores / quizes) * 100) / students.length).toFixed(2)
 
               copy.averageCourseProgress = students.reduce((acc, curr) => {
                 if (curr.progress) {
@@ -187,7 +187,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 }
               }, 0) / students.length
 
-              copy.averageCompletionMinutes = students.reduce((acc, curr) => {
+              copy.averageCompletionMinutes = students.filter(e => e.completed).reduce((acc, curr) => {
                 if (curr.lessons) {
                   const lessons = Object.values(curr.lessons)
                   if (lessons.length === 0) {
@@ -205,7 +205,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 } else {
                   return acc
                 }
-              }, 0) / students.length
+              }, 0) / students.filter(e => e.completed).length
 
               let quizCount = 0
               let retakes = students.reduce((acc, curr) => {
@@ -228,7 +228,7 @@ export default function page ({ params }: { params: { id: string } }) {
                   return acc
                 }
               }, 0)
-              copy.averageMcqRetakeRate = retakes / quizCount
+              copy.averageMcqRetakeRate = isNaN(retakes / quizCount) ? 0 : retakes / quizCount
 
               let lessonCount = 0
               let lessonDuration = students.reduce((acc, curr) => {
@@ -252,7 +252,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 }
               }, 0)
 
-              copy.averageLessonDurationMinutes = lessonDuration / lessonCount
+              copy.averageLessonDurationMinutes = isNaN(lessonDuration / lessonCount) ? 0 : lessonDuration / lessonCount
 
               let blockCount = 0
               let blockDuration = students.reduce((acc, curr) => {
@@ -275,9 +275,10 @@ export default function page ({ params }: { params: { id: string } }) {
                   return acc
                 }
               }, 0)
-              copy.averageBlockDurationMinutes = blockDuration / blockCount
+              copy.averageBlockDurationMinutes = isNaN(blockDuration / blockCount) ? 0 : blockDuration / blockCount
 
             }
+            console.log(copy)
             setStats(copy)
           }
         })
@@ -290,6 +291,7 @@ export default function page ({ params }: { params: { id: string } }) {
       onValue(trendsDbRef, async (snapshot) => {
         const result: TrendStatisticsBody | null = snapshot.val()
         if (result) {
+          console.log(result)
           setTrends(result)
         }
       })
