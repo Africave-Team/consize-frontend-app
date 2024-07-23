@@ -50,6 +50,9 @@ export interface Team {
   shortCode: string
   channels: DistributionChannel[]
   slackToken?: string
+  facebookToken?: string | null
+  facebookBusinessId?: string | null
+  facebookPhoneNumberId?: string | null
   whatsappToken?: string
   owner: string
   logo?: string

@@ -28,10 +28,6 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
   const [loading, setLoading] = useState(false)
   const [maxEnrollmentReached, setMaxEnrollmentReached] = useState(false)
 
-  useEffect(() => {
-    setPageTitle("Consize - Courses")
-  }, [])
-
   const loadData = async function () {
     const data = await fetchSinglePublishedCourse(params.id)
     return data
