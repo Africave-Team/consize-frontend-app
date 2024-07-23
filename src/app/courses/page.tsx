@@ -62,6 +62,15 @@ export default function PublicCourses () {
     []
   )
 
+  useEffect(() => {
+    setParam((prevParam) => ({
+      ...prevParam,
+      pageParam: page,
+    }))
+  },
+    [page]
+  )
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     form.handleChange(e)
     debouncedSetParam(e.target.value)
