@@ -10,9 +10,9 @@ export default function TermsLayout ({
 }) {
 
   return (
-    <div className=''>
+    <div className='h-screen flex flex-col overflow-hidden'>
       <SiteNavBar />
-      <div className=''>
+      <div className='h-screen overflow-y-scroll'>
         {children}
         <MainFooter />
       </div>
