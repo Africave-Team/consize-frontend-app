@@ -131,13 +131,17 @@ export default function page () {
         </div>
         <div className="py-2">
           <div className='flex gap-1 items-start'>
-            <GoDotFill className='mt-1' />
+            <div>
+              <GoDotFill className='mt-1' />
+            </div>
             <div>
               Consize will provide technical support and assistance during normal business hours via email or the platform’s support chat feature.
             </div>
           </div>
           <div className='flex gap-1 items-start'>
-            <GoDotFill className='mt-1' />
+            <div>
+              <GoDotFill className='mt-1' />
+            </div>
             <div>
               Response times and service level agreements (SLAs) will be detailed separately.
             </div>
