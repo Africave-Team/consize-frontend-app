@@ -1,6 +1,6 @@
 import { updateSettings } from '@/services/secure.courses.service'
 import { CourseSettings } from '@/type-definitions/secure.courses'
-import { Input, InputGroup, InputRightElement, Popover, PopoverBody, PopoverContent, PopoverTrigger, Select, Spinner, useDisclosure } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, InputGroup, InputRightElement, Popover, PopoverBody, PopoverContent, PopoverTrigger, Select, Spinner, Switch, useDisclosure } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
@@ -32,11 +32,11 @@ const TimeBlock = function ({ time, next, handleChange, options }: { time: strin
 
 
 
-export default function Reminders ({ settings: { id, reminderDuration, reminderSchedule, dropoutEvent, dropoutWaitPeriod, inactivityPeriod }, refetch }: { settings: CourseSettings, refetch: () => Promise<any> }) {
+export default function Reminders ({ settings: { id, reminderDuration, reminderSchedule, dropoutEvent, dropoutWaitPeriod, inactivityPeriod, disableReminders }, refetch }: { settings: CourseSettings, refetch: () => Promise<any> }) {
   const [scheduleGroups, setScheduleGroups] = useState<{ title: string, children: string[] }[]>([])
 
   const form = useFormik({
-    initialValues: { reminderDuration, reminderSchedule, dropoutEvent, dropoutWaitPeriod, inactivityPeriod, reminderCount: reminderSchedule.length },
+    initialValues: { reminderDuration, reminderSchedule, dropoutEvent, dropoutWaitPeriod, inactivityPeriod, reminderCount: reminderSchedule.length, disableReminders: disableReminders ? disableReminders : { saturday: false, sunday: false } },
     onSubmit: async function (values) {
       await updateSettings({
         id, body: {
@@ -218,6 +218,31 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
           </InputRightElement>
           <Input name="reminderDuration.value" onChange={form.handleChange} value={form.values.reminderDuration.value} type='number' placeholder='0' />
         </InputGroup>
+      </div>
+
+      <div className='font-semibold text-sm mt-5'>
+        Disable reminders
+      </div>
+      <div className='text-[#64748B] text-sm'>Should reminders be disabled for days on the weekends?</div>
+
+      <div className='flex mt-2 gap-2'>
+        <FormControl display='flex' alignItems='center'>
+          <FormLabel htmlFor='saturdays' mb='0' className='text-sm'>
+            Disable on saturday?
+          </FormLabel>
+          <Switch id='saturdays' isChecked={form.values.disableReminders?.saturday} onChange={(e) => {
+            form.setFieldValue('disableReminders.saturday', e.target.checked)
+          }} />
+        </FormControl>
+
+        <FormControl display='flex' alignItems='center'>
+          <FormLabel htmlFor='sundays' mb='0' className='text-sm'>
+            Disable on sunday?
+          </FormLabel>
+          <Switch id='sundays' isChecked={form.values.disableReminders?.sunday} onChange={(e) => {
+            form.setFieldValue('disableReminders.sunday', e.target.checked)
+          }} />
+        </FormControl>
       </div>
 
       <div className='font-semibold text-sm mt-4'>

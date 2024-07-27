@@ -56,6 +56,10 @@ export interface Team {
   whatsappToken?: string
   owner: string
   logo?: string
+  color?: {
+    primary: string
+    secondary: string
+  }
 }
 
 

@@ -27,15 +27,12 @@ interface ApiResponse {
 }
 
 export default function TeamPublicCourses ({ params }: { params: { teamId: string } }) {
-  const { setPageTitle } = useNavigationStore()
+  const { setPageTitle, setTeam } = useNavigationStore()
 
   const [param, setParam] = useState<{ pageParam: number, search?: string, team: string }>({ pageParam: 1, team: params.teamId })
 
   const router = useRouter()
 
-  useEffect(() => {
-    setPageTitle("Consize - Courses")
-  }, [])
 
   const [companyCode, setCompanyName] = useState<string>("test")
 
@@ -45,6 +42,9 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
     queryFn: () => resolveMyTeamInfo(companyCode)
   })
 
+  useEffect(() => {
+    setPageTitle(data?.data?.name + " - Courses")
+  }, [data])
 
   useEffect(() => {
     let host = location.hostname
@@ -57,6 +57,13 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
       setCompanyName(subdomain)
     }
   }, [])
+
+  useEffect(() => {
+    if (data && data.data) {
+      // @ts-ignore
+      setTeam(data.data)
+    }
+  }, [data])
 
   const form = useFormik({
     initialValues: {
