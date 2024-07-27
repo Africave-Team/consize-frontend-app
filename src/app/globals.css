@@ -4,6 +4,25 @@
 @tailwind utilities;
 
 
+:root {
+  --dynamic-gradient: linear-gradient(to left, #1FFF69, #00524F);
+  --dynamic-gradient-md: linear-gradient(to bottom left, #1FFF69, #00524F 90%);
+}
+
+/* Define the CSS class using the CSS variable */
+.gradient-background {
+  background: var(--dynamic-gradient);
+}
+
+/* Responsive classes */
+@media (min-width: 768px) {
+
+  /* Tailwind's md breakpoint */
+  .md\:gradient-background {
+    background: var(--dynamic-gradient-md);
+  }
+}
+
 body {
   font-family: 'Inter', sans-serif;
 }

@@ -3,9 +3,11 @@ import KippaLogo from './Logo'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { LuEqual } from 'react-icons/lu'
+import { useNavigationStore } from '@/store/navigation.store'
 
-export default function SiteNavBar () {
+export default function SiteNavBar ({ team = false }: { team?: boolean }) {
   const router = useRouter()
+  const { team: teamStore } = useNavigationStore()
   const hamburgerClicked = function () {
     const navContent = document.getElementById('navbarSupportedContent4')
     if (navContent) {
@@ -23,11 +25,11 @@ export default function SiteNavBar () {
       data-te-navbar-ref>
       <div className="flex w-full flex-wrap items-center justify-between px-3">
         <div>
-          <a
+          {!team ? <a
             className="mx-2 my-1 flex items-center lg:mb-0 lg:mt-0"
             href="/home">
             <KippaLogo />
-          </a>
+          </a> : <>{teamStore && teamStore.logo && <Link href={`/teams/${teamStore.id}`}><img className='h-12' src={teamStore.logo} /></Link>}</>}
         </div>
 
         <button

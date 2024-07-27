@@ -7,12 +7,13 @@ import { Icon, IconButton, useToast } from '@chakra-ui/react'
 interface CopyToClipboardButtonProps {
   targetSelector: string
   link?: string
+  size?: 'sm' | 'xs' | 'md' | 'lg'
   useLink?: boolean
   buttonText?: string
   message?: string
 }
 
-const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({ targetSelector, buttonText, useLink, link, message }) => {
+const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({ targetSelector, buttonText, useLink, link, message, size = 'md' }) => {
   const [copied, setCopied] = useState(false)
   const toast = useToast()
   const copyToClipboard = async () => {
@@ -65,7 +66,7 @@ const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({ targetSel
   }
 
   return (
-    <IconButton className='border' disabled={copied}
+    <IconButton size={size} className='border' disabled={copied}
       onClick={copyToClipboard} icon={<Icon as={MdContentCopy} />} aria-label={''} />
   )
 }
