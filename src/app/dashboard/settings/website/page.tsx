@@ -15,7 +15,7 @@ interface ApiResponse {
   data: Team
 }
 
-export default function page () {
+export default function WebsiteSettings () {
   const { team, setTeam } = useAuthStore()
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -163,7 +163,7 @@ export default function page () {
             <div className='w-1/3 flex flex-col gap-4'>
               <FormControl className='relative inline-block'>
                 <FormLabel htmlFor='primary-color' mb='0' className='text-sm h-12 flex flex-col gap-1'>
-                  <span>Primary brand color</span>
+                  <span>Brand background color</span>
                   <div className='flex gap-2 border rounded-md items-center px-2 py-3 h-10'>
                     <div style={{ backgroundColor: color.primary }} className='h-7 w-7 border rounded-md'></div>
                     <div className='px-1 uppercase text-neutral-500'>
@@ -176,7 +176,7 @@ export default function page () {
 
               <FormControl className='relative inline-block mt-3'>
                 <FormLabel htmlFor='secondary-color' mb='0' className='text-sm h-12 flex flex-col gap-1'>
-                  Secondary brand color
+                  Brand text color
                   <div className='flex gap-2 border rounded-md items-center px-2 py-3 h-10'>
                     <div style={{ backgroundColor: color.secondary }} className='h-7 w-7 border rounded-md'></div>
                     <div className='px-1 text-neutral-500 uppercase'>
