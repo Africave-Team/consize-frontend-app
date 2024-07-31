@@ -248,6 +248,17 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
             return {
               v: value,
               t: "s",
+              s: {
+                // Style object (optional)
+                alignment: {
+                  horizontal: 'left',
+                  vertical: 'center',
+                },
+                font: {
+                  name: 'Arial',
+                  sz: 9,
+                },
+              },
             }
           })
         ]
