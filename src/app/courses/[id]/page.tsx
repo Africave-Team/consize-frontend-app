@@ -200,7 +200,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
               </div>
             </div>
             <div className='absolute top-32 right-10'>
-              <div className='w-[400px] hidden md:block'>
+              <div className='w-[450px] hidden md:block'>
                 <div className='rounded-xl border min-h-[480px] shadow-sm bg-white md:flex md:flex-col'>
                   <div className='h-52 rounded-t-lg w-full'>
                     <img src={courseResults?.data.headerMedia.url} loading='lazy' className='h-full rounded-t-xl w-full' />
@@ -210,10 +210,10 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                     <div className='text-sm text-gray-500'>
                       Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                     </div>
-                    {searchParams && searchParams.tryout ? <WholeForm tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                    {searchParams && searchParams.tryout ? <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                       <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                       <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                    </div> : <WholeForm id={params.id} />}
+                    </div> : <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
                   </div>
                 </div>
               </div>
@@ -272,10 +272,10 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                 <div className='text-sm text-gray-500'>
                   Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                 </div>
-                {searchParams && searchParams.tryout ? <WholeForm tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                {searchParams && searchParams.tryout ? <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                   <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                   <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                </div> : <WholeForm id={params.id} />}
+                </div> : <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
               </div>
             </div>
           </div>

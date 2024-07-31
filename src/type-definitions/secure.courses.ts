@@ -212,6 +212,7 @@ export interface EnrollmentField {
   required: boolean
   defaultField: boolean
   id: string
+  dataType: string
   position: number
 }
 
