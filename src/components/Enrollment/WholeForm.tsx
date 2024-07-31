@@ -309,7 +309,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
         felds.push({
           id: ft.id,
           field: <div>
-            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}</label>
+            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}{ft.required && <span className='text-red-500 text-xs'>*</span>}</label>
             <input type="number" id={fieldName} name={fieldName} className="bg-gray-50 h-11 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder={ft.fieldName} onChange={registerStudentForm.handleChange}
               onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values[fieldName]} />
           </div>
@@ -318,7 +318,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
         felds.push({
           id: ft.id,
           field: <div className='w-full mt-2'>
-            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}</label>
+            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}{ft.required && <span className='text-red-500 text-xs'>*</span>}</label>
             <input type="text" id={fieldName} onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values[fieldName]} placeholder={ft.fieldName} className='h-11 px-3 w-full rounded-lg border font-medium text-sm' />
           </div>
         })
@@ -348,6 +348,14 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
       window.removeEventListener('resize', handleResize)
     }
   }, [])
+
+  const keysToRemove = ["firstName", "otherNames", "email", "agree"]
+
+  // Remove the specified keys
+  const additionFieldsValidation = registerStudentForm.errors
+  keysToRemove.forEach(key => {
+    delete additionFieldsValidation[key]
+  })
 
 
   return (
@@ -385,7 +393,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
                 {generateEnrollForm(params.fields, true)}
               </div> : <></>}
             </div>
-            <button onClick={enrollStudentHandler} type='button' disabled={enrollMutation.isPending} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
+            <button onClick={enrollStudentHandler} type='button' disabled={enrollMutation.isPending || Object.keys(additionFieldsValidation).length > 0} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
               Enroll for free {enrollMutation.isPending && <Spinner size={'sm'} />}
             </button>
           </div>}
