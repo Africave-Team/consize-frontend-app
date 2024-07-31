@@ -17,6 +17,7 @@ import { FiClock, FiDollarSign } from 'react-icons/fi'
 import { RiWhatsappLine } from 'react-icons/ri'
 import MainFooter from '@/components/navigations/MainFooter'
 import chroma from 'chroma-js'
+import { Team } from '@/type-definitions/auth'
 
 
 interface ApiResponse {
@@ -25,7 +26,7 @@ interface ApiResponse {
 }
 
 export default function SinglePublicCourses ({ params, searchParams }: { params: { id: string }, searchParams: { tryout?: boolean } }) {
-  const { setPageTitle, team } = useNavigationStore()
+  const { setPageTitle } = useNavigationStore()
   const [loading, setLoading] = useState(false)
   const [maxEnrollmentReached, setMaxEnrollmentReached] = useState(false)
 
@@ -100,12 +101,13 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
     }
   }
 
-  const dynamicGradient = team && team.color
-    ? `linear-gradient(to left, ${team.color.primary}, ${chroma(team.color.primary).darken(1.5).hex()})`
+
+  const dynamicGradient = courseResults?.data.owner && courseResults?.data.owner.color
+    ? `linear-gradient(to left, ${courseResults?.data.owner.color.primary}, ${chroma(courseResults?.data.owner.color.primary).darken(1.5).hex()})`
     : 'linear-gradient(to left, #1FFF69, #00524F)'
 
-  const dynamicGradientMd = team && team.color
-    ? `linear-gradient(to left, ${team.color.primary}, ${chroma(team.color.primary).darken(1.5).hex()} 90%)`
+  const dynamicGradientMd = courseResults?.data.owner && courseResults?.data.owner.color
+    ? `linear-gradient(to left, ${courseResults?.data.owner.color.primary}, ${chroma(courseResults?.data.owner.color.primary).darken(1.5).hex()} 90%)`
     : 'linear-gradient(to left, #1FFF69, #00524F 90%)'
 
   const getLegibleTextColor = (backgroundColor: string): string => {
@@ -125,7 +127,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
     return contrastRatio < 4.5 ? (textColor === '#000000' ? '#FFFFFF' : '#000000') : textColor
   }
 
-  const textColor = team && team.color ? getLegibleTextColor(team.color.primary) : "#ffffff"
+  const textColor = courseResults?.data.owner && courseResults?.data.owner.color ? courseResults?.data.owner.color.secondary : "#ffffff"
 
   return <Layout>
     <div id="scroll-container" className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
@@ -139,7 +141,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
             {/* @ts-ignore */}
             <div style={{ '--dynamic-gradient': dynamicGradient, '--dynamic-gradient-md': dynamicGradientMd }} className='absolute top-0 left-0 h-full w-full gradient-background md:gradient-background'>
               <div className='bg-[url(/lines3.svg)] bg-cover pt-10 pb-5 h-full w-full flex flex-col'>
-                <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#AAF0C4]'>
+                <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center' style={{ color: textColor }}>
                   {(location.host.startsWith('app.') || location.host.startsWith('staging-app.')) ? <><Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /></> : <><Link href={`/teams/${courseResults?.data.owner.id}`}>{courseResults?.data?.owner.name}</Link> <Icon as={IoChevronForward} /></>}{courseResults?.data?.title}
                 </div>
                 <div className='mt-4 w-full md:min-h-[250px] min-h-[350px]'>
