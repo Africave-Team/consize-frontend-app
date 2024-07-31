@@ -194,7 +194,7 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
                 </div>
                 <div className='h-14 flex-1 flex flex-col justify-center'>
                   <div className='font-semibold text-base'>True or False</div>
-                  <div className='text-sm'>Only people with the link</div>
+                  <div className='text-sm'>Only yes or no answers accepted</div>
                 </div>
                 <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'boolean' ? 'border-primary-dark' : ''} border`}>
                   {dataType === 'boolean' && <div className='h-4 w-4 bg-primary-dark rounded-full' />}
