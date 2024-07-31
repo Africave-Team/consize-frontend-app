@@ -235,9 +235,16 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
               value = `23481${(new Date().getTime() + index).toString().slice(-8)}'`
             } else if (field.fieldName.toLowerCase().includes('email')) {
               value = 'jack.robinson@mailinator.com'
-            } else[
-              value = `Example ${field.fieldName}`
-            ]
+            } else {
+              if (field.dataType === "text") {
+                value = `Example ${field.fieldName}`
+              } else if (field.dataType === "boolean") {
+                value = `yes/no`
+              } else {
+                value = `0`
+              }
+            }
+
             return {
               v: value,
               t: "s",
