@@ -43,7 +43,7 @@ export default function StudentResources ({ resources, id, refetch }: { resource
       setUploading(true)
       formData.append("file", file)
       const { data } = await uploadFile(formData)
-      payload.fileUrl = data.file
+      payload.fileUrl = data
       await updateSettings({
         id, body: {
           courseMaterials: [...resources, payload]

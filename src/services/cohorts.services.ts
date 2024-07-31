@@ -1,5 +1,6 @@
-import { CreateCohortinterface } from '@/type-definitions/cohorts'
+import { CreateCohortinterface, EnrollCohortinterface } from '@/type-definitions/cohorts'
 import http from './base'
+import { Distribution } from '@/type-definitions/callbacks'
 
 export const createCohort = async (payload: CreateCohortinterface): Promise<any> =>
   http.post({
@@ -8,9 +9,16 @@ export const createCohort = async (payload: CreateCohortinterface): Promise<any>
   })
 
 
-export const getCourseCohorts = async (courseId: string): Promise<any> =>
+export const enrollCohort = async (payload: EnrollCohortinterface): Promise<any> =>
+  http.post({
+    url: `cohorts/enroll`,
+    body: payload
+  })
+
+
+export const getCourseCohorts = async (courseId: string, distribution: Distribution): Promise<any> =>
   http.get({
-    url: `cohorts/${courseId}`,
+    url: `cohorts/${courseId}/${distribution}`,
   })
 
 
