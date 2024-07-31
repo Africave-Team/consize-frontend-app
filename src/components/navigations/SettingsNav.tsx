@@ -8,7 +8,11 @@ export default function SettingsNav () {
       path: "/dashboard/settings/profile"
     },
     {
-      title: "Teams",
+      title: "Website",
+      path: "/dashboard/settings/website"
+    },
+    {
+      title: "Team members",
       path: "/dashboard/settings/teams"
     },
     {

@@ -212,6 +212,7 @@ export interface EnrollmentField {
   required: boolean
   defaultField: boolean
   id: string
+  dataType: string
   position: number
 }
 
@@ -375,6 +376,10 @@ export interface CourseSettings {
   inactivityPeriod: Period
   dropoutEvent: DropoutEvents
   resumption: CourseResumptionSettings | null
+  disableReminders?: {
+    saturday?: boolean
+    sunday?: boolean
+  }
 }
 
 export interface LearnerGroupPayload {

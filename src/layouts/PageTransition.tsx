@@ -27,9 +27,9 @@ const Layout = ({ children }: {
 
   }, [access, refresh, user])
 
-  // useEffect(() => {
-  //   document.title = pageTitle
-  // }, [pageTitle])
+  useEffect(() => {
+    document.title = pageTitle
+  }, [pageTitle])
   return (
 
     <motion.div className='overflow-hidden h-full w-full'

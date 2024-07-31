@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { FiClock, FiDollarSign } from 'react-icons/fi'
 import { RiWhatsappLine } from 'react-icons/ri'
 import MainFooter from '@/components/navigations/MainFooter'
+import chroma from 'chroma-js'
 
 
 interface ApiResponse {
@@ -24,7 +25,7 @@ interface ApiResponse {
 }
 
 export default function SinglePublicCourses ({ params, searchParams }: { params: { id: string }, searchParams: { tryout?: boolean } }) {
-  const { setPageTitle } = useNavigationStore()
+  const { setPageTitle, team } = useNavigationStore()
   const [loading, setLoading] = useState(false)
   const [maxEnrollmentReached, setMaxEnrollmentReached] = useState(false)
 
@@ -49,7 +50,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
     const database = getDatabase(app)
     if (courseResults && courseResults.data) {
       setLoading(true)
-      let { owner: team, id } = courseResults.data
+      let { owner: team, id, title } = courseResults.data
 
       if (team) {
         const studentPath = ref(database, 'course-statistics/' + team.id + '/' + id + '/students')
@@ -69,9 +70,12 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
           })
         }
         fetchData()
+        setPageTitle(team.name + ' - ' + title)
       }
 
     }
+
+
 
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,6 +99,34 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
       })
     }
   }
+
+  const dynamicGradient = team && team.color
+    ? `linear-gradient(to left, ${team.color.primary}, ${chroma(team.color.primary).darken(1.5).hex()})`
+    : 'linear-gradient(to left, #1FFF69, #00524F)'
+
+  const dynamicGradientMd = team && team.color
+    ? `linear-gradient(to left, ${team.color.primary}, ${chroma(team.color.primary).darken(1.5).hex()} 90%)`
+    : 'linear-gradient(to left, #1FFF69, #00524F 90%)'
+
+  const getLegibleTextColor = (backgroundColor: string): string => {
+    // Create a chroma color object
+    const bgColor = chroma(backgroundColor)
+    // Get luminance of the background color
+    const luminance = bgColor.luminance()
+
+    // Determine if the background is light or dark
+    // Choose text color with enough contrast
+    const textColor = luminance > 0.5 ? '#000000' : '#FFFFFF'
+
+    // Check the contrast ratio
+    const contrastRatio = chroma.contrast(backgroundColor, textColor)
+
+    // If the contrast ratio is not sufficient, return the other color
+    return contrastRatio < 4.5 ? (textColor === '#000000' ? '#FFFFFF' : '#000000') : textColor
+  }
+
+  const textColor = team && team.color ? getLegibleTextColor(team.color.primary) : "#ffffff"
+
   return <Layout>
     <div id="scroll-container" className='h-[94vh] overflow-y-scroll overflow-x-hidden flex-col justify-between'>
       {isFetching ? <div className={`w-full h-full`}>
@@ -104,55 +136,56 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
       </div> : <>
         <div className={`w-full h-[100vh]`}>
           <div className='relative h-[420px] md:h-[280px]'>
-            <div className='absolute top-0 left-0 h-full w-full md:bg-hero-pattern bg-hero-pattern-2'>
+            {/* @ts-ignore */}
+            <div style={{ '--dynamic-gradient': dynamicGradient, '--dynamic-gradient-md': dynamicGradientMd }} className='absolute top-0 left-0 h-full w-full gradient-background md:gradient-background'>
               <div className='bg-[url(/lines3.svg)] bg-cover pt-10 pb-5 h-full w-full flex flex-col'>
                 <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center text-[#AAF0C4]'>
                   {(location.host.startsWith('app.') || location.host.startsWith('staging-app.')) ? <><Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /></> : <><Link href={`/teams/${courseResults?.data.owner.id}`}>{courseResults?.data?.owner.name}</Link> <Icon as={IoChevronForward} /></>}{courseResults?.data?.title}
                 </div>
                 <div className='mt-4 w-full md:min-h-[250px] min-h-[350px]'>
                   <div className='md:px-16 px-5 w-full md:w-4/6'>
-                    <h1 className='font-semibold text-xl text-white line-clamp-2'>
+                    <h1 className='font-semibold text-xl line-clamp-2' style={{ color: textColor }}>
                       {courseResults?.data?.title}
                     </h1>
-                    <p className='text-sm line-clamp-4 h-20 text-white/80 mt-3' dangerouslySetInnerHTML={{ __html: he.decode(`${courseResults?.data?.description}` || "") }} />
+                    <p style={{ color: textColor, opacity: 0.8 }} className='text-sm line-clamp-4 h-20 mt-3' dangerouslySetInnerHTML={{ __html: he.decode(`${courseResults?.data?.description}` || "") }} />
 
                   </div>
                   <div className='w-full mt-3 overflow-x-hidden select-none overflow-y-hidden'>
                     <div className='flex gap-2 min-w-full md:min-w-[550px] py-3 text-xs md:flex-row flex-col'>
-                      <div className='md:hidden flex gap-2'>
-                        <div className='bg-white bg-opacity-10 text-white px-2 h-7 md:ml-16 ml-5 w-16 rounded-2xl flex gap-2 justify-start items-center'>
+                      <div style={{ color: textColor }} className='md:hidden flex gap-2'>
+                        <div className='bg-white bg-opacity-10 px-2 h-7 md:ml-16 ml-5 w-16 rounded-2xl flex gap-2 justify-start items-center'>
                           <Icon as={FiDollarSign} />
                           <span>Free</span>
                         </div>
-                        <div className='bg-white bg-opacity-10 h-7 w-24 px-2 text-white rounded-2xl flex gap-2 justify-start items-center'>
+                        <div className='bg-white bg-opacity-10 h-7 w-24 px-2 rounded-2xl flex gap-2 justify-start items-center'>
                           <Icon as={IoBookOutline} />
                           <span>{courseResults?.data?.lessons.length} Lessons</span>
                         </div>
-                        <div className='bg-white/10 h-7 w-20 rounded-2xl px-2 text-white flex gap-2 justify-start items-center'>
+                        <div className='bg-white/10 h-7 w-20 rounded-2xl px-2 flex gap-2 justify-start items-center'>
                           <Icon as={FiClock} />
                           <span>{courseResults?.data?.lessons.length} Days</span>
                         </div>
                       </div>
-                      <div className='md:hidden flex'>
-                        <div className='bg-white/10 h-7 w-56 ml-5 rounded-2xl px-2 text-white flex gap-2 justify-start items-center'>
+                      <div style={{ color: textColor }} className='md:hidden flex'>
+                        <div className='bg-white/10 h-7 w-56 ml-5 rounded-2xl px-2 flex gap-2 justify-start items-center'>
                           <Icon as={RiWhatsappLine} />
                           <span>Delivered through WhatsApp</span>
                         </div>
                       </div>
 
-                      <div className='bg-white bg-opacity-10 hidden text-white px-2 h-7 md:ml-16 ml-5 w-16 rounded-2xl md:flex gap-2 justify-start items-center'>
+                      <div style={{ color: textColor }} className='bg-white bg-opacity-10 hidden px-2 h-7 md:ml-16 ml-5 w-16 rounded-2xl md:flex gap-2 justify-start items-center'>
                         <Icon as={FiDollarSign} />
                         <span>Free</span>
                       </div>
-                      <div className='bg-white bg-opacity-10 hidden h-7 w-24 px-2 text-white rounded-2xl md:flex gap-2 justify-start items-center'>
+                      <div style={{ color: textColor }} className='bg-white bg-opacity-10 hidden h-7 w-24 px-2 rounded-2xl md:flex gap-2 justify-start items-center'>
                         <Icon as={IoBookOutline} />
                         <span>{courseResults?.data?.lessons.length} Lessons</span>
                       </div>
-                      <div className='bg-white/10 h-7 w-20 hidden rounded-2xl px-2 text-white md:flex gap-2 justify-start items-center'>
+                      <div style={{ color: textColor }} className='bg-white/10 h-7 w-20 hidden rounded-2xl px-2 md:flex gap-2 justify-start items-center'>
                         <Icon as={FiClock} />
                         <span>{courseResults?.data?.lessons.length} Days</span>
                       </div>
-                      <div className='bg-white/10 h-7 w-56 hidden rounded-2xl px-2 text-white md:flex gap-2 justify-start items-center'>
+                      <div style={{ color: textColor }} className='bg-white/10 h-7 w-56 hidden rounded-2xl px-2 md:flex gap-2 justify-start items-center'>
                         <Icon as={RiWhatsappLine} />
                         <span>Delivered through WhatsApp</span>
                       </div>
@@ -167,7 +200,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
               </div>
             </div>
             <div className='absolute top-32 right-10'>
-              <div className='w-[400px] hidden md:block'>
+              <div className='w-[450px] hidden md:block'>
                 <div className='rounded-xl border min-h-[480px] shadow-sm bg-white md:flex md:flex-col'>
                   <div className='h-52 rounded-t-lg w-full'>
                     <img src={courseResults?.data.headerMedia.url} loading='lazy' className='h-full rounded-t-xl w-full' />
@@ -177,10 +210,10 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                     <div className='text-sm text-gray-500'>
                       Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                     </div>
-                    {searchParams && searchParams.tryout ? <WholeForm tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                    {searchParams && searchParams.tryout ? <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                       <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                       <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                    </div> : <WholeForm id={params.id} />}
+                    </div> : <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
                   </div>
                 </div>
               </div>
@@ -239,10 +272,10 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                 <div className='text-sm text-gray-500'>
                   Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                 </div>
-                {searchParams && searchParams.tryout ? <WholeForm tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                {searchParams && searchParams.tryout ? <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                   <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                   <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                </div> : <WholeForm id={params.id} />}
+                </div> : <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
               </div>
             </div>
           </div>
