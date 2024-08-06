@@ -63,6 +63,11 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
 
 
   useEffect(() => {
+    if (cohortResults) {
+      setSelectedCohort(cohortResults.data[0].id)
+    }
+  }, [cohortResults])
+  useEffect(() => {
     if (team && team.channels) {
       let item = team.channels.find(e => e.channel === Distribution.WHATSAPP)
       if (item && item.enabled) {
@@ -272,10 +277,6 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
     }
   }, [selectedCohort])
 
-  useEffect(() => {
-    setSelectedCohort("")
-  }, [tab])
-
   const downloadSampleSheet = async function () {
     const tableData: RowData[][] = [
       [
@@ -426,7 +427,6 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
           <div onClick={() => setTab('whatsapp')} className={`px-5 cursor-pointer h-full flex items-end pb-1 ${tab === 'whatsapp' && 'border-b-2 h-full border-primary-dark'}`}>Whatsapp groups</div>
           <div onClick={() => setTab('slack')} className={`px-5 cursor-pointer h-full flex items-end pb-1 ${tab === 'slack' && 'border-b-2 h-full border-primary-dark'}`}>Slack groups</div>
         </div>
-
         <div className='h-[570px] overflow-scroll'>
           {tab === 'link' && <>
             <div className='h-10 mt-2 px-3 w-full'>

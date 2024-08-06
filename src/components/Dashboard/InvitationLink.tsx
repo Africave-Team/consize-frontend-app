@@ -8,7 +8,7 @@ export default function InvitationLink ({ course, isBundle }: { course: Course, 
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <div>
-      <button onClick={() => onOpen()} className='bg-primary-dark hover:bg-primary-dark/90 px-4 h-10 text-white rounded-md text-sm'>Enroll students</button>
+      <button onClick={() => onOpen()} className='bg-primary-dark hover:bg-primary-dark/90 px-4 h-8 text-white rounded-md text-xs'>Enroll students</button>
 
       {isOpen && <Modal isCentered isOpen={isOpen} size={{ md: '3xl', base: 'full' }} onClose={onClose}>
         <ModalOverlay />

@@ -22,6 +22,13 @@ export const getCourseCohorts = async (courseId: string, distribution: Distribut
   })
 
 
+
+export const getGeneralCourseCohorts = async (courseId: string): Promise<any> =>
+  http.get({
+    url: `cohorts/general/${courseId}`,
+  })
+
+
 export const deleteCourseCohort = async (cohortId: string): Promise<any> =>
   http.delete({
     url: `cohorts/${cohortId}`,

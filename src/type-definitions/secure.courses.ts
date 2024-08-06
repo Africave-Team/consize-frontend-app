@@ -274,7 +274,11 @@ export interface RTDBStudent {
   progress: number
   certificate?: string
   phoneNumber: string
+  slackId?: string
+  cohortId?: string
+  distribution?: Distribution
   scores?: number[]
+  dateEnrolled?: string
   lessons?: {
     [id: string]: {
       title: string

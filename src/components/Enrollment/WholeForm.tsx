@@ -389,7 +389,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
               Enrolling as <span className='font-semibold uppercase'>{verifyPhoneForm.values.user.firstName} {verifyPhoneForm.values.user.otherNames}?</span>
             </div>
             <div>
-              {params.fields.length !== 0 ? <div>
+              {params.fields.filter(e => !e.defaultField).length !== 0 ? <div>
                 <div className="text-sm font-semibold my-2">The following information are requested by the course managers.</div>
                 {generateEnrollForm(params.fields, true)}
               </div> : <></>}
