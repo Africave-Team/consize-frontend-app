@@ -63,7 +63,7 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
 
 
   useEffect(() => {
-    if (cohortResults) {
+    if (cohortResults && cohortResults.data && cohortResults.data[0]) {
       setSelectedCohort(cohortResults.data[0].id)
     }
   }, [cohortResults])
