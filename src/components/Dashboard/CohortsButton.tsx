@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Popover, PopoverBody, PopoverContent, PopoverTrigger, Spinner, useDisclosure, useToast } from '@chakra-ui/react'
+import { FormControl, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Popover, PopoverBody, PopoverContent, PopoverTrigger, Spinner, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { Course } from '@/type-definitions/secure.courses'
 import { CohortsInterface } from '@/type-definitions/cohorts'
@@ -140,18 +140,20 @@ export default function CohortsButton ({ course, selectedCohort, tab, setSelecte
           <PopoverBody className='h-52 overflow-y-scroll text-primary-dark text-sm'>
             <div className='flex justify-between items-center'>
               <div className='font-semibold'>Select a cohort</div>
-              <button onClick={() => {
-                setAction("new")
-                onOpen()
-                delay(200).then(() => {
-                  let element = document.getElementById("name")
-                  if (element) {
-                    element.focus()
-                  }
-                })
-              }} className='h-6 w-6 rounded-full border border-primary-dark hover:bg-primary-dark hover:text-white flex justify-center items-center'>
-                <FaPlus />
-              </button>
+              <Tooltip label="Create new cohort">
+                <button onClick={() => {
+                  setAction("new")
+                  onOpen()
+                  delay(200).then(() => {
+                    let element = document.getElementById("name")
+                    if (element) {
+                      element.focus()
+                    }
+                  })
+                }} className='h-6 w-6 rounded-full border border-primary-dark hover:bg-primary-dark hover:text-white flex justify-center items-center'>
+                  <FaPlus />
+                </button>
+              </Tooltip>
             </div>
             <div className='flex flex-col gap-2 mt-2'>
               {cohorts.map((cohort) => <div key={cohort.id} className={`h-10 rounded-md px-2 hover:bg-primary-dark hover:text-white flex items-center group justify-between ${current?.id === cohort.id && 'bg-primary-dark text-white'}`}>
@@ -161,14 +163,14 @@ export default function CohortsButton ({ course, selectedCohort, tab, setSelecte
                   {cohort.default && <div className='border rounded-2xl text-xs flex items-center justify-center px-2'>default</div>}
                 </div>
                 <div className='group-hover:flex justify-end hidden w-20 gap-1 items-center h-full'>
-                  {!cohort.default && <button onClick={() => {
+                  {!cohort.default && <Tooltip label="Make as default"><button onClick={() => {
                     setAction("favorite")
                     setClickedItem(cohort)
                     onOpen()
                   }} className='h-8 w-8 rounded-full border border-primary-dark hover:bg-black/50 flex justify-center items-center'>
                     <GrFavorite className='text-xs' />
-                  </button>}
-                  <button onClick={() => {
+                  </button></Tooltip>}
+                  <Tooltip label="Rename cohort"><button onClick={() => {
                     setAction("edit")
                     createCohortForm.setFieldValue("name", cohort.name)
                     setClickedItem(cohort)
@@ -181,14 +183,14 @@ export default function CohortsButton ({ course, selectedCohort, tab, setSelecte
                     })
                   }} className='h-8 w-8 rounded-full border border-primary-dark hover:bg-black/50 flex justify-center items-center'>
                     <FiEdit2 className='text-xs' />
-                  </button>
-                  {cohort.members.length === 0 && <button onClick={() => {
+                  </button></Tooltip>
+                  {cohort.members.length === 0 && <Tooltip label="Delete cohort"><button onClick={() => {
                     setAction("delete")
                     setClickedItem(cohort)
                     onOpen()
                   }} className='h-8 w-8 rounded-full border border-primary-dark hover:bg-black/50 flex justify-center items-center'>
                     <FaTrash className='text-xs' />
-                  </button>}
+                  </button></Tooltip>}
                 </div>
               </div>)}
             </div>
