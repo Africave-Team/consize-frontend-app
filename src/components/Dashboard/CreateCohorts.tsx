@@ -21,13 +21,9 @@ import { RowData, exportSampleData } from '@/utils/generateExcelSheet'
 import { bulkAddStudents } from '@/services/secure.courses.service'
 import { CohortsInterface } from '@/type-definitions/cohorts'
 import { queryClient } from '@/utils/react-query'
+import CohortsButton from './CohortsButton'
 interface FilePreview {
   file: File
-}
-
-interface ApiResponse {
-  data: CohortsInterface[]
-  message: string
 }
 
 enum ENTITY {
@@ -40,33 +36,15 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
   const [showTeamQR, setShowteamQR] = useState<boolean>(false)
   const [showTeamSlack, setShowteamSlack] = useState<boolean>(false)
   const { team } = useAuthStore()
-  const { isOpen, onClose: closeNew, onOpen } = useDisclosure()
   const [filePreview, setFilePreview] = useState<FilePreview | null>(null)
   const [slackEntities, setSlackEntities] = useState<ENTITY>(ENTITY.PERSON)
   const [selectedMembers, setSelectedMembers] = useState<string[]>([])
   const [selectedChannels, setSelectedChannels] = useState<string[]>([])
-  const [selectedCohort, setSelectedCohort] = useState<string>()
+  const [selectedCohort, setSelectedCohort] = useState<CohortsInterface>()
   const [selectedUsers, setSelectedUsers] = useState<number>(0)
   const [view, setView] = useState<"list" | "form">("list")
   const [tab, setTab] = useState<"link" | "whatsapp" | 'slack'>(hideLink ? "whatsapp" : "link")
 
-  const loadData = async function (id: string, distribution: Distribution) {
-    const data = await getCourseCohorts(course.id, distribution)
-    return data
-  }
-
-  const { data: cohortResults, isFetching, refetch } =
-    useQuery<ApiResponse>({
-      queryKey: ['course-cohorts', { courseId: course.id, distribution: tab === "slack" ? Distribution.SLACK : Distribution.WHATSAPP }],
-      queryFn: () => loadData(course.id, tab === "slack" ? Distribution.SLACK : Distribution.WHATSAPP)
-    })
-
-
-  useEffect(() => {
-    if (cohortResults && cohortResults.data && cohortResults.data[0]) {
-      setSelectedCohort(cohortResults.data[0].id)
-    }
-  }, [cohortResults])
   useEffect(() => {
     if (team && team.channels) {
       let item = team.channels.find(e => e.channel === Distribution.WHATSAPP)
@@ -204,35 +182,6 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
     },
   })
 
-  const createCohortForm = useFormik({
-    initialValues: {
-      name: "",
-    },
-    validateOnChange: true,
-    validationSchema: SlackCreateCohortValidator,
-    onSubmit: async function (values, { resetForm }) {
-      if (course) {
-        const result = await createCohort({
-          ...values,
-          courseId: course.id,
-          distribution: tab === "slack" ? Distribution.SLACK : Distribution.WHATSAPP
-        })
-        toast({
-          description: "Cohort added successfully.",
-          title: "Completed",
-          status: 'success',
-          duration: 2000,
-          isClosable: true,
-        })
-        setSelectedCohort(result.data.id)
-        queryClient.invalidateQueries({
-          queryKey: ['course-cohorts', { courseId: course.id, distribution: tab === "slack" ? Distribution.SLACK : Distribution.WHATSAPP }]
-        })
-        resetForm()
-        closeNew()
-      }
-    },
-  })
 
   const handleFileChange = async (data: FilePreview) => {
     try {
@@ -265,15 +214,9 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
   }, [filePreview])
 
   useEffect(() => {
-    if (selectedCohort === "new") {
-      whatsappEnrollCohortForm.setFieldValue("cohortId", "")
-      slackEnrollCohortForm.setFieldValue("cohortId", "")
-      // initiate new cohort modal
-      onOpen()
-    } else {
-      whatsappEnrollCohortForm.setFieldValue("cohortId", selectedCohort)
-      slackEnrollCohortForm.setFieldValue("cohortId", selectedCohort)
-      closeNew()
+    if (selectedCohort) {
+      whatsappEnrollCohortForm.setFieldValue("cohortId", selectedCohort.id)
+      slackEnrollCohortForm.setFieldValue("cohortId", selectedCohort.id)
     }
   }, [selectedCohort])
 
@@ -429,36 +372,28 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
         </div>
         <div className='h-[570px] overflow-scroll'>
           {tab === 'link' && <>
-            <div className='h-10 mt-2 px-3 w-full'>
+            <div className='h-10 mt-2 w-full'>
               <div className='h-10 w-1/3'>
-                <Select value={selectedCohort} onChange={(e) => setSelectedCohort(e.target.value)} placeholder='Select a cohort'>
-                  {
-                    cohortResults?.data.map(e => <option key={e.id} value={e.id}>{e.name}</option>)
-                  }
-                  <option value='new'>Add a new cohort</option>
-                </Select></div>
+                <CohortsButton setSelectedCohort={setSelectedCohort} tab={tab} selectedCohort={selectedCohort} course={course} />
+              </div>
             </div>
-            {selectedCohort && selectedCohort !== "new" && <>
+            {selectedCohort && <>
               <p className='text-sm line-clamp-4 text-[#23173E99]/60 mt-4 mb-1'>Send this course link to students to enroll</p>
               <div className='mb-4 flex justify-between gap-1'>
-                <Input type="text" className="bg-gray-200 text-gray-600 !opacity-90 cursor-not-allowed px-2 py-1 border rounded-md overflow-y-auto w-11/12" disabled value={`${location.origin}/courses/${isBundle ? `bundles/` : ''}${course.id}?cohort=${selectedCohort}`} id="link-content" />
+                <Input type="text" className="bg-gray-200 text-gray-600 !opacity-90 cursor-not-allowed px-2 py-1 border rounded-md overflow-y-auto w-11/12" disabled value={`${location.origin}/courses/${isBundle ? `bundles/` : ''}${course.id}?cohort=${selectedCohort.id}`} id="link-content" />
                 <CopyToClipboardButton targetSelector='#link-content' />
               </div>
-              {showTeamQR && team && <CourseQRCode cohort={cohortResults?.data.find(e => e.id === selectedCohort)?.shortCode || ""} shortCode={course.shortCode} courseName={course.title} teamName={team.name} />}
+              {showTeamQR && team && selectedCohort && <CourseQRCode cohort={selectedCohort?.shortCode || ""} shortCode={course.shortCode} courseName={course.title} teamName={team.name} />}
             </>}
           </>}
 
           {tab === 'slack' && <>
-            <div className='h-10 mt-2 px-3 w-full'>
+            <div className='h-10 mt-2 w-full'>
               <div className='h-10 w-1/3'>
-                <Select value={selectedCohort} onChange={(e) => setSelectedCohort(e.target.value)} placeholder='Select a cohort'>
-                  {
-                    cohortResults?.data.map(e => <option key={e.id} value={e.id}>{e.name}</option>)
-                  }
-                  <option value='new'>Add a new cohort</option>
-                </Select></div>
+                <CohortsButton setSelectedCohort={setSelectedCohort} tab={tab} selectedCohort={selectedCohort} course={course} />
+              </div>
             </div>
-            {selectedCohort && selectedCohort !== "new" && <>
+            {selectedCohort && <>
               {showTeamSlack ? <div className='mt-5'>
                 <div className='font-medium text-lg'>Enroll {selectedUsers || ""} students from slack</div>
                 {view === "list" && <>
@@ -539,16 +474,12 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
 
           {tab === "whatsapp" && <>
 
-            <div className='h-10 mt-2 px-3 w-full'>
+            <div className='h-10 mt-2 w-full'>
               <div className='h-10 w-1/3'>
-                <Select value={selectedCohort} onChange={(e) => setSelectedCohort(e.target.value)} placeholder='Select a cohort'>
-                  {
-                    cohortResults?.data.map(e => <option key={e.id} value={e.id}>{e.name}</option>)
-                  }
-                  <option value='new'>Add a new cohort</option>
-                </Select></div>
+                <CohortsButton setSelectedCohort={setSelectedCohort} tab={tab} selectedCohort={selectedCohort} course={course} />
+              </div>
             </div>
-            {selectedCohort && selectedCohort !== "new" && <>
+            {selectedCohort && <>
               {showTeamQR ? <div className='mt-5'>
                 <FormControl className='mt-4'>
                   <FormLabel className='text-sm'>Upload learner list file <span className='text-red-500 text-xs'>*</span></FormLabel>
@@ -598,30 +529,6 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
 
         </div>
       </div>
-
-      {isOpen && <Modal size={'md'} onClose={() => {
-        setSelectedCohort("")
-        closeNew()
-      }} isOpen={isOpen} isCentered={true}>
-
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader className='border-b !py-3 text-base'>Create a cohort</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <form onSubmit={createCohortForm.handleSubmit}>
-              <FormControl>
-                <FormLabel className='text-sm mt-3' htmlFor='name' requiredIndicator={true}>Name this cohort <span className='text-red-500 text-xs'>*</span></FormLabel>
-                <input id="name" name="name" value={createCohortForm.values.name} onChange={createCohortForm.handleChange} type="text" placeholder='Cohort name' className='w-full px-3 h-12 border rounded-lg' />
-                {createCohortForm.errors.name && <span className='text-xs text-red-400'>{createCohortForm.errors.name}</span>}
-              </FormControl>
-              <button type="submit" className='h-10 my-5 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Save & close
-                {createCohortForm.isSubmitting && <Spinner size={'sm'} />}
-              </button>
-
-            </form>
-          </ModalBody>
-        </ModalContent></Modal>}
     </>
   )
 }

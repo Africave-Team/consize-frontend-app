@@ -1,4 +1,4 @@
-import { CreateCohortinterface, EnrollCohortinterface } from '@/type-definitions/cohorts'
+import { CohortsInterface, CreateCohortinterface, EnrollCohortinterface } from '@/type-definitions/cohorts'
 import http from './base'
 import { Distribution } from '@/type-definitions/callbacks'
 
@@ -31,5 +31,12 @@ export const getGeneralCourseCohorts = async (courseId: string): Promise<any> =>
 
 export const deleteCourseCohort = async (cohortId: string): Promise<any> =>
   http.delete({
-    url: `cohorts/${cohortId}`,
+    url: `cohorts/single/${cohortId}`,
+  })
+
+
+export const updateCourseCohort = async (cohortId: string, payload: Pick<CohortsInterface, "name" | "default">): Promise<any> =>
+  http.put({
+    url: `cohorts/single/${cohortId}`,
+    body: payload
   })

@@ -31,6 +31,7 @@ export interface CohortsInterface {
   shortCode: string
   distribution: Distribution
   schedule: boolean
+  default: boolean
   members: StudentRecord[]
   courseId: string,
   status: CohortsStatus
