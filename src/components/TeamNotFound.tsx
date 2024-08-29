@@ -20,7 +20,7 @@ export default function TeamNotFound () {
         There&apos;s been a glitch
       </div>
       <div className='mt-4'>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas cupiditate maxime provident eligendi mollitia unde est molestias labore veniam accusamus numquam, iure fugit quis et quisquam architecto consectetur eaque alias?
+        We could not find any teams related to the provided subdomain.
         <a className='ml-2 text-purple-500' href={home()}>Go back home</a>
       </div>
     </div>
