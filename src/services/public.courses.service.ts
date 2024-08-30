@@ -22,11 +22,11 @@ export const verifyStudentPhone = async (phoneNumber: string): Promise<any> =>
   })
 
 
-export const enrollStudent = async (studentId: string, courseId: string): Promise<any> =>
+export const enrollStudent = async (studentId: string, courseId: string, custom: any, cohortId?: string): Promise<any> =>
   http.post({
     url: `students/${studentId}/enrollments`,
     body: {
-      course: courseId
+      course: courseId, custom, cohortId
     }
   })
 

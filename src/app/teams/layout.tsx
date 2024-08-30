@@ -1,8 +1,5 @@
 'use client'
-
-import MainFooter from '@/components/navigations/MainFooter'
 import SiteNavBar from '@/components/siteNavBar'
-import { AnimatePresence } from 'framer-motion'
 
 export default function PublicCoursesLayout ({
   children,
@@ -12,7 +9,7 @@ export default function PublicCoursesLayout ({
 
   return (
     <div className=''>
-      <SiteNavBar />
+      <SiteNavBar team={true} />
       <div className='page-container-2 !p-0'>
         {children}
       </div>

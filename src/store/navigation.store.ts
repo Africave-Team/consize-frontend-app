@@ -14,6 +14,7 @@ export const useNavigationStore = create(
       setPageTitle (title) {
         set({ pageTitle: title })
       },
+      setTeam: (obj) => set({ team: obj }),
       toggleSidebar: () => set({ sidebarOpen: !get().sidebarOpen }),
       toggleListStyle: () => set({ preferredListStyle: get().preferredListStyle === ListStyle.GRID ? ListStyle.ROWS : ListStyle.GRID })
     }),

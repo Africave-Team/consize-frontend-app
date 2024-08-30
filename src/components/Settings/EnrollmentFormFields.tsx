@@ -3,7 +3,7 @@ import { EnrollmentField } from '@/type-definitions/secure.courses'
 import { toCamelCase } from '@/utils/string-formatters'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Switch, useDisclosure } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { FiPlus } from 'react-icons/fi'
+import { FiChevronDown, FiChevronUp, FiPlus, FiTrash2 } from 'react-icons/fi'
 import { v4 } from 'uuid'
 
 export default function EnrollmentFormFields ({ fields, id, refetch }: { fields: EnrollmentField[], id: string, refetch: () => Promise<any> }) {
@@ -23,6 +23,7 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
           id: v4(),
           position: max + 1,
           fieldName,
+          dataType,
           variableName: toCamelCase(fieldName.replaceAll('?', '')),
           required: fieldIsRequired,
           defaultField: false
@@ -32,6 +33,51 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
     await refetch()
     onClose()
     setLoading(false)
+    setFieldName("")
+    setDataType("text")
+    setFieldIsRequired(false)
+  }
+
+  const handleDeleteItem = async function (fieldId: string) {
+    const curr = [...fields]
+    let itemIndex = curr.findIndex(e => e.id === fieldId)
+    if (itemIndex) {
+      curr.splice(itemIndex, 1)
+    }
+    await updateSettings({
+      id, body: {
+        enrollmentFormFields: curr
+      }
+    })
+    await refetch()
+  }
+  const handleMoveItem = async function (index: number, dir: "up" | "down") {
+    const curr = [...fields]
+    let movingItemIndex = curr.findIndex(e => e.position === index)
+    let moving, changing
+    if (dir === "up") {
+      if (movingItemIndex >= 0) {
+        moving = { ...curr[movingItemIndex] }
+        changing = { ...curr[movingItemIndex - 1] }
+        curr[movingItemIndex].position = changing.position
+        curr[movingItemIndex - 1].position = moving.position
+      }
+    }
+
+    if (dir === "down") {
+      if (movingItemIndex >= 0) {
+        moving = { ...curr[movingItemIndex] }
+        changing = { ...curr[movingItemIndex + 1] }
+        curr[movingItemIndex].position = changing.position
+        curr[movingItemIndex + 1].position = moving.position
+      }
+    }
+    await updateSettings({
+      id, body: {
+        enrollmentFormFields: curr
+      }
+    })
+    await refetch()
   }
   return (
     <div>
@@ -81,10 +127,22 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
             </div>
           </div>
           <AccordionPanel pb={4}>
-            {fields.filter(e => !e.defaultField).map((field, index) =>
+            {fields.filter(e => !e.defaultField).sort((a, b) => a.position - b.position).map((field, index) =>
               <div key={`form_fields_${index}`}>
-                <div className={`hover:bg-[#F8F8F8] px-3 bg-white w-full h-10 border-t flex justify-start gap-1 text-sm items-center`}>
-                  {field.fieldName} {field.required && <span className='text-red-500 text-xs'>*</span>}
+                <div className={`hover:bg-[#F8F8F8] px-3 bg-white w-full h-10 border-t flex justify-between gap-1 text-sm items-center`}>
+                  <div>{field.fieldName} {field.required && <span className='text-red-500 text-xs'>*</span>}</div>
+                  <div className='flex gap-1 items-center'>
+
+                    {/* {index !== (fields.filter(e => !e.defaultField).length - 1) && <button disabled={loading} onClick={() => handleMoveItem(field.position, "down")} className='h-8 w-8 flex justify-center items-center'>
+                      <FiChevronDown />
+                    </button>}
+                    {index !== 0 && <button disabled={loading} onClick={() => handleMoveItem(field.position, "up")} className='h-8 w-8 flex justify-center items-center'>
+                      <FiChevronUp />
+                    </button>} */}
+                    <button disabled={loading} onClick={() => handleDeleteItem(field.id)} className='h-8 w-8 flex justify-center items-center'>
+                      <FiTrash2 />
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -136,7 +194,7 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
                 </div>
                 <div className='h-14 flex-1 flex flex-col justify-center'>
                   <div className='font-semibold text-base'>True or False</div>
-                  <div className='text-sm'>Only people with the link</div>
+                  <div className='text-sm'>Only yes or no answers accepted</div>
                 </div>
                 <div className={`h-7 w-7 rounded-full flex justify-center items-center ${dataType === 'boolean' ? 'border-primary-dark' : ''} border`}>
                   {dataType === 'boolean' && <div className='h-4 w-4 bg-primary-dark rounded-full' />}

@@ -21,6 +21,7 @@ import { deleteCourseCohort, getCourseCohorts } from '@/services/cohorts.service
 import { useQuery } from '@tanstack/react-query'
 import { CohortsInterface } from '@/type-definitions/cohorts'
 import { queryClient } from '@/utils/react-query'
+import { Distribution } from '@/type-definitions/callbacks'
 interface FilePreview {
   file: File
 }
@@ -46,7 +47,7 @@ export default function LearnerGroups ({ groups, settingsId, course, maxEnrollme
   const toast = useToast()
 
   const loadData = async function (payload: { course: string }) {
-    const data = await getCourseCohorts(payload.course)
+    const data = await getCourseCohorts(payload.course, Distribution.WHATSAPP)
     return data
   }
 

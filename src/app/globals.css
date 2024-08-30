@@ -4,6 +4,25 @@
 @tailwind utilities;
 
 
+:root {
+  --dynamic-gradient: linear-gradient(to left, #1FFF69, #00524F);
+  --dynamic-gradient-md: linear-gradient(to bottom left, #1FFF69, #00524F 90%);
+}
+
+/* Define the CSS class using the CSS variable */
+.gradient-background {
+  background: var(--dynamic-gradient);
+}
+
+/* Responsive classes */
+@media (min-width: 768px) {
+
+  /* Tailwind's md breakpoint */
+  .md\:gradient-background {
+    background: var(--dynamic-gradient-md);
+  }
+}
+
 body {
   font-family: 'Inter', sans-serif;
 }
@@ -117,6 +136,10 @@ html {
 
 .datetime input {
   @apply px-3 border rounded-lg h-10 text-sm
+}
+
+.react-daterange-picker__wrapper {
+  @apply !border !border-gray-300 h-8 rounded-sm
 }
 
 

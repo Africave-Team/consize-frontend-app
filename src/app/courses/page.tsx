@@ -26,15 +26,10 @@ interface ApiResponse {
 }
 
 export default function PublicCourses () {
-  const { setPageTitle } = useNavigationStore()
   const [page, setPage] = useState(1)
   const [param, setParam] = useState<{ pageParam: number, search?: string }>({ pageParam: 1 })
 
   const router = useRouter()
-
-  useEffect(() => {
-    setPageTitle("Consize - Courses")
-  }, [])
 
   const form = useFormik({
     initialValues: {
@@ -65,6 +60,15 @@ export default function PublicCourses () {
       }))
     }, 500), // 500ms debounce time
     []
+  )
+
+  useEffect(() => {
+    setParam((prevParam) => ({
+      ...prevParam,
+      pageParam: page,
+    }))
+  },
+    [page]
   )
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

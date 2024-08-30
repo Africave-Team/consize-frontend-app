@@ -7,10 +7,10 @@ export default function CertificatesNav () {
       title: "Certificates",
       path: "/dashboard/settings/certificate-builder"
     },
-    {
-      title: "Logos",
-      path: "/dashboard/settings/certificate-builder/logos"
-    },
+    // {
+    //   title: "Logos",
+    //   path: "/dashboard/settings/certificate-builder/logos"
+    // },
     {
       title: "Signatories",
       path: "/dashboard/settings/certificate-builder/signatories"

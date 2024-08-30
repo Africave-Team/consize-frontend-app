@@ -27,6 +27,7 @@ export default function Home () {
       let subdomain = parts[0]
       setCompanyName(subdomain)
     } else {
+      // location.href = location.origin + '/courses'
       location.href = location.origin + '/home'
     }
   }, [])
