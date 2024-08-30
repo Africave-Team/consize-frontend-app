@@ -1,8 +1,8 @@
 import React from 'react'
-import localFont from 'next/font/local'
 import Link from 'next/link'
 import { FaRegCopyright } from 'react-icons/fa'
-const myFont = localFont({ src: '../../fonts/rgs-1.ttf' })
+import { fonts } from "@/app/fonts"
+const myFont = fonts.brandFont
 
 export default function MainFooter () {
   return (
