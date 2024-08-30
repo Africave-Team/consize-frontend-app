@@ -40,7 +40,7 @@ export default function Hero () {
   }, [])
   return (
     <div className='md:px-5 px-2'>
-      <div className="relative hero-cont h-[900px] md:mb-auto mb-36 bg-[#0D1F23] flex items-center justify-center rounded-3xl">
+      <div className="relative hero-cont h-[900px] bg-[#0D1F23] flex items-center justify-center rounded-3xl">
         <div className='absolute h-96 w-full z-20 top-0 left-0 right-0 flex justify-center'>
           <div className='w-full md:w-3/5 h-96 radial-gradient-hero'></div>
         </div>
@@ -49,8 +49,8 @@ export default function Hero () {
         </div>
         <div className="absolute bottom-0 z-50 left-0 right-0 pt-[65px] h-full w-full flex-col  flex items-center rounded-lg overflow-auto">
           <div className='w-full flex justify-center'>
-            <div className='w-[350px] gap-1 border text-xs border-[#77898b] rounded-3xl justify-between h-8 bg-[#385255] flex px-4 items-center'>
-              <KippaLogo fillText='white' className='h-3 md:block hidden' />
+            <div className='md:w-[350px] w-auto gap-1 border text-xs border-[#77898b] rounded-3xl justify-between h-8 bg-[#385255] flex px-4 items-center'>
+              <KippaLogo fillText='white' className='h-3' />
               <div className='text-[#fff] font-light'>
                 <span className='md:hidden'>Free to try forever</span>
                 <span className='md:block hidden'>Free to try for as long as you like</span>
@@ -64,15 +64,15 @@ export default function Hero () {
               <div className={`w-full text-white font-extrabold md:text-[65px] mt-2 text-4xl text-center  ${myFont.className}`}>
                 Deliver training where your
               </div>
-              <div className={`w-full text-white font-extrabold md:text-[65px] mt-3 text-4xl text-center ${myFont.className}`}>
+              <div className={`w-full text-white font-extrabold md:text-[65px] md:mt-3 -mt-2 text-4xl text-center ${myFont.className}`}>
                 learners spend most of their time
               </div>
-              <div className={`w-full text-white font-extrabold md:text-[65px] mt-3 text-4xl text-center ${myFont.className}`}>
+              <div className={`w-full text-white font-extrabold md:text-[65px] md:mt-3 -mt-2 text-4xl text-center ${myFont.className}`}>
                 - on messaging apps
               </div>
 
               <div className='flex flex-col gap-1'>
-                <div className='mt-8 w-full text-center text-[13px] md:text-base text-[#D0D5DD]'>
+                <div className='mt-8 w-full text-center text-[12px] md:text-base text-[#D0D5DD]'>
                   Consize helps you deliver impactful <b>10-minute daily training via messaging apps</b>,
                 </div>
                 <div className='w-full text-center text-[13px] md:text-base text-[#D0D5DD]'>
