@@ -25,7 +25,7 @@ interface ApiResponse {
   message: string
 }
 
-export default function SinglePublicCourses ({ params, searchParams }: { params: { id: string }, searchParams: { tryout?: boolean } }) {
+export default function SinglePublicCourses ({ params, searchParams }: { params: { id: string }, searchParams: { tryout?: boolean, cohort?: string } }) {
   const { setPageTitle } = useNavigationStore()
   const [loading, setLoading] = useState(false)
   const [maxEnrollmentReached, setMaxEnrollmentReached] = useState(false)
@@ -212,10 +212,10 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                     <div className='text-sm text-gray-500'>
                       Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                     </div>
-                    {searchParams && searchParams.tryout ? <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                    {searchParams.tryout ? <WholeForm cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                       <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                       <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                    </div> : <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
+                    </div> : <WholeForm cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
                   </div>
                 </div>
               </div>
@@ -274,10 +274,10 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                 <div className='text-sm text-gray-500'>
                   Enrolling for the course would allow you to immediately start receiving the course on your whatsapp in text format.
                 </div>
-                {searchParams && searchParams.tryout ? <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
+                {searchParams.tryout ? <WholeForm cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                   <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                   <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                </div> : <WholeForm fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
+                </div> : <WholeForm cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
               </div>
             </div>
           </div>

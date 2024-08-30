@@ -92,7 +92,7 @@ const generateValidationSchema = (fields: EnrollmentField[]) => {
   return Yup.object().shape(validationObject)
 }
 
-export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[] }) {
+export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[], cohortId?: string }) {
   const [enrolled, setEnrolled] = useState(false)
   const toast = useToast()
   const verifyPhoneForm = useFormik({
@@ -200,8 +200,8 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
 
 
   const enrollMutation = useMutation({
-    mutationFn: async ({ userId, courseId, data }: { userId: string, courseId: string, data: any }) => {
-      return enrollStudent(userId, courseId, data)
+    mutationFn: async ({ userId, courseId, data, cohortId }: { userId: string, courseId: string, data: any, cohortId?: string }) => {
+      return enrollStudent(userId, courseId, data, cohortId)
     },
     onSuccess: async () => {
       toast({
@@ -250,7 +250,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
     if (verifyPhoneForm.values.userFound) {
       const { id } = verifyPhoneForm.values.user
       const { email, firstName, otherNames, phoneNumber, agree, ...custom } = registerStudentForm.values
-      enrollMutation.mutate({ userId: id, courseId: params.id, data: custom })
+      enrollMutation.mutate({ userId: id, courseId: params.id, data: custom, cohortId: params.cohortId })
     }
   }
 
@@ -382,13 +382,14 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
           </button>}
         </form>
 
+
         <div className={`${verifyPhoneForm.values.completed ? 'min-h-10' : 'h-0 hidden'} transition-all duration-500`}>
           {verifyPhoneForm.values.userFound && verifyPhoneForm.values.user.verified && <div>
             <div className='h-6 mt-3 text-sm'>
               Enrolling as <span className='font-semibold uppercase'>{verifyPhoneForm.values.user.firstName} {verifyPhoneForm.values.user.otherNames}?</span>
             </div>
             <div>
-              {params.fields.length !== 0 ? <div>
+              {params.fields.filter(e => !e.defaultField).length !== 0 ? <div>
                 <div className="text-sm font-semibold my-2">The following information are requested by the course managers.</div>
                 {generateEnrollForm(params.fields, true)}
               </div> : <></>}

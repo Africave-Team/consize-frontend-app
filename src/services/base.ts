@@ -164,6 +164,22 @@ class HttpFacade {
     return response.data
   };
 
+  getBlob = async ({ url, query = {}, headers = {} }: IGet) => {
+    let py = { ...query }
+    const queryString = qs.stringify(py)
+    const response = await this.http.get(`${url + '?' + queryString}`, { headers, responseType: "blob" })
+    const disposition = response.headers['content-disposition']
+    let filename = 'downloaded_file.csv' // Default filename
+    if (disposition && disposition.indexOf('attachment') !== -1) {
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      const matches = filenameRegex.exec(disposition)
+      if (matches != null && matches[1]) {
+        filename = matches[1].replace(/['"]/g, '')
+      }
+    }
+    return { data: response.data, filename }
+  };
+
   delete = async ({ url, body = {}, headers = {} }: IDelete) => {
     const response = await this.http.delete(url, { headers, data: body })
     return response.data

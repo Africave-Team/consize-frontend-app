@@ -49,7 +49,7 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
           id="navbarSupportedContent4"
           data-te-collapse-item>
           <ul
-            className="list-style-none mr-auto text-sm flex flex-col pl-0 lg:mt-1 lg:flex-row lg:justify-start flex-1"
+            className="list-style-none mr-auto text-sm flex flex-col pl-0 lg:mt-1 lg:flex-row lg:px-3 lg:justify-end flex-1"
             data-te-navbar-nav-ref>
             <li
               className="pl-2 lg:my-0 lg:pl-2 lg:pr-1"

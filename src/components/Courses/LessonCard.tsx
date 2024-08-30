@@ -9,7 +9,7 @@ import { LuDot } from "react-icons/lu"
 export default function LessonCard ({ lesson, index, refetch, courseId }: { lesson: Lesson, index: number, courseId: string; refetch: () => Promise<any> }) {
   const { currentLesson, setCurrentLesson, initiateCreateContent } = useCourseMgtStore()
   return (
-    <div onClick={() => setCurrentLesson(lesson.id)} className={`h-14 border-2 flex cursor-pointer items-center px-1 rounded-lg ${lesson.id === currentLesson ? 'border-primary-dark' : 'hover:border-primary-dark'} justify-between`}>
+    <div onClick={() => setCurrentLesson(lesson.id)} className={`h-14 border-2 flex cursor-pointer w-full items-center px-1 rounded-lg ${lesson.id === currentLesson ? 'border-primary-dark' : 'hover:border-primary-dark'} justify-between`}>
       <div className='flex flex-1 h-full gap-2 items-center'>
         <div className='h-10 w-10 font-semibold text-sm rounded-lg border bg-primary-dark text-white flex justify-center items-center'>
           {index + 1}
