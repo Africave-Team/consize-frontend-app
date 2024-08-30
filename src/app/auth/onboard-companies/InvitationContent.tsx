@@ -12,7 +12,8 @@ import { FileTypes } from '@/type-definitions/utils'
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
     .required('Provide a password')
-    .min(5, 'Password must be at least 5 characters long'),
+    .min(8, 'Password must be at least 8 characters long')
+    .matches(/^(?=.*\d)(?=.*[a-zA-Z]).+$/, "Must contain at least 1 alphabet and 1 number"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Please confirm your password'),
