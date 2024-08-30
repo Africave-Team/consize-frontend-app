@@ -208,7 +208,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                 <div className='h-20 w-auto shadow-black-right-bottom border px-6 justify-center flex flex-col rounded-xl border-primary-dark'>
                   <div className='flex justify-start uppercase text-sm'>Date of issue</div>
                   <div className='h-8 w-full border-b text-sm flex items-end px-2 uppercase font-semibold justify-start pb-1 border-b-primary-dark'>
-                    {moment().format('Do MMM, YYYY')}
+                    {moment().format('Do MMM, YYYY').replace("Sep", "Sept")}
                   </div>
                 </div>
                 <img src="https://www.care-international.org/themes/custom/hc/assets//images/logo@2x.png" className='h-10 w-auto' />
