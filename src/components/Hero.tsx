@@ -7,35 +7,13 @@ import { IoLogoWhatsapp } from 'react-icons/io5'
 import { FaSlack } from 'react-icons/fa6'
 import { IoIosMail } from 'react-icons/io'
 import { SiMinutemailer } from 'react-icons/si'
-import { motion, useAnimation, useInView, useScroll } from "framer-motion"
+import { motion } from "framer-motion"
 
 import { fonts } from "@/app/fonts"
 import Link from 'next/link'
 const myFont = fonts.brandFont
 
 export default function Hero () {
-  const controls = useAnimation()
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const imageRef = useRef<HTMLDivElement | null>(null)
-  const { scrollYProgress } = useScroll({
-    container: containerRef,
-  })
-
-
-  const isInView = useInView(imageRef)
-
-  useEffect(() => {
-    scrollYProgress.onChange((progress) => {
-      if (isInView) {
-        // Trigger animation based on scroll progress
-        controls.start({
-          y: -progress * 100 + "%",
-        })
-      }
-    })
-  }, [scrollYProgress, isInView])
-
-
   return (
     <div className='md:px-5 px-2'>
       <div className="relative hero-cont h-[980px] bg-[#0D1F23] flex items-center justify-center rounded-3xl">
@@ -45,7 +23,7 @@ export default function Hero () {
         <div className="absolute bottom-0 z-20 left-0 right-0 h-full w-full flex justify-center text-white">
           <div className='w-full md:w-3/5 h-96 bg-[url(/assets/grids.svg)] bg-cover'></div>
         </div>
-        <motion.div ref={containerRef} className="absolute bottom-0 z-30 left-0 right-0 pt-[65px] h-full w-full flex-col  flex items-center rounded-lg overflow-hidden">
+        <motion.div className="absolute bottom-0 z-30 left-0 right-0 pt-[65px] h-full w-full flex-col  flex items-center rounded-lg overflow-hidden">
           <div className='w-full flex justify-center'>
             <div className='md:w-[350px] w-auto gap-1 border text-xs border-[#77898b] rounded-3xl justify-between h-8 bg-[#385255] flex px-4 items-center'>
               <KippaLogo fillText='white' className='h-3' />
@@ -97,7 +75,7 @@ export default function Hero () {
           </div>
         </motion.div>
         <div className='w-full absolute bottom-0 z-40 left-0 flex justify-center'>
-          <div ref={imageRef}
+          <div
             className="w-[350px] h-[380px] overflow-hidden"
           >
             <img
