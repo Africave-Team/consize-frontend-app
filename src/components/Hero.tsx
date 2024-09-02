@@ -1,6 +1,5 @@
 import { IconButton } from '@chakra-ui/react'
-import gsap from "gsap"
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import KippaLogo from './Logo'
 import SampleCourseCTA from './SampleCourseCTA'
 import { FiArrowRight } from 'react-icons/fi'
@@ -8,36 +7,34 @@ import { IoLogoWhatsapp } from 'react-icons/io5'
 import { FaSlack } from 'react-icons/fa6'
 import { IoIosMail } from 'react-icons/io'
 import { SiMinutemailer } from 'react-icons/si'
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion, useAnimation, useInView, useScroll } from "framer-motion"
 
-gsap.registerPlugin(ScrollTrigger)
 import { fonts } from "@/app/fonts"
 const myFont = fonts.brandFont
 
 export default function Hero () {
-  const animateComponents = () => {
-    gsap.from(".image-container", {
-      height: "1500px",
-      scrollTrigger: {
-        trigger: '.hero-cont',
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        onUpdate: (self) => {
-          if (self.direction === -1) {
-            // Scroll up
-            gsap.to('.image-container', { height: "1500px", duration: 0.3 })
-          } else {
-            // Scroll down
-            gsap.to('.image-container', { height: "910px", duration: 0.3 })
-          }
-        },
-      },
-    })
-  }
+  const controls = useAnimation()
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const imageRef = useRef<HTMLDivElement | null>(null)
+  const { scrollYProgress } = useScroll({
+    container: containerRef,
+  })
+
+
+  const isInView = useInView(imageRef)
+
   useEffect(() => {
-    animateComponents()
-  }, [])
+    scrollYProgress.onChange((progress) => {
+      if (isInView) {
+        // Trigger animation based on scroll progress
+        controls.start({
+          y: -progress * 100 + "%",
+        })
+      }
+    })
+  }, [scrollYProgress, isInView])
+
+
   return (
     <div className='md:px-5 px-2'>
       <div className="relative hero-cont h-[900px] bg-[#0D1F23] flex items-center justify-center rounded-3xl">
@@ -47,11 +44,11 @@ export default function Hero () {
         <div className="absolute bottom-0 z-30 left-0 right-0 h-full w-full flex justify-center text-white">
           <div className='w-full md:w-3/5 h-96 bg-[url(/assets/grids.svg)] bg-cover'></div>
         </div>
-        <div className="absolute bottom-0 z-50 left-0 right-0 pt-[65px] h-full w-full flex-col  flex items-center rounded-lg overflow-auto">
+        <motion.div ref={containerRef} className="absolute bottom-0 z-50 left-0 right-0 pt-[65px] h-full w-full flex-col  flex items-center rounded-lg overflow-auto">
           <div className='w-full flex justify-center'>
             <div className='md:w-[350px] w-auto gap-1 border text-xs border-[#77898b] rounded-3xl justify-between h-8 bg-[#385255] flex px-4 items-center'>
               <KippaLogo fillText='white' className='h-3' />
-              <div className='text-[#fff] font-light'>
+              <div className='text-[#fff] font-regular'>
                 <span className='md:hidden'>Free to try forever</span>
                 <span className='md:block hidden'>Free to try for as long as you like</span>
               </div>
@@ -99,45 +96,17 @@ export default function Hero () {
           </div>
 
           <div className='w-full flex mt-8 justify-center'>
-            <div
-              className="w-[450px] h-[500px] relative flex-none image-container"
-              style={{
-                opacity: 1,
-                transition: 'transform 0.1s ease-out, opacity 0.3s ease',
-                transform:
-                  "perspective(1200px) translateX(0px) translateY(0px) scale(1) rotate(0deg) rotateX(0deg) rotateY(0deg) skewX(0deg) skewY(0deg)",
-              }}
+            <div ref={imageRef}
+              className="w-[380px] h-[500px] overflow-hidden"
             >
-              <div
-                style={{
-                  position: "absolute",
-                  borderRadius: "inherit",
-                  top: 0,
-                  right: 0,
-                  bottom: 0,
-                  left: 0,
-                }}
-              >
-                <img
-                  decoding="async"
-                  sizes="450px"
-                  srcSet="https://framerusercontent.com/images/RIcj1r8X4DRPnNXVvgSnm1PDnA.png?scale-down-to=2048 1009w, https://framerusercontent.com/images/RIcj1r8X4DRPnNXVvgSnm1PDnA.png 1795w"
-                  src="https://framerusercontent.com/images/RIcj1r8X4DRPnNXVvgSnm1PDnA.png"
-                  alt=""
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "inherit",
-                    objectPosition: "center",
-                    objectFit: "cover",
-                    imageRendering: "auto",
-                  }}
-                />
-              </div>
+              <img
+                src="https://framerusercontent.com/images/RIcj1r8X4DRPnNXVvgSnm1PDnA.png"
+                alt=""
+                className='h-[600px] w-[380px]'
+              />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   )

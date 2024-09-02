@@ -25,6 +25,7 @@ const poppins = Poppins({
 })
 
 const brandFont = localFont({ src: './rgs-1.ttf' })
+const brandFont2 = localFont({ src: './rgs.ttf' })
 
 export const fonts = {
   rubik,
@@ -32,5 +33,6 @@ export const fonts = {
   outfit,
   inter,
   fira,
-  brandFont
+  brandFont,
+  brandFont2
 }
