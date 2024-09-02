@@ -231,7 +231,7 @@ export default function WaveAcademiesContent () {
 
           </div>
           {/* case studies */}
-          <div className='bg-[#f5f7f5] min-h-[600px] w-full md:pt-20 pt-10 md:pb-0 pb-10'>
+          <div className='bg-[#f5f7f5] min-h-[600px] w-full md:pt-20 pt-10 md:pb-0 pb-16'>
             <div className='flex justify-center'>
               <div className='w-full md:w-4/5 md:px-0 px-5'>
                 <div className='font-semibold text-[#0D1F2380] text-[18px]'>Case studies</div>
