@@ -6,7 +6,7 @@ const myFont = fonts.brandFont
 
 export default function MainFooter () {
   return (
-    <div className='px-16 pt-5 pb-5 bg-[#0D1F23] w-full flex flex-col'>
+    <div className='px-16 snap-start pt-5 pb-5 bg-[#0D1F23] w-full flex flex-col'>
       <div className='md:min-h-60 min-h-24 w-full flex justify-between md:flex-row gap-10 md:gap-2 flex-col items-center'>
         <div className='flex-1 flex gap-3 md:items-center items-start'>
           <img src="/icon.svg" className='h-6 w-6 md:mt-0 mt-2' alt="" />

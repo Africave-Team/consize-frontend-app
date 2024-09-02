@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function Section2 () {
   return (
-    <div>
+    <div className=''>
       <div className='bg-[#f5f7f5] min-h-[600px] w-full md:pt-20 pt-10 md:pb-0 pb-10'>
         <div className='flex justify-center'>
           <div className='w-full md:w-4/5 md:px-0 px-5'>
@@ -122,9 +122,9 @@ export default function Section2 () {
           <div className={`-mt-5 w-[500px] md:text-[57px] text-center text-[45px] font-bold ${fonts.brandFont.className}`}>
             seeing great results
           </div>
-          <button className='bg-primary-app rounded-3xl h-10 px-6 mt-5 font-medium text-sm'>
+          <Link href={`/courses/${process.env.NEXT_PUBLIC_SAMPLE_COURSE}?tryout=true`} className='bg-primary-app rounded-3xl h-10 mt-4 py-3 px-6 font-medium text-sm'>
             Try a sample course
-          </button>
+          </Link>
         </div>
 
         <div className='flex justify-center gap-5 md:flex-row flex-col px-5 md:px-2'>
