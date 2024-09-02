@@ -38,7 +38,7 @@ body {
 }
 
 .radial-gradient-hero {
-  background-color: radial-gradient(circle at center, rgba(82, 255, 255, 0.1), rgba(12, 143, 143, 0.1));
+  background-color: radial-gradient(circle at center, rgba(255, 255, 255, 0.6), rgba(12, 143, 143, 0.2));
 }
 
 .navbar {
