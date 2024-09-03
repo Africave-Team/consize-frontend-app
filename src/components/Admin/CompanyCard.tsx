@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { fonts } from '@/app/fonts'
 import { queryClient } from '@/utils/react-query'
+import TeamsSubscription from '../TeamSubscription'
 
 const validateSchema = Yup.object().shape({
   email: Yup.string()
@@ -69,6 +70,10 @@ export default function CompanyCard ({ team }: { team: TeamWithOwner }) {
       title: "Transfer workspace",
       value: "transfer-workspace"
     },
+    {
+      title: "Subscription",
+      value: "subscription"
+    },
   ]
   return (
     <>
@@ -98,7 +103,7 @@ export default function CompanyCard ({ team }: { team: TeamWithOwner }) {
             </div>
             <div className='w-3/4 h-full px-5'>
               {activeTab === "general" && <div>
-                <div className='grid grid-cols-3 mb-5'>
+                <div className='grid grid-cols-2 mb-5'>
                   <div>
                     <div className='text-black font-bold text-lg'>{team.name}</div>
                     <div className='text-gray-400'>Company name</div>
@@ -147,6 +152,8 @@ export default function CompanyCard ({ team }: { team: TeamWithOwner }) {
                   </div>
                 </form>
               </div>}
+
+              {activeTab === "subscription" && <TeamsSubscription allow team={team} />}
             </div>
           </ModalBody>
         </ModalContent>

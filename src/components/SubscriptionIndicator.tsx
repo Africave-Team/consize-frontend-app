@@ -12,15 +12,6 @@ export default function SubscriptionIndicator () {
   useEffect(() => {
     if (subscription) {
       useAuthStore.setState({ subscription })
-    } else {
-      let plan = plans?.find(e => e.price === 0)
-      if (plan && team) {
-        mutateAsync({
-          planId: plan.id,
-          numberOfMonths: 24,
-          teamId: team.id
-        })
-      }
     }
   }, [subscription, plans])
   if (isLoading || isPending) {
