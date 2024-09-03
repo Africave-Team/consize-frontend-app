@@ -22,7 +22,7 @@ export default function Section1 () {
           Boost learning retention
         </div>
         <div className={`text-black md:mt-5 -mt-1 font-extrabold md:text-[60px] text-3xl text-center  ${fonts.brandFont.className}`}>
-          with daily 10 min byte-sized lessons
+          with daily 10 min bite-sized lessons
         </div>
       </div>
       <div className='h-[750px] md:h-[500px] md:mt-5 mt-8 flex justify-center'>

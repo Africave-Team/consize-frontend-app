@@ -82,6 +82,14 @@ export default function Hero () {
               src="https://framerusercontent.com/images/RIcj1r8X4DRPnNXVvgSnm1PDnA.png"
               alt=""
               className='h-[520px] w-[350px]'
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                objectPosition: 'top',
+                objectFit: 'cover',
+                imageRendering: 'auto',
+              }}
             />
           </div>
         </div>

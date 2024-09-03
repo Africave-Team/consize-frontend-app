@@ -130,15 +130,15 @@ export default function Section2 () {
         <div className='flex justify-center gap-5 md:flex-row flex-col px-5 md:px-2'>
           <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
             <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>20+ Hours</div>
-            <div className='text-sm mt-2'>By focusing on outcomes, Consize condenses learning into the essentials and saves <strong>20+ hours</strong> per learner annually.</div>
+            <div className='text-sm mt-2'>By focusing on outcomes, Consize condenses learning into the essentials and saves <strong>20+ hours</strong> per learners annually</div>
+          </div>
+          <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
+            <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>{`>80% completion rate`}</div>
+            <div className='text-sm mt-2'>Since learners don't have to log into an LMS to take a training, <strong>80% of them complete the training</strong>. </div>
           </div>
           <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
             <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>2.5x</div>
-            <div className='text-sm mt-2'>Most critical learning needed on a day-to-day basis does not belong in an LMS. Witness direct impact from faster change management and greater performance lift by delivering learning that users can readily reach.</div>
-          </div>
-          <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
-            <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>675</div>
-            <div className='text-sm mt-2'>Most critical learning needed on a day-to-day basis does not belong in an LMS. Witness direct impact from faster change management and greater performance lift by delivering learning that users can readily reach.</div>
+            <div className='text-sm mt-2'>Most critical learning needed on a day-to-day basis does not belong in an LMS. Witness <strong>2.5x improvement</strong> in course completion rates and direct impact from delivering learning that users can readily reach.</div>
           </div>
         </div>
       </div>
