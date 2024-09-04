@@ -155,13 +155,63 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                 </div>
               </div>
               <div className='flex mt-7 justify-between items-end'>
-                <div className='h-20 w-48 shadow-black-right-bottom border px-4 justify-center flex flex-col rounded-xl border-primary-dark'>
+                <div className='h-20 w-auto shadow-black-right-bottom border px-6 justify-center flex flex-col rounded-xl border-primary-dark'>
                   <div className='flex justify-start uppercase text-sm'>Date of issue</div>
                   <div className='h-8 w-full border-b text-sm flex items-end px-2 uppercase font-semibold justify-start pb-1 border-b-primary-dark'>
                     {moment().format('Do MMMM, YYYY')}
                   </div>
                 </div>
                 <Logo className='h-6' />
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (company.includes('care international')) {
+      return (
+        <div className="template h-[700px] w-full relative">
+          <div className='h-full absolute left-0 right-0 bg-[#E4701E] flex justify-center items-center'>
+            <div className='bg-white h-[635px] rounded-3xl w-11/12'>
+
+            </div>
+          </div>
+          <div className='absolute top-0 bg-white left-0 h-[510px] w-2/5'></div>
+          <div className='absolute bottom-0 bg-white right-0 h-[510px] w-2/5'></div>
+          <div className='h-full absolute left-0 right-0 flex justify-center items-center'>
+            <div className='bg-white h-[585px] rounded-3xl w-11/12 py-8 px-16'>
+              <div className='flex h-20'>
+                <div className='h-10 w-10 rounded-full flex justify-center items-center'>
+                  <img src="https://www.care-international.org/themes/custom/hc/assets/images/favicon-32x32.png" className='h-full w-full md:mt-0 mt-2' alt="" />
+                </div>
+              </div>
+
+              <div className='flex flex-col items-start mt-7'>
+                <div className={`uppercase font-bold text-3xl ${brandFont.className}`}>Certificate of completion</div>
+                <div className='font-medium text-xl mt-2'>This is to certify that</div>
+              </div>
+              <div className='flex flex-col w-full items-start mt-2'>
+                <div className={`h-14 px-1 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${brandFont.className}`}>
+                  {data.studentName}
+                </div>
+              </div>
+              <div className={`w-4/5 text-lg mt-2 text-start font-extralight`}>has successfully completed the
+                <span className={`font-bold ml-2  ${brandFont.className} text-xl`}>"{data.courseName}"</span> course offered by {data.organizationName}
+              </div>
+
+              <div className={`flex gap-1 items-center mt-7 ${brandFont.className}`}>
+                <div className='font-semibold text-xl uppercase'>Awarded by</div>
+                <div className='h-8 w-98 px-1'>
+                  <span id="" className='font-bold text-2xl'>{details.organizationName}</span>
+                </div>
+              </div>
+              <div className='flex mt-7 justify-between items-end'>
+                <div className='h-20 w-auto shadow-black-right-bottom border px-6 justify-center flex flex-col rounded-xl border-primary-dark'>
+                  <div className='flex justify-start uppercase text-sm'>Date of issue</div>
+                  <div className='h-8 w-full border-b text-sm flex items-end px-2 uppercase font-semibold justify-start pb-1 border-b-primary-dark'>
+                    {moment().format('Do MMM, YYYY').replace("Sep", "Sept")}
+                  </div>
+                </div>
+                <img src="https://www.care-international.org/themes/custom/hc/assets//images/logo@2x.png" className='h-10 w-auto' />
               </div>
             </div>
           </div>

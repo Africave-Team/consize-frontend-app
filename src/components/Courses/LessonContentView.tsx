@@ -16,6 +16,8 @@ import EditBlockForm from '../FormButtons/EditBlock'
 import EditQuizForm from '../FormButtons/EditQuiz'
 import { useRouter } from 'next/navigation'
 import { stripHtmlTags } from '@/utils/string-formatters'
+import DraggableLessonsSectionCards from './DragDrop/DraggableLessonSections'
+import DraggableLessonsQuizCards from './DragDrop/DraggableLessonQuiz'
 
 interface ApiResponse {
   data: LessonData
@@ -135,7 +137,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                 </div>
               </div>
               <AccordionPanel pb={4}>
-                <Accordion defaultIndex={[]} className='space-y-3' allowMultiple>
+                {/* <Accordion defaultIndex={[]} className='space-y-3' allowMultiple>
                   {lessonDetails.data.blocks.map((block) => {
                     return (
                       <AccordionItem key={block.id} className='rounded-md border'>
@@ -226,7 +228,8 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                       </AccordionItem>
                     )
                   })}
-                </Accordion>
+                </Accordion> */}
+                {lessonDetails && lessonDetails.data && <DraggableLessonsSectionCards value={lessonDetails.data} />}
                 {lessonDetails.data.blocks.length === 0 && <div className='h-10 flex justify-center text-sm items-center'>
                   No sections have been added to this lesson
                 </div>}
@@ -268,80 +271,7 @@ export default function LessonContentView ({ lessonId, courseId, reload }: { les
                 {lessonDetails.data.quizzes.length === 0 && <div className='h-10 flex justify-center text-sm items-center'>
                   No quiz have been added to this lesson
                 </div>}
-                <Accordion defaultIndex={[]} className='space-y-3' allowMultiple>
-                  {lessonDetails.data.quizzes.map((quiz) => {
-                    let random = Number((Math.random() * (lessonDetails.data.blocks.length - 1)).toFixed(0))
-                    if (quiz.block) {
-                      let index = lessonDetails.data.blocks.findIndex(e => e.id === quiz.block)
-                      if (index >= 0) {
-                        random = index
-                      }
-                    }
-                    let block = lessonDetails.data.blocks[random]
-                    return (
-                      <AccordionItem key={quiz.id} className='rounded-md border'>
-                        <div className='flex group'>
-                          <AccordionButton className='hover:bg-white'>
-                            <Box className='font-semibold text-sm line-clamp-1' as="span" flex='1' textAlign='left' dangerouslySetInnerHTML={{ __html: he.decode(quiz.question) }} />
-                          </AccordionButton>
-                          <div className='flex gap-2 items-center pr-3'>
-                            <div className='flex gap-1 h-10 items-center'>
-                              {/* <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
-                                <FiEye />
-                              </button> */}
-                              <EditQuizForm block={block.id} quiz={quiz} content={block.content} refetch={async () => {
-                                refetch()
-                                reload()
-                              }} />
-                              <DeleteLessonQuizButton lessonId={lessonId} quizId={quiz.id} refetch={async () => {
-                                refetch()
-                                reload()
-                              }} />
-                            </div>
-                            <AccordionButton className='hover:bg-white px-0'>
-                              <AccordionIcon />
-                            </AccordionButton>
-                          </div>
-                        </div>
-                        <AccordionPanel pb={4}>
-                          <div className='flex flex-col gap-2'>
-                            <div>
-                              <label className='font-semibold text-sm' htmlFor="">Question</label>
-                              <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.question) }} />
-                            </div>
-
-
-                            <div>
-                              <label className='font-semibold text-sm' htmlFor="">Choices</label>
-                              {quiz.choices.map((val, index) => <div key={val + index} className='text-sm'>{options[index]}: {val}</div>)}
-                            </div>
-                            <div>
-                              <label className='font-semibold text-sm' htmlFor="">Correct answer</label>
-                              <div className='text-sm'>{options[quiz.correctAnswerIndex]}</div>
-                            </div>
-                            {quiz.hint && <div>
-                              <label className='font-semibold text-sm' htmlFor="">Hint</label>
-                              <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.hint) }} />
-                            </div>}
-                            <div>
-                              <label className='font-semibold text-sm' htmlFor="">Message to send when they get it correctly</label>
-                              <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.correctAnswerContext) }} />
-                            </div>
-                            {quiz.revisitChunk && <div>
-                              <label className='font-semibold text-sm' htmlFor="">Message to send when a user retries answering this question</label>
-                              <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.revisitChunk) }} />
-                            </div>}
-                            <div>
-                              <label className='font-semibold text-sm' htmlFor="">Message to send when they get it wrong</label>
-                              <div className='text-sm' dangerouslySetInnerHTML={{ __html: he.decode(quiz.wrongAnswerContext) }} />
-                            </div>
-
-                          </div>
-                        </AccordionPanel>
-                      </AccordionItem>
-                    )
-                  })}
-                </Accordion>
+                {lessonDetails && lessonDetails.data && <DraggableLessonsQuizCards value={lessonDetails.data} />}
               </AccordionPanel>
             </AccordionItem>
           </Accordion>

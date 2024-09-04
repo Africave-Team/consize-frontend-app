@@ -78,6 +78,15 @@ export default function StudentsTable ({ students, courseId }: { students: RTDBS
 
                 </div>
               </th>
+              <th className="px-4 py-3">
+                <div className='flex items-center gap-3'>
+                  Distribution
+                  {data && <SortStudentItems students={data} field='distribution' update={(students: RTDBStudent[]) => {
+                    setData([...students])
+                  }} />}
+
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -106,6 +115,7 @@ export default function StudentsTable ({ students, courseId }: { students: RTDBS
                     </div>
                   </td>
                   <td className="px-4 py-3">{student.droppedOut ? 'Dropped out' : student.completed ? 'Completed' : 'Active'}</td>
+                  <td className="px-4 py-3 capitalize">{student.distribution}</td>
                 </tr>
               })
             }

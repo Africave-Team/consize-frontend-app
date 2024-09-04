@@ -138,6 +138,10 @@ html {
   @apply px-3 border rounded-lg h-10 text-sm
 }
 
+.react-daterange-picker__wrapper {
+  @apply !border !border-gray-300 h-8 rounded-sm
+}
+
 
 /* bg templates */
 .default-bg-spiral-1 {

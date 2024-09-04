@@ -23,6 +23,7 @@ export interface CreateCoursePayload {
   audiences?: string
   survey?: string | null
   courses?: string[]
+  lessons?: string[]
 }
 
 export interface TrendStatistics {
@@ -69,6 +70,7 @@ export enum CourseStatus {
 
 export interface Lesson {
   id: string
+  _id?: string
   title: string
   blocks: Block[]
   quizzes: Quiz[]
@@ -79,6 +81,7 @@ export interface Lesson {
 
 export interface LessonData {
   id: string
+  _id?: string
   title: string
   blocks: Block[]
   quizzes: Quiz[]
@@ -103,6 +106,8 @@ export interface UpdateLesson {
   lessonId: string
   courseId: string
   lesson: {
+    blocks?: string[]
+    quizzes?: string[]
     title: string
     description?: string
   }
@@ -113,6 +118,7 @@ export interface UpdateLesson {
 
 export interface Course {
   id: string
+  _id?: string
   title: string
   description: string
   owner: string
@@ -158,6 +164,7 @@ export interface PublicCourse {
 export interface Block {
   quiz?: Quiz
   id: string
+  _id?: string
   course: string
   title: string
   content: string
@@ -174,6 +181,7 @@ export interface AddBlock {
 
 export interface Quiz {
   id: string
+  _id?: string
   question: string
   correctAnswerContext: string
   wrongAnswerContext: string
@@ -274,7 +282,11 @@ export interface RTDBStudent {
   progress: number
   certificate?: string
   phoneNumber: string
+  slackId?: string
+  cohortId?: string
+  distribution?: Distribution
   scores?: number[]
+  dateEnrolled?: string
   lessons?: {
     [id: string]: {
       title: string

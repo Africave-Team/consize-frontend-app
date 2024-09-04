@@ -2,17 +2,22 @@ import { Distribution } from './callbacks'
 import { StudentRecord } from './secure.courses'
 
 export interface CreateCohortinterface {
+  courseId: string
+  distribution: Distribution
+  name: string
+}
+
+
+export interface EnrollCohortinterface {
   members: string[]
   students: string[]
   courseId: string
-  distribution: Distribution
   channels: string[]
-  name: string
+  cohortId: string
   date: string
   time: string
   schedule: boolean
 }
-
 
 export enum CohortsStatus {
   PENDING = "pending",
@@ -23,8 +28,10 @@ export enum CohortsStatus {
 export interface CohortsInterface {
   id: string,
   name: string,
+  shortCode: string
   distribution: Distribution
   schedule: boolean
+  default: boolean
   members: StudentRecord[]
   courseId: string,
   status: CohortsStatus

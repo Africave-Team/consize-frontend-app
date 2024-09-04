@@ -92,7 +92,7 @@ const generateValidationSchema = (fields: EnrollmentField[]) => {
   return Yup.object().shape(validationObject)
 }
 
-export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[] }) {
+export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[], cohortId?: string }) {
   const [enrolled, setEnrolled] = useState(false)
   const toast = useToast()
   const verifyPhoneForm = useFormik({
@@ -200,8 +200,8 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
 
 
   const enrollMutation = useMutation({
-    mutationFn: async ({ userId, courseId, data }: { userId: string, courseId: string, data: any }) => {
-      return enrollStudent(userId, courseId, data)
+    mutationFn: async ({ userId, courseId, data, cohortId }: { userId: string, courseId: string, data: any, cohortId?: string }) => {
+      return enrollStudent(userId, courseId, data, cohortId)
     },
     onSuccess: async () => {
       toast({
@@ -250,7 +250,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
     if (verifyPhoneForm.values.userFound) {
       const { id } = verifyPhoneForm.values.user
       const { email, firstName, otherNames, phoneNumber, agree, ...custom } = registerStudentForm.values
-      enrollMutation.mutate({ userId: id, courseId: params.id, data: custom })
+      enrollMutation.mutate({ userId: id, courseId: params.id, data: custom, cohortId: params.cohortId })
     }
   }
 
@@ -309,7 +309,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
         felds.push({
           id: ft.id,
           field: <div>
-            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}</label>
+            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}{ft.required && <span className='text-red-500 text-xs'>*</span>}</label>
             <input type="number" id={fieldName} name={fieldName} className="bg-gray-50 h-11 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder={ft.fieldName} onChange={registerStudentForm.handleChange}
               onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values[fieldName]} />
           </div>
@@ -318,7 +318,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
         felds.push({
           id: ft.id,
           field: <div className='w-full mt-2'>
-            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}</label>
+            <label className='text-sm' htmlFor={fieldName}>{ft.fieldName}{ft.required && <span className='text-red-500 text-xs'>*</span>}</label>
             <input type="text" id={fieldName} onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values[fieldName]} placeholder={ft.fieldName} className='h-11 px-3 w-full rounded-lg border font-medium text-sm' />
           </div>
         })
@@ -349,6 +349,14 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
     }
   }, [])
 
+  const keysToRemove = ["firstName", "otherNames", "email", "agree"]
+
+  // Remove the specified keys
+  const additionFieldsValidation = registerStudentForm.errors
+  keysToRemove.forEach(key => {
+    delete additionFieldsValidation[key]
+  })
+
 
   return (
     <div className='mt-4'>
@@ -374,18 +382,19 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
           </button>}
         </form>
 
+
         <div className={`${verifyPhoneForm.values.completed ? 'min-h-10' : 'h-0 hidden'} transition-all duration-500`}>
           {verifyPhoneForm.values.userFound && verifyPhoneForm.values.user.verified && <div>
             <div className='h-6 mt-3 text-sm'>
               Enrolling as <span className='font-semibold uppercase'>{verifyPhoneForm.values.user.firstName} {verifyPhoneForm.values.user.otherNames}?</span>
             </div>
             <div>
-              {params.fields.length !== 0 ? <div>
+              {params.fields.filter(e => !e.defaultField).length !== 0 ? <div>
                 <div className="text-sm font-semibold my-2">The following information are requested by the course managers.</div>
                 {generateEnrollForm(params.fields, true)}
               </div> : <></>}
             </div>
-            <button onClick={enrollStudentHandler} type='button' disabled={enrollMutation.isPending} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
+            <button onClick={enrollStudentHandler} type='button' disabled={enrollMutation.isPending || Object.keys(additionFieldsValidation).length > 0} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
               Enroll for free {enrollMutation.isPending && <Spinner size={'sm'} />}
             </button>
           </div>}
