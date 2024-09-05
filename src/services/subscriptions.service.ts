@@ -17,7 +17,7 @@ export const useFetchActiveSubscription = (admin: boolean, teamId?: string) => u
   queryFn: async () => (admin ? await adminHttp.get({
     url: `company/${teamId}/active-subscription`
   }) : await http.get({
-    url: `subscriptions/active/${teamId}`
+    url: `subscriptions/active`
   })).data
 })
 
