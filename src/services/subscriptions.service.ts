@@ -14,16 +14,13 @@ export const useFetchSubscriptionPlans = () => useQuery<Plan[]>({
 export const useFetchActiveSubscription = (teamId?: string) => useQuery<Subscription>({
   queryKey: ["active-subscription", teamId],
   queryFn: async () => (await http.get({
-    url: "subscriptions/active"
+    url: `subscriptions/active/${teamId}`
   })).data
 })
 
 export const useSubscribeAccount = () => useMutation<Subscription, string, { planId: string, numberOfMonths: number, teamId: string }>({
   mutationFn: async (props) => (await http.post({
-    url: "subscriptions/subscribe", body: {
-      planId: props.planId,
-      numberOfMonths: props.numberOfMonths
-    }
+    url: "subscriptions/subscribe", body: props
   })).data,
   onSuccess: (_, { teamId }) => queryClient.invalidateQueries({ queryKey: ['active-subscription', teamId] })
 })

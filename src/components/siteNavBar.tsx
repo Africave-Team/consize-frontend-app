@@ -25,11 +25,11 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
       data-te-navbar-ref>
       <div className="flex w-full flex-wrap items-center justify-between px-3">
         <div>
-          {!team ? <a
+          {!team ? <Link
             className="mx-2 my-1 flex items-center lg:mb-0 lg:mt-0"
             href="/home">
             <KippaLogo />
-          </a> : <>{teamStore && teamStore.logo && <Link href={`/teams/${teamStore.id}`}><img className='h-12' src={teamStore.logo} /></Link>}</>}
+          </Link> : <>{teamStore && teamStore.logo && <Link href={`/teams/${teamStore.id}`}><img className='h-12' src={teamStore.logo} /></Link>}</>}
         </div>
 
         <button

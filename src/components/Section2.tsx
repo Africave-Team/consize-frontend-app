@@ -1,148 +1,147 @@
 import React from 'react'
-import SampleCourseCTA from './SampleCourseCTA'
+import KippaLogo from './Logo'
+import { fonts } from "@/app/fonts"
+import { FiArrowRight } from 'react-icons/fi'
+import Link from 'next/link'
 
 export default function Section2 () {
   return (
-    <div className='md:px-14 px-4 md:mt-0 mt-96 mb-20'>
-      <div className="relative">
-        <div className='absolute md:-top-12 -top-24 md:right-16 right-1/3'>
-          <img loading='lazy' src="/pyramid2.png" className='h-24' alt="pyramid" />
-        </div>
-      </div>
-      <div className='flex justify-center md:justify-start'>
-        <div className="text-2xl md:text-3xl lg:text-4xl text-center md:text-start mt-3 w-[70%] md:w-[35%] py-5">
-          <span className="text-black">A learning tool your learners</span>
-          <span className="text-primary-500"> will actually use</span>
-        </div>
-      </div>
+    <div className=''>
+      <div className='bg-[#f5f7f5] min-h-[600px] w-full md:pt-20 pt-10 md:pb-0 pb-10'>
+        <div className='flex justify-center'>
+          <div className='w-full md:w-4/5 md:px-0 px-5'>
+            <div className='font-semibold text-[#0D1F2380] text-[18px]'>Case studies</div>
+            <div className={`text-black font-extrabold md:text-[50px] text-3xl mt-1 md:mt-3 ${fonts.brandFont.className}`}>
+              Quick learning, lasting impact
+            </div>
+            <div className='w-full min-h-[560px] mt-10 md:mb-0 mb-10 md:flex-row flex-col flex gap-10'>
+              <div className='md:h-[550px] w-full md:w-1/2 h-[520px]'>
+                <div className='w-full h-[320px] rounded-lg relative'>
+                  <img
+                    srcSet="
+        https://framerusercontent.com/images/k4PX5gZRWkKbFartkrWzo0RF90.png?scale-down-to=512 512w,
+        https://framerusercontent.com/images/k4PX5gZRWkKbFartkrWzo0RF90.png?scale-down-to=1024 1024w,
+        https://framerusercontent.com/images/k4PX5gZRWkKbFartkrWzo0RF90.png 1656w"
+                    sizes="630px"
+                    src="https://framerusercontent.com/images/k4PX5gZRWkKbFartkrWzo0RF90.png"
+                    alt=""
+                    className='h-full w-full absolute'
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: 'inherit',
+                      objectPosition: 'center',
+                      objectFit: 'cover',
+                      imageRendering: 'auto',
+                    }}
+                  />
+                  <div className='h-8 w-16 absolute top-5 left-5'>
+                    <img
+                      srcSet="
+        https://framerusercontent.com/images/DsUceom3Kh8heiZANq5Ogoynydo.png?scale-down-to=512 512w,
+        https://framerusercontent.com/images/DsUceom3Kh8heiZANq5Ogoynydo.png 734w"
+                      sizes="40.1093px"
+                      src="https://framerusercontent.com/images/DsUceom3Kh8heiZANq5Ogoynydo.png"
+                      alt=""
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: 'inherit',
+                        objectPosition: 'center',
+                        imageRendering: 'auto',
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className='py-5'>
+                  <div className={`font-semibold text-[20px] md:text-[24px] ${fonts.brandFont.className}`}>
+                    How LEAP Africa trains the new generation of social enterprise leaders in 10 minutes every day
+                  </div>
+                  <div className='text-sm mt-3'>
+                    In partnership with Consize, LEAP Africa made it possible for young Africans to learn about the Sustainable Development Goals (SDGs) in just 10 minutes a day using WhatsApp.
+                  </div>
+                  <div className='mt-3 flex'>
+                    <Link href="/home/case-studies/leap-africa" className='flex h-10 items-center justify-center gap-1 text-sm bg-[#ebefec] px-5 rounded-2xl'>
+                      Learn more <FiArrowRight />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className='md:h-[550px] md:w-1/2 w-full rounded-lg h-[500px]'>
+                <div className='w-full h-[320px] rounded-lg p-5 bg-[#ccf1fc]'>
+                  <div className='h-8 w-20 border'>
+                    <img
+                      src="https://framerusercontent.com/images/hbGxj0y55x15rzeEjxheKKWCs.png"
+                      alt=""
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: 'inherit',
+                        objectPosition: 'center',
+                        imageRendering: 'auto',
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className='py-5'>
+                  <div className={`font-semibold text-[20px] md:text-[24px] ${fonts.brandFont.className}`}>
+                    How WAVE Academies expanded its program to 15 new cities with Consize
+                  </div>
+                  <div className='text-sm mt-3'>
+                    By transforming WAVE's key courses into engaging, bite-sized lessons delivered via WhatsApp, Consize helped WAVE reach over 120 students across 15 new locations in just five days — a 300% increase in monthly training capacity.
+                  </div>
 
-      <div className='flex md:flex-row flex-col gap-20 items-center'>
-        <div className='w-full md:w-1/2 flex justify-center items-center'>
-          <img loading='lazy' src={'/frame-1.webp'} className='' />
-        </div>
-
-        <div className='w-full md:w-1/2'>
-          <div className="text-2xl md:text-3xl lg:text-4xl text-center md:text-start mt-3 w-full py-5">
-            <span className="text-black">Learning</span><br />
-            <span className="text-[#14B8A6]"> shouldn&apos;t be a chore</span>
-          </div>
-
-          <p className='text-md text-[#334155] w-full md:w-4/5'>Learning tends to be lengthy and often takes place on tools we rarely remember to use. That’s why learners prefer Consize to any other learning method, including in-person training.</p>
-
-          <div className='bg-[#E8EAEE66] bg-opacity-40 md:p-5 px-3 py-2 min-h-[100px] rounded-lg mt-5 w-full md:w-11/12 flex justify-start gap-5'>
-            <img loading='lazy' src="/curlies.png" className='h-16' />
-            <div>
-              <p className='mt-2 text-[#334155]'>
-                Consize simplifies content into actionable lessons, quizzes, and nudges using platforms that people use everyday.
-              </p>
+                  <div className='mt-3 flex'>
+                    <Link href="/home/case-studies/wave-academies" className='flex h-10 items-center justify-center gap-1 text-sm bg-[#ebefec] px-5 rounded-2xl'>
+                      Learn more <FiArrowRight />
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* <Button className='text-white bg-primary-500 mt-8 px-5 py-2 rounded-md'>Try a sample course</Button> */}
-          <div className="flex md:justify-start justify-center">
-            <SampleCourseCTA bg={'bg-primary-500 mt-8'} />
-          </div>
         </div>
       </div>
+      <div className='min-h-[550px] pb-16 bg-white'>
+        <div className='flex justify-center items-center flex-col h-[400px]'>
 
-
-      <div className='flex md:flex-row flex-col items-center'>
-        <div className='w-full md:w-1/2'>
-          <div className="text-2xl md:text-3xl lg:text-4xl text-center md:text-start mt-3 w-full md:w-[80%] md:py-0 py-5">
-            <span className="text-black">Meet learners where they are</span>
-            <span className="text-primary-500"> no matter where they are</span>
-          </div>
-
-          <p className='text-md text-[#334155] w-full md:w-4/5'>
-            Eliminate the friction between learners and learning material.
-            That is why outcome metrics via Consize are much higher than any other learning method.
-          </p>
-
-          <div className='bg-[#FD86FF]/25 md:p-5 px-3 py-2 min-h-[100px] rounded-lg mt-5 w-full flex justify-start gap-5'>
-            <img loading='lazy' src="/wsapp2.png" className='h-16' />
-            <div>
-              <p className='mt-2 text-[#334155]'>
-                Consize injects your learning material into contexts where your learners already spend time, so there are minimal barriers.
-              </p>
+          <div className='w-auto md:w-[350px] mt-8 gap-1 border text-xs border-[#eaecf0] rounded-3xl justify-between h-8 bg-[#f4f6f8] flex px-4 items-center'>
+            <KippaLogo fillText='#334155' className='h-3' />
+            <div className='text-[#334155] font-regular'>
+              <span className='md:hidden'>Free to try forever</span>
+              <span className='md:block hidden'>Free to try for as long as you like</span>
             </div>
+            <div className='cursor-pointer font-semibold text-[#334155] underline flex items-center gap-1'>Try it <FiArrowRight className='font-bold' /></div>
           </div>
-
-          {/* <Button className='text-white bg-primary-500 mt-8 px-5 py-2 rounded-md'>Try a sample course</Button> */}
-          <div className="flex md:justify-start justify-center">
-            <SampleCourseCTA bg={'bg-primary-500 mt-8'} />
+          <div className={`mt-3 w-[520px] md:text-[57px] text-center text-[45px] font-bold ${fonts.brandFont.className}`}>
+            Learners are already
           </div>
+          <div className={`-mt-5 w-[500px] md:text-[57px] text-center text-[45px] font-bold ${fonts.brandFont.className}`}>
+            seeing great results
+          </div>
+          <Link href={`/courses/${process.env.NEXT_PUBLIC_SAMPLE_COURSE}?tryout=true`} className='bg-primary-app rounded-3xl h-10 mt-4 py-3 px-6 font-medium text-sm'>
+            Try a sample course
+          </Link>
         </div>
 
-        <div className='w-full md:w-1/2 flex justify-center items-center  md:py-10'>
-          <img loading='lazy' src={'/frame-2.webp'} className='-ml-2 h-[500px]' />
-        </div>
-      </div>
-
-
-      <div className='flex md:flex-row flex-col items-center'>
-        <div className='w-full md:w-1/2 hidden md:block md:py-10'>
-          <img loading='lazy' src={'/frame-3.webp'} className='-ml-3 h-[400px]' />
-        </div>
-
-        <div className='w-full md:w-1/2'>
-          <div className="text-2xl md:text-3xl lg:text-4xl text-center md:text-start mt-3 w-full py-5">
-            <span className="text-black">Launch your course</span><br />
-            <span className="text-[#14B8A6]"> in 1 hour</span>
+        <div className='flex justify-center gap-5 md:flex-row flex-col px-5 md:px-2'>
+          <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
+            <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>20+ Hours</div>
+            <div className='text-sm mt-2'>By focusing on outcomes, Consize condenses learning into the essentials and saves <strong>20+ hours</strong> per learners annually</div>
           </div>
-
-          <p className='text-md text-[#334155] w-full md:w-4/5'>
-            Use our AI Creator, import and convert your existing materials (PPT, Word, PDF) or create a course from scratch - in 60 minutes
-          </p>
-
-          <div className='bg-[#FD86FF]/25 md:p-5 px-3 py-3 min-h-[100px] rounded-lg mt-5 w-full md:w-4/5 flex justify-start gap-5'>
-            <img loading='lazy' src="/flat.png" className='h-16' />
-            <div>
-              <p className='mt-2 text-[#334155]'>
-                With Kippa, you can customize your delivery preferences. Launch your
-                course to your learners in 1 click.
-              </p>
-            </div>
+          <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
+            <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>{`>80% completion rate`}</div>
+            <div className='text-sm mt-2'>Since learners don't have to log into an LMS to take a training, <strong>80% of them complete the training</strong>. </div>
           </div>
-
-          {/* <Button className='text-white bg-primary-500 mt-8 px-5 py-2 rounded-md'>Try a sample course</Button> */}
-          <div className="flex md:justify-start justify-center">
-            <SampleCourseCTA bg={'bg-primary-500 mt-8'} />
+          <div className='w-full bg-[#f8f8f8] md:w-[420px] rounded-lg min-h-20 p-5'>
+            <div className={`${fonts.brandFont.className} !font-bold text-4xl text-[#6665dd]`}>2.5x</div>
+            <div className='text-sm mt-2'>Most critical learning needed on a day-to-day basis does not belong in an LMS. Witness <strong>2.5x improvement</strong> in course completion rates and direct impact from delivering learning that users can readily reach.</div>
           </div>
         </div>
       </div>
-
-
-      <div className='flex md:flex-row flex-col items-center'>
-        <div className='w-full md:w-1/2'>
-          <div className="text-2xl md:text-3xl lg:text-4xl text-center md:text-start mt-3 w-full md:w-[80%] py-5">
-            <span className="text-black">Learning that</span><br />
-            <span className="text-[#F5935F]"> changes behavior</span>
-          </div>
-
-          <p className='text-md text-[#334155] w-full md:w-4/5'>
-            Most critical learning needed on a day-to-day basis does not belong in an LMS. Witness direct impact from faster change management and greater performance lift by delivering learning that users can readily reach.
-          </p>
-
-          <div className='bg-[#E96035]/30 md:p-5 px-3 py-3 min-h-[100px] rounded-lg mt-5 w-full md:w-4/5 flex justify-start gap-5'>
-            <img loading='lazy' src="/helix-2.webp" className='h-16' />
-            <div>
-              <p className='mt-2 text-[#793815]'>
-                Deliver context-relevant learning, that learners can revisit anytime with ease
-              </p>
-            </div>
-          </div>
-
-          {/* <Button className='text-white bg-primary-500 mt-8 px-5 py-2 rounded-md'>Try a sample course</Button> */}
-          <div className="flex md:justify-start justify-center">
-            <SampleCourseCTA bg={'bg-primary-500 mt-8'} />
-          </div>
-        </div>
-
-        <div className='w-full md:w-1/2 flex justify-center items-center md:py-10'>
-          <img loading='lazy' src={'/frame-4.webp'} className='-ml-3 h-[400px]' />
-        </div>
-      </div>
-
     </div>
   )
 }

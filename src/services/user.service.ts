@@ -11,6 +11,12 @@ export const updateProfile = async (payload: { avatar?: string, name: string, is
     body: { ...payload }
   })
 
+export const updatePassword = async (payload: { oldPassword: string, newPassword: string }): Promise<any> =>
+  http.post({
+    url: `users/password`,
+    body: { ...payload }
+  })
+
 export const getProfile = async (): Promise<any> =>
   http.get({
     url: `users/`

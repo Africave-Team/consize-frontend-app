@@ -1,19 +1,16 @@
 'use client'
 import localFont from 'next/font/local'
-import { Norican, Kristi } from 'next/font/google'
-import Link from 'next/link'
-const brandFont = localFont({ src: '../../../fonts/rgs-1.ttf' })
 import React, { useState } from 'react'
 import "./styles.css"
 import moment from 'moment'
 import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa6'
 import Logo from '@/components/Logo'
+import { fonts } from '@/app/fonts'
 const myFont = localFont({ src: './gilsans.ttf' })
 const cloisterFont = localFont({ src: './CloisterBlack.ttf' })
 const culpa = localFont({ src: './helvetica.ttf' })
 const antique = localFont({ src: './antique.ttf' })
 const sequel = localFont({ src: './sequel.ttf' })
-const rationell = localFont({ src: './rationell.otf' })
 
 interface DataInterface {
   studentName: string
@@ -131,19 +128,19 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
 
               <div className='flex flex-col items-start mt-7'>
-                <div className={`uppercase font-bold text-3xl ${brandFont.className}`}>Certificate of completion</div>
+                <div className={`uppercase font-bold text-3xl ${fonts.brandFont.className}`}>Certificate of completion</div>
                 <div className='font-medium text-xl mt-2'>This is to certify that</div>
               </div>
               <div className='flex flex-col w-full items-start mt-2'>
-                <div className={`h-14 px-1 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${brandFont.className}`}>
+                <div className={`h-14 px-1 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${fonts.brandFont.className}`}>
                   {data.studentName}
                 </div>
               </div>
               <div className={`w-4/5 text-lg mt-2 text-start font-extralight`}>has successfully completed the
-                <span className={`font-bold ml-2  ${brandFont.className} text-xl`}>"{data.courseName}"</span> course offered by {data.organizationName}
+                <span className={`font-bold ml-2  ${fonts.brandFont.className} text-xl`}>"{data.courseName}"</span> course offered by {data.organizationName}
               </div>
 
-              <div className={`flex gap-5 mt-7 ${brandFont.className}`}>
+              <div className={`flex gap-5 mt-7 ${fonts.brandFont.className}`}>
                 <div className='font-semibold text-xl uppercase'>Awarded by</div>
                 <div className='h-14 flex flex-col w-52 px-2'>
                   <div className='h-8 w-full px-2'>
@@ -186,19 +183,19 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
 
               <div className='flex flex-col items-start mt-7'>
-                <div className={`uppercase font-bold text-3xl ${brandFont.className}`}>Certificate of completion</div>
+                <div className={`uppercase font-bold text-3xl ${fonts.brandFont.className}`}>Certificate of completion</div>
                 <div className='font-medium text-xl mt-2'>This is to certify that</div>
               </div>
               <div className='flex flex-col w-full items-start mt-2'>
-                <div className={`h-14 px-1 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${brandFont.className}`}>
+                <div className={`h-14 px-1 border-b w-4/5 border-b-primary-dark text-start text-4xl pb-1 flex items-end uppercase ${fonts.brandFont.className}`}>
                   {data.studentName}
                 </div>
               </div>
               <div className={`w-4/5 text-lg mt-2 text-start font-extralight`}>has successfully completed the
-                <span className={`font-bold ml-2  ${brandFont.className} text-xl`}>"{data.courseName}"</span> course offered by {data.organizationName}
+                <span className={`font-bold ml-2  ${fonts.brandFont.className} text-xl`}>"{data.courseName}"</span> course offered by {data.organizationName}
               </div>
 
-              <div className={`flex gap-1 items-center mt-7 ${brandFont.className}`}>
+              <div className={`flex gap-1 items-center mt-7 ${fonts.brandFont.className}`}>
                 <div className='font-semibold text-xl uppercase'>Awarded by</div>
                 <div className='h-8 w-98 px-1'>
                   <span id="" className='font-bold text-2xl'>{details.organizationName}</span>
