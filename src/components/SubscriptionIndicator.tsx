@@ -6,7 +6,7 @@ import React, { useEffect } from 'react'
 
 export default function SubscriptionIndicator () {
   const { team } = useAuthStore()
-  const { data: subscription, isLoading } = useFetchActiveSubscription(team?.id)
+  const { data: subscription, isLoading } = useFetchActiveSubscription(false, team?.id)
   const { data: plans } = useFetchSubscriptionPlans()
   const { mutateAsync, isPending } = useSubscribeAccount()
   useEffect(() => {

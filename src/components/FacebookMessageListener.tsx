@@ -34,7 +34,13 @@ const FacebookSignupListener: React.FC = () => {
             const { phone_number_id, waba_id } = data.data
             updateMyTeamInfo(team.id, {
               facebookBusinessId: waba_id,
-              facebookPhoneNumberId: phone_number_id
+              facebookPhoneNumberId: phone_number_id,
+              facebookData: {
+                status: "PENDING",
+                businessId: waba_id || "",
+                phoneNumberId: phone_number_id || "",
+                token: null
+              }
             })
           }
           // if user reports an error during the Embedded Signup flow

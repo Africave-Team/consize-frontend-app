@@ -17,6 +17,7 @@ import { queryClient } from '@/utils/react-query'
 import TeamQRCode from '@/components/Dashboard/TeamQRCode'
 import { Facebook, FacebookLoginResponse, WindowWithFB } from '@/type-definitions/facebook'
 import FacebookSignupListener from '@/components/FacebookMessageListener'
+import { useFetchActiveSubscription } from '@/services/subscriptions.service'
 
 
 interface ApiResponse {
@@ -26,6 +27,7 @@ export default function IntegrationSettings () {
   const [progress, setProgress] = useState<{ [key: string]: boolean }>({ slack: false, whatsapp: false })
   const { team, setTeam } = useAuthStore()
   const [showTeamQR, setShowteamQR] = useState<boolean>(false)
+  const [isFreePlan, setIsFreePlan] = useState<boolean>(false)
   const { initiateSlackSettings, initiateSlackAsync } = useCallbackStore()
 
   const { mutateAsync, isPending } = useMutation({
@@ -111,6 +113,8 @@ export default function IntegrationSettings () {
     }
   }
 
+  const { data: subscription, isLoading } = useFetchActiveSubscription(false, team?.id)
+
   const loadData = async function ({ id }: { id?: string }) {
     if (id) {
       const result = await fetchMyTeamInfo(id)
@@ -138,6 +142,16 @@ export default function IntegrationSettings () {
       }
     }
   }, [teamInfo])
+
+  useEffect(() => {
+    if (subscription) {
+      let plan = subscription.plan
+      if (plan && typeof plan !== "string") {
+        setIsFreePlan(plan.price === 0)
+      }
+
+    }
+  }, [subscription])
   return (
     <Layout>
       <div className='w-full overflow-y-scroll h-screen p-4'>
@@ -161,22 +175,30 @@ export default function IntegrationSettings () {
                       </div>
                     </div>
                     <div>
-                      <div className='flex gap-3 items-start'>
+                      <div className='flex gap-3 items-center mt-3'>
+                        <strong>
+                          {channel.enabled ? "Enabled" : "Disabled"}
+                        </strong>
                         <button onClick={() => {
                           handleChannelButtonClick(channel)
                         }} className='border py-1 px-3 flex gap-2 items-center justify-center rounded-md hover:bg-gray-100 text-sm'>
                           {channel.channel === Distribution.SLACK ? <AiFillSlackCircle className='text-2xl' /> : <FaSquareWhatsapp className='text-2xl' />} {channel.enabled ? "Disable" : "Enable"}
                           {progress[channel.channel] && <Spinner size={'sm'} />}
                         </button>
-                        {channel.channel === Distribution.WHATSAPP && channel.enabled && <div className='flex flex-col'>
-                          <div className='flex items-center gap-3'>
-                            <button onClick={launchWhatsAppSignup} className='py-1 px-3 rounded-md flex items-center text-white bg-[#1a77f2] justify-center gap-2'>
-                              <FaFacebook /> Continue with Facebook
-                            </button>
-                          </div>
-                          <div className='text-xs w-2/3 font-normal'>Or connect your very own facebook business account to send messages with your own number</div>
-                        </div>}
                       </div>
+                      {channel.channel === Distribution.WHATSAPP && !isFreePlan && channel.enabled && <div className='mt-3'>
+                        <div className='text-sm w-1/2 font-normal'>Onboard your facebook WABA to use your own business whatsapp phone number to deliver your courses</div>
+                        <div className='flex mt-2 flex-col'>
+                          <div className='flex items-center gap-3'>
+                            {teamInfo && teamInfo.data && teamInfo.data.facebookData ? <div>
+                              STATUS: {teamInfo.data.facebookData.status}
+                            </div> : <button onClick={launchWhatsAppSignup} className='py-1 px-3 rounded-md flex items-center text-white bg-[#1a77f2] justify-center gap-2'>
+                              <FaFacebook /> Continue with Facebook
+                            </button>}
+                          </div>
+
+                        </div>
+                      </div>}
                       {channel.channel === Distribution.SLACK && !channel.enabled && <>
                         <div className='text-sm mt-2 font-medium'>Or share authorization link with the admin of your slack workspace</div>
                         <div className='flex mt-1 items-center gap-3'>

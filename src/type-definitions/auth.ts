@@ -43,6 +43,13 @@ export interface DistributionChannel {
   token?: string
 }
 
+export interface FacebookIntegrationData {
+  businessId: string
+  phoneNumberId: string
+  token: string | null
+  status: "PENDING" | "CONFIRMED"
+}
+
 export interface Team {
   name: string
   id: string
@@ -54,6 +61,8 @@ export interface Team {
   facebookBusinessId?: string | null
   facebookPhoneNumberId?: string | null
   whatsappToken?: string
+  facebookData: FacebookIntegrationData | null
+  subscription: Subscription
   owner: string
   logo?: string
   color?: {
