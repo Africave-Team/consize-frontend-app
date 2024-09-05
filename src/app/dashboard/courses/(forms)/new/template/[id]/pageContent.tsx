@@ -14,6 +14,7 @@ import { stripHtmlTags } from '@/utils/string-formatters'
 import ImageBuilder from '@/components/FormButtons/ImageBuilder'
 import FileUploader from '@/components/FileUploader'
 import { FileTypes } from '@/type-definitions/utils'
+import { fetchSinglePublishedCourse } from '@/services/public.courses.service'
 interface ApiResponse {
   data: Course
   message: string
@@ -30,7 +31,7 @@ const validationSchema = Yup.object({
 
 export default function CreateCourseFromTemplatePage ({ courseId }: { courseId: string }) {
   const loadData = async function (payload: { course: string }) {
-    const data = await fetchSingleCourse(payload.course)
+    const data = await fetchSinglePublishedCourse(payload.course)
     return data
   }
 

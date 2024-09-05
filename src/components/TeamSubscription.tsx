@@ -8,7 +8,7 @@ import React from 'react'
 
 export default function TeamsSubscription ({ team, allow }: { team?: Team | TeamWithOwner, allow?: boolean }) {
   const { data: plans } = useFetchSubscriptionPlans()
-  const { data: subscription } = useFetchActiveSubscription(team?.id)
+  const { data: subscription } = useFetchActiveSubscription(allow || false, team?.id)
 
   const { mutateAsync, isPending } = useSubscribeAccount()
 
@@ -18,14 +18,16 @@ export default function TeamsSubscription ({ team, allow }: { team?: Team | Team
         await mutateAsync({
           planId: plan.id,
           numberOfMonths: 1,
-          teamId: team.id
+          teamId: team.id,
+          admin: allow || false
         })
       } else {
         if (allow) {
           await mutateAsync({
             planId: plan.id,
             numberOfMonths: 2,
-            teamId: team.id
+            teamId: team.id,
+            admin: allow
           })
         } else {
           window.open("https://calendly.com/consize-demo/60min", "_blank")
