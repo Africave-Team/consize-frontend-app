@@ -19,22 +19,20 @@ export default function page () {
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const loadData = async function ({ id }: { id?: string }) {
-    if (id) {
-      const result = await fetchMyTeamInfo(id)
-      return result
-    }
+  const loadData = async function () {
+    const result = await fetchMyTeamInfo()
+    return result
   }
 
   const { data: teamInfo, isFetching } =
     useQuery<ApiResponse>({
-      queryKey: ['team', team?.id],
-      queryFn: () => loadData({ id: team?.id })
+      queryKey: ['team'],
+      queryFn: () => loadData()
     })
 
   const { isPending, mutate } = useMutation({
-    mutationFn: (load: { id: string, payload: Partial<Omit<Team, "id" | "owner">> }) => {
-      return updateMyTeamInfo(load.id, load.payload)
+    mutationFn: (load: { payload: Partial<Omit<Team, "id" | "owner">> }) => {
+      return updateMyTeamInfo(load.payload)
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['team'] })
@@ -51,10 +49,10 @@ export default function page () {
         const formData = new FormData()
         // get file url
         formData.append("file", file)
-        mutate({ id: team.id, payload: {} })
+        mutate({ payload: {} })
         const { data } = await uploadFile(formData)
         // update the 
-        mutate({ id: team.id, payload: { logo: data } })
+        mutate({ payload: { logo: data } })
       }
     }
   }
