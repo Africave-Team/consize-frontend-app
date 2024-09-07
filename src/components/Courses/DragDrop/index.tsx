@@ -24,7 +24,7 @@ export default function CourseFlowDragDrop ({ course }: { course: Course }) {
             <AccordionButton className='px-3'>
               <div className='w-full flex gap-2 items-center'>
                 <Box as="span" flex='1' textAlign='left'>
-                  Course lessons
+                  Course contents
                 </Box>
               </div>
               <AccordionIcon />
@@ -54,29 +54,6 @@ export default function CourseFlowDragDrop ({ course }: { course: Course }) {
           </AccordionPanel>
         </AccordionItem>
       </>}
-
-      <AccordionItem className='w-full'>
-        <div className='flex group'>
-          <AccordionButton className='hover:bg-white'>
-            <Box as="span" flex='1' textAlign='left'>
-              Assessments
-            </Box>
-          </AccordionButton>
-          <div className='flex gap-2 items-center pr-3'>
-            <div className='flex gap-1 h-10 items-center'>
-              <button onClick={() => { }} className='hover:bg-gray-100 rounded-lg h-10 w-10 flex justify-center items-center text-base'>
-                <FiPlus />
-              </button>
-            </div>
-            <AccordionButton className='hover:bg-white px-0'>
-              <AccordionIcon />
-            </AccordionButton>
-          </div>
-        </div>
-        <AccordionPanel pb={4}>
-          No assessments at this moment
-        </AccordionPanel>
-      </AccordionItem>
 
       <AccordionItem className='w-full'>
         <h2>

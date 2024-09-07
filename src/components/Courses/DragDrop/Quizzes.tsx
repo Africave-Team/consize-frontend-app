@@ -55,8 +55,9 @@ export default function LessonQuestions ({ lesson }: { lesson: Lesson }) {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={lesson.id}>
         {(droppableProvided) => (
-          <form className='px-1 min-h-44' ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
+          <form className='px-1 min-h-10' ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
             <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
+              {form.values.quizzes.length === 0 && <div className='text-sm'>No assessments for this lesson</div>}
               {form.values.quizzes.map((block, index) => <div key={block.id || block._id || ""}>
                 <Draggable index={index} draggableId={block.id || block._id || ""}>
                   {(draggableProvided) => (

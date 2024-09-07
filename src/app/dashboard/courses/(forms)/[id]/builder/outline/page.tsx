@@ -53,7 +53,7 @@ export default function page ({ params }: { params: { id: string } }) {
         if (e.lesson && typeof e.lesson !== "string") {
           return e.lesson._id
         }
-      }).filter(e => typeof e === "string")
+      }).filter(e => typeof e === "string") as string[]
       if (topLesson) {
         if (!currentLesson || !contents.includes(currentLesson)) {
           setCurrentLesson(contents[0])

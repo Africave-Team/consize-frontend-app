@@ -63,19 +63,16 @@ export default function DraggableCourseLessonsCards ({ value }: { value: Course 
         if (assessment && typeof assessment !== "string") {
           return { assessment: assessment.id || assessment._id || "", lesson: null }
         }
-        else {
-          return ""
-        }
-      }).filter(e => e !== "")
+        return { assessment: null, lesson: null }
+      }).filter(e => !(e.assessment === null && e.lesson === null))
     }
-
     await updateMutation.mutateAsync({ payload, id: value.id || value._id || "" })
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={value.id}>
         {(droppableProvided) => (
-          <div className='px-1 min-h-36 w-full' ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
+          <div className='px-1 min-h-10 w-full' ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
             <div className='text-xs mb-2'>You can drag the lessons to change their position</div>
             <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
 

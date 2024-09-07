@@ -8,7 +8,7 @@ import NewBlockQuizForm from './AddFollowupQuiz'
 import DeleteLessonComponent from './DeleteLessonComponent'
 import NewAssessmentQuestionForm from './NewAssessmentQuiz'
 import SelectAssessmentQuestions from './SelectAssessmentQuestions'
-import DeleteAssessmentComponent from './DeleteAssessmentComponent'
+import DeleteAssessmentComponent from './DeleteAssessment'
 
 export default function CreateLessonSection ({ open, refetch }: { open: boolean, refetch: () => Promise<any> }) {
   const { closeCreateContent, createContent } = useCourseMgtStore()
