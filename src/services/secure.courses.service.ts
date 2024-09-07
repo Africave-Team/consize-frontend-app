@@ -166,6 +166,12 @@ export const addLessonQuiz = async (payload: AddLessonQuiz): Promise<any> =>
     body: { ...payload.quiz }
   })
 
+export const addAssessmentQuiz = async (payload: AddLessonQuiz): Promise<any> =>
+  http.post({
+    url: `quiz/question-groups/${payload.courseId}/${payload.lessonId}`,
+    body: { ...payload.quiz }
+  })
+
 export const updateQuiz = async (payload: { id: string, body: Partial<Quiz> }): Promise<any> =>
   http.put({
     url: `quiz/${payload.id}`,
@@ -181,6 +187,26 @@ export const deleteLessonQuiz = async (payload: {
   })
 }
 
+// question-groups
+export const createQuestionGroup = async (payload: {
+  message: string
+  title: string
+  courseId: string
+}): Promise<any> =>
+  http.post({
+    url: `quiz/question-groups/${payload.courseId}`,
+    body: { message: payload.message, title: payload.title }
+  })
+
+export const fetchSingleAssessment = async (course: string, assessmentId: string): Promise<any> =>
+  http.get({
+    url: `quiz/question-groups/${course}/${assessmentId}`
+  })
+
+export const deleteAssessment = async (assessmentId: string): Promise<any> =>
+  http.delete({
+    url: `quiz/question-groups/${assessmentId}`
+  })
 // settings
 
 
