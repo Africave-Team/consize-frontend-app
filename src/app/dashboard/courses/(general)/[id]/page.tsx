@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { getDatabase, ref, onValue, off } from "firebase/database"
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { firebaseConfig } from '@/utils/rtdb-config'
-import { Course, CourseStatistics, RTDBStudent, TrendStatisticsBody } from '@/type-definitions/secure.courses'
+import { Course, CourseStatistics, Lesson, RTDBStudent, TrendStatisticsBody } from '@/type-definitions/secure.courses'
 import StatsCard from '@/components/Dashboard/StatsCard'
 import SearchStudents from '@/components/Dashboard/SearchStudents'
 import StudentsTable from '@/components/Dashboard/StudentsTable'
@@ -27,6 +27,7 @@ import { getGeneralCourseCohorts } from '@/services/cohorts.services'
 import moment from 'moment'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
 import { CohortsInterface } from '@/type-definitions/cohorts'
+import AssessmentsResultCard from '@/components/Dashboard/AssessmentResultsCard'
 
 const fields = [
   { description: 'Total number of students who registered on the course', unit: "", field: "enrolled", title: "Enrolled students" },
@@ -169,14 +170,28 @@ export default function page ({ params }: { params: { id: string } }) {
     setPageTitle("Dashboard - Courses")
   }, [])
 
-  const generateCourseStats = function (students: RTDBStudent[]) {
+  const generateCourseStats = function (students: RTDBStudent[], course: Course) {
     let copy = { ...stats }
     let quizes = 0
     const scores = students.reduce((acc, curr) => {
-      if (curr.scores && curr.scores.length > 0) {
-        quizes = Math.max(curr.scores.length, quizes)
-        let total = curr.scores.reduce((a, b) => a + b, 0)
-        return acc + total
+      if (curr.lessons) {
+        let lessonIds: string[] = course.lessons.map(((e: Lesson) => e.id))
+        let sco = curr.scores
+        if (curr.lessons) {
+          let l = curr.lessons
+          let lessonsList = lessonIds.map((id) => l[id])
+          sco = lessonsList.flatMap((lesson) => {
+            if (lesson && lesson.quizzes) {
+              return Object.values(lesson.quizzes).map(e => e.score)
+            }
+            return []
+          })
+        }
+
+        if (sco) {
+          return acc + ((sco.reduce((a, b) => a + b, 0) / sco.length) * 100)
+        }
+        return acc
       } else {
         return acc
       }
@@ -185,7 +200,7 @@ export default function page ({ params }: { params: { id: string } }) {
     copy.active = students.filter(e => !e.completed && !e.droppedOut).length
     copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
     copy.completed = students.filter(e => e.completed).length
-    copy.averageTestScore = isNaN(scores / quizes) ? '0' : (((scores / quizes) * 100) / students.length).toFixed(2)
+    copy.averageTestScore = isNaN(scores / students.length) ? '0' : (((scores / students.length))).toFixed(2)
 
     copy.averageCourseProgress = students.reduce((acc, curr) => {
       if (curr.progress) {
@@ -204,11 +219,11 @@ export default function page ({ params }: { params: { id: string } }) {
           let total = 0
           for (let lesson of lessons) {
             if (lesson.blocks) {
-              let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + curr.duration, 0)
+              let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
               total += value
             }
           }
-          return acc + (total / 60)
+          return acc + (total / (60))
         }
       } else {
         return acc
@@ -236,33 +251,32 @@ export default function page ({ params }: { params: { id: string } }) {
         return acc
       }
     }, 0)
-    copy.averageMcqRetakeRate = isNaN(retakes / quizCount) ? 0 : retakes / quizCount
+    copy.averageMcqRetakeRate = isNaN(retakes / quizCount) ? 0 : (retakes / quizCount) * 100
 
-    let lessonCount = 0
+    let lessonCount = course.lessons.length
     let lessonDuration = students.reduce((acc, curr) => {
       if (curr.lessons) {
         const lessons = Object.values(curr.lessons)
         if (lessons.length === 0) {
           return acc
         } else {
-          lessonCount += lessons.length
           let total = 0
           for (let lesson of lessons) {
             if (lesson.blocks) {
-              let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + curr.duration, 0)
+              let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
               total += value
             }
           }
-          return acc + (total / 60)
+          return acc + (total / (60 * lessonCount))
         }
       } else {
         return acc
       }
     }, 0)
 
-    copy.averageLessonDurationMinutes = isNaN(lessonDuration / lessonCount) ? 0 : lessonDuration / lessonCount
+    copy.averageLessonDurationMinutes = isNaN(lessonDuration / students.length) ? 0 : lessonDuration / students.length
 
-    let blockCount = 0
+    let blockCount = course.lessons.flatMap(e => e.blocks).length
     let blockDuration = students.reduce((acc, curr) => {
       if (curr.lessons) {
         const lessons = Object.values(curr.lessons)
@@ -272,18 +286,17 @@ export default function page ({ params }: { params: { id: string } }) {
           let total = lessons.map(e => {
             if (e.blocks) {
               const blocks = Object.values(e.blocks)
-              blockCount += blocks.length
-              return blocks.reduce((acc, curr) => acc + curr.duration / 60, 0)
+              return blocks.reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
             }
             return 0
           }).reduce((a, b) => a + b, 0)
-          return acc + (total)
+          return acc + (total / (60 * blockCount))
         }
       } else {
         return acc
       }
     }, 0)
-    copy.averageBlockDurationMinutes = isNaN(blockDuration / blockCount) ? 0 : blockDuration / blockCount
+    copy.averageBlockDurationMinutes = isNaN(blockDuration / students.length) ? 0 : blockDuration / students.length
 
     setStats(copy)
   }
@@ -314,9 +327,11 @@ export default function page ({ params }: { params: { id: string } }) {
       }
 
       setFilteredStudents(data)
-      generateCourseStats(data)
+      if (courseDetails?.data) {
+        generateCourseStats(data, courseDetails.data)
+      }
     }
-  }, [students, selectedCohort, selectedDistribution, dates])
+  }, [students, selectedCohort, selectedDistribution, dates, courseDetails?.data])
 
   useEffect(() => {
     let app: any
@@ -417,6 +432,7 @@ export default function page ({ params }: { params: { id: string } }) {
           <div className={`px-4 w-full grid grid-cols-3 gap-3 ${sidebarOpen ? 'md:grid-cols-5' : 'md:grid-cols-6'}`} >
             {/* @ts-ignore */}
             {fields.map(({ field, title, description, unit }) => (<StatsCard description={description} latestTrend={{ value: trends[field] ? trends[field].current : 0, date: "" }} title={title} trends={trends[field] ? trends[field].trends : []} unit={unit} value={unit !== "" ? (stats[field] || 0).toFixed(1) : stats[field] || 0} key={field} />))}
+            <AssessmentsResultCard />
           </div>
 
           <div className='px-4'>
@@ -427,7 +443,7 @@ export default function page ({ params }: { params: { id: string } }) {
                 </div>
               </div>
               <div className='w-full mt-2'>
-                <StudentsTable students={filteredStudents} courseId={params.id} />
+                {courseDetails?.data && <StudentsTable courseDetails={courseDetails.data} students={filteredStudents} courseId={params.id} />}
               </div>
             </div>
           </div>

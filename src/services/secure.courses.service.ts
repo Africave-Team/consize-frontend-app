@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import http from './base'
 import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CourseSettings, CourseSettingsPayload, CreateCoursePayload, LearnerGroupLaunchTime, LearnerGroupPayload, PaginationPayload, Quiz, StudentDataForm } from '@/type-definitions/secure.courses'
 
@@ -263,3 +264,30 @@ export const testCourseWhatsapp = async (payload: { phoneNumber: string, course:
     body: payload
   })
 
+
+
+// assessment results
+export const useAssessmentResultByCourse = (course: string) =>
+  useQuery<{ assessment: { averageScore: number, totalSubmissions: number, title: string, _id: string }[] }>({
+    queryKey: ["assessment-results", course],
+    queryFn: async () => (await http.get({
+      url: `courses/assessments/${course}`
+    }))
+  })
+
+export const useStudentAssessmentResult = (course: string, student: string) =>
+  useQuery<{ assessment: { averageScore: number, totalSubmissions: number, title: string, _id: string }[] }>({
+    queryKey: ["student-assessment-results", { course, student }],
+    queryFn: async () => (await http.get({
+      url: `courses/assessments-scores/${course}/${student}`
+    }))
+  })
+
+export const useAssessmentResultsScores = (assessment: string | null) =>
+  useQuery<{ assessments: { score: number, studentDetails: { firstName: string, otherNames: string }, _id: string }[] }>({
+    queryKey: ["assessment-scores", assessment],
+    queryFn: async () => (await http.get({
+      url: `courses/assessments-scores/${assessment}`
+    })),
+    enabled: assessment !== null
+  })

@@ -313,6 +313,7 @@ export interface RTDBStudent {
   cohortId?: string
   distribution?: Distribution
   scores?: number[]
+  totalScore?: number
   dateEnrolled?: string
   lessons?: {
     [id: string]: {

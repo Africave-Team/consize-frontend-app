@@ -1,9 +1,9 @@
-import { RTDBStudent } from '@/type-definitions/secure.courses'
+import { Course, Lesson, RTDBStudent } from '@/type-definitions/secure.courses'
 import React, { useEffect, useState } from 'react'
 import SortStudentItems from './SortStudentItems'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button, ButtonGroup, Tooltip } from '@chakra-ui/react'
-export default function StudentsTable ({ students, courseId }: { students: RTDBStudent[], courseId: string }) {
+export default function StudentsTable ({ students, courseId, courseDetails }: { students: RTDBStudent[], courseId: string, courseDetails: Course }) {
   const pageSize = 10
   const [data, setData] = useState<RTDBStudent[]>([...students])
   const [page, setPage] = useState<number>(1)
@@ -97,6 +97,20 @@ export default function StudentsTable ({ students, courseId }: { students: RTDBS
             </tr>}
             {
               data.map((student: RTDBStudent) => {
+                let lessonIds: string[] = courseDetails.lessons.map(((e: Lesson) => e.id))
+                let scores: number[] = []
+                if (student.lessons) {
+                  let l = student.lessons
+                  let lessonsList = lessonIds.map((id) => l[id]).filter(e => e !== undefined)
+                  scores = lessonsList.flatMap((lesson) => {
+                    if (lesson && lesson.quizzes) {
+                      return Object.values(lesson.quizzes).map(e => e.score)
+                    }
+                    return []
+                  })
+                } else if (student.scores) {
+                  scores = student.scores
+                }
                 return <tr key={student.id} className="border-b hover:bg-gray-100 cursor-pointer" onClick={() => router.push(`/dashboard/courses/${courseId}/enrollments/${student.id}`)}>
                   <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap capitalize">{student.name}</th>
                   <td className="px-4 py-3">{student.phoneNumber}
@@ -111,7 +125,7 @@ export default function StudentsTable ({ students, courseId }: { students: RTDBS
                   </td>
                   <td className="px-4 py-3 flex justify-center">
                     <div className='w-14'>
-                      {student.scores ? (student.scores.reduce((a, b) => a + b) * 100 / student.scores.length).toFixed(1) : 0}%
+                      {scores && scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) * 100 / scores.length).toFixed(1) : 0}%
                     </div>
                   </td>
                   <td className="px-4 py-3">{student.droppedOut ? 'Dropped out' : student.completed ? 'Completed' : 'Active'}</td>

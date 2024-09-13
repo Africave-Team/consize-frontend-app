@@ -7,17 +7,36 @@ export default function Leaderboard ({ students }: { students: RTDBStudent[] }) 
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [rankings, setRankings] = useState<LeaderboardMember[]>([])
   useEffect(() => {
-    setRankings(students.sort((a: RTDBStudent, b: RTDBStudent) => {
-      const first = a.scores ? a.scores.reduce((a, b) => a + b, 0) : 0
-      const second = b.scores ? b.scores.reduce((a, b) => a + b, 0) : 0
-      return second - first
+
+    let rankings = students.map(student => {
+      // Calculate the total score across all lessons and quizzes
+      let totalScore = 0
+      if (student.lessons) {
+        totalScore = Object.values(student.lessons).reduce((lessonAcc, lesson) => {
+          let quizScoreSum = 0
+          if (lesson.quizzes) {
+            quizScoreSum = Object.values(lesson.quizzes).reduce((quizAcc, quiz) => quizAcc + quiz.score, 0)
+          }
+          return lessonAcc + quizScoreSum
+        }, 0)
+      }
+
+      // Attach the total score to the student object
+      return { ...student, totalScore }
+    }).sort((a: RTDBStudent, b: RTDBStudent) => {
+      return (b.totalScore || 0) - (a.totalScore || 0)
     }).map((std: RTDBStudent, index: number) => {
+      let score = (std.scores?.reduce((a, b) => a + b, 0) || 0)
+      if (std.totalScore) {
+        score = std.totalScore
+      }
       return {
         name: std.name,
         rank: index + 1,
-        score: std.scores ? std.scores.reduce((a, b) => a + b, 0) : 0
+        score
       }
-    }))
+    })
+    setRankings(rankings)
   }, [students])
   return (
 
