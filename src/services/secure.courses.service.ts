@@ -276,7 +276,7 @@ export const useAssessmentResultByCourse = (course: string) =>
   })
 
 export const useStudentAssessmentResult = (course: string, student: string) =>
-  useQuery<{ assessment: { averageScore: number, totalSubmissions: number, title: string, _id: string }[] }>({
+  useQuery<{ assessments: { score: number, assessmentId: string, id: string }[] }>({
     queryKey: ["student-assessment-results", { course, student }],
     queryFn: async () => (await http.get({
       url: `courses/assessments-scores/${course}/${student}`

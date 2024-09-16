@@ -83,9 +83,7 @@ export default function page ({ params }: { params: { id: string, student_id: st
             setStudent(copy)
             if (copy.lessons) {
               let l = copy.lessons
-              let lessonsList = lessonIds.map((id) => l[id])
-
-              console.log()
+              let lessonsList = lessonIds.map((id) => l[id]).filter(e => e !== undefined)
 
 
               setLessons(lessonsList.map(e => e.title))
@@ -410,16 +408,17 @@ export default function page ({ params }: { params: { id: string, student_id: st
                       Cumulative test score
                     </th>
                     <td className="px-6 py-4">
-                      {student?.scores?.reduce((acc, curr) => acc + curr, 0)}
+                      {student?.scores?.reduce((acc, curr) => acc + curr, 0) || '--'}
                     </td>
                   </tr>
                   <tr className="bg-white border-b hover:bg-gray-100">
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      Cumulative completion time
+                      Total time spent
                     </th>
                     <td className="px-6 py-4">
                       {/* {student.completionDays + '' === 'N/A' ? student.completionDays : `${student.completionDays} day(s)`} &nbsp;or&nbsp;
                         {!student.hasOwnProperty('completionMinutes') ? 'N/A' : `${student.completionMinutes} minute(s)`} */}
+                      {lessonDurations.length > 0 ? `${(lessonDurations.reduce((acc, curr) => acc + curr, 0) / 60).toFixed(1)} minutes` : '--'}
                     </td>
                   </tr>
                   <tr className="bg-white border-b hover:bg-gray-100">
@@ -465,6 +464,37 @@ export default function page ({ params }: { params: { id: string, student_id: st
                 {lessons.map((e, index) => <div className='min-h-8 px-5 flex items-center border rounded-md' key={`lesson_finished_${index}`}>{e}</div>)}
               </div>
             </div>
+
+            {courseDetails && courseDetails.data && <div className='bg-white min-h-96 rounded-lg p-4'>
+              <div className='font-semibold text-xl'>Assessments completed</div>
+              <div className='flex flex-col gap-0 py-3'>
+                <div className='flex w-full mb-1 items-center font-semibold justify-between px-3 py-2'>
+                  <div>
+                    Assessment title
+                  </div>
+                  <div>
+                    Assessment score
+                  </div>
+                </div>
+                {studentAssessment?.assessments.map((record) => {
+                  let assessment = courseDetails.data.contents.find(e => e.assessment && typeof e.assessment !== "string" && e.assessment._id === record.assessmentId)
+                  if (assessment && assessment.assessment && typeof assessment.assessment !== "string") {
+                    let ast = assessment.assessment
+                    return <div className='flex w-full mb-1 items-center justify-between px-3 py-2'>
+                      <div>
+                        {ast.title}
+                      </div>
+                      <div>
+                        {record.score}/{ast.questions.length}
+                      </div>
+                    </div>
+                  }
+                  return <>
+
+                  </>
+                })}
+              </div>
+            </div>}
           </div>
         </div>
       </div>
