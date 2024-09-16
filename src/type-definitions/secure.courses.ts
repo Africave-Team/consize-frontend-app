@@ -24,6 +24,7 @@ export interface CreateCoursePayload {
   survey?: string | null
   courses?: string[]
   lessons?: string[]
+  contents?: CourseContent[]
 }
 
 export interface TrendStatistics {
@@ -114,6 +115,11 @@ export interface UpdateLesson {
 }
 
 
+export interface CourseContent {
+  lesson: string | Lesson | null
+  assessment: string | QuestionGroupsInterface | null
+
+}
 
 
 export interface Course {
@@ -125,6 +131,7 @@ export interface Course {
   shortCode: string
   lessons: Lesson[]
   courses: Course[]
+  contents: CourseContent[]
   headerMedia: Media
   status: CourseStatus
   distribution: Distribution
@@ -179,10 +186,30 @@ export interface AddBlock {
 
 // quiz
 
+
+interface QuestionGroups {
+  message: string
+  title: string
+  questions: string[] | Quiz[]
+  course: string
+}
+export interface QuestionGroupsInterface extends QuestionGroups {
+  id: string
+  _id?: string
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+export enum QuestionTypes {
+  OBJECTIVE = "objectives",
+  SUBJECTIVE = "subjective"
+}
+
 export interface Quiz {
   id: string
   _id?: string
   question: string
+  questionType?: QuestionTypes
   correctAnswerContext: string
   wrongAnswerContext: string
   choices: string[]
@@ -286,6 +313,7 @@ export interface RTDBStudent {
   cohortId?: string
   distribution?: Distribution
   scores?: number[]
+  totalScore?: number
   dateEnrolled?: string
   lessons?: {
     [id: string]: {

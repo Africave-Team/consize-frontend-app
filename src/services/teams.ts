@@ -33,14 +33,14 @@ export const acceptTeamInvite = async (payload: ResetPasswordPayloadInterface): 
   })
 
 
-export const fetchMyTeamInfo = async (id: string): Promise<any> =>
+export const fetchMyTeamInfo = async (): Promise<any> =>
   http.get({
-    url: `teams/${id}`,
+    url: `teams/me`,
   })
 
-export const updateMyTeamInfo = async (id: string, payload: Partial<Omit<Team, "id" | "owner">>): Promise<any> =>
+export const updateMyTeamInfo = async (payload: Partial<Omit<Team, "id" | "owner">>): Promise<any> =>
   http.put({
-    url: `teams/${id}`,
+    url: `teams/`,
     body: payload
   })
 

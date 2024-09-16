@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import http from './base'
 import { AddBlock, AddBlockQuiz, AddLessonQuiz, Block, CourseSettings, CourseSettingsPayload, CreateCoursePayload, LearnerGroupLaunchTime, LearnerGroupPayload, PaginationPayload, Quiz, StudentDataForm } from '@/type-definitions/secure.courses'
 
@@ -166,6 +167,12 @@ export const addLessonQuiz = async (payload: AddLessonQuiz): Promise<any> =>
     body: { ...payload.quiz }
   })
 
+export const addAssessmentQuiz = async (payload: AddLessonQuiz): Promise<any> =>
+  http.post({
+    url: `quiz/question-groups/${payload.courseId}/${payload.lessonId}`,
+    body: { ...payload.quiz }
+  })
+
 export const updateQuiz = async (payload: { id: string, body: Partial<Quiz> }): Promise<any> =>
   http.put({
     url: `quiz/${payload.id}`,
@@ -181,6 +188,26 @@ export const deleteLessonQuiz = async (payload: {
   })
 }
 
+// question-groups
+export const createQuestionGroup = async (payload: {
+  message: string
+  title: string
+  courseId: string
+}): Promise<any> =>
+  http.post({
+    url: `quiz/question-groups/${payload.courseId}`,
+    body: { message: payload.message, title: payload.title }
+  })
+
+export const fetchSingleAssessment = async (course: string, assessmentId: string): Promise<any> =>
+  http.get({
+    url: `quiz/question-groups/${course}/${assessmentId}`
+  })
+
+export const deleteAssessment = async (assessmentId: string): Promise<any> =>
+  http.delete({
+    url: `quiz/question-groups/${assessmentId}`
+  })
 // settings
 
 
@@ -237,3 +264,30 @@ export const testCourseWhatsapp = async (payload: { phoneNumber: string, course:
     body: payload
   })
 
+
+
+// assessment results
+export const useAssessmentResultByCourse = (course: string) =>
+  useQuery<{ assessment: { averageScore: number, totalSubmissions: number, title: string, _id: string }[] }>({
+    queryKey: ["assessment-results", course],
+    queryFn: async () => (await http.get({
+      url: `courses/assessments/${course}`
+    }))
+  })
+
+export const useStudentAssessmentResult = (course: string, student: string) =>
+  useQuery<{ assessments: { score: number, assessmentId: string, id: string }[] }>({
+    queryKey: ["student-assessment-results", { course, student }],
+    queryFn: async () => (await http.get({
+      url: `courses/assessments-scores/${course}/${student}`
+    }))
+  })
+
+export const useAssessmentResultsScores = (assessment: string | null) =>
+  useQuery<{ assessments: { score: number, studentDetails: { firstName: string, otherNames: string }, _id: string }[] }>({
+    queryKey: ["assessment-scores", assessment],
+    queryFn: async () => (await http.get({
+      url: `courses/assessments-scores/${assessment}`
+    })),
+    enabled: assessment !== null
+  })

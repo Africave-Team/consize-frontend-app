@@ -2,9 +2,10 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spinner
 import React, { useState } from 'react'
 import NewLesson from '../Courses/NewLesson'
 import { FiPlus } from 'react-icons/fi'
+import { queryClient } from '@/utils/react-query'
 
 
-export default function CreateLessonButton ({ courseId, refetch, full }: { courseId: string, refetch: () => Promise<any>, full?: boolean }) {
+export default function CreateLessonButton ({ courseId, full }: { courseId: string, full?: boolean }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   return (
     <div>
@@ -21,7 +22,9 @@ export default function CreateLessonButton ({ courseId, refetch, full }: { cours
         <ModalContent className='min-h-96 p-0'>
           <ModalBody className='h-96 px-2'>
             <NewLesson handleFinish={async () => {
-              await refetch()
+              queryClient.invalidateQueries({
+                queryKey: ['course', courseId],
+              })
               onClose()
             }} courseId={courseId} close={onClose} />
           </ModalBody>

@@ -36,12 +36,12 @@ export default function ListLessons ({ course, refetch }: { course: Course, refe
             {course.lessons.length === 0 ? <div className='flex flex-col gap-7 pb-20 pt-10'>
               <EmptyLessonState />
               <div className='flex justify-center'>
-                <CreateLessonButton courseId={course.id} refetch={refetch} />
+                <CreateLessonButton courseId={course.id} />
               </div>
             </div> : <div className='flex flex-col gap-2 pt-2'>
               {course.lessons.map((lesson, index) => <ViewLessonCard key={lesson.id} index={index} lesson={lesson} refetch={refetch} courseId={course.id} />)}
               <div className='mt-5'>
-                <CreateLessonButton full={true} courseId={course.id} refetch={refetch} />
+                <CreateLessonButton full={true} courseId={course.id} />
               </div>
               <div className='mt-2 flex justify-end gap-3'>
                 <button onClick={() => router.push(`/dashboard/courses/${course.id}/builder/course-info`)} className='h-10 flex jus items-center hover:bg-gray-100 rounded-lg border px-4'>Back</button>

@@ -19,6 +19,18 @@ export const enrollCompanies = async (payload: {
   })
 
 
+
+export const transferCompany = async (payload: {
+  name: string,
+  email: string,
+  id: string
+}): Promise<any> =>
+  http.post({
+    url: `company/${payload.id}`,
+    body: payload
+  })
+
+
 export const resendOnboardEmail = async (teamId: string): Promise<any> =>
   http.patch({
     url: `company/${teamId}`,

@@ -28,12 +28,17 @@ export default function Home () {
       setCompanyName(subdomain)
     } else {
       // location.href = location.origin + '/courses'
+      location.href = location.origin + '/home'
     }
   }, [])
 
   useEffect(() => {
-    if (data && data.data) {
-      location.href = location.origin + '/teams/' + data.data.id
+    if (data) {
+      if (data.data) {
+        location.href = location.origin + '/teams/' + data.data.id
+      } else {
+        location.href = location.origin + '/home'
+      }
     }
   }, [data])
   return (
@@ -43,7 +48,7 @@ export default function Home () {
         {isLoading ? <div className='h-12 w-12 bg-white rounded-full flex items-center justify-center'>
           <Spinner className='' />
         </div> : <>
-          {data?.data ? <></> : <TeamNotFound />}
+
         </>}
       </div>
     </section>

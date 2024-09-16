@@ -6,21 +6,12 @@ import React, { useEffect } from 'react'
 
 export default function SubscriptionIndicator () {
   const { team } = useAuthStore()
-  const { data: subscription, isLoading } = useFetchActiveSubscription(team?.id)
+  const { data: subscription, isLoading } = useFetchActiveSubscription(false, team?.id)
   const { data: plans } = useFetchSubscriptionPlans()
   const { mutateAsync, isPending } = useSubscribeAccount()
   useEffect(() => {
     if (subscription) {
       useAuthStore.setState({ subscription })
-    } else {
-      let plan = plans?.find(e => e.price === 0)
-      if (plan && team) {
-        mutateAsync({
-          planId: plan.id,
-          numberOfMonths: 24,
-          teamId: team.id
-        })
-      }
     }
   }, [subscription, plans])
   if (isLoading || isPending) {

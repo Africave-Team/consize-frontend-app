@@ -1,11 +1,9 @@
 "use client"
-import Logo from '@/components/Logo'
+import { fonts } from '@/app/fonts'
 import Layout from '@/layouts/PageTransition'
-import localFont from 'next/font/local'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-const myFont = localFont({ src: '../../../../../fonts/rgs-1.ttf' })
 
 export default function TeamsSettingsPage () {
   const router = useRouter()
@@ -15,9 +13,9 @@ export default function TeamsSettingsPage () {
         <div className='flex md:flex-row flex-col h-full items-center overflow-y-scroll'>
           <div className='w-full md:w-1/2 md:py-0 pt-10  px-10'>
             <h2 className='text-4xl md:text-5xl font-semibold md:mb-3'>
-              <span className={`mb-10 ${myFont.className}`}>Start creating</span>
+              <span className={`mb-10 ${fonts.brandFont.className}`}>Start creating</span>
             </h2>
-            <h2 className={`mb-10 ${myFont.className} text-4xl md:text-5xl font-semibold flex gap-3 items-center`}>
+            <h2 className={`mb-10 ${fonts.brandFont.className} text-4xl md:text-5xl font-semibold flex gap-3 items-center`}>
               courses now on Consize
             </h2>
           </div>

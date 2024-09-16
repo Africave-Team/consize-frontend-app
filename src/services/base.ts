@@ -65,11 +65,13 @@ class HttpFacade {
 
     const refreshToken = async () => {
       try {
-        if (!useAuthStore.getState().refresh?.token) {
+        debugger
+        const { refresh } = useAuthStore.getState()
+        if (!refresh?.token) {
           throw new Error("invalid refresh token")
         }
         const response = await this.http.post('/auth/refresh-tokens', {
-          "refreshToken": useAuthStore.getState().refresh?.token
+          "refreshToken": refresh?.token
         })
         const newTokens = response.data.tokens // Assuming your API returns a new token
         useAuthStore.setState({ access: newTokens.access, refresh: newTokens.refresh })

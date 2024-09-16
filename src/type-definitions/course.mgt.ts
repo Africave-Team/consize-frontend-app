@@ -1,7 +1,13 @@
+import { QuestionGroupsInterface, Quiz } from './secure.courses'
+
 export enum ContentTypeEnum {
   SECTION = "section",
   QUIZ = "quiz",
-  BLOCK_QUIZ = "block-quiz"
+  BLOCK_QUIZ = "block-quiz",
+  ASSESSMENT_QUIZ = "assessment-quiz",
+  SELECT_ASSESSMENT_QUIZ = "select-assessment-quiz",
+  DELETE_LESSON = "delete-lesson",
+  DELETE_ASSESSMENT_QUIZ = "delete-assessment-quiz"
 }
 export interface CreateLessonContent {
   open: boolean
@@ -10,6 +16,7 @@ export interface CreateLessonContent {
   contentType: ContentTypeEnum
   blockId?: string
   content?: string
+  assessment?: QuestionGroupsInterface
 }
 export interface CourseMgtStoreInterface {
   currentLesson?: string
@@ -18,7 +25,7 @@ export interface CourseMgtStoreInterface {
 
   setReloadLesson: (val: boolean) => void
   setCurrentLesson: (lessonId: string) => void
-  initiateCreateContent: (lessonId: string, courseId: string, contentType: ContentTypeEnum, blockId?: string, content?: string) => void
+  initiateCreateContent: (lessonId: string, courseId: string, contentType: ContentTypeEnum, blockId?: string, content?: string, assessment?: QuestionGroupsInterface) => void
   closeCreateContent: () => void
 }
 

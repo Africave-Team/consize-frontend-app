@@ -27,30 +27,28 @@ export default function WebsiteSettings () {
     secondary: "#ffffff"
   })
 
-  const loadData = async function ({ id }: { id?: string }) {
-    if (id) {
-      const result = await fetchMyTeamInfo(id)
-      return result
-    }
+  const loadData = async function () {
+    const result = await fetchMyTeamInfo()
+    return result
   }
 
   const { data: teamInfo, isFetching } =
     useQuery<ApiResponse>({
-      queryKey: ['team', team?.id],
-      queryFn: () => loadData({ id: team?.id })
+      queryKey: ['team'],
+      queryFn: () => loadData()
     })
 
   const { isPending: logoLoading, mutate: mutateLogo } = useMutation({
-    mutationFn: (load: { id: string, payload: Partial<Omit<Team, "id" | "owner">> }) => {
-      return updateMyTeamInfo(load.id, load.payload)
+    mutationFn: (load: { payload: Partial<Omit<Team, "id" | "owner">> }) => {
+      return updateMyTeamInfo(load.payload)
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['team'] })
     }
   })
   const { mutate: mutateColors } = useMutation({
-    mutationFn: (load: { id: string, payload: Partial<Omit<Team, "id" | "owner">> }) => {
-      return updateMyTeamInfo(load.id, load.payload)
+    mutationFn: (load: { payload: Partial<Omit<Team, "id" | "owner">> }) => {
+      return updateMyTeamInfo(load.payload)
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['team'] })
@@ -97,7 +95,7 @@ export default function WebsiteSettings () {
           const { data } = await uploadFile(formData)
           setUploading(false)
           // update the 
-          mutateLogo({ id: team.id, payload: { logo: data } })
+          mutateLogo({ payload: { logo: data } })
         }
       }
     }
@@ -108,7 +106,7 @@ export default function WebsiteSettings () {
     copy[field] = e.target.value
     setColor(copy)
     if (team) {
-      mutateColors({ id: team.id, payload: { color: copy } })
+      mutateColors({ payload: { color: copy } })
     }
   }
 

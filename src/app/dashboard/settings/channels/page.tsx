@@ -17,6 +17,18 @@ import { queryClient } from '@/utils/react-query'
 import TeamQRCode from '@/components/Dashboard/TeamQRCode'
 import { Facebook, FacebookLoginResponse, WindowWithFB } from '@/type-definitions/facebook'
 import FacebookSignupListener from '@/components/FacebookMessageListener'
+import { useFetchActiveSubscription } from '@/services/subscriptions.service'
+import { delay } from '@/utils/tools'
+interface FacebookEventData {
+  type: string
+  event: string
+  data: {
+    phone_number_id?: string
+    waba_id?: string
+    error_message?: string
+    current_step?: string
+  }
+}
 
 
 interface ApiResponse {
@@ -26,10 +38,12 @@ export default function IntegrationSettings () {
   const [progress, setProgress] = useState<{ [key: string]: boolean }>({ slack: false, whatsapp: false })
   const { team, setTeam } = useAuthStore()
   const [showTeamQR, setShowteamQR] = useState<boolean>(false)
+  const [exchangeLoading, setExchangeLoading] = useState<boolean>(false)
+  const [isFreePlan, setIsFreePlan] = useState<boolean>(false)
   const { initiateSlackSettings, initiateSlackAsync } = useCallbackStore()
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (props: { id: string, payload: { channels: DistributionChannel[] } }) => updateMyTeamInfo(props.id, props.payload),
+    mutationFn: (props: { payload: Partial<Omit<Team, "id" | "owner">> }) => updateMyTeamInfo(props.payload),
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({ queryKey: ['team'] })
     }
@@ -45,7 +59,13 @@ export default function IntegrationSettings () {
       if (index >= 0) {
         channels[index] = channel
       }
-      await mutateAsync({ id: team.id, payload: { channels } })
+      let payload: Partial<Omit<Team, "id" | "owner">> = { channels }
+      if (channel.channel === Distribution.WHATSAPP) {
+        payload.facebookPhoneNumberId = null
+        payload.facebookData = null
+        payload.facebookBusinessId = null
+      }
+      await mutateAsync({ payload })
       pro[channel.channel] = false
       setProgress(pro)
     }
@@ -78,16 +98,21 @@ export default function IntegrationSettings () {
           appId: '1057351731954710',
           autoLogAppEvents: true,
           xfbml: true,
-          version: 'v18.0',
+          version: 'v19.0',
         })
 
         try {
           FB.login(
             (response: FacebookLoginResponse) => {
               if (response.authResponse) {
-                console.log(response)
                 // Use the access token to call the debug_token API and get the shared WABA's ID
-                facebookTokenExchangeWithToken(response.authResponse.code)
+                setExchangeLoading(true)
+                let code = response.authResponse.code
+                delay(4000).then(async () => {
+                  await facebookTokenExchangeWithToken(code)
+                  setExchangeLoading(false)
+                  queryClient.invalidateQueries({ queryKey: ['team'] })
+                })
               } else {
                 console.log('User cancelled login or did not fully authorize.')
               }
@@ -111,17 +136,17 @@ export default function IntegrationSettings () {
     }
   }
 
-  const loadData = async function ({ id }: { id?: string }) {
-    if (id) {
-      const result = await fetchMyTeamInfo(id)
-      return result
-    }
+  const { data: subscription, isLoading } = useFetchActiveSubscription(false)
+
+  const loadData = async function () {
+    const result = await fetchMyTeamInfo()
+    return result
   }
 
   const { data: teamInfo, isFetching, refetch } =
     useQuery<ApiResponse>({
-      queryKey: ['team', team?.id],
-      queryFn: () => loadData({ id: team?.id }),
+      queryKey: ['team'],
+      queryFn: () => loadData(),
     })
 
   useEffect(() => {
@@ -138,6 +163,66 @@ export default function IntegrationSettings () {
       }
     }
   }, [teamInfo])
+
+  useEffect(() => {
+    if (subscription) {
+      let plan = subscription.plan
+      if (plan && typeof plan !== "string") {
+        setIsFreePlan(plan.price === 0)
+      }
+
+    }
+  }, [subscription])
+
+  useEffect(() => {
+    const sessionInfoListener = (event: MessageEvent) => {
+      if (event.origin == null) {
+        return
+      }
+
+      // Make sure the data is coming from facebook.com
+      if (!event.origin.endsWith("facebook.com")) {
+        return
+      }
+
+      try {
+        const data: FacebookEventData = JSON.parse(event.data)
+        if (data.type === 'WA_EMBEDDED_SIGNUP') {
+          // if user finishes the Embedded Signup flow
+          if (data.event === 'FINISH') {
+            const { phone_number_id, waba_id } = data.data
+            if (phone_number_id && waba_id) {
+              mutateAsync({
+                payload: {
+                  facebookBusinessId: waba_id,
+                  facebookPhoneNumberId: phone_number_id,
+                }
+              })
+            }
+          }
+          // if user reports an error during the Embedded Signup flow
+          else if (data.event === 'ERROR') {
+            const { error_message } = data.data
+            console.error("error ", error_message)
+          }
+          // if user cancels the Embedded Signup flow
+          else {
+            const { current_step } = data.data
+            console.warn("Cancel at ", current_step)
+          }
+        }
+      } catch {
+      }
+    }
+
+    // Add event listener when component mounts
+    window.addEventListener('message', sessionInfoListener)
+
+    // Remove event listener when component unmounts
+    return () => {
+      window.removeEventListener('message', sessionInfoListener)
+    }
+  }, [])
   return (
     <Layout>
       <div className='w-full overflow-y-scroll h-screen p-4'>
@@ -161,22 +246,31 @@ export default function IntegrationSettings () {
                       </div>
                     </div>
                     <div>
-                      <div className='flex gap-3 items-start'>
+                      <div className='flex gap-3 items-center mt-3'>
+                        <strong>
+                          {channel.enabled ? "Enabled" : "Disabled"}
+                        </strong>
                         <button onClick={() => {
                           handleChannelButtonClick(channel)
                         }} className='border py-1 px-3 flex gap-2 items-center justify-center rounded-md hover:bg-gray-100 text-sm'>
                           {channel.channel === Distribution.SLACK ? <AiFillSlackCircle className='text-2xl' /> : <FaSquareWhatsapp className='text-2xl' />} {channel.enabled ? "Disable" : "Enable"}
                           {progress[channel.channel] && <Spinner size={'sm'} />}
                         </button>
-                        {channel.channel === Distribution.WHATSAPP && channel.enabled && <div className='flex flex-col'>
-                          <div className='flex items-center gap-3'>
-                            <button onClick={launchWhatsAppSignup} className='py-1 px-3 rounded-md flex items-center text-white bg-[#1a77f2] justify-center gap-2'>
-                              <FaFacebook /> Continue with Facebook
-                            </button>
-                          </div>
-                          <div className='text-xs w-2/3 font-normal'>Or connect your very own facebook business account to send messages with your own number</div>
-                        </div>}
                       </div>
+                      {channel.channel === Distribution.WHATSAPP && !isFreePlan && channel.enabled && <div className='mt-3'>
+                        <div className='text-sm w-1/2 font-normal'>Onboard your facebook WABA to use your own business whatsapp phone number to deliver your courses</div>
+                        <div className='flex mt-2 flex-col'>
+                          <div className='flex items-center gap-3'>
+                            {teamInfo && teamInfo.data && teamInfo.data.facebookData ? <div>
+                              STATUS: {teamInfo.data.facebookData.status}
+                            </div> : <button onClick={launchWhatsAppSignup} className='py-1 px-3 rounded-md flex items-center text-white bg-[#1a77f2] justify-center gap-2'>
+                              <FaFacebook /> Continue with Facebook
+                            </button>}
+                            {(isPending || exchangeLoading) && <Spinner size={'sm'} />}
+                          </div>
+
+                        </div>
+                      </div>}
                       {channel.channel === Distribution.SLACK && !channel.enabled && <>
                         <div className='text-sm mt-2 font-medium'>Or share authorization link with the admin of your slack workspace</div>
                         <div className='flex mt-1 items-center gap-3'>
@@ -195,7 +289,6 @@ export default function IntegrationSettings () {
             {showTeamQR ? <>{team && <TeamQRCode teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
           </div>
         </div>
-        <FacebookSignupListener />
       </div>
     </Layout>
   )

@@ -18,6 +18,8 @@ import LessonContentView from '@/components/Courses/LessonContentView'
 import CourseSurveyCard from '@/components/Courses/CourseSurveyCard'
 import UpdateCourseButton from '@/components/FormButtons/EditCourseButton'
 import DraggableCourseLessonsCards from '@/components/Courses/DragDrop/LessonCards'
+import CreateAssessmentButton from '@/components/FormButtons/CreateAssessmentButton'
+import AssessmentContentView from '@/components/Courses/AssessmentContentView'
 
 interface ApiResponse {
   data: Course
@@ -43,9 +45,18 @@ export default function page ({ params }: { params: { id: string } }) {
     if (courseDetails) {
       let topLesson = courseDetails.data.lessons[0]
       let lessons = courseDetails.data.lessons.map(e => e.id)
+
+      let contents = courseDetails.data.contents.map(e => {
+        if (e.assessment && typeof e.assessment !== "string") {
+          return e.assessment._id
+        }
+        if (e.lesson && typeof e.lesson !== "string") {
+          return e.lesson._id
+        }
+      }).filter(e => typeof e === "string") as string[]
       if (topLesson) {
-        if (!currentLesson || !lessons.includes(currentLesson)) {
-          setCurrentLesson(topLesson.id)
+        if (!currentLesson || !contents.includes(currentLesson)) {
+          setCurrentLesson(contents[0])
         }
       }
     }
@@ -58,7 +69,7 @@ export default function page ({ params }: { params: { id: string } }) {
         {courseDetails && courseDetails.data && <div className='flex w-full h-screen overflow-hidden'>
           <div className='w-[370px] border-r h-full overflow-y-scroll px-2'>
             <div className='flex w-full h-12 items-center justify-between'>
-              <div className='font-medium text-lg'>Lessons</div>
+              <div className='font-medium text-lg'>Course contents</div>
               {courseDetails.data && <UpdateCourseButton course={courseDetails.data} />}
 
             </div>
@@ -67,13 +78,14 @@ export default function page ({ params }: { params: { id: string } }) {
                 No lessons added yet
               </div>}
               {courseDetails && courseDetails.data && <DraggableCourseLessonsCards value={courseDetails.data} />}
-              <CreateLessonButton courseId={courseDetails.data.id} refetch={refetch} full={true} />
               <CourseSurveyCard surveyId={courseDetails.data.survey} courseId={courseDetails.data.id} />
+              <CreateLessonButton courseId={courseDetails.data.id} full={true} />
+              <CreateAssessmentButton courseId={courseDetails.data.id} full={true} />
             </div>
           </div>
-          <div className='flex-1 h-full px-5'>
-            {currentLesson && <LessonContentView reload={refetch} courseId={params.id} lessonId={currentLesson} />}
-          </div>
+          {courseDetails && courseDetails.data && currentLesson && <div className='flex-1 h-full px-5'>
+            {courseDetails.data.lessons.find(e => e._id === currentLesson) ? <LessonContentView reload={refetch} courseId={params.id} lessonId={currentLesson} /> : <AssessmentContentView assessmentId={currentLesson} courseId={params.id} />}
+          </div>}
         </div>}
       </div>
       {createContent && createContent.open && <CreateLessonSection

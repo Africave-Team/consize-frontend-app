@@ -28,13 +28,14 @@ const FacebookSignupListener: React.FC = () => {
 
       try {
         const data: FacebookEventData = JSON.parse(event.data)
+        console.log("here", data)
         if (data.type === 'WA_EMBEDDED_SIGNUP') {
           // if user finishes the Embedded Signup flow
           if (data.event === 'FINISH' && team) {
             const { phone_number_id, waba_id } = data.data
-            updateMyTeamInfo(team.id, {
+            updateMyTeamInfo({
               facebookBusinessId: waba_id,
-              facebookPhoneNumberId: phone_number_id
+              facebookPhoneNumberId: phone_number_id,
             })
           }
           // if user reports an error during the Embedded Signup flow
