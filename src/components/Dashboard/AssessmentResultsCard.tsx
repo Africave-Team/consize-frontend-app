@@ -1,4 +1,4 @@
-import { TrendStatistics } from '@/type-definitions/secure.courses'
+import { QuestionGroupsInterface, TrendStatistics } from '@/type-definitions/secure.courses'
 import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import InfoPopover from './InfoPopover'
@@ -10,7 +10,7 @@ import { useAssessmentResultByCourse, useAssessmentResultsScores } from '@/servi
 import { delay } from '@/utils/tools'
 import { FiX } from 'react-icons/fi'
 
-export default function AssessmentsResultCard () {
+export default function AssessmentsResultCard ({ questionGroups }: { questionGroups: QuestionGroupsInterface[] }) {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [size, setSize] = useState("xs")
   const [selectedAssessment, setSelectedAssessment] = useState<string | null>(null)
@@ -45,7 +45,7 @@ export default function AssessmentsResultCard () {
 
           <DrawerBody>
             <div className='w-full h-[90vh] flex gap-5'>
-              <div className={`${size === "xs" ? "w-full" : "w-80"}`}>
+              <div className={`${size === "xs" ? "w-full" : "w-80"} flex flex-col gap-4`}>
                 {assessmentReport.assessment.map((assessment, index) => <div onClick={() => {
                   setSize("xl")
                   delay(200).then(() => setSelectedAssessment(assessment._id))
@@ -79,7 +79,7 @@ export default function AssessmentsResultCard () {
                         </div>
                         {assessmentScores?.assessments.map((student) => <div className='min-h-14 gap-5 flex items-center border cursor-pointer hover:bg-[#0D1F23] hover:text-white p-2'>
                           <div className='w-2/3'>{student.studentDetails.firstName} {student.studentDetails.otherNames}</div>
-                          <div>{student.score}</div>
+                          <div>{student.score}/{questionGroups.find(e => e._id === selectedAssessment)?.questions.length}</div>
                         </div>)}
                       </> : <>No submissions found for this assessment</>}
                     </div>}

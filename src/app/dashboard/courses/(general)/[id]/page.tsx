@@ -432,7 +432,8 @@ export default function page ({ params }: { params: { id: string } }) {
           <div className={`px-4 w-full grid grid-cols-3 gap-3 ${sidebarOpen ? 'md:grid-cols-5' : 'md:grid-cols-6'}`} >
             {/* @ts-ignore */}
             {fields.map(({ field, title, description, unit }) => (<StatsCard description={description} latestTrend={{ value: trends[field] ? trends[field].current : 0, date: "" }} title={title} trends={trends[field] ? trends[field].trends : []} unit={unit} value={unit !== "" ? (stats[field] || 0).toFixed(1) : stats[field] || 0} key={field} />))}
-            <AssessmentsResultCard />
+            {/* @ts-ignore */}
+            <AssessmentsResultCard questionGroups={courseDetails && courseDetails.data ? courseDetails.data.contents.filter(e => e.assessment !== null && typeof e.assessment !== 'string').map(e => e.assessment) : []} />
           </div>
 
           <div className='px-4'>
