@@ -67,7 +67,7 @@ export default function LoginHome () {
 
   useEffect(() => {
     let host = location.hostname
-    host = host.replace('app.', '').replace('staging-app.', '')
+    host = host.replace('app.', '').replace('staging-app.', '').replace('www', '')
     let parts = host.split('.')
     parts.pop()
     parts.pop()
