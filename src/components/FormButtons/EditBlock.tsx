@@ -17,6 +17,7 @@ import { convertToWhatsAppString, stripHtmlTags } from '@/utils/string-formatter
 import mime from "mime-types"
 import { OptionButtons } from '@/type-definitions/course.mgt'
 import InfoPopover from '../Dashboard/InfoPopover'
+import { queryClient } from '@/utils/react-query'
 
 
 
@@ -95,7 +96,6 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
           quizId = data.id
         }
       }
-      debugger
       await updateLessonBlock({
         blockId: block.id, update: {
           title: values.title,
@@ -103,6 +103,9 @@ export default function EditBlockForm ({ refetch, block, lessonId }: { block: Bl
           bodyMedia: values.bodyMedia,
           quiz: values.allowQuiz ? quizId : undefined
         }
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['lesson', { lessonId, courseId: block.course }],
       })
       toast({
         description: "Section has been updated",

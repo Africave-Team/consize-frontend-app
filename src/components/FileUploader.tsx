@@ -3,7 +3,7 @@ import { FileTypes } from '@/type-definitions/utils'
 import { Spinner, useToast } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Accept, useDropzone } from 'react-dropzone'
-import { FiUploadCloud } from 'react-icons/fi'
+import { FiTrash2, FiUploadCloud } from 'react-icons/fi'
 import mime from "mime-types"
 import { MediaType } from '@/type-definitions/secure.courses'
 
@@ -134,7 +134,7 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
   })
   return (
     <div className='flex flex-col w-full h-full'>
-      <div className='flex justify-between items-center h-full'>
+      <div className='flex justify-between items-center h-full mb-4'>
         <div className='w-full h-full'>
           {!droppable ? <div className='flex gap-1 w-full items-center border rounded-lg'>
             <button onClick={handleClick} type='button' className='text-sm h-10 min-w-24 px-5 text-white bg-[#0D1F23] rounded-lg flex items-center justify-center gap-1'>Select file
@@ -167,6 +167,13 @@ export default function FileUploader ({ droppable, mimeTypes, previewable, origi
         </div>
       </div>
       {(!Array.isArray(originalUrl) && originalUrl.length > 0 && originalUrl.startsWith('https')) && previewable ? <>
+        <div className='flex justify-end'>
+          <button onClick={() => {
+            onUploadComplete("")
+          }} className='border h-10 w-10 rounded-md flex justify-center items-center'>
+            <FiTrash2 />
+          </button>
+        </div>
         <div className='rounded-lg w-full border mt-2'>
           {
             fileType.includes(MediaType.IMAGE) && <img src={originalUrl} className='h-full w-full rounded-md' />

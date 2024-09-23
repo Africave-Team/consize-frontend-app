@@ -20,7 +20,7 @@ export default function NewAssessmentForm ({ courseId, close }: { courseId: stri
     validateOnMount: true,
     validateOnChange: true,
     initialValues: {
-      message: "",
+      message: "Before we dive into the course, let’s take a quick assessment to gauge your current understanding of the subject matter 🧠. Don't worry, this assessment won't affect your final grade but will help us understand how much you’ve learned by the end of the course",
       title: ""
     },
     onSubmit: async function (values) {
