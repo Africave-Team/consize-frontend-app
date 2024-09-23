@@ -95,7 +95,7 @@ export default function IntegrationSettings () {
       const FB: Facebook | undefined = (window as WindowWithFB).FB // Type cast for FB object
       if (FB) {
         FB.init({
-          appId: '1057351731954710',
+          appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "",
           autoLogAppEvents: true,
           xfbml: true,
           version: 'v19.0',
