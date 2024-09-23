@@ -95,7 +95,7 @@ export default function IntegrationSettings () {
       const FB: Facebook | undefined = (window as WindowWithFB).FB // Type cast for FB object
       if (FB) {
         FB.init({
-          appId: '1057351731954710',
+          appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "",
           autoLogAppEvents: true,
           xfbml: true,
           version: 'v19.0',
@@ -118,7 +118,7 @@ export default function IntegrationSettings () {
               }
             },
             {
-              config_id: '1102240047637820', // configuration ID from previous step
+              config_id: process.env.NEXT_PUBLIC_FACEBOOK_CONFIGURATION_ID || '1102240047637820', // configuration ID from previous step
               response_type: 'code', // must be set to 'code' for System User access token
               "override_default_response_type": true, // when true, any response types passed in the "response_type" will take precedence over the default types
               "extras": {
