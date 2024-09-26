@@ -29,6 +29,18 @@ export default function CompanyCard ({ team }: { team: TeamWithOwner }) {
     }
   })
 
+  const handleGodMode = async function () {
+    const result = await adminCompanyServices.companyGodMode({
+      teamId: team.id
+    })
+    const width = window.screen.width
+    const height = window.screen.height
+    if (result && result.tokens && result.tokens.access.token && result.tokens.refresh.token) {
+      window.open(`${location.protocol}//${location.hostname}/auth/god-mode?accessToken=${result.tokens.access.token}&refreshToken=${result.tokens.refresh.token}`, '_blank', `width=${width},height=${height},left=0,top=0`)
+    }
+
+  }
+
   const profileFormik = useFormik({
     initialValues: {
       name: "",
@@ -99,6 +111,7 @@ export default function CompanyCard ({ team }: { team: TeamWithOwner }) {
               <div className='font-semibold text-xl pl-8 mb-3 text-primary-dark'>Settings</div>
               <div className='flex flex-col mt-3 gap-2'>
                 {menuItems.map(e => <div onClick={() => setActiveTab(e.value)} key={e.value} className={`h-12 pl-8 flex items-center rounded-lg cursor-pointer ${activeTab === e.value ? "font-semibold text-white text-[15px] bg-primary-dark" : 'text-black bg-transparent hover:text-white hover:bg-primary-dark/90'}`}>{e.title}</div>)}
+                <div onClick={() => handleGodMode()} className={`h-12 pl-8 flex items-center rounded-lg cursor-pointer text-black bg-transparent hover:text-white hover:bg-primary-dark/90`}>View in God-mode</div>
               </div>
             </div>
             <div className='w-3/4 h-full px-5'>

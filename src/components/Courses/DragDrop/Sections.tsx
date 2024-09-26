@@ -54,7 +54,7 @@ export default function LessonSections ({ lesson }: { lesson: Lesson }) {
   }, [lesson])
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId={lesson.id || lesson._id || ""}>
+      <Droppable droppableId={lesson.id || lesson._id || `droppable_${new Date().getTime()}`}>
         {(droppableProvided) => (
           <form className='px-1 min-h-10' ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
             <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>

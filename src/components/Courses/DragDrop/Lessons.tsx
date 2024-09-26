@@ -78,10 +78,9 @@ export default function CourseLessons ({ value }: { value: Course }) {
             <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
 
               {form.values.contents.map(({ lesson, assessment }, index) => {
-
-                if (lesson && typeof lesson !== "string") {
-                  return <div key={lesson.id}>
-                    <Draggable index={index} draggableId={lesson.id}>
+                return <div key={`content_${index}`}>
+                  {lesson && typeof lesson !== "string" && <>
+                    <Draggable index={index} draggableId={lesson.id || lesson._id || `lesson_content_${index}`}>
                       {(draggableProvided) => (
                         <div ref={draggableProvided.innerRef} className='cursor-pointer items-center flex justify-between' {...draggableProvided.draggableProps}>
 
@@ -113,46 +112,43 @@ export default function CourseLessons ({ value }: { value: Course }) {
                         </div>
                       )}
                     </Draggable>
-                  </div>
-                }
+                  </>}
 
-                if (assessment && typeof assessment !== "string") {
-                  return <div className='w-full' key={assessment.id || assessment._id || index}>
-                    <Draggable index={index} draggableId={assessment.id || assessment._id || index + ''}>
-                      {(draggableProvided) => (
-                        <div ref={draggableProvided.innerRef} {...draggableProvided.dragHandleProps} className='cursor-pointer bg-white items-center w-full flex justify-between' {...draggableProvided.draggableProps}>
-                          <Accordion defaultIndex={[0]} className='mt-3 space-y-3 w-full' allowMultiple>
-                            <AccordionItem className='rounded-md border-none'>
-                              <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
-                                <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
-                                  <div className='flex gap-2 items-start'>
-                                    <span {...draggableProvided.dragHandleProps}>
-                                      <PiDotsSixVerticalBold className='cursor-move' />
-                                    </span>
-                                    <div className='text-sm text-black font-semibold'>
-                                      {assessment.title} ({(assessment.questions || []).length} questions)
-                                    </div>
+                  {assessment && typeof assessment !== "string" && <Draggable index={index} draggableId={assessment.id || assessment._id || index + ''}>
+                    {(draggableProvided) => (
+                      <div ref={draggableProvided.innerRef} {...draggableProvided.dragHandleProps} className='cursor-pointer bg-white items-center w-full flex justify-between' {...draggableProvided.draggableProps}>
+                        <Accordion defaultIndex={[0]} className='mt-3 space-y-3 w-full' allowMultiple>
+                          <AccordionItem className='rounded-md border-none'>
+                            <div className='flex justify-between items-center rounded-lg h-10 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
+                              <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
+                                <div className='flex gap-2 items-start'>
+                                  <span {...draggableProvided.dragHandleProps}>
+                                    <PiDotsSixVerticalBold className='cursor-move' />
+                                  </span>
+                                  <div className='text-sm text-black font-semibold'>
+                                    {assessment.title} ({(assessment.questions || []).length} questions)
                                   </div>
-                                </AccordionButton>
-                                <div className='flex items-center gap-2 h-full'>
-                                  <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
-                                    <AccordionIcon />
-                                  </AccordionButton>
                                 </div>
+                              </AccordionButton>
+                              <div className='flex items-center gap-2 h-full'>
+                                <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                                  <AccordionIcon />
+                                </AccordionButton>
                               </div>
-                              <AccordionPanel pb={4}>
-                                {(assessment.questions || []).length === 0 && <div className='h-10 flex justify-center text-sm items-center'>
-                                  No questions have been added to this assessment
-                                </div>}
-                                {assessment && (assessment.questions || []).length > 0 && <DraggableAssessmentQuestionCards assessmentId={assessment._id || ""} courseId={value._id || ""} value={assessment} />}
-                              </AccordionPanel>
-                            </AccordionItem>
-                          </Accordion>
-                        </div>
-                      )}
-                    </Draggable>
-                  </div>
-                }
+                            </div>
+                            <AccordionPanel pb={4}>
+                              {(assessment.questions || []).length === 0 && <div className='h-10 flex justify-center text-sm items-center'>
+                                No questions have been added to this assessment
+                              </div>}
+                              {assessment && (assessment.questions || []).length > 0 && <DraggableAssessmentQuestionCards assessmentId={assessment._id || ""} courseId={value._id || ""} value={assessment} />}
+                            </AccordionPanel>
+                          </AccordionItem>
+                        </Accordion>
+                      </div>
+                    )}
+                  </Draggable>}
+
+                </div>
               })}
             </Accordion>
             {droppableProvided.placeholder}
