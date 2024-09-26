@@ -3,13 +3,8 @@ import Layout from '@/layouts/PageTransition'
 import { useNavigationStore } from '@/store/navigation.store'
 import React, { useEffect, useState } from 'react'
 import KippaLogo from '@/components/Logo'
-import { useFormik } from 'formik'
-import { useRouter } from 'next/navigation'
-import { useCallbackStore } from '@/store/callbacks.store'
-import { slackTokenExchange, slackTokenExchangeWithToken } from '@/services/slack.services'
-import { Spinner, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { useAuthStore } from '@/store/auth.store'
-import { FaCheck } from 'react-icons/fa6'
 import { getProfile } from '@/services/user.service'
 import moment from 'moment'
 import { fetchMyTeamInfo } from '@/services/teams'
@@ -76,7 +71,7 @@ export default function page (data: any) {
       <section id="box" className="bg-gray-100">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
-            <Link href="/dashboard" id="dashboard" />
+            <Link href="/dashboard/courses" id="dashboard" />
             <div className='flex justify-center pt-10'>
               <div>
                 <a

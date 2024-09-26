@@ -54,7 +54,7 @@ export default function AssessmentsResultCard ({ questionGroups }: { questionGro
                     <div className='font-semibold text-lg'>{assessment.title}</div>
                     <div className='flex text-xs gap-10'>
                       <div>{assessment.totalSubmissions} submissions</div>
-                      <div>Average score is {assessment.averageScore}</div>
+                      <div>Average score is {assessment.averageScore.toFixed(0)}</div>
                     </div>
                   </div>
                 </div>)}
