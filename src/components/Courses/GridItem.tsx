@@ -39,7 +39,7 @@ export default function GridItem ({ course, studentId }: { course: Course, stude
     <div className='min-h-56 pb-5 border-2 cursor-pointer rounded-lg hover:border-[#0D1F23]'>
       <div className='h-40 mb-2 bg-black w-full rounded-t-lg relative'>
         {course.headerMedia && course.headerMedia.url && <Link href={!studentId ? `/dashboard/courses/${course.id}` : `/dashboard/courses/${course.id}/enrollments/${studentId}`}>
-          <img src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute course-image rounded-t-lg' alt="" />
+          <img src={course.headerMedia.url} className='h-full w-full top-0 left-0 absolute object-cover course-image rounded-t-lg' alt="" />
         </Link>}
         {!studentId && <div className='absolute top-0 right-0 h-14 min-w-20 flex items-center'>
           {!course.bundle ? <FiBookOpen className='text-lg text-white' /> :
