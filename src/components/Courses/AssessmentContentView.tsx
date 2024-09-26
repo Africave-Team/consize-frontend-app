@@ -101,7 +101,7 @@ export default function AssessmentContentView ({ assessmentId, courseId }: { ass
           {assessmentDetails && assessmentDetails.data && <div className='h-screen flex gap-3'>
             <div className='h-screen w-3/5 overflow-y-scroll' >
               <div className='mt-4 font-semibold text-lg'>Assessment</div>
-              <div className='h-12 w-full border text-sm group font-semibold rounded-lg mt-1 pl-4 pr-2 flex items-center justify-between'>
+              <div className='min-h-12 w-full border text-sm group font-semibold rounded-lg mt-1 pl-4 pr-2 flex items-center justify-between'>
                 <Editable onSubmit={handleEditTitle} defaultValue={assessmentDetails.data.title} className='flex flex-1 justify-between'>
                   <div className='flex items-center flex-1'>
                     <EditablePreview />
@@ -112,7 +112,7 @@ export default function AssessmentContentView ({ assessmentId, courseId }: { ass
                   </div>
                 </Editable>
               </div>
-              <div className='h-12 w-full border text-sm group font-semibold rounded-lg mt-3 pl-4 pr-2 flex items-center justify-between'>
+              <div className='min-h-12 w-full border text-sm group font-semibold rounded-lg mt-3 pl-4 pr-2 flex items-center justify-between'>
                 <Editable onSubmit={handleEditMessage} defaultValue={stripHtmlTags(he.decode(assessmentDetails.data.message || ""))} className='flex flex-1 justify-between'>
                   <div className='flex items-center flex-1'>
                     <EditablePreview />
