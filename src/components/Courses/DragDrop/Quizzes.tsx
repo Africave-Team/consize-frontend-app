@@ -53,7 +53,7 @@ export default function LessonQuestions ({ lesson }: { lesson: Lesson }) {
   }, [lesson])
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId={lesson.id}>
+      <Droppable droppableId={lesson.id || lesson._id || `lesson_content_droppable_${new Date().getTime()}`}>
         {(droppableProvided) => (
           <form className='px-1 min-h-10' ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
             <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
@@ -88,8 +88,9 @@ export default function LessonQuestions ({ lesson }: { lesson: Lesson }) {
                             <div dangerouslySetInnerHTML={{ __html: he.decode(block.question) }} />
                           </div>}
                           <div className='mt-3 font-semibold text-sm'>Correct Answer:</div>
-                          {block.correctAnswerIndex && <div className='flex gap-2'>
-                            ({["A", "B", "C"][block.correctAnswerIndex]})<div dangerouslySetInnerHTML={{ __html: he.decode(block.choices[block.correctAnswerIndex]) }} />
+                          {block.correctAnswerIndex && ["A", "B", "C"][block.correctAnswerIndex] && <div className='flex gap-2'>
+                            ({["A", "B", "C"][block.correctAnswerIndex]})
+                            <div dangerouslySetInnerHTML={{ __html: he.decode(block.choices[block.correctAnswerIndex]) }} />
                           </div>}
                         </AccordionPanel>
                       </AccordionItem>

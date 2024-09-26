@@ -71,9 +71,9 @@ export default function DraggableAssessmentQuestionCards ({ value, assessmentId,
             <Accordion className='flex flex-col gap-3 w-full' defaultIndex={[0]} allowMultiple>
 
               {form.values.questions.map((quiz, index) => {
-                if (typeof quiz === "string") return null
-                return <div className='w-full' key={quiz.id || quiz._id || ""}>
-                  <Draggable index={index} draggableId={quiz.id || quiz._id || ""}>
+                if (typeof quiz === "string") return <div key={`quiz_content_${index}`}></div>
+                return <div className='w-full' key={quiz.id || quiz._id || `quiz_content_${index}`}>
+                  <Draggable index={index} draggableId={quiz.id || quiz._id || `quiz_content_${index}`}>
                     {(draggableProvided) => (
                       <div ref={draggableProvided.innerRef} className='cursor-pointer bg-white items-center w-full flex justify-between' {...draggableProvided.draggableProps}>
                         <AccordionItem key={quiz.id} className='rounded-md w-full border'>
