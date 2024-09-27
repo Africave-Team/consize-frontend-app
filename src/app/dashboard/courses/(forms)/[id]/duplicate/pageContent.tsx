@@ -66,6 +66,7 @@ export default function DuplicateCoursePage ({ courseId }: { courseId: string })
         duration: 2000,
         isClosable: true,
       })
+      debugger
       let path = `/dashboard/courses/${data.id}/builder/outline`
       if (courseDetails?.data.bundle) {
         path = `/dashboard/courses/${data.id}/builder/publish`
