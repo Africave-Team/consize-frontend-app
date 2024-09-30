@@ -5,8 +5,8 @@ import { useFormik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 enum DropoutEvents {
-  LESSON_COMPLETION_DATE = "LESSON_COMPLETION_DATE",
-  INACTIVITY = "INACTIVITY"
+  LESSON_COMPLETION = "lesson completion date",
+  INACTIVITY = "inactivity"
 }
 
 
