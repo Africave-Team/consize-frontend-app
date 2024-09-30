@@ -269,7 +269,7 @@ export default function Reminders ({ settings: { id, reminderDuration, reminderS
 
         <div className='w-1/2'>
           <Select name="dropoutEvent" onChange={form.handleChange} value={form.values.dropoutEvent}>
-            <option value={DropoutEvents.LESSON_COMPLETION_DATE}>After lesson completion date</option>
+            <option value={DropoutEvents.LESSON_COMPLETION}>After lesson completion date</option>
             <option value={DropoutEvents.INACTIVITY}>Of total inactivity</option>
           </Select>
         </div>
