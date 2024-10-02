@@ -278,7 +278,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                               </> : <>
                                 <div>
                                   <label className='font-semibold text-sm' htmlFor="">Choices</label>
-                                  <div className='text-sm'>A: Yes</div>
+                                  <div className='text-sm'>A: Yes 00000</div>
                                   <div className='text-sm'>B: No</div>
                                 </div>
                                 <div>
@@ -358,7 +358,7 @@ const CustomTinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ aiOptionButtons = [
                               </> : <>
                                 <div>
                                   <label className='font-semibold text-sm' htmlFor="">Choices</label>
-                                  <div className='text-sm'>A: Yes</div>
+                                  <div className='text-sm'>A: Yes oooo</div>
                                   <div className='text-sm'>B: No</div>
                                 </div>
                                 <div>

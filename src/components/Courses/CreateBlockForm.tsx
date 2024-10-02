@@ -193,7 +193,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
   const acceptQuiz = function (quiz: QuizUnformed) {
     form.setFieldValue("quiz.question", quiz.question)
     form.setFieldValue("quiz.choices", quiz.options)
-    form.setFieldValue("quiz.correctAnswer", quiz.correct_answer)
+    form.setFieldValue("quiz.correctAnswer", quiz.correct_answer.toLowerCase())
     form.setFieldValue("quiz.correctAnswerContext", quiz.explanation)
     form.setFieldValue("quiz.wrongAnswerContext", quiz.explanation)
     setImprovementQuizOpen(false)
@@ -253,7 +253,7 @@ export default function NewBlockForm ({ courseId, close }: { courseId: string, c
             {form.values.allowQuiz && <>
               <div>
                 <label htmlFor="description">Question *</label>
-                <CustomTinyMCEEditor improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
+                <CustomTinyMCEEditor isFollowup={true} improvement={improvementQuizOpen} closeImprovement={() => setImprovementQuizOpen(false)} onAIQueryButtonClick={handleAIButton} field='content' maxLength={150} onChange={(value) => {
                   form.setFieldValue("quiz.question", value)
                 }} aiProgress={aiProgress} acceptQuiz={acceptQuiz} quiz={improvedQuiz} placeholder='Enter the follow-up question for this section here' value={form.values.quiz.question} aiOptionButtons={[OptionButtons.SUGGESTQUIZ, OptionButtons.IMPROVEQUIZ]} />
               </div>
