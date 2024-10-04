@@ -1,4 +1,4 @@
-import { Rubik, Outfit, Poppins, Inter, Fira_Code } from 'next/font/google'
+import { Rubik, Outfit, Poppins, Inter, Fira_Code, Montserrat } from 'next/font/google'
 import localFont from 'next/font/local'
 
 const rubik = Rubik({
@@ -18,6 +18,9 @@ const outfit = Outfit({
 const fira = Fira_Code({
   subsets: ['latin']
 })
+const montserrat = Montserrat({
+  subsets: ['latin']
+})
 
 const poppins = Poppins({
   weight: "500",
@@ -34,5 +37,6 @@ export const fonts = {
   inter,
   fira,
   brandFont,
-  brandFont2
+  brandFont2,
+  montserrat
 }

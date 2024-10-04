@@ -11,6 +11,8 @@ const cloisterFont = localFont({ src: './CloisterBlack.ttf' })
 const culpa = localFont({ src: './helvetica.ttf' })
 const antique = localFont({ src: './antique.ttf' })
 const sequel = localFont({ src: './sequel.ttf' })
+const theseasons = localFont({ src: './theseasons-reg.otf' })
+const sloop = localFont({ src: './Sloop-ScriptThree.ttf' })
 
 interface DataInterface {
   studentName: string
@@ -112,73 +114,68 @@ export default function PageContents ({ details }: { details: DataInterface }) {
     } else if (company.includes("fate")) {
       return (
         <>
-          <div className='template h-[610px] overflow-y-hidden'>
+          <div className={`${fonts.montserrat.className} template h-[710px] overflow-y-hidden`}>
             <div className="relative">
-              <div className='absolute top-0 left-0 h-[610px] w-full border'>
-                <div className='flex justify-between'>
-
-                </div>
+              <div className='absolute top-0 left-0 h-[710px] w-full border'>
+                <img src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728045234124.32" alt="" className='h-full w-full' />
               </div>
+
               <div className='absolute top-0 left-0 h-full w-full py-20'>
 
-                <div className='w-full flex flex-col mt-8 mb-8 justify-center'>
-                  <div className={`uppercase text-2xl tracking-widest text-[#0095FA] ${culpa.className}`}>Certificate of </div>
-                  <div className={`text-8xl tracking-wide font-extrabold ${cloisterFont.className} text-[#003399]`}>Completion</div>
+                <div className='w-full flex flex-col mt-2 mb-8 justify-center'>
+                  <div className={`uppercase text-4xl font-semibold tracking-widest text-primary-dark ${theseasons.className}`}><span className={`uppercase text-7xl font-semibold -mr-1 ${sloop.className}`}>C</span>ertificate </div>
+                  <div className={`text-xl uppercase ml-7 tracking-wide font-semibold ${theseasons.className} -mt-3 text-primary-dark`}>of Completion</div>
                 </div>
 
-                <div className={`mt-8 text-center font-medium text-[#F44336] uppercase ${antique.className}`}>
-                  Presented to
+                <div className={`mt-8 text-center font-medium text-lg text-primary-dark`}>
+                  This certificate is awarded to
                 </div>
 
-                <div className='w-full flex justify-center mt-5'>
-                  <div className={`min-w-3/5 px-5 tracking-wider border-b-2 border-b-black font-extrabold text-4xl uppercase ${sequel.className}`}>
+                <div className='w-full flex justify-center mt-2'>
+                  <div className={`min-w-6/12 px-20 tracking-wider border-b-2 border-b-black font-extrabold text-3xl capitalize`}>
                     {details.studentName}
                   </div>
                 </div>
 
                 <div className={``}>
-                  <div className='text-center text-[#003399] font-semibold text-lg mt-1'>
-                    In completion of the WAVE&apos;S skills training program with mandatory courses
+                  <div className='text-center text-primary-dark font-medium text-lg mt-2'>
+                    upon the completion of the self-paced course
                   </div>
-                  <div className='min-h-14 text-[#003399] w-full flex justify-center'>
-                    <div className='w-3/5 px-3 text-base'>
-                      in {details.courseName}
+                  <div className='text-primary-dark w-full flex justify-center mt-2'>
+                    <div className='min-w-3/5 px-3 font-extrabold text-3xl uppercase'>
+                      {details.courseName} absolutely end of the
                     </div>
                   </div>
-                </div>
-                <div className='w-full flex justify-center mt-0'>
-                  <div className='min-w-60 h-10'>
-                    <div className={`w-full mb-2 text-center uppercase font-medium text-[#F44336] ${antique.className}`}>
-                      Dated this
-                    </div>
-                    <div className={`border-b-2 border-b-black pb-1 uppercase text-xl font-extrabold ${culpa.className}`}>
-                      {moment().format('Do MMMM, YYYY')}
-                    </div>
-                    <div className={`font-bold text-lg text-[#003399] ${myFont.className}`}>
-                      www.waveacademies.org
-                    </div>
+                  <div className='text-center text-primary-dark font-medium text-lg mt-1'>
+                    given on this day {moment().format('Do MMMM, YYYY')}.
                   </div>
                 </div>
 
-                <div className='w-full mt-8 flex justify-center gap-20'>
-                  <div className='w-1/3 flex'>
-                    <div className='w-2/3'>
-                      <div className={`border-b py-1 text-base uppercase border-b-black border-dashed`}>
-                        {details.signatory1}
-                      </div>
-                      <div className='text-[#003399]'>Executive Secretary</div>
+                <div className='w-full flex mt-16 gap-8 justify-center'>
+                  <div className='w-1/5 flex justify-center items-center flex-col'>
+                    <div className={`border-b py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
+                      <img src={details.signature1} className='h-16 w-28' alt="signature 1" />
                     </div>
+                    <div className='text-primary-dark mt-3 text-base uppercase font-bold'>{details.signatory1}</div>
+                    <div className='text-sm'>Dean & Director</div>
+                    <div className='text-sm'>The FATE School</div>
                   </div>
-                  <div className='w-1/3 flex justify-end'>
-                    <div className='w-2/3'>
-                      <div className={`border-b py-1 text-base uppercase border-b-black border-dashed`}>
-                        {details.signatory2}
-                      </div>
-                      <div className='text-[#003399]'>Director</div>
+                  <div className='w-1/6 flex justify-center items-center'>
+                    <img src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728045526319.35" className='h-36' alt="" />
+                  </div>
+                  <div className='w-1/5 flex justify-center flex-col items-center'>
+                    <div className={`border-b py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
+                      <img src={details.signature2} className='h-16 w-28' alt="signature 2" />
                     </div>
-
+                    <div className='text-primary-dark mt-3 text-base uppercase font-bold'>{details.signatory2}</div>
+                    <div className='text-sm'>Executive Director</div>
+                    <div className='text-sm'>FATE Foundation</div>
                   </div>
                 </div>
+              </div>
+              <div className='absolute top-0 left-0 w-full h-40 flex justify-between pt-10 px-10'>
+                <img className='h-16' src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728047978762.19" alt="" />
+                <img className='h-16' src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728048011007.19" alt="" />
               </div>
             </div>
           </div>
