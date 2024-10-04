@@ -143,7 +143,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                   </div>
                   <div className='text-primary-dark w-full flex justify-center mt-2'>
                     <div className='min-w-3/5 px-3 font-extrabold text-3xl uppercase'>
-                      {details.courseName} absolutely end of the
+                      {details.courseName}
                     </div>
                   </div>
                   <div className='text-center text-primary-dark font-medium text-lg mt-1'>
