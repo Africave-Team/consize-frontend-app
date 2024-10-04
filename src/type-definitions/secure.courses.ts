@@ -144,6 +144,7 @@ export interface Course {
   currentCohort?: string
   audiences?: string
   survey?: string
+  team?: Team
 }
 
 export interface PublicCourse {

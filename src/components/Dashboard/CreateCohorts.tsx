@@ -383,7 +383,7 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
                 <Input type="text" className="bg-gray-200 text-gray-600 !opacity-90 cursor-not-allowed px-2 py-1 border rounded-md overflow-y-auto w-11/12" disabled value={`${location.origin}/courses/${isBundle ? `bundles/` : ''}${course.id}?cohort=${selectedCohort.id}`} id="link-content" />
                 <CopyToClipboardButton targetSelector='#link-content' />
               </div>
-              {showTeamQR && team && selectedCohort && <CourseQRCode cohort={selectedCohort?.shortCode || ""} shortCode={course.shortCode} courseName={course.title} teamName={team.name} />}
+              {showTeamQR && team && selectedCohort && <CourseQRCode phoneNumber={(course.team?.facebookData?.phoneNumber ? course.team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""} cohort={selectedCohort?.shortCode || ""} shortCode={course.shortCode} courseName={course.title} teamName={team.name} />}
             </>}
           </>}
 

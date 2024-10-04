@@ -11,6 +11,7 @@ import { isMobile } from 'react-device-detect'
 import { RiWhatsappLine } from 'react-icons/ri'
 import { testCourseWhatsapp } from '@/services/secure.courses.service'
 import { EnrollmentField } from '@/type-definitions/secure.courses'
+import { Team } from '@/type-definitions/auth'
 
 const phoneRegExp = /^\+[1-9]\d{1,14}$/
 const validatePhoneVerification = Yup.object({
@@ -92,7 +93,7 @@ const generateValidationSchema = (fields: EnrollmentField[]) => {
   return Yup.object().shape(validationObject)
 }
 
-export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[], cohortId?: string }) {
+export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[], cohortId?: string, team?: Team }) {
   const [enrolled, setEnrolled] = useState(false)
   const toast = useToast()
   const verifyPhoneForm = useFormik({
@@ -357,6 +358,8 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
     delete additionFieldsValidation[key]
   })
 
+  const phoneNumber = (params.team?.facebookData?.phoneNumber ? params.team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""
+
 
   return (
     <div className='mt-4'>
@@ -461,7 +464,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
           </div>
           <div className='w-full mt-2 text-center'>
             {isMobileScreen ? <div className='w-full text-center'>
-              <a href={`https://wa.me/+${process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER}`} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
+              <a href={`https://wa.me/+${phoneNumber}`} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
                 <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
                 Continue in WhatsApp</a>
             </div> : <p className='text-sm'>

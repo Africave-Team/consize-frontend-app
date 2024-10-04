@@ -109,6 +109,81 @@ export default function PageContents ({ details }: { details: DataInterface }) {
           </div>
         </>
       )
+    } else if (company.includes("fate")) {
+      return (
+        <>
+          <div className='template h-[610px] overflow-y-hidden'>
+            <div className="relative">
+              <div className='absolute top-0 left-0 h-[610px] w-full border'>
+                <div className='flex justify-between'>
+
+                </div>
+              </div>
+              <div className='absolute top-0 left-0 h-full w-full py-20'>
+
+                <div className='w-full flex flex-col mt-8 mb-8 justify-center'>
+                  <div className={`uppercase text-2xl tracking-widest text-[#0095FA] ${culpa.className}`}>Certificate of </div>
+                  <div className={`text-8xl tracking-wide font-extrabold ${cloisterFont.className} text-[#003399]`}>Completion</div>
+                </div>
+
+                <div className={`mt-8 text-center font-medium text-[#F44336] uppercase ${antique.className}`}>
+                  Presented to
+                </div>
+
+                <div className='w-full flex justify-center mt-5'>
+                  <div className={`min-w-3/5 px-5 tracking-wider border-b-2 border-b-black font-extrabold text-4xl uppercase ${sequel.className}`}>
+                    {details.studentName}
+                  </div>
+                </div>
+
+                <div className={``}>
+                  <div className='text-center text-[#003399] font-semibold text-lg mt-1'>
+                    In completion of the WAVE&apos;S skills training program with mandatory courses
+                  </div>
+                  <div className='min-h-14 text-[#003399] w-full flex justify-center'>
+                    <div className='w-3/5 px-3 text-base'>
+                      in {details.courseName}
+                    </div>
+                  </div>
+                </div>
+                <div className='w-full flex justify-center mt-0'>
+                  <div className='min-w-60 h-10'>
+                    <div className={`w-full mb-2 text-center uppercase font-medium text-[#F44336] ${antique.className}`}>
+                      Dated this
+                    </div>
+                    <div className={`border-b-2 border-b-black pb-1 uppercase text-xl font-extrabold ${culpa.className}`}>
+                      {moment().format('Do MMMM, YYYY')}
+                    </div>
+                    <div className={`font-bold text-lg text-[#003399] ${myFont.className}`}>
+                      www.waveacademies.org
+                    </div>
+                  </div>
+                </div>
+
+                <div className='w-full mt-8 flex justify-center gap-20'>
+                  <div className='w-1/3 flex'>
+                    <div className='w-2/3'>
+                      <div className={`border-b py-1 text-base uppercase border-b-black border-dashed`}>
+                        {details.signatory1}
+                      </div>
+                      <div className='text-[#003399]'>Executive Secretary</div>
+                    </div>
+                  </div>
+                  <div className='w-1/3 flex justify-end'>
+                    <div className='w-2/3'>
+                      <div className={`border-b py-1 text-base uppercase border-b-black border-dashed`}>
+                        {details.signatory2}
+                      </div>
+                      <div className='text-[#003399]'>Director</div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )
     } else if (company.includes('consize')) {
       return (
         <div className="template h-[700px] w-full relative">
