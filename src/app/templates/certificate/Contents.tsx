@@ -153,7 +153,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
 
                 <div className='w-full flex mt-16 gap-8 justify-center'>
                   <div className='w-1/5 flex justify-center items-center flex-col'>
-                    <div className={`border-b py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
+                    <div className={`border-b-2 py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
                       <img src={details.signature1} className='h-16 w-28' alt="signature 1" />
                     </div>
                     <div className='text-primary-dark mt-3 text-base uppercase font-bold'>{details.signatory1}</div>
@@ -164,7 +164,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
                     <img src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728045526319.35" className='h-36' alt="" />
                   </div>
                   <div className='w-1/5 flex justify-center flex-col items-center'>
-                    <div className={`border-b py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
+                    <div className={`border-b-2 py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
                       <img src={details.signature2} className='h-16 w-28' alt="signature 2" />
                     </div>
                     <div className='text-primary-dark mt-3 text-base uppercase font-bold'>{details.signatory2}</div>
