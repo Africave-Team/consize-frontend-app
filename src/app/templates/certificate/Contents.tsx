@@ -123,8 +123,8 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               <div className='absolute top-0 left-0 h-full w-full py-20'>
 
                 <div className='w-full flex flex-col mt-2 mb-8 justify-center'>
-                  <div className={`uppercase text-4xl font-semibold tracking-widest text-primary-dark ${theseasons.className}`}><span className={`uppercase text-7xl font-semibold -mr-1 ${sloop.className}`}>C</span>ertificate </div>
-                  <div className={`text-xl uppercase ml-7 tracking-wide font-semibold ${theseasons.className} -mt-3 text-primary-dark`}>of Completion</div>
+                  <div className={`uppercase text-[53.4px] font-semibold tracking-widest text-primary-dark ${theseasons.className}`}><span className={`uppercase text-8xl font-semibold -mr-2 ${sloop.className}`}>C</span>ertificate </div>
+                  <div className={`text-[25.5px] uppercase ml-7 tracking-wide font-semibold ${theseasons.className} -mt-5 text-primary-dark`}>of Completion</div>
                 </div>
 
                 <div className={`mt-8 text-center font-medium text-lg text-primary-dark`}>
