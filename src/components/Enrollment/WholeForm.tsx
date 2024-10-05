@@ -191,7 +191,8 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
           otherNames,
           phoneNumber: verifyPhoneForm.values.phoneNumber.replace('+', ''),
           tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          custom: custom
+          custom: custom,
+          teamId: params.team?.id || ""
         })
       } catch (error) {
         console.log(error)
@@ -228,7 +229,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
   })
 
   const registerMutation = useMutation({
-    mutationFn: (payload: { email: string, firstName: string, otherNames: string, phoneNumber: string, tz: string, custom: any }) => {
+    mutationFn: (payload: { email: string, firstName: string, otherNames: string, phoneNumber: string, tz: string, custom: any, teamId: string }) => {
       const { custom, ...rest } = payload
       return registerStudent(rest)
     },
