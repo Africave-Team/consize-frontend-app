@@ -164,7 +164,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
     validateOnChange: true,
     onSubmit: async function (values, { setFieldValue }) {
       try {
-        const result = await verifyWHatsappCode(values.code)
+        const result = await verifyWHatsappCode(values.code, params.team?.id || "")
         if (result && result.data) {
           const { id } = result.data
           enrollMutation.mutate({ userId: id, courseId: params.id, data: values.custom })

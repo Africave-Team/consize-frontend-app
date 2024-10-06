@@ -39,10 +39,10 @@ export const registerStudent = async (payload: { email: string, firstName: strin
     }
   })
 
-export const verifyWHatsappCode = async (code: string): Promise<any> =>
+export const verifyWHatsappCode = async (code: string, teamId: string): Promise<any> =>
   http.post({
     url: `students/otp`,
     body: {
-      code
+      code, teamId
     }
   })
