@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 import CourseResumption from '../Settings/CourseResumption'
+import TransitionMessages from './TransitionMessages'
 
 interface ApiResponse {
   data: Course
@@ -86,6 +87,7 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
           {menu.map((item) => (<button onClick={() => setCurrent(item.value)} key={item.value} className={`h-16 ${item.value === current ? 'bg-primary-dark text-white shadow-lg' : 'bg-white text-primary-dark'} flex items-center border px-3 gap-2 font-semibold`}>
             {item.title} <FiArrowRight />
           </button>))}
+          <TransitionMessages id={id} />
         </div>
         <div className='w-8/12 border p-5 rounded-lg min-h-[70vh] overflow-y-scroll'>
           {loadTabbedPage(courseDetails.data.settings, courseDetails.data)}

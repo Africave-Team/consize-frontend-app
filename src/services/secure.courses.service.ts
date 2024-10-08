@@ -56,6 +56,13 @@ export const fetchSingleCourse = async (course: string): Promise<any> =>
     url: `courses/${course}`
   })
 
+
+
+export const fetchCourseTransitionMessages = async (course: string): Promise<any> =>
+  http.get({
+    url: `courses/transition-messages/${course}`
+  })
+
 export const searchCourses = async (payload: { search: string, filter?: string }): Promise<any> =>
   http.get({
     url: `courses/search`,
