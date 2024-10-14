@@ -44,18 +44,18 @@ export default function DraggableLessonsQuizCards ({ value }: { value: LessonDat
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    let blocks = [...form.values.quizzes]
-    const item = blocks[source.index]
-    blocks.splice(source.index, 1)
-    blocks.splice(destination.index, 0, item)
-    form.setFieldValue("quizzes", blocks)
+    let quizzes = [...form.values.quizzes]
+    const item = quizzes[source.index]
+    quizzes.splice(source.index, 1)
+    quizzes.splice(destination.index, 0, item)
+    form.setFieldValue("quizzes", quizzes)
     let payload: UpdateLesson = {
       lessonId: value._id || value.id || "",
       courseId: value.course.id,
       lesson: {
         title: value.title,
         blocks: value.blocks.map(e => e._id || e.id || ""),
-        quizzes: blocks.map(e => e._id || e.id || ""),
+        quizzes: quizzes.map(e => e._id || e.id || ""),
       }
     }
 
@@ -82,7 +82,7 @@ export default function DraggableLessonsQuizCards ({ value }: { value: LessonDat
                   <Draggable index={index} draggableId={quiz.id || quiz._id || ""}>
                     {(draggableProvided) => (
                       <div ref={draggableProvided.innerRef} className='cursor-pointer bg-white items-center w-full flex justify-between' {...draggableProvided.draggableProps}>
-                        <AccordionItem key={quiz.id} className='rounded-md border'>
+                        <AccordionItem key={quiz.id} className='rounded-md border w-full'>
                           <div className='flex group'>
                             <AccordionButton className='hover:bg-white flex gap-2 items-center'>
                               <span {...draggableProvided.dragHandleProps}>
@@ -95,7 +95,7 @@ export default function DraggableLessonsQuizCards ({ value }: { value: LessonDat
                                 {/* <button className='hover:bg-gray-100 rounded-lg h-10 w-10 hidden group-hover:flex justify-center items-center text-base'>
                                 <FiEye />
                               </button> */}
-                                <EditQuizForm block={block.id} quiz={quiz} content={block.content} refetch={async () => {
+                                <EditQuizForm block={block?.id} quiz={quiz} content={block?.content} refetch={async () => {
 
                                 }} />
                                 <DeleteLessonQuizButton lessonId={value.id} quizId={quiz.id} refetch={async () => {
