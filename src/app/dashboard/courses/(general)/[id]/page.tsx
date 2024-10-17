@@ -172,7 +172,6 @@ export default function page ({ params }: { params: { id: string } }) {
 
   const generateCourseStats = function (students: RTDBStudent[], course: Course) {
     let copy = { ...stats }
-    let quizes = 0
     const scores = students.reduce((acc, curr) => {
       if (curr.lessons) {
         let lessonIds: string[] = course.lessons.map(((e: Lesson) => e.id))
@@ -188,8 +187,9 @@ export default function page ({ params }: { params: { id: string } }) {
           })
         }
 
-        if (sco) {
-          return acc + ((sco.reduce((a, b) => a + b, 0) / sco.length) * 100)
+        if (sco && sco?.length > 0) {
+          let sum = ((sco.reduce((a, b) => a + b, 0) / sco.length) * 100)
+          return acc + sum
         }
         return acc
       } else {
