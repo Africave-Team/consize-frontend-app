@@ -345,15 +345,19 @@ export default function page ({ params }: { params: { id: string } }) {
     if (team) {
       const projectStats = ref(database, 'course-statistics/' + team.id + '/' + params.id)
       const fetchData = async () => {
-        onValue(projectStats, async (snapshot) => {
-          const result: CourseStatistics | null = snapshot.val()
-          if (result) {
-            if (result.students) {
-              const students = Object.entries(result.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 })).filter(e => !e.anonymous)
-              setStudents(students)
+        try {
+          onValue(projectStats, async (snapshot) => {
+            const result: CourseStatistics | null = snapshot.val()
+            if (result) {
+              if (result.students) {
+                const students = Object.entries(result.students).map(([key, value]) => ({ ...value, id: key, progress: value.progress ? value.progress : 0 })).filter(e => !e.anonymous)
+                setStudents(students)
+              }
             }
-          }
-        })
+          })
+        } catch (error) {
+          console.log(error)
+        }
       }
       fetchData()
     }

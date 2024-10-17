@@ -106,7 +106,7 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
       <div className='flex mt-3 mb-5 justify-between flex-col md:px-10 px-5 md:flex-row md:items-center'>
         <div className=''>
           <h1 className='font-semibold text-lg'>{data && data.data ? `${data.data.name} Courses` : `Courses`}</h1>
-          <p className='text-sm text-[#64748B]'>{courseResults?.totalResults || 0} {data && data.data ? `courses naintained by ${data.data.name}` : `results on consize`}</p>
+          <p className='text-sm text-[#64748B]'>{courseResults?.totalResults || 0} {data && data.data ? `courses by ${data.data.name}` : `results on consize`}</p>
         </div>
         <form className='w-full md:w-1/2 border' onSubmit={form.handleSubmit}>
           {/* search form here */}

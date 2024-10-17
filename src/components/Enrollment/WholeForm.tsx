@@ -33,7 +33,7 @@ const generateInitialValues = (fields: EnrollmentField[]) => {
   if (fields.length === 0) {
     return {
       firstName: '',
-      lastName: '',
+      otherNames: '',
       email: '',
       phoneNumber: '',
       agree: false,
@@ -272,8 +272,8 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
               <input type="text" id='firstName' onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values.firstName} placeholder='First name' className='h-11 px-3 rounded-lg w-full border font-medium text-sm' />
             </div>
             <div className='w-1/2'>
-              <label className='text-sm' htmlFor="otherNames">Other names</label>
-              <input type="text" id='otherNames' onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values.otherNames} placeholder='Other names' className='h-11 px-3 w-full rounded-lg border font-medium text-sm' />
+              <label className='text-sm' htmlFor="otherNames">Last name</label>
+              <input type="text" id='otherNames' onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values.otherNames} placeholder='Last name' className='h-11 px-3 w-full rounded-lg border font-medium text-sm' />
             </div>
           </div>
         })
@@ -430,8 +430,8 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
                   <input type="text" id='firstName' onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values.firstName} placeholder='First name' className='h-12 px-3 rounded-lg w-full border font-medium text-sm' />
                 </div>
                 <div className='w-1/2'>
-                  <label htmlFor="otherNames">Other names</label>
-                  <input type="text" id='otherNames' onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values.otherNames} placeholder='Other names' className='h-12 px-3 w-full rounded-lg border font-medium text-sm' />
+                  <label htmlFor="otherNames">Last name</label>
+                  <input type="text" id='otherNames' onChange={registerStudentForm.handleChange} onBlur={registerStudentForm.handleBlur} value={registerStudentForm.values.otherNames} placeholder='Last name' className='h-12 px-3 w-full rounded-lg border font-medium text-sm' />
                 </div>
               </div>
               <div className='w-full mt-2'>
