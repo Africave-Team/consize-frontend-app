@@ -377,7 +377,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
               verifyPhoneForm.setFieldValue('agree', e.target.checked)
             }} isChecked={verifyPhoneForm.values.agree}>
               <span className='text-xs'>
-                I agree to receive this course from Consize on WhatsApp
+                I agree to receive this course from {params.team?.name || "Consize"} on WhatsApp
               </span>
             </Checkbox>
           </div>}
