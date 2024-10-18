@@ -364,7 +364,6 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
 
   return (
     <div className='mt-4'>
-      {params.team?.name}
       {!enrolled ? <div>
         <form onSubmit={verifyPhoneForm.handleSubmit}>
           <div className='text-sm mb-1'>What's your phone number</div>
