@@ -173,7 +173,7 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
           <div className='text-sm'>Page {courseResults?.page} of {courseResults?.totalPages}</div>
           <button onClick={() => setParam({ ...param, pageParam: param.pageParam + 1 })} disabled={courseResults?.totalPages === courseResults?.page}><FiChevronRight /></button>
         </div>}
-        <MainFooter />
+        {/* <MainFooter /> */}
       </div>}
     </div>
 

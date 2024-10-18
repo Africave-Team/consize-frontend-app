@@ -147,7 +147,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                 <div className='flex-1'>
                   <div className='bg-[url(/lines3.svg)] bg-cover pt-10 pb-5 min-h-80 w-full flex flex-col'>
                     <div className='font-semibold text-md flex md:px-16 px-5 gap-2 items-center' style={{ color: textColor }}>
-                      {(location.host.startsWith('app.') || location.host.startsWith('staging-app.')) ? <><Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /></> : <><Link href={`/teams/${courseResults?.data.owner.id}`}>{courseResults?.data?.owner.name}</Link> <Icon as={IoChevronForward} /></>}{courseResults?.data?.title}
+                      {(location.host.startsWith('app.') || location.host.startsWith('consize.com') || location.host.startsWith('staging-app.')) ? <><Link href={`/courses`}>Courses</Link> <Icon as={IoChevronForward} /></> : <><Link href={`/teams/${courseResults?.data.owner.id}`}>{courseResults?.data?.owner.name}</Link> <Icon as={IoChevronForward} /></>}{courseResults?.data?.title}
                     </div>
                     <div className='mt-4 w-full md:min-h-[250px] min-h-[350px]'>
                       <div className='md:px-16 px-5 w-full md:w-4/6'>
@@ -284,7 +284,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                   </div>
                 </div>
               </div>
-              <MainFooter />
+              {(location.host.startsWith('app.') || location.host.startsWith('consize.com') || location.host.startsWith('staging-app.')) && <MainFooter />}
             </div>
           </div>
         </div>
