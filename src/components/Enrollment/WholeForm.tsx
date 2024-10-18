@@ -46,7 +46,7 @@ const generateInitialValues = (fields: EnrollmentField[]) => {
     let fieldName = field.variableName
     if (!field.defaultField) {
       if (field.dataType === 'number') {
-        initialValues[fieldName] = 0
+        initialValues[fieldName] = ''
       } else if (field.dataType === 'boolean') {
         initialValues[fieldName] = "no"
       } else {
@@ -307,7 +307,6 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
           </FormControl>
         })
       } else if (ft.dataType === 'number') {
-
         felds.push({
           id: ft.id,
           field: <div>
