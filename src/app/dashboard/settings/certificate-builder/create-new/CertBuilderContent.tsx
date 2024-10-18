@@ -115,6 +115,7 @@ export default function CertBuilderContent () {
       </div>
       <div className='flex-1 p-10 h-full flex justify-center overflow-y-scroll'>
         {selected && <div className='h-[540px] w-[800px] relative'>
+          {JSON.stringify(selected)}
           <img className='absolute top-0 left-0 h-full w-[800px] rounded-md' src={selected.bg} />
           <div onClick={handleContainerClick} className='absolute top-0 left-0 h-full w-[800px] rounded-md group'>
             {
