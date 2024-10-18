@@ -136,7 +136,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
           <Skeleton className='h-full w-full rounded-lg' />
         </div>
       </div> : <>
-        <div className={`w-full h-[100vh]`}>
+        <div className={`w-full min-h-[100vh]`}>
           <div className='relative h-[420px] md:h-[280px]'>
             {/* @ts-ignore */}
             <div style={{ '--dynamic-gradient': dynamicGradient, '--dynamic-gradient-md': dynamicGradientMd }} className='absolute top-0 left-0 h-full w-full gradient-background md:gradient-background'>

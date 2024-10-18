@@ -171,134 +171,138 @@ export default function page ({ params }: { params: { id: string } }) {
   }, [])
 
   const generateCourseStats = function (students: RTDBStudent[], course: Course) {
-    let copy = { ...stats }
-    const scores = students.reduce((acc, curr) => {
-      if (curr.lessons) {
-        let lessonIds: string[] = course.lessons.map(((e: Lesson) => e.id))
-        let sco = curr.scores
+    try {
+      let copy = { ...stats }
+      const scores = students.reduce((acc, curr) => {
         if (curr.lessons) {
-          let l = curr.lessons
-          let lessonsList = lessonIds.map((id) => l[id])
-          sco = lessonsList.flatMap((lesson) => {
-            if (lesson && lesson.quizzes) {
-              return Object.values(lesson.quizzes).map(e => e.score)
-            }
-            return []
-          })
-        }
-
-        if (sco && sco?.length > 0) {
-          let sum = ((sco.reduce((a, b) => a + b, 0) / sco.length) * 100)
-          return acc + sum
-        }
-        return acc
-      } else {
-        return acc
-      }
-    }, 0)
-    copy.enrolled = students.length
-    copy.active = students.filter(e => !e.completed && !e.droppedOut).length
-    copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
-    copy.completed = students.filter(e => e.completed).length
-    copy.averageTestScore = isNaN(scores / students.length) ? '0' : (((scores / students.length))).toFixed(2)
-
-    copy.averageCourseProgress = students.reduce((acc, curr) => {
-      if (curr.progress) {
-        return acc + curr.progress
-      } else {
-        return acc
-      }
-    }, 0) / students.length
-
-    copy.averageCompletionMinutes = students.filter(e => e.completed).reduce((acc, curr) => {
-      if (curr.lessons) {
-        const lessons = Object.values(curr.lessons)
-        if (lessons.length === 0) {
-          return acc
-        } else {
-          let total = 0
-          for (let lesson of lessons) {
-            if (lesson.blocks) {
-              let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
-              total += value
-            }
+          let lessonIds: string[] = course.lessons.map(((e: Lesson) => e.id))
+          let sco = curr.scores
+          if (curr.lessons) {
+            let l = curr.lessons
+            let lessonsList = lessonIds.map((id) => l[id])
+            sco = lessonsList.flatMap((lesson) => {
+              if (lesson && lesson.quizzes) {
+                return Object.values(lesson.quizzes).map(e => e.score)
+              }
+              return []
+            })
           }
-          return acc + (total / (60))
-        }
-      } else {
-        return acc
-      }
-    }, 0) / students.filter(e => e.completed).length
 
-    let quizCount = 0
-    let retakes = students.reduce((acc, curr) => {
-      if (curr.lessons) {
-        const lessons = Object.values(curr.lessons)
-        if (lessons.length === 0) {
-          return acc
-        } else {
-          let total = lessons.map(e => {
-            if (e.quizzes) {
-              const quizzes = Object.values(e.quizzes)
-              quizCount += quizzes.length
-              return quizzes.reduce((acc, curr) => acc + curr.retakes, 0) / quizzes.length
-            }
-            return 0
-          }).reduce((a, b) => a + b, 0)
-          return acc + (total)
-        }
-      } else {
-        return acc
-      }
-    }, 0)
-    copy.averageMcqRetakeRate = isNaN(retakes / quizCount) ? 0 : (retakes / quizCount) * 100
-
-    let lessonCount = course.lessons.length
-    let lessonDuration = students.reduce((acc, curr) => {
-      if (curr.lessons) {
-        const lessons = Object.values(curr.lessons)
-        if (lessons.length === 0) {
-          return acc
-        } else {
-          let total = 0
-          for (let lesson of lessons) {
-            if (lesson.blocks) {
-              let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
-              total += value
-            }
+          if (sco && sco?.length > 0) {
+            let sum = ((sco.reduce((a, b) => a + b, 0) / sco.length) * 100)
+            return acc + sum
           }
-          return acc + (total / (60 * lessonCount))
-        }
-      } else {
-        return acc
-      }
-    }, 0)
-
-    copy.averageLessonDurationMinutes = isNaN(lessonDuration / students.length) ? 0 : lessonDuration / students.length
-
-    let blockCount = course.lessons.flatMap(e => e.blocks).length
-    let blockDuration = students.reduce((acc, curr) => {
-      if (curr.lessons) {
-        const lessons = Object.values(curr.lessons)
-        if (lessons.length === 0) {
           return acc
         } else {
-          let total = lessons.map(e => {
-            if (e.blocks) {
-              const blocks = Object.values(e.blocks)
-              return blocks.reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
-            }
-            return 0
-          }).reduce((a, b) => a + b, 0)
-          return acc + (total / (60 * blockCount))
+          return acc
         }
-      } else {
-        return acc
-      }
-    }, 0)
-    copy.averageBlockDurationMinutes = isNaN(blockDuration / students.length) ? 0 : blockDuration / students.length
+      }, 0)
+      copy.enrolled = students.length
+      copy.active = students.filter(e => !e.completed && !e.droppedOut).length
+      copy.dropoutRate = (students.filter(e => e.droppedOut).length / copy.enrolled) * 100
+      copy.completed = students.filter(e => e.completed).length
+      copy.averageTestScore = isNaN(scores / students.length) ? '0' : (((scores / students.length))).toFixed(2)
 
-    setStats(copy)
+      copy.averageCourseProgress = students.reduce((acc, curr) => {
+        if (curr.progress) {
+          return acc + curr.progress
+        } else {
+          return acc
+        }
+      }, 0) / students.length
+
+      copy.averageCompletionMinutes = students.filter(e => e.completed).reduce((acc, curr) => {
+        if (curr.lessons) {
+          const lessons = Object.values(curr.lessons)
+          if (lessons.length === 0) {
+            return acc
+          } else {
+            let total = 0
+            for (let lesson of lessons) {
+              if (lesson.blocks) {
+                let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
+                total += value
+              }
+            }
+            return acc + (total / (60))
+          }
+        } else {
+          return acc
+        }
+      }, 0) / students.filter(e => e.completed).length
+
+      let quizCount = 0
+      let retakes = students.reduce((acc, curr) => {
+        if (curr.lessons) {
+          const lessons = Object.values(curr.lessons)
+          if (lessons.length === 0) {
+            return acc
+          } else {
+            let total = lessons.map(e => {
+              if (e.quizzes) {
+                const quizzes = Object.values(e.quizzes)
+                quizCount += quizzes.length
+                return quizzes.reduce((acc, curr) => acc + curr.retakes, 0) / quizzes.length
+              }
+              return 0
+            }).reduce((a, b) => a + b, 0)
+            return acc + (total)
+          }
+        } else {
+          return acc
+        }
+      }, 0)
+      copy.averageMcqRetakeRate = isNaN(retakes / quizCount) ? 0 : (retakes / quizCount) * 100
+
+      let lessonCount = course.lessons.length
+      let lessonDuration = students.reduce((acc, curr) => {
+        if (curr.lessons) {
+          const lessons = Object.values(curr.lessons)
+          if (lessons.length === 0) {
+            return acc
+          } else {
+            let total = 0
+            for (let lesson of lessons) {
+              if (lesson.blocks) {
+                let value = Object.values(lesson.blocks).reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
+                total += value
+              }
+            }
+            return acc + (total / (60 * lessonCount))
+          }
+        } else {
+          return acc
+        }
+      }, 0)
+
+      copy.averageLessonDurationMinutes = isNaN(lessonDuration / students.length) ? 0 : lessonDuration / students.length
+
+      let blockCount = course.lessons.flatMap(e => e.blocks).length
+      let blockDuration = students.reduce((acc, curr) => {
+        if (curr.lessons) {
+          const lessons = Object.values(curr.lessons)
+          if (lessons.length === 0) {
+            return acc
+          } else {
+            let total = lessons.map(e => {
+              if (e.blocks) {
+                const blocks = Object.values(e.blocks)
+                return blocks.reduce((acc, curr) => acc + (curr.duration > 250 ? 200 : curr.duration), 0)
+              }
+              return 0
+            }).reduce((a, b) => a + b, 0)
+            return acc + (total / (60 * blockCount))
+          }
+        } else {
+          return acc
+        }
+      }, 0)
+      copy.averageBlockDurationMinutes = isNaN(blockDuration / students.length) ? 0 : blockDuration / students.length
+
+      setStats(copy)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
