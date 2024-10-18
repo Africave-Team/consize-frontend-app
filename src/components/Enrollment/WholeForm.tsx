@@ -364,6 +364,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
 
   return (
     <div className='mt-4'>
+      {params.team?.name}
       {!enrolled ? <div>
         <form onSubmit={verifyPhoneForm.handleSubmit}>
           <div className='text-sm mb-1'>What's your phone number</div>
@@ -445,7 +446,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
                 registerStudentForm.setFieldValue('agree', e.target.checked)
               }} isChecked={registerStudentForm.values.agree}>
                 <span className='text-sm'>
-                  I agree to receive this course from Consize on WhatsApp
+                  I agree to receive this course from {params.team?.name || "Consize"} on WhatsApp
                 </span>
               </Checkbox>
             </div>
