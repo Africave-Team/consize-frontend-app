@@ -463,7 +463,7 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
 
                     <button onClick={() => setView("list")} className='h-10 flex jus items-center hover:bg-gray-100 rounded-lg border px-4'>Back</button>
                     <button onClick={onClose} className='h-10 flex jus items-center hover:bg-gray-100 rounded-lg border px-4'>Cancel</button>
-                    <button type="submit" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
+                    <button disabled={!slackEnrollCohortForm.isValid} type="submit" className='h-10 flex jus items-center gap-2 rounded-lg px-4 text-white bg-primary-dark hover:bg-primary-dark/90'>Continue
                       {slackEnrollCohortForm.isSubmitting && <Spinner size={'sm'} />}
                     </button>
                   </div>
