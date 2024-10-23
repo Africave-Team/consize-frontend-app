@@ -10,6 +10,8 @@ interface DataInterface {
   signature2: string
   signatory2: string
   logoUrl: string
+  certificateId: string
+  template: boolean
 }
 
 export default function Page ({ searchParams }: { searchParams: any }) {

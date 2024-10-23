@@ -1,6 +1,6 @@
 "use client"
 import { useAuthStore } from '@/store/auth.store'
-import { CertificateComponent, CertificateTemplate, ComponentTypes } from '@/type-definitions/cert-bhuilder'
+import { CertificateComponent, CertificateTemplate, ComponentTypes } from '@/type-definitions/cert-builder'
 import { certificateTemplates } from '@/utils/certificate-templates'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel } from '@chakra-ui/react'
 import React, { MouseEvent, useEffect, useState } from 'react'
@@ -48,9 +48,9 @@ export default function CertBuilderContent () {
         let teamName = ''
         if (team) {
           teamName = team.name
-          data.default = data.default.replaceAll('{{teamName}}', teamName)
+          data.default = data.default ? data.default.replaceAll('{{teamName}}', teamName) : ""
         }
-        component = <div contentEditable className={data.text?.classNames} dangerouslySetInnerHTML={{ __html: data.default }} />
+        component = <div contentEditable className={data.text?.classNames} dangerouslySetInnerHTML={{ __html: data.default || "" }} />
         break
       case ComponentTypes.SIGNATORY:
         component = <div className={`${data.signatory?.classNames} w-52`}>
@@ -115,6 +115,7 @@ export default function CertBuilderContent () {
       </div>
       <div className='flex-1 p-10 h-full flex justify-center overflow-y-scroll'>
         {selected && <div className='h-[540px] w-[800px] relative'>
+          {JSON.stringify(selected)}
           <img className='absolute top-0 left-0 h-full w-[800px] rounded-md' src={selected.bg} />
           <div onClick={handleContainerClick} className='absolute top-0 left-0 h-full w-[800px] rounded-md group'>
             {

@@ -2,6 +2,7 @@ import * as Yup from "yup"
 
 export const SlackEnrollCohortValidator = Yup.object().shape({
   agree: Yup.boolean().required(),
+  cohortId: Yup.string().required("Select a valid cohort"),
   schedule: Yup.boolean().required(),
   date: Yup.string().when("schedule", {
     is: true,
