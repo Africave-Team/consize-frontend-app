@@ -1,10 +1,30 @@
-import { ReactNode } from 'react'
+export enum CertificatesStatus {
+  PENDING = "pending",
+  ACTIVE = "active",
+  DISABLED = "disabled"
+}
 
 export enum ComponentTypes {
   TEXT = "text",
   NAME = "name",
   SIGNATORY = "signatory",
   DATE = "date",
+}
+
+export interface CertificatesInterface {
+  id: string,
+  name: string,
+  teamId: string,
+  colors: string[],
+  text: string[],
+  status: CertificatesStatus,
+  signatories: string[]
+}
+
+export interface CreateCertificate {
+  name: string
+  signatories: string[]
+  status: CertificatesStatus
 }
 
 export interface ComponentText {
@@ -19,11 +39,11 @@ export interface ComponentSignatory {
 }
 export interface CertificateComponent {
   type: ComponentTypes
-  default: string
   position: {
     x: number
     y: number
   },
+  default?: string
   text?: ComponentText
   signatory?: ComponentSignatory
 }

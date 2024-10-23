@@ -220,6 +220,10 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
     }
   }, [selectedCohort])
 
+  useEffect(() => {
+    setSelectedCohort(undefined)
+  }, [tab])
+
   const downloadSampleSheet = async function () {
     const tableData: RowData[][] = [
       [
