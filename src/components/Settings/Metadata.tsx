@@ -36,10 +36,10 @@ export default function Metadata ({ metadata, id, refetch }: { metadata: CourseM
             <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
               Minutes
             </div>
-            <button className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
+            <button type="button" className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type="button" className='h-full px-3 hover:bg-gray-100 '>
               <FiPlus />
             </button>
 
@@ -60,10 +60,10 @@ export default function Metadata ({ metadata, id, refetch }: { metadata: CourseM
             <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
 
             </div>
-            <button className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
+            <button type="button" className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type="button" className='h-full px-3 hover:bg-gray-100 '>
               <FiPlus />
             </button>
 
@@ -82,10 +82,10 @@ export default function Metadata ({ metadata, id, refetch }: { metadata: CourseM
             <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
 
             </div>
-            <button className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
+            <button type="button" className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type="button" className='h-full px-3 hover:bg-gray-100 '>
               <FiPlus />
             </button>
 
@@ -106,10 +106,10 @@ export default function Metadata ({ metadata, id, refetch }: { metadata: CourseM
             <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
 
             </div>
-            <button className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
+            <button type="button" className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type="button" className='h-full px-3 hover:bg-gray-100 '>
               <FiPlus />
             </button>
 
@@ -130,10 +130,10 @@ export default function Metadata ({ metadata, id, refetch }: { metadata: CourseM
             <div className='text-xs border-r rounded-r-md h-full text-[#98A2B3] font-medium flex items-center justify-center px-2'>
 
             </div>
-            <button className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
+            <button type="button" className='border-r rounded-r-md hover:bg-gray-100  h-full px-3'>
               <FiMinus />
             </button>
-            <button className='h-full px-3 hover:bg-gray-100 '>
+            <button type="button" className='h-full px-3 hover:bg-gray-100 '>
               <FiPlus />
             </button>
 
