@@ -31,7 +31,6 @@ interface DataInterface {
 export default function PageContents ({ details }: { details: DataInterface }) {
   const [bgUrl] = useState("https://storage.googleapis.com/kippa-cdn-public/microlearn-certificate-assets/new-certificate.png")
   const [certificateContents, setCertificateContents] = useState<ReactNode>(<></>)
-  console.log("DETAILS=>", details)
   const generateContent = function (data: DataInterface, certificate?: CertificatesInterface | null) {
     if (data.certificateId) {
       if (data.template) {

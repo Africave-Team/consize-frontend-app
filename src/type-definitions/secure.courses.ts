@@ -417,6 +417,7 @@ export interface CourseSettings {
   inactivityPeriod: Period
   dropoutEvent: DropoutEvents
   resumption: CourseResumptionSettings | null
+  certificateId?: string
   disableReminders?: {
     saturday?: boolean
     sunday?: boolean
@@ -446,4 +447,5 @@ export interface CourseSettingsPayload {
   inactivityPeriod: Period
   dropoutEvent: DropoutEvents
   resumption: CourseResumptionSettings
+  certificateId?: string
 }
