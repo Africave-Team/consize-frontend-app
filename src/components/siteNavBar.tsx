@@ -44,7 +44,7 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
           <LuEqual className='text-3xl font-bold text-black' />
         </button>
 
-        <div
+        {!teamStore && <div
           className="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
           id="navbarSupportedContent4"
           data-te-collapse-item>
@@ -66,7 +66,7 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
           <div className="flex items-center gap-3 md:mt-0 mt-3">
             <Link href={"/auth/login"} className='bg-primary-app text-black hover:bg-primary-app/80 rounded-3xl font-medium w-20 py-2 text-sm flex justify-center items-center h-10'>Sign in</Link>
           </div>
-        </div>
+        </div>}
       </div>
     </nav>
   )

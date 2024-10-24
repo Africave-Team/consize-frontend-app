@@ -101,7 +101,7 @@ export default function EnrollmentFormFields ({ fields, id, refetch }: { fields:
             {fields.filter(e => e.defaultField).map((field, index) =>
               <div key={`form_fields_${index}`}>
                 <div className={`hover:bg-[#F8F8F8] px-3 bg-white w-full h-10 border-t flex justify-start gap-1 text-sm items-center`}>
-                  {field.fieldName} {field.required && <span className='text-red-500 text-xs'>*</span>}
+                  {field.variableName === "otherNames" ? "Last Name" : field.fieldName} {field.required && <span className='text-red-500 text-xs'>*</span>}
                 </div>
               </div>
             )}

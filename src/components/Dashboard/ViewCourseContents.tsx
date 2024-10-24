@@ -21,6 +21,7 @@ export default function CourseContents ({ courseId, children }: { courseId: stri
       const data = await fetchSingleCourse(payload.course)
       return data
     }
+    return {}
   }
 
   const { data: courseResults, isFetching, refetch } =
