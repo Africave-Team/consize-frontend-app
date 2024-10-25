@@ -384,7 +384,7 @@ export default function CreateCohort ({ course, isBundle, onClose, hideLink, hid
             {selectedCohort && <>
               <p className='text-sm line-clamp-4 text-[#23173E99]/60 mt-4 mb-1'>Send this course link to students to enroll</p>
               <div className='mb-4 flex justify-between gap-1'>
-                <Input type="text" className="bg-gray-200 text-gray-600 !opacity-90 cursor-not-allowed px-2 py-1 border rounded-md overflow-y-auto w-11/12" disabled value={`https://${team?.shortCode}.consize.com/courses/${isBundle ? `bundles/` : ''}${course.id}?cohort=${selectedCohort.id}`} id="link-content" />
+                <Input type="text" className="bg-gray-200 text-gray-600 !opacity-90 cursor-not-allowed px-2 py-1 border rounded-md overflow-y-auto w-11/12" disabled value={`https://${!location.host.includes(team?.shortCode || "") ? team?.shortCode : ''}.${location.host}/courses/${isBundle ? `bundles/` : ''}${course.id}?cohort=${selectedCohort.id}`} id="link-content" />
                 <CopyToClipboardButton targetSelector='#link-content' />
               </div>
               {showTeamQR && team && selectedCohort && <CourseQRCode phoneNumber={(course.team?.facebookData?.phoneNumber ? course.team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""} cohort={selectedCohort?.shortCode || ""} shortCode={course.shortCode} courseName={course.title} teamName={team.name} />}
