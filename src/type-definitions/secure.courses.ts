@@ -418,6 +418,7 @@ export interface CourseSettings {
   dropoutEvent: DropoutEvents
   resumption: CourseResumptionSettings | null
   certificateId?: string
+  disableCertificates?: boolean
   disableReminders?: {
     saturday?: boolean
     sunday?: boolean
