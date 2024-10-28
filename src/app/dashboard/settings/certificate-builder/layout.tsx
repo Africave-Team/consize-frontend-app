@@ -12,7 +12,7 @@ export default function CertificateBuilderLayout ({
   const pathname = usePathname()
   return (
     <Layout>
-      {pathname.endsWith('/create-new') ? <div className='h-full overflow-hidden w-full '>{children}</div> : <div className='flex h-full overflow-hidden gap-2 w-full '>
+      {pathname.endsWith('/edit') ? <div className='h-full overflow-hidden w-full '>{children}</div> : <div className='flex h-full overflow-hidden gap-2 w-full '>
         <div className='border-b w-1/5 overflow-x-hidden'>
           <CertificatesNav />
         </div>

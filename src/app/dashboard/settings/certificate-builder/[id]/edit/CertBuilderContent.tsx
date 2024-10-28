@@ -74,7 +74,7 @@ export default function CertBuilderContent () {
               <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
                 <div className='flex flex-col items-start'>
                   <div className='text-sm text-black font-semibold'>
-                    Certificate templates
+                    Certificate backgrounds
                   </div>
                 </div>
               </AccordionButton>
@@ -111,11 +111,28 @@ export default function CertBuilderContent () {
             <AccordionPanel className='px-0 py-2 grid grid-cols-1 overflow-y-scroll h-96'>
             </AccordionPanel>
           </AccordionItem>
+          <AccordionItem className='border-none w-full' >
+            <div className='flex justify-between w-full items-center rounded-lg h-8 hover:!bg-[#F5F7F5] bg-[#F5F7F5] '>
+              <AccordionButton className='h-full hover:!bg-[#F5F7F5] bg-[#F5F7F5] rounded-lg flex gap-2'>
+                <div className='flex flex-col items-start'>
+                  <div className='text-sm text-black font-semibold'>
+                    Elements
+                  </div>
+                </div>
+              </AccordionButton>
+              <div className='flex items-center gap-2 h-full'>
+                <AccordionButton className='h-full w-14 flex justify-center items-center hover:!bg-transparent'>
+                  <AccordionIcon />
+                </AccordionButton>
+              </div>
+            </div>
+            <AccordionPanel className='px-0 py-2 grid grid-cols-1 overflow-y-scroll h-96'>
+            </AccordionPanel>
+          </AccordionItem>
         </Accordion>
       </div>
       <div className='flex-1 p-10 h-full flex justify-center overflow-y-scroll'>
-        {selected && <div className='h-[540px] w-[800px] relative'>
-          {JSON.stringify(selected)}
+        {selected && <div className='h-[540px] w-[800px] bg-gray-200 relative'>
           <img className='absolute top-0 left-0 h-full w-[800px] rounded-md' src={selected.bg} />
           <div onClick={handleContainerClick} className='absolute top-0 left-0 h-full w-[800px] rounded-md group'>
             {

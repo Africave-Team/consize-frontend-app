@@ -448,5 +448,6 @@ export interface CourseSettingsPayload {
   inactivityPeriod: Period
   dropoutEvent: DropoutEvents
   resumption: CourseResumptionSettings
+  disableCertificates?: boolean
   certificateId?: string
 }

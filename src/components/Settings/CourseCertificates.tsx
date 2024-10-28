@@ -36,8 +36,18 @@ export default function CertificateSettings ({ settings: { id, certificateId, di
     setProgress(pg)
   }
 
-  const disableCertificateSwitchHandler = function () {
-
+  const disableCertificateSwitchHandler = async function (disabled: boolean) {
+    let pg: any = {}
+    pg["disabled"] = true
+    setProgress(pg)
+    await updateSettings({
+      id, body: {
+        disableCertificates: disabled
+      }
+    })
+    await refetch()
+    pg["disabled"] = false
+    setProgress(pg)
   }
   return (
     <div>
@@ -51,7 +61,7 @@ export default function CertificateSettings ({ settings: { id, certificateId, di
             <FormLabel htmlFor='disable-certificates' mb='0' className='text-[#64748B] text-sm'>
               Disable Certificates
             </FormLabel>
-            <Switch isChecked={disableCertificates} id="disable-certificates" />
+            <Switch isChecked={disableCertificates} onChange={(e) => disableCertificateSwitchHandler(e.target.checked)} id="disable-certificates" />
           </FormControl>
         </div>
         {certificates && certificates.map((certificate) => <div className={`${certificate.id === certificateId && 'border-l-4 w-full rounded-md border border-primary-dark border-l-primary-dark'} cursor-pointer`} key={certificate.id}>

@@ -3,6 +3,7 @@ import { Tooltip } from '@chakra-ui/react'
 import React, { ReactNode } from 'react'
 import PreviewCertificateButton from './PreviewCertificate'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import Link from 'next/link'
 
 export default function CertificateItem ({ certificate, onlyPreview, selector }: { certificate: CertificatesInterface, onlyPreview?: boolean, selector?: ReactNode }) {
   return (
@@ -15,9 +16,9 @@ export default function CertificateItem ({ certificate, onlyPreview, selector }:
 
         <PreviewCertificateButton id={certificate.id} />
         {!onlyPreview && <Tooltip label="Edit">
-          <button className='h-9 rounded-md border w-9 flex justify-center items-center'>
+          <Link href={`/dashboard/settings/certificate-builder/${certificate.id}/edit`} className='h-9 rounded-md border w-9 flex justify-center items-center'>
             <FiEdit2 />
-          </button>
+          </Link>
         </Tooltip>}
         {!onlyPreview && <Tooltip label="Delete">
           <button className='h-9 rounded-md border w-9 flex justify-center items-center'>
