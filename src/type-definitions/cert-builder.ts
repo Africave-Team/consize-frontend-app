@@ -9,6 +9,7 @@ export enum ComponentTypes {
   NAME = "name",
   SIGNATORY = "signatory",
   DATE = "date",
+  CIRCLE = 'circle'
 }
 
 export interface CertificatesInterface {

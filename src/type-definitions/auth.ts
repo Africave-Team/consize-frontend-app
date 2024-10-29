@@ -66,6 +66,7 @@ export interface Team {
   subscription: Subscription
   owner: string
   defaultCertificateId?: string
+  certificateBackgrounds?: string[]
   logo?: string
   color?: {
     primary: string
