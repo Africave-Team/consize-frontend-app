@@ -35,7 +35,7 @@ export default function PreviewCertificateButton ({ id }: { id: string }) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <iframe src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="1100px" height="750px"></iframe>
+            <iframe src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="1100px" height="900px"></iframe>
           </ModalBody>
         </ModalContent></Modal>}
     </div>

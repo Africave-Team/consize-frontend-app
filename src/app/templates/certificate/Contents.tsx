@@ -186,6 +186,83 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
             </>
           )
+        } else if (data.certificateId === "cb10515f-ce4c-42db-ae6a-2b0afe35c75f") {
+          return (
+            <>
+              <div className={`${fonts.montserrat.className} template h-[780px] overflow-y-hidden`}>
+                <div className="relative">
+                  <div className='absolute top-0 left-0 h-[780px] w-full'>
+                    <img src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728045234124.32" alt="" className='h-full w-full' />
+                  </div>
+
+                  <div className='absolute top-0 left-0 h-full w-full py-20'>
+
+                    <div className='w-full flex flex-col mt-2 mb-8 justify-center'>
+                      <div className={`uppercase text-[53.4px] font-semibold tracking-widest text-primary-dark ${theseasons.className}`}><span className={`uppercase text-8xl font-semibold -mr-2 ${sloop.className}`}>C</span>ertificate </div>
+                      <div className={`text-[25.5px] uppercase ml-7 tracking-wide font-semibold ${theseasons.className} -mt-5 text-primary-dark`}>of Completion</div>
+                    </div>
+
+                    <div className={`mt-8 text-center font-medium text-lg text-primary-dark`}>
+                      This certificate is awarded to
+                    </div>
+
+                    <div className='w-full flex justify-center mt-2'>
+                      <div className={`min-w-6/12 px-20 tracking-wider border-b-2 border-b-black font-extrabold text-3xl capitalize`}>
+                        {details.studentName}
+                      </div>
+                    </div>
+
+                    <div className={``}>
+                      <div className='text-center text-primary-dark font-medium text-lg mt-2'>
+                        upon the completion of the self-paced course
+                      </div>
+                      <div className='text-primary-dark w-full flex justify-center mt-2'>
+                        <div className='min-w-3/5 px-3 font-extrabold text-3xl uppercase'>
+                          {details.courseName}
+                        </div>
+                      </div>
+                      <div className='text-center text-primary-dark font-medium text-lg mt-1'>
+                        given on this day {moment().format('Do MMMM, YYYY')}.
+                      </div>
+                    </div>
+
+                    <div className='w-full flex mt-16 gap-8 justify-center'>
+                      <div className='w-1/5 flex justify-center items-center flex-col'>
+                        <div className={`border-b-2 py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
+                          <img src={details.signature1} className='h-16 w-28' alt="signature" />
+                        </div>
+                        <div className='text-primary-dark mt-3 text-base uppercase font-bold'>{details.signatory1}</div>
+                        <div className='text-sm'>Dean & Director</div>
+                        <div className='text-sm'>The FATE School</div>
+                      </div>
+                      <div className='w-1/6 flex justify-center items-center'>
+                        <img src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728045526319.35" className='h-36' alt="" />
+                      </div>
+                      <div className='w-1/5 flex justify-center flex-col items-center'>
+                        <div className={`border-b-2 py-1 text-base uppercase border-b-black w-40 flex justify-center`}>
+                          <img src={details.signature2} className='h-16 w-28' alt="signature" />
+                        </div>
+                        <div className='text-primary-dark mt-3 text-base uppercase font-bold'>{details.signatory2}</div>
+                        <div className='text-sm'>Executive Director</div>
+                        <div className='text-sm'>FATE Foundation</div>
+                      </div>
+                    </div>
+
+                    <div className='w-full mt-5 flex justify-center'>
+                      With support from
+                    </div>
+                    <div className='w-full flex -mt-4 justify-center'>
+                      <img src={"https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1730203054550.svg"} className='h-16 w-28' alt="partner-logo" />
+                    </div>
+                  </div>
+                  <div className='absolute top-0 left-0 w-full h-40 flex justify-between pt-10 px-10'>
+                    <img className='h-16' src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728047978762.19" alt="" />
+                    <img className='h-16' src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728048011007.19" alt="" />
+                  </div>
+                </div>
+              </div>
+            </>
+          )
         } else if (data.certificateId === "71bbefa8-1c7b-4c4e-be22-03cf44917a38") {
           return (
             <div className="template h-[700px] w-full relative">
