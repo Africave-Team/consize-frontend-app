@@ -189,9 +189,9 @@ export default function PageContents ({ details }: { details: DataInterface }) {
         } else if (data.certificateId === "cb10515f-ce4c-42db-ae6a-2b0afe35c75f") {
           return (
             <>
-              <div className={`${fonts.montserrat.className} template h-[780px] overflow-y-hidden`}>
+              <div className={`${fonts.montserrat.className} template h-[750px] overflow-y-hidden`}>
                 <div className="relative">
-                  <div className='absolute top-0 left-0 h-[780px] w-full'>
+                  <div className='absolute top-0 left-0 h-[750px] w-full'>
                     <img src="https://storage.googleapis.com/kippa-cdn-public/microlearn-images/1728045234124.32" alt="" className='h-full w-full' />
                   </div>
 
