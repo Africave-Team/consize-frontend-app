@@ -1,4 +1,4 @@
-import { CertificateTemplate, ComponentTypes } from '@/type-definitions/cert-bhuilder'
+import { CertificateTemplate, ComponentTypes } from '@/type-definitions/cert-builder'
 
 export const certificateTemplates: CertificateTemplate[] = [
   {

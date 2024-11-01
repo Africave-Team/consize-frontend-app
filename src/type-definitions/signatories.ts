@@ -6,5 +6,6 @@ export interface CreateSignatory {
 
 export interface Signatory extends CreateSignatory {
   id: string
+  _id?: string
   signature: string
 }

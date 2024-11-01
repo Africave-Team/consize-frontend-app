@@ -65,6 +65,7 @@ export interface Team {
   facebookData: FacebookIntegrationData | null
   subscription: Subscription
   owner: string
+  defaultCertificateId?: string
   logo?: string
   color?: {
     primary: string

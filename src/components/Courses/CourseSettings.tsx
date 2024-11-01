@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 import CourseResumption from '../Settings/CourseResumption'
+import TransitionMessages from './TransitionMessages'
+import CertificateSettings from '../Settings/CourseCertificates'
 
 interface ApiResponse {
   data: Course
@@ -57,6 +59,10 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
     {
       title: "Add student groups",
       value: "groups"
+    },
+    {
+      title: "Certificate settings",
+      value: "certificates"
     }
   ]
 
@@ -74,6 +80,8 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
         return <Reminders refetch={refetch} settings={settings} />
       case "groups":
         return <LearnerGroups course={course} fields={settings.enrollmentFormFields} maxEnrollments={settings.metadata.maxEnrollments} refetch={refetch} groups={settings.learnerGroups} settingsId={settings.id} />
+      case "certificates":
+        return <CertificateSettings refetch={refetch} settings={settings} />
 
       default:
         break
@@ -86,6 +94,7 @@ export default function CourseSettingsComponent ({ id }: { id: string }) {
           {menu.map((item) => (<button onClick={() => setCurrent(item.value)} key={item.value} className={`h-16 ${item.value === current ? 'bg-primary-dark text-white shadow-lg' : 'bg-white text-primary-dark'} flex items-center border px-3 gap-2 font-semibold`}>
             {item.title} <FiArrowRight />
           </button>))}
+          <TransitionMessages id={id} />
         </div>
         <div className='w-8/12 border p-5 rounded-lg min-h-[70vh] overflow-y-scroll'>
           {loadTabbedPage(courseDetails.data.settings, courseDetails.data)}
