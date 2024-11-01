@@ -116,7 +116,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
             </>
           )
-        } else if (data.certificateId === "2b3b1a9f-4867-4895-bd57-e6bbb99bd6ad") {
+        } else if (["2b3b1a9f-4867-4895-bd57-e6bbb99bd6ad", "06a90b04-04e3-477e-add3-dec908272087"].includes(data.certificateId)) {
           return (
             <>
               <div className={`${fonts.montserrat.className} template h-[710px] overflow-y-hidden`}>
@@ -186,7 +186,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
             </>
           )
-        } else if (data.certificateId === "cb10515f-ce4c-42db-ae6a-2b0afe35c75f") {
+        } else if (["cb10515f-ce4c-42db-ae6a-2b0afe35c75f", "062d9f56-ce4b-47db-8858-5c51fc40a9ba"].includes(data.certificateId)) {
           return (
             <>
               <div className={`${fonts.montserrat.className} template h-[750px] overflow-y-hidden`}>

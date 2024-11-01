@@ -20,7 +20,7 @@ export default function CertificateItem ({ certificate, onlyPreview, selector }:
             <FiEdit2 />
           </Link>
         </Tooltip>}
-        {!onlyPreview && <Tooltip label="Delete">
+        {!onlyPreview && process.env['NEXT_PUBLIC_BASE_URL']?.includes('localhost') && <Tooltip label="Delete">
           <button className='h-9 rounded-md border w-9 flex justify-center items-center'>
             <FiTrash2 />
           </button>
