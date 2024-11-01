@@ -1,110 +1,18 @@
-import { CertificateTemplate, ComponentTypes } from '@/type-definitions/cert-builder'
+import { CertificateTemplate, ComponentTypes, TextAlign } from '@/type-definitions/cert-builder'
 
 export const certificateTemplates: CertificateTemplate[] = [
   {
     name: "1",
     bg: "https://storage.googleapis.com/kippa-cdn-public/microlearn-images/Black%20Gold%20Simple%20Elegant%20Certificate_cleanup.webp",
     components: [
-      {
-        "position": {
-          "x": 277,
-          "y": 60
-        },
-        "type": ComponentTypes.TEXT,
-        "default": "Certificate",
-        "text": {
-          "classNames": "font-bold text-3xl w-60 text-center uppercase"
-        }
-      },
-      {
-        "position": {
-          "x": 252,
-          "y": 124
-        },
-        "type": ComponentTypes.TEXT,
-        "default": "of completion",
-        "text": {
-          "classNames": "font-bold w-72 text-center text-xl uppercase"
-        }
-      },
-      {
-        "position": {
-          "x": 219,
-          "y": 99
-        },
-        "type": ComponentTypes.TEXT,
-        "default": "This is to certify that",
-        "text": {
-          "classNames": "font-bold text-xl w-96 text-center"
-        }
-      },
-      {
-        "position": {
-          "x": 159,
-          "y": 102
-        },
-        "type": ComponentTypes.NAME,
-        "default": "Josep Blatter",
-        "text": {
-          "classNames": "font-bold text-3xl w-[500px] border-b-2 uppercase text-center"
-        }
-      },
 
-      {
-        "position": {
-          "x": 168,
-          "y": 118
-        },
-        "type": ComponentTypes.TEXT,
-        "default": `Has successfully completed the <b>{{courseName}}</b> course, offered by <b>{{teamName}}</b>`,
-        "text": {
-          "classNames": "font-normal text-base w-[520px] text-center"
-        }
-      },
-
-      {
-        "type": ComponentTypes.SIGNATORY,
-        "default": "Signature",
-        "position": {
-          "x": 170,
-          "y": 130
-        },
-        "signatory": {
-          "classNames": "h-20 flex flex-col gap-2 text-white  whitespace-nowrap",
-          "signatoryName": "John Doe",
-          "signature": ""
-        }
-      },
-      {
-        "type": ComponentTypes.SIGNATORY,
-        "default": "Signature",
-        "position": {
-          "x": 432,
-          "y": 50
-        },
-        "signatory": {
-          "classNames": "h-20 flex flex-col gap-2 text-white  whitespace-nowrap",
-          "signatoryName": "John Doe",
-          "signature": ""
-        }
-      }
     ]
   },
   {
     name: "2",
     bg: "https://storage.googleapis.com/kippa-cdn-public/microlearn-images/Purple%20Geometric%20Participation%20Certificate_cleanup.webp",
     components: [
-      {
-        type: ComponentTypes.TEXT,
-        default: "Certificate",
-        position: {
-          x: -15,
-          y: -192
-        },
-        text: {
-          classNames: `font-bold text-5xl uppercase`,
-        }
-      }
+
     ]
   },
   {
@@ -142,4 +50,164 @@ export const certificateTemplates: CertificateTemplate[] = [
     bg: "https://storage.googleapis.com/kippa-cdn-public/microlearn-images/Black%20Purple%203D%20Abstract%20Modern%20Certification%20Of%20Appreciation_cleanup.webp",
     components: []
   },
+]
+
+export const defaultElements = [
+  {
+    "position": {
+      "x": 159,
+      "y": 102
+    },
+    "type": ComponentTypes.NAME,
+    properties: {
+      height: 40,
+      width: 180,
+      border: {
+        b: 2,
+        r: 0,
+        l: 0,
+        t: 0,
+        color: "red"
+      },
+      text: {
+        size: 20,
+        weight: 600,
+        family: 'Inter',
+        color: '#000',
+        value: `Josep Blatter`,
+        align: TextAlign.CENTER
+      }
+    },
+    "default": "Josep Blatter",
+    "text": {
+      "classNames": "font-bold text-3xl w-[500px] border-b-2 uppercase text-center"
+    }
+  },
+
+  {
+    "position": {
+      "x": 168,
+      "y": 118
+    },
+    "type": ComponentTypes.TEXT,
+    properties: {
+      height: 40,
+      width: 180,
+      text: {
+        size: 14,
+        weight: 500,
+        family: 'Inter',
+        color: '#000',
+        value: `Enter text here`,
+        align: TextAlign.LEFT
+      }
+    },
+    "default": `Enter text here`,
+    "text": {
+      "classNames": "font-normal text-base w-[520px] text-center"
+    }
+  },
+
+  {
+    "type": ComponentTypes.SIGNATORY,
+    "default": "Signature",
+    "position": {
+      "x": 170,
+      "y": 130
+    },
+    properties: {
+      height: 40,
+      width: 180,
+      radius: { rt: 0, rb: 0, lb: 0, lt: 0 }
+    },
+    "signatory": {
+      "classNames": "h-20 flex flex-col gap-2 text-white  whitespace-nowrap",
+      "signatoryName": "John Doe",
+      "signature": ""
+    }
+  },
+  {
+    "type": ComponentTypes.IMAGE,
+    "default": "Image",
+    "position": {
+      "x": 170,
+      "y": 130
+    },
+    properties: {
+      height: 70,
+      width: 70,
+      color: "#000",
+      radius: { rt: 0, rb: 0, lb: 0, lt: 0 }
+    },
+  },
+  {
+    type: ComponentTypes.CIRCLE,
+    position: {
+      "x": 477,
+      "y": 100
+    },
+    properties: {
+      size: 90,
+      height: 30, width: 30,
+      color: "#000"
+    }
+  },
+
+  {
+    type: ComponentTypes.TRIANGLE,
+    position: {
+      "x": 577,
+      "y": 60
+    },
+    properties: {
+      leftSize: 60,
+      rightSize: 60,
+      bottomSize: 80,
+      height: 100,
+      width: 100,
+      color: "#000"
+    }
+  },
+  {
+    type: ComponentTypes.TRAPEZOID,
+    position: {
+      "x": 777,
+      "y": 60
+    },
+    properties: {
+      leftSize: 0,
+      rightSize: 50,
+      width: 80,
+      height: 80,
+      radius: { rt: 0, rb: 0, lb: 0, lt: 0 },
+      bottomSize: 80,
+      color: "#000"
+    }
+  },
+  {
+    type: ComponentTypes.SQUARE,
+    position: {
+      "x": 777,
+      "y": 60
+    },
+    properties: {
+      width: 80,
+      height: 80,
+      color: "#000",
+      radius: { rt: 0, rb: 0, lb: 0, lt: 0 }
+    }
+  },
+  {
+    type: ComponentTypes.RECTANGLE,
+    position: {
+      "x": 777,
+      "y": 60
+    },
+    properties: {
+      height: 40,
+      width: 100,
+      color: "#000",
+      radius: { rt: 0, rb: 0, lb: 0, lt: 0 }
+    }
+  }
 ]
