@@ -51,6 +51,12 @@ export interface FacebookIntegrationData {
   status: "PENDING" | "CONFIRMED"
 }
 
+export enum CertificateMediaTypes {
+  SIGNATURE = 'signature',
+  IMAGE = 'image',
+  FONT = 'font'
+}
+
 export interface Team {
   name: string
   id: string
@@ -67,6 +73,10 @@ export interface Team {
   owner: string
   defaultCertificateId?: string
   certificateBackgrounds?: string[]
+  certificateMedia?: {
+    type: CertificateMediaTypes,
+    url: string
+  }[]
   logo?: string
   color?: {
     primary: string

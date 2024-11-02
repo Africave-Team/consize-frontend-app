@@ -1,4 +1,5 @@
 import { CertificateTemplate, ComponentTypes, TextAlign } from '@/type-definitions/cert-builder'
+import moment from 'moment'
 
 export const certificateTemplates: CertificateTemplate[] = [
   {
@@ -107,23 +108,57 @@ export const defaultElements = [
       "classNames": "font-normal text-base w-[520px] text-center"
     }
   },
-
   {
-    "type": ComponentTypes.SIGNATORY,
-    "default": "Signature",
     "position": {
-      "x": 170,
-      "y": 130
+      "x": 168,
+      "y": 118
     },
+    "type": ComponentTypes.DATE,
     properties: {
       height: 40,
       width: 180,
-      radius: { rt: 0, rb: 0, lb: 0, lt: 0 }
+      border: {
+        b: 1,
+        r: 0,
+        l: 0,
+        t: 0,
+        color: "#000000"
+      },
+      text: {
+        size: 14,
+        weight: 500,
+        family: 'Inter',
+        color: '#000',
+        value: moment().format('Do MMMM, YYYY'),
+        align: TextAlign.CENTER
+      }
     },
-    "signatory": {
-      "classNames": "h-20 flex flex-col gap-2 text-white  whitespace-nowrap",
-      "signatoryName": "John Doe",
-      "signature": ""
+    "default": ``,
+    "text": {
+      "classNames": "font-normal text-base w-[520px] text-center"
+    }
+  },
+  {
+    "position": {
+      "x": 168,
+      "y": 118
+    },
+    "type": ComponentTypes.COURSE,
+    properties: {
+      height: 40,
+      width: 180,
+      text: {
+        size: 16,
+        weight: 600,
+        family: 'Inter',
+        color: '#000',
+        value: "Select a course from properties",
+        align: TextAlign.LEFT
+      }
+    },
+    "default": ``,
+    "text": {
+      "classNames": "font-normal text-base w-[520px] text-center"
     }
   },
   {

@@ -10,6 +10,7 @@ export enum ComponentTypes {
   NAME = "name",
   IMAGE = "image",
   SIGNATORY = "signatory",
+  COURSE = "course-title",
   DATE = "date",
   CIRCLE = 'circle',
   TRIANGLE = "triangle",
@@ -26,8 +27,8 @@ export enum TextAlign {
 
 
 export interface ElementProperties {
-  height: number
-  width: number
+  height: number | "auto"
+  width: number | "auto"
   size: number
   leftSize: number
   rightSize: number

@@ -37,7 +37,7 @@ export default function StyledContextMenu ({
       <ContextMenuPrimitive.Portal container={container}>
         <ContextMenuPrimitive.Content
           collisionPadding={8}
-          className="bg-background-secondary w-[234px] border-border-transparent rounded-lg !p-0 shadow-lg overflow-auto max-h-[var(--radix-context-menu-content-available-height)]"
+          className="bg-white w-[234px] border-border-transparent rounded-lg !p-0 shadow-lg overflow-auto max-h-[var(--radix-context-menu-content-available-height)]"
         >
           {menuGroups.map(
             (group, index) =>
