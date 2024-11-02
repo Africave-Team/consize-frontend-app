@@ -5,12 +5,59 @@ export enum CertificatesStatus {
 }
 
 export enum ComponentTypes {
+  BACKGROUND = 'background',
   TEXT = "text",
   NAME = "name",
+  IMAGE = "image",
   SIGNATORY = "signatory",
+  COURSE = "course-title",
   DATE = "date",
+  CIRCLE = 'circle',
+  TRIANGLE = "triangle",
+  TRAPEZOID = "trapezoid",
+  SQUARE = 'square',
+  RECTANGLE = "rectangle"
 }
 
+export enum TextAlign {
+  LEFT = "left",
+  RIGHT = "right",
+  CENTER = "center"
+}
+
+
+export interface ElementProperties {
+  height: number | "auto"
+  width: number | "auto"
+  size: number
+  leftSize: number
+  rightSize: number
+  bottomSize: number
+  color: string
+  radius: {
+    rt: number
+    rb: number
+    lb: number
+    lt: number
+  },
+  border?: {
+    r: number
+    b: number
+    l: number
+    t: number,
+    color: string
+  },
+  text?: {
+    size: number
+    weight: number
+    family: string
+    color: string
+    value: string
+    align: TextAlign
+  },
+
+  url?: string
+}
 export interface CertificatesInterface {
   id: string,
   name: string,
@@ -43,6 +90,7 @@ export interface CertificateComponent {
     x: number
     y: number
   },
+  properties: Partial<ElementProperties>,
   default?: string
   text?: ComponentText
   signatory?: ComponentSignatory
