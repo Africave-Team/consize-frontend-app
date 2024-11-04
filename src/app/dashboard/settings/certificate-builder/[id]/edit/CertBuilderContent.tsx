@@ -10,11 +10,11 @@ import Triangle from '@/components/CertificateElements/Triangle'
 import { updateMyTeamInfo } from '@/services/teams'
 import uploadFile from '@/services/upload.service'
 import { useAuthStore } from '@/store/auth.store'
-import { CertificateComponent, CertificateTemplate, ComponentTypes, TextAlign } from '@/type-definitions/cert-builder'
+import { CertificateComponent, CertificatesInterface, CertificateTemplate, ComponentTypes, TextAlign } from '@/type-definitions/cert-builder'
 import { certificateTemplates, defaultElements } from '@/utils/certificate-templates'
 import { queryClient } from '@/utils/react-query'
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, border, Input, Popover, PopoverBody, PopoverContent, PopoverTrigger, Spinner } from '@chakra-ui/react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { MouseEvent, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react'
 import { BiPaste } from 'react-icons/bi'
 import { FiAlignCenter, FiAlignLeft, FiAlignRight, FiChevronDown, FiCloud, FiMessageCircle, FiPlus, FiTrash2 } from 'react-icons/fi'
@@ -26,6 +26,8 @@ import moment from 'moment'
 import MediaSelectorCertificate from '@/components/MediaSelectorCertificate'
 import { CertificateMediaTypes } from '@/type-definitions/auth'
 import SignatureBox from '@/components/CertificateElements/SignatureBox'
+import { useParams } from 'next/navigation'
+import { fetchCertificateByID, updateCertificateByID } from '@/services/certificates.services'
 
 enum ContextMenuGroupEnum {
   MANAGE = "manage",
@@ -34,6 +36,7 @@ enum ContextMenuGroupEnum {
 }
 
 export default function CertBuilderContent () {
+  const { id } = useParams()
   const { team, setTeam } = useAuthStore()
   const [uploading, setUploading] = useState(false)
   const [backgrounds, setBackgrounds] = useState<string[]>([])
@@ -47,6 +50,37 @@ export default function CertBuilderContent () {
     []
   )
 
+  const loadData = async function (id: string) {
+    const result = await fetchCertificateByID(id)
+    return result.data
+  }
+
+  const { data: certificateInfo, isFetching } =
+    useQuery<CertificatesInterface>({
+      queryKey: ['certificate', { id }],
+      queryFn: () => loadData(id)
+    })
+
+  const { isPending: updatePending, mutateAsync: _updateCertificate } = useMutation({
+    mutationFn: (load: {
+      payload: {
+        components: CertificateTemplate,
+        name?: string
+      }, id: string
+    }) => {
+      return updateCertificateByID(load.id, load.payload)
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['certificate', { id }] })
+    }
+  })
+
+
+  useEffect(() => {
+    if (certificateInfo) {
+      setSelected(certificateInfo.components || null)
+    }
+  }, [certificateInfo])
   const [gridColor, setGridColor] = useState('rgba(255, 255, 255, 0.3)') // Default to light color
 
   // Function to determine brightness of the background image and set grid color
@@ -500,7 +534,7 @@ export default function CertBuilderContent () {
             <div className='w-28'>
               <div className='h-8 relative'>
                 <input type="text" onBlur={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let color = e.target.value
                     let isValid = isValidHexColor(color)
                     if (!isValid) {
@@ -524,7 +558,7 @@ export default function CertBuilderContent () {
                   <PopoverContent className='w-52 p-0'>
                     <PopoverBody className='w-52 p-1'>
                       <HexColorPicker color={data.properties.color} onChange={(color) => {
-                        if (activeComponentIndex) {
+                        if (activeComponentIndex !== null) {
                           let copySel = { ...elements }
                           let copyActive = { ...data }
                           copySel.components[activeComponentIndex].properties.color = color
@@ -573,7 +607,7 @@ export default function CertBuilderContent () {
             <div className='w-28'>
               <div className='h-8 relative'>
                 <input type="text" onBlur={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let color = e.target.value
                     let isValid = isValidHexColor(color)
                     if (!isValid) {
@@ -597,7 +631,7 @@ export default function CertBuilderContent () {
                   <PopoverContent className='w-52 p-0'>
                     <PopoverBody className='w-52 p-1'>
                       <HexColorPicker color={data.properties.color} onChange={(color) => {
-                        if (activeComponentIndex) {
+                        if (activeComponentIndex !== null) {
                           let copySel = { ...elements }
                           let copyActive = { ...data }
                           copySel.components[activeComponentIndex].properties.color = color
@@ -710,7 +744,7 @@ export default function CertBuilderContent () {
               <div className='w-28'>
                 <div className='h-8 relative'>
                   <input type="text" onBlur={(e) => {
-                    if (activeComponentIndex) {
+                    if (activeComponentIndex !== null) {
                       let color = e.target.value
                       let isValid = isValidHexColor(color)
                       if (!isValid) {
@@ -734,7 +768,7 @@ export default function CertBuilderContent () {
                     <PopoverContent className='w-52 p-0'>
                       <PopoverBody className='w-52 p-1'>
                         <HexColorPicker color={data.properties.color} onChange={(color) => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             copySel.components[activeComponentIndex].properties.color = color
@@ -760,7 +794,7 @@ export default function CertBuilderContent () {
             <div className='w-28'>
               <div className='h-8 relative'>
                 <input type="text" onBlur={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let color = e.target.value
                     let isValid = isValidHexColor(color)
                     if (!isValid) {
@@ -784,7 +818,7 @@ export default function CertBuilderContent () {
                   <PopoverContent className='w-52 p-0'>
                     <PopoverBody className='w-52 p-1'>
                       <HexColorPicker color={data.properties.color} onChange={(color) => {
-                        if (activeComponentIndex) {
+                        if (activeComponentIndex !== null) {
                           let copySel = { ...elements }
                           let copyActive = { ...data }
                           copySel.components[activeComponentIndex].properties.color = color
@@ -836,7 +870,7 @@ export default function CertBuilderContent () {
               <div className='w-28'>
                 <div className='h-8 relative'>
                   <input type="text" onBlur={(e) => {
-                    if (activeComponentIndex) {
+                    if (activeComponentIndex !== null) {
                       let color = e.target.value
                       let isValid = isValidHexColor(color)
                       if (!isValid) {
@@ -860,7 +894,7 @@ export default function CertBuilderContent () {
                     <PopoverContent className='w-52 p-0'>
                       <PopoverBody className='w-52 p-1'>
                         <HexColorPicker color={data.properties.color} onChange={(color) => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             copySel.components[activeComponentIndex].properties.color = color
@@ -1069,7 +1103,7 @@ export default function CertBuilderContent () {
                   {data.properties.url}
                 </div>
                 <MediaSelectorCertificate type={CertificateMediaTypes.SIGNATURE} onSelect={(url) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let copySel = { ...elements }
                     let copyActive = { ...data }
                     if (copySel && copyActive && copySel.components[activeComponentIndex]) {
@@ -1212,7 +1246,7 @@ export default function CertBuilderContent () {
                 <div className='w-1/6'>
                   <div className='h-8 relative'>
                     <input type="text" onBlur={(e) => {
-                      if (activeComponentIndex) {
+                      if (activeComponentIndex !== null) {
                         let color = e.target.value
                         let isValid = isValidHexColor(color)
                         if (!isValid) {
@@ -1241,7 +1275,7 @@ export default function CertBuilderContent () {
                       <PopoverContent className='w-52 p-0'>
                         <PopoverBody className='w-52 p-1'>
                           <HexColorPicker color={data.properties.border?.color} onChange={(color) => {
-                            if (activeComponentIndex) {
+                            if (activeComponentIndex !== null) {
                               let copySel = { ...elements }
                               let copyActive = { ...data }
                               if (copySel && copyActive && copySel.components[activeComponentIndex]) {
@@ -1329,7 +1363,7 @@ export default function CertBuilderContent () {
               <div className='font-semibold text-xs mt-3'>Fill</div>
               <div className='h-8 w-full relative'>
                 <input type="text" onChange={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let color = e.target.value
                     let copySel = { ...elements }
                     let copyActive = { ...data }
@@ -1342,7 +1376,7 @@ export default function CertBuilderContent () {
                     }
                   }
                 }} onBlur={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let color = e.target.value
                     if (color.length === 6 || color.length === 3 || color.length === 8) {
                       let isValid = isValidHexColor(color)
@@ -1371,7 +1405,7 @@ export default function CertBuilderContent () {
                   <PopoverContent className='w-52 p-0'>
                     <PopoverBody className='w-52 p-1'>
                       <HexColorPicker color={data.properties.text?.color} onChange={(color) => {
-                        if (activeComponentIndex) {
+                        if (activeComponentIndex !== null) {
                           let copySel = { ...elements }
                           let copyActive = { ...data }
                           let selComponent = copySel.components[activeComponentIndex]
@@ -1393,7 +1427,7 @@ export default function CertBuilderContent () {
               <div className='font-semibold text-xs mt-3'>Font size</div>
               <div className='h-8 w-full relative'>
                 <input type="number" onChange={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let size = e.target.valueAsNumber
                     let copySel = { ...elements }
                     let copyActive = { ...data }
@@ -1423,7 +1457,7 @@ export default function CertBuilderContent () {
                       </div>}
                       <div className='mt-2'>
                         {defaultFontSizes.map((e) => <div key={e} onClick={() => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let size = e
                             let copySel = { ...elements }
                             let copyActive = { ...data }
@@ -1461,7 +1495,7 @@ export default function CertBuilderContent () {
                     <PopoverBody className='w-32 h-40 overflow-y-scroll p-1'>
                       <div className='mt-2'>
                         {defaultFontWeights.map((e) => <div key={e.title} onClick={() => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             let selComponent = copySel.components[activeComponentIndex]
@@ -1501,7 +1535,7 @@ export default function CertBuilderContent () {
                     <PopoverBody className='w-32 h-40 overflow-y-scroll p-1'>
                       <div className='mt-2'>
                         {defaultFonts.map((e) => <div key={e.title} onClick={() => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             let selComponent = copySel.components[activeComponentIndex]
@@ -1524,7 +1558,7 @@ export default function CertBuilderContent () {
               <div className='font-semibold text-xs mt-3'>Text Align</div>
               <div className='h-8 rounded-md w-full border items-center bg-gray-100 flex'>
                 <div onClick={() => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let copySel = { ...elements }
                     let copyActive = { ...data }
                     let selComponent = copySel.components[activeComponentIndex]
@@ -1539,7 +1573,7 @@ export default function CertBuilderContent () {
                   <FiAlignLeft />
                 </div>
                 <div onClick={() => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let copySel = { ...elements }
                     let copyActive = { ...data }
                     let selComponent = copySel.components[activeComponentIndex]
@@ -1554,7 +1588,7 @@ export default function CertBuilderContent () {
                   <FiAlignCenter />
                 </div>
                 <div onClick={() => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let copySel = { ...elements }
                     let copyActive = { ...data }
                     let selComponent = copySel.components[activeComponentIndex]
@@ -1715,7 +1749,7 @@ export default function CertBuilderContent () {
               <div className='w-1/6'>
                 <div className='h-8 relative'>
                   <input type="text" onBlur={(e) => {
-                    if (activeComponentIndex) {
+                    if (activeComponentIndex !== null) {
                       let color = e.target.value
                       let isValid = isValidHexColor(color)
                       if (!isValid) {
@@ -1742,7 +1776,7 @@ export default function CertBuilderContent () {
                     <PopoverContent className='w-52 p-0'>
                       <PopoverBody className='w-52 p-1'>
                         <HexColorPicker color={data.properties.border?.color} onChange={(color) => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             let selComponent = copySel.components[activeComponentIndex]
@@ -1785,7 +1819,7 @@ export default function CertBuilderContent () {
                     <PopoverBody className='w-44 h-40 overflow-y-scroll p-1'>
                       <div className='mt-2'>
                         {defaultDateFormats.map((e) => <div key={e} onClick={() => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             let selComponent = copySel.components[activeComponentIndex]
@@ -1810,7 +1844,7 @@ export default function CertBuilderContent () {
               <div className='font-semibold text-xs mt-3'>Set a preview course title</div>
               <div className='h-8 w-full'>
                 <input type="text" onChange={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let course = e.target.value
                     let copySel = { ...elements }
                     let copyActive = { ...data }
@@ -1832,7 +1866,7 @@ export default function CertBuilderContent () {
               <div className='font-semibold text-xs mt-3'>Set text content</div>
               <div className='h-8 w-full'>
                 <input type="text" onChange={(e) => {
-                  if (activeComponentIndex) {
+                  if (activeComponentIndex !== null) {
                     let course = e.target.value
                     let copySel = { ...elements }
                     let copyActive = { ...data }
@@ -1968,7 +2002,7 @@ export default function CertBuilderContent () {
               <div className='w-1/6'>
                 <div className='h-8 relative'>
                   <input type="text" onBlur={(e) => {
-                    if (activeComponentIndex) {
+                    if (activeComponentIndex !== null) {
                       let color = e.target.value
                       let isValid = isValidHexColor(color)
                       if (!isValid) {
@@ -1995,7 +2029,7 @@ export default function CertBuilderContent () {
                     <PopoverContent className='w-52 p-0'>
                       <PopoverBody className='w-52 p-1'>
                         <HexColorPicker color={data.properties.border?.color} onChange={(color) => {
-                          if (activeComponentIndex) {
+                          if (activeComponentIndex !== null) {
                             let copySel = { ...elements }
                             let copyActive = { ...data }
                             let selComponent = copySel.components[activeComponentIndex]
@@ -2146,7 +2180,21 @@ export default function CertBuilderContent () {
 
         </Accordion>
       </div>
-      <div className='flex-1 p-10 h-full flex justify-start overflow-y-scroll'>
+      <div className='flex-1 px-10 gap-6 h-full flex flex-col justify-start overflow-y-scroll'>
+        <div className=''></div>
+        <div className='h-10 w-full flex justify-between items-center'>
+          <div></div>
+          <div>
+            {selected && <button className='bg-primary-dark text-white px-3 h-10' onClick={() => _updateCertificate({
+              payload: {
+                components: selected,
+                name: certificateInfo?.name
+              }, id
+            })}>
+              Save changes
+            </button>}
+          </div>
+        </div>
         {selected && <StyledContextMenu
           modal={false}
           menuGroups={contextMenuData}

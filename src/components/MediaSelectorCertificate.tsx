@@ -90,7 +90,10 @@ export default function MediaSelectorCertificate ({ type, onSelect }: { type: Ce
 
               </div>
               <div>
-                <button onClick={() => onSelect(selected)} disabled={!selected || selected.length === 0} className='h-10 rounded-md bg-primary-dark disabled:bg-primary-dark/30 text-white px-5 text-sm'>Select</button>
+                <button onClick={() => {
+                  onSelect(selected)
+                  onClose()
+                }} disabled={!selected || selected.length === 0} className='h-10 rounded-md bg-primary-dark disabled:bg-primary-dark/30 text-white px-5 text-sm'>Select</button>
               </div>
             </div>
           </ModalBody>
