@@ -3,19 +3,20 @@ import React from 'react'
 import { FiEye } from 'react-icons/fi'
 
 
-export default function PreviewCertificateButton ({ id }: { id: string }) {
+export default function PreviewCertificateButton ({ id, template }: { id: string, template: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const previewPayload = Buffer.from(JSON.stringify({
-    "studentName": "James Onaghi",
-    "courseName": "Astrophysics",
+    "studentName": "Ahman Emmanuel Onoja Solomon",
+    "courseName": "The first and last time I will trust a woman",
     "organizationName": "Fate Foundation",
     "signature1": "first_man",
     "signatory1": "First man",
     "signature2": "second_man",
     "signatory2": "Second Man",
     "certificateId": id,
-    "template": true
+    "template": template
   }), 'utf-8').toString('base64')
+  console.log("template", `https://${location.host}/templates/certificate?data=${previewPayload}`)
 
   return (
     <div>

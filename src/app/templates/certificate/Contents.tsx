@@ -6,7 +6,7 @@ import moment from 'moment'
 import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa6'
 import Logo from '@/components/Logo'
 import { fonts } from '@/app/fonts'
-import { CertificatesInterface } from '@/type-definitions/cert-builder'
+import { CertificateComponent, CertificatesInterface, ComponentTypes } from '@/type-definitions/cert-builder'
 const myFont = localFont({ src: './gilsans.ttf' })
 const cloisterFont = localFont({ src: './CloisterBlack.ttf' })
 const culpa = localFont({ src: './helvetica.ttf' })
@@ -14,6 +14,17 @@ const antique = localFont({ src: './antique.ttf' })
 const sequel = localFont({ src: './sequel.ttf' })
 const theseasons = localFont({ src: './theseasons-reg.otf' })
 const sloop = localFont({ src: './Sloop-ScriptThree.ttf' })
+
+import { Rnd } from 'react-rnd'
+import TextContent from '@/components/CertificateElements/TextContent'
+import Circle from '@/components/CertificateElements/Circle'
+import SignatureBox from '@/components/CertificateElements/SignatureBox'
+import ImageBox from '@/components/CertificateElements/Image'
+import Trapezoid from '@/components/CertificateElements/Trapezoid'
+import Triangle from '@/components/CertificateElements/Triangle'
+import Box from '@/components/CertificateElements/Box'
+import { fetchCertificateByID } from '@/services/certificates.services'
+import { useQuery } from '@tanstack/react-query'
 
 interface DataInterface {
   studentName: string
@@ -31,6 +42,64 @@ interface DataInterface {
 export default function PageContents ({ details }: { details: DataInterface }) {
   const [bgUrl] = useState("https://storage.googleapis.com/kippa-cdn-public/microlearn-certificate-assets/new-certificate.png")
   const [certificateContents, setCertificateContents] = useState<ReactNode>(<></>)
+
+  const loadData = async function (id: string) {
+    const result = await fetchCertificateByID(id)
+    return result.data
+  }
+
+  const { data: certificateInfo, isFetching } =
+    useQuery<CertificatesInterface>({
+      enabled: (details.certificateId.length > 0 && !details.template),
+      queryKey: ['certificate', { id: details.certificateId }],
+      queryFn: () => loadData(details.certificateId)
+    })
+
+
+  const renderComponent = function (data: CertificateComponent) {
+    let component = <div></div>
+    switch (data.type) {
+      case ComponentTypes.DATE:
+        component = <TextContent text={data.properties.text} border={data.properties.border} height={"auto"} width={data.properties.width || 100} />
+        break
+      case ComponentTypes.TEXT:
+      case ComponentTypes.COURSE:
+        component = <TextContent text={data.properties.text} border={data.properties.border} height={"auto"} width={data.properties.width || 100} />
+        break
+
+      case ComponentTypes.NAME:
+        component = <TextContent text={data.properties.text} border={data.properties.border} height={data.properties.height || 40} width={data.properties.width || 100} />
+        break
+      case ComponentTypes.SIGNATORY:
+        component = <SignatureBox url={data.properties.url} border={data.properties.border} radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 40} width={data.properties.width || 400} />
+        break
+      case ComponentTypes.CIRCLE:
+        component = <Circle size={data.properties.size || 100} color={data.properties.color || '#000'} />
+        break
+
+      case ComponentTypes.IMAGE:
+        component = <ImageBox url={data.properties.url} radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 40} width={data.properties.width || 400} />
+        break
+      case ComponentTypes.TRAPEZOID:
+        component = <Trapezoid leftSize={data.properties.leftSize || 0} rightSize={data.properties.rightSize || 130} bottomSize={data.properties.bottomSize || 100} width={data.properties.width || 200} color={data.properties.color || '#000'} />
+        break
+      case ComponentTypes.TRIANGLE:
+        component = <Triangle leftSize={data.properties.leftSize || 100} rightSize={data.properties.rightSize || 100} bottomSize={data.properties.bottomSize || 120} color={data.properties.color || '#000'} />
+        break
+      case ComponentTypes.SQUARE:
+        component = <Box radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 100} width={data.properties.width || 100} color={data.properties.color || '#000'} />
+        break
+      case ComponentTypes.RECTANGLE:
+        component = <Box radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 40} width={data.properties.width || 400} color={data.properties.color || '#000'} />
+        break
+      default:
+        break
+    }
+
+    return component
+  }
+
+
   const generateContent = function (data: DataInterface, certificate?: CertificatesInterface | null) {
     if (data.certificateId) {
       if (data.template) {
@@ -405,9 +474,90 @@ export default function PageContents ({ details }: { details: DataInterface }) {
         }
       } else {
         if (certificate) {
-          return <>Build certificate</>
+          let nameIndex = certificate.components.components.findIndex(e => e.type === ComponentTypes.NAME)
+          let courseIndex = certificate.components.components.findIndex(e => e.type === ComponentTypes.COURSE)
+          if (courseIndex >= 0 && certificate.components.components[courseIndex].properties && certificate.components.components[courseIndex].properties.text) {
+            certificate.components.components[courseIndex].properties.text.value = data.courseName
+          }
+
+          if (nameIndex >= 0 && certificate.components.components[nameIndex].properties && certificate.components.components[nameIndex].properties.text) {
+            certificate.components.components[nameIndex].properties.text.value = data.studentName
+          }
+          return <div className='template h-[650px] w-[900px] relative'>
+
+            {certificate.components.bg === "plain" ? <div style={{
+              background: certificate.components.components[0].properties.color
+            }} className='absolute border top-0 left-0 h-full w-[900px] rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-[900px] rounded-md' src={certificate.components.bg} />}
+            {/* <div className='absolute border top-0 left-0 h-full w-[900px] grid-lines' style={{
+            backgroundImage: `linear-gradient(to right, ${gridColor} 1px, transparent 1px), 
+                          linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)`,
+          }} /> */}
+            <div className={`rounded-2xl`}
+              style={{
+                width: '900px',
+                height: '650px',
+                position: 'relative',
+                overflow: "hidden"
+              }}>
+
+              {
+                certificate.components.components.map((comp, index) => {
+                  if (comp.type === ComponentTypes.BACKGROUND) {
+                    return <div key={`${comp.type}_${index}`} />
+                  } else {
+                    return <Rnd
+                      key={`${comp.type}_${index}`}
+                      bounds="parent" // This restricts dragging and resizing to the parent container
+                      position={{
+                        x: comp.position.x || 100,
+                        y: comp.position.y || 100,
+                      }}
+                      enableResizing={false}
+                      className={`absolute`}
+                    >
+                      <div>{renderComponent(comp)}</div>
+                    </Rnd>
+                  }
+                })
+              }
+
+            </div>
+
+          </div>
         } else {
-          return <>No Certificate component data</>
+          return (
+            <div className="template h-[650px]">
+              <img className="template-image"
+                alt="Description of the image" id="template-image"
+                src={bgUrl} />
+              <div className="to-cetrify">
+                This is to certify that
+              </div>
+              <div className="name w-full capitalize" id="name">
+                {details.studentName}
+              </div>
+              <div className="certificate-text">
+                Is hereby awarded the certificate of achievement for the successful completion of the
+                <span className="course-name pl-1" id="courseName">{details.courseName}</span> course
+                offered by <span className="course-provider" id="organizationName">{details.organizationName}</span>
+
+              </div>
+              <div className="logo h-14 w-14">
+                {details.logoUrl && <img className="logo-image" alt="logo" id="logo-image"
+                  src={details.logoUrl} />}
+              </div>
+              <div className="representative1">
+                <span id="signature1">{details.signature1}</span> <br />
+                {/* <span id="name1">{details.signatory1}</span> */}
+
+              </div>
+              <div className="representative2">
+                <span id="signature2">{details.signature2}</span> <br />
+                {/* <span id="name2">{details.signatory2}</span> */}
+
+              </div>
+            </div>
+          )
         }
       }
     } else {
@@ -707,11 +857,11 @@ export default function PageContents ({ details }: { details: DataInterface }) {
   }
 
   useEffect(() => {
-    if (details) {
-      const content = generateContent(details)
+    if (details && !isFetching) {
+      const content = generateContent(details, certificateInfo)
       setCertificateContents(content)
     }
-  }, [details])
+  }, [details, certificateInfo, isFetching])
   return (
     <div className='h-screen'>
       {certificateContents}

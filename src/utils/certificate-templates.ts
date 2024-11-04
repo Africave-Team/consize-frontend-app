@@ -146,14 +146,14 @@ export const defaultElements = [
     "type": ComponentTypes.COURSE,
     properties: {
       height: 40,
-      width: 180,
+      width: 620,
       text: {
         size: 16,
         weight: 600,
         family: 'Inter',
         color: '#000',
         value: "Select a course from properties",
-        align: TextAlign.LEFT
+        align: TextAlign.CENTER
       }
     },
     "default": ``,

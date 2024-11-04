@@ -58,7 +58,7 @@ export default function MediaSelectorCertificate ({ type, onSelect }: { type: Ce
           <ModalBody className='h-[560px]'>
             <div className='w-full font-semibold h-10 flex items-center justify-between text-xl'>
               <div>
-                Select {type === CertificateMediaTypes.IMAGE ? 'an Image' : type === CertificateMediaTypes.SIGNATURE ? 'a Signature' : 'a Font'}
+                Select Image
               </div>
               <div>
                 <button onClick={() => {
@@ -70,17 +70,17 @@ export default function MediaSelectorCertificate ({ type, onSelect }: { type: Ce
 
                   {uploading ? <Spinner /> : <>
                     <FiPlus />
-                    New {type}
+                    New image
                   </>}
                 </button>
-                <input className='hidden' onChange={(e => {
+                <input className='hidden' accept='image/*' onChange={(e => {
                   if (e.target.files) {
                     handleBgUpload(e.target.files[0])
                   }
                 })} type="file" id="add-certificate-media" />
               </div>
             </div>
-            <div className='h-[460px] overflow-y-auto grid grid-cols-4'>
+            <div className='h-[460px] overflow-y-auto grid py-5 grid-cols-4 gap-x-5 gap-y-0'>
               {team?.certificateMedia?.filter(e => e.type === type).map((item) => <div key={item.url} onClick={() => setSelected(item.url)} className={`h-40 border flex rounded-md justify-center items-center ${item.url === selected && 'border-primary-dark border-2'}`}>
                 <img src={item.url} className='h-32' />
               </div>)}

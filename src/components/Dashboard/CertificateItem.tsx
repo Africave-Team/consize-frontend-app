@@ -14,7 +14,7 @@ export default function CertificateItem ({ certificate, onlyPreview, selector }:
       </div>
       <div className='flex gap-2'>
 
-        <PreviewCertificateButton id={certificate.id} />
+        <PreviewCertificateButton template={!certificate.components || certificate.components.components.length === 0} id={certificate.id} />
         {!onlyPreview && process.env['NEXT_PUBLIC_BASE_URL']?.includes('localhost') && <Tooltip label="Edit">
           <Link href={`/dashboard/settings/certificate-builder/${certificate.id}/edit`} className='h-9 rounded-md border w-9 flex justify-center items-center'>
             <FiEdit2 />
