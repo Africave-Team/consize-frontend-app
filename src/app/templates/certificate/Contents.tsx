@@ -263,7 +263,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
             </>
           )
-        } else if (data.certificateId === "71bbefa8-1c7b-4c4e-be22-03cf44917a38") {
+        } else if (["71bbefa8-1c7b-4c4e-be22-03cf44917a38", "08414197-6b2a-4697-a896-7c765e961a3d", "c316028a-e50a-4b21-96f3-c33595316a44"].includes(data.certificateId)) {
           return (
             <div className="template h-[700px] w-full relative">
               <div className='h-full absolute left-0 right-0 bg-primary-app flex justify-center items-center'>
@@ -318,7 +318,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
               </div>
             </div>
           )
-        } else if (data.certificateId === "5a4a899d-9d8f-41d4-8c4c-1556cf1e5046") {
+        } else if (["5a4a899d-9d8f-41d4-8c4c-1556cf1e5046"].includes(data.certificateId)) {
           return (
             <div className="template h-[700px] w-full relative">
               <div className='h-full absolute left-0 right-0 bg-[#E4701E] flex justify-center items-center'>
