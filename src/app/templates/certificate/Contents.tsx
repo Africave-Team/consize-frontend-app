@@ -476,12 +476,12 @@ export default function PageContents ({ details }: { details: DataInterface }) {
         if (certificate) {
           let nameIndex = certificate.components.components.findIndex(e => e.type === ComponentTypes.NAME)
           let courseIndex = certificate.components.components.findIndex(e => e.type === ComponentTypes.COURSE)
-          if (courseIndex >= 0 && certificate.components.components[courseIndex].properties && certificate.components.components[courseIndex].properties.text) {
-            certificate.components.components[courseIndex].properties.text.value = data.courseName
+          if (courseIndex >= 0 && certificate.components && certificate.components.components[courseIndex] && certificate.components.components[courseIndex].properties && certificate.components.components[courseIndex].properties.text) {
+            certificate.components!.components[courseIndex]!.properties!.text!.value = data.courseName
           }
 
-          if (nameIndex >= 0 && certificate.components.components[nameIndex].properties && certificate.components.components[nameIndex].properties.text) {
-            certificate.components.components[nameIndex].properties.text.value = data.studentName
+          if (nameIndex >= 0 && certificate.components && certificate.components.components[nameIndex] && certificate.components.components[nameIndex].properties && certificate.components.components[nameIndex].properties.text) {
+            certificate.components!.components[nameIndex]!.properties!.text!.value = data.studentName
           }
           return <div className='template h-[650px] w-[900px] relative'>
 
