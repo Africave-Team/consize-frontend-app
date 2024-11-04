@@ -66,6 +66,7 @@ export interface CertificatesInterface {
   text: string[],
   status: CertificatesStatus,
   signatories: string[]
+  components: CertificateTemplate
 }
 
 export interface CreateCertificate {
