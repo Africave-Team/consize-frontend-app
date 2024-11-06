@@ -7,7 +7,7 @@ import { updateMyTeamInfo } from '@/services/teams'
 import { useAuthStore } from '@/store/auth.store'
 import { CertificatesInterface } from '@/type-definitions/cert-builder'
 import { queryClient } from '@/utils/react-query'
-import { Spinner, Tooltip } from '@chakra-ui/react'
+import { MenuItem, Spinner, Tooltip } from '@chakra-ui/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { FiCheck } from 'react-icons/fi'
@@ -57,12 +57,10 @@ export default function TeamsSettingsPage () {
         </div>
         <div className='grid grid-cols-2 gap-5 mt-10'>
           {certificates && certificates.map((certificate) => <div className={`${certificate.id === team?.defaultCertificateId && 'border-l-4 w-full rounded-md border border-primary-dark border-l-primary-dark'} cursor-pointer`} key={certificate.id}>
-            <CertificateItem selector={certificate.id === team?.defaultCertificateId ? <></> : <Tooltip label="Make default certificate">
-              <button onClick={() => handleSelectorClick(certificate.id)} className='h-9 rounded-md border w-9 flex justify-center items-center'>
-                {progress[certificate.id] ? <Spinner size={'sm'} /> :
-                  <FiCheck />}
-              </button>
-            </Tooltip>} certificate={certificate} /></div>)}
+            <CertificateItem selector={certificate.id === team?.defaultCertificateId ? <></> : <MenuItem className='hover:bg-gray-100' onClick={() => handleSelectorClick(certificate.id)} icon={progress[certificate.id] ? <Spinner size={'sm'} /> :
+              <FiCheck />}>
+              Mark as default
+            </MenuItem>} certificate={certificate} /></div>)}
         </div>
       </div>
     </Layout>

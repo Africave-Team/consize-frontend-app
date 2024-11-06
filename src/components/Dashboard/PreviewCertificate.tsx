@@ -1,9 +1,9 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tooltip, useDisclosure } from '@chakra-ui/react'
+import { MenuItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tooltip, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import { FiEye } from 'react-icons/fi'
 
 
-export default function PreviewCertificateButton ({ id, template }: { id: string, template: boolean }) {
+export default function PreviewCertificateButton ({ id, template, menu }: { id: string, template: boolean, menu?: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const previewPayload = Buffer.from(JSON.stringify({
     "studentName": "Ahman Emmanuel Onoja Solomon",
@@ -20,11 +20,12 @@ export default function PreviewCertificateButton ({ id, template }: { id: string
 
   return (
     <div>
-      <Tooltip label="Preview">
+
+      {menu ? <MenuItem onClick={() => onOpen()} className='hover:bg-gray-100' icon={<FiEye />}>Preview</MenuItem> : <Tooltip label="Preview">
         <button onClick={onOpen} className='h-9 rounded-md border w-9 flex justify-center items-center'>
           <FiEye />
         </button>
-      </Tooltip>
+      </Tooltip>}
       {isOpen && <Modal size={'4xl'} onClose={() => {
         onClose()
       }} isOpen={isOpen} isCentered={true}>

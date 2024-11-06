@@ -23,3 +23,15 @@ export const updateCertificateByID = async (id: string, data: { components: Cert
     url: `certificates/${id}`,
     body: data
   })
+
+
+export const duplicateCertificateByID = async (id: string, data: { name?: string }): Promise<any> =>
+  http.post({
+    url: `certificates/${id}`,
+    body: data
+  })
+
+export const deleteCertificateByID = async (id: string): Promise<any> =>
+  http.delete({
+    url: `certificates/${id}`,
+  })

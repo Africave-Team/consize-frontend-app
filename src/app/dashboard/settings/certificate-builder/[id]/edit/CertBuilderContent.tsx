@@ -2232,7 +2232,7 @@ export default function CertBuilderContent () {
             {certificateInfo && <PreviewCertificateButton template={!certificateInfo?.components || certificateInfo?.components.components.length === 0} id={certificateInfo.id} />}
           </div>
         </div>
-        {selected && <StyledContextMenu
+        {/* <StyledContextMenu
           modal={false}
           menuGroups={contextMenuData}
           onOpenChange={(open) => {
@@ -2240,9 +2240,10 @@ export default function CertBuilderContent () {
               setContextMenuData([])
             }
           }}
-        >
-          {/* @ts-gnore */}
-          {/* onContextMenu={handlePaneContextMenu} */}
+          > */}
+        {/* @ts-gnore */}
+        {/* onContextMenu={handlePaneContextMenu} */}
+        {selected &&
           <div className='h-[600px] w-[900px] relative'>
 
             {selected.bg === "plain" ? <div style={{
@@ -2323,7 +2324,8 @@ export default function CertBuilderContent () {
             </div>
 
           </div>
-        </StyledContextMenu>}
+        }
+        {/* </StyledContextMenu> */}
       </div>
     </div >
   )

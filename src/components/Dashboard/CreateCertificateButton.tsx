@@ -1,4 +1,4 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, useToast } from '@chakra-ui/react'
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, useToast } from '@chakra-ui/react'
 import React from 'react'
 import { CohortsInterface } from '@/type-definitions/cohorts'
 import { useFormik } from 'formik'
@@ -8,6 +8,7 @@ import { Signatory } from '@/type-definitions/signatories'
 import { useQuery } from '@tanstack/react-query'
 import { createCertificate } from '@/services/certificates.services'
 import { queryClient } from '@/utils/react-query'
+import { useRouter } from 'next/navigation'
 
 interface ApiResponse {
   data: CohortsInterface[]
@@ -24,6 +25,7 @@ export default function CreateCertificateButton () {
     const result = await mySignatories()
     return result.data
   }
+  const router = useRouter()
 
   const { data: signatories, isFetching, refetch } =
     useQuery<Signatory[]>({
@@ -40,7 +42,7 @@ export default function CreateCertificateButton () {
     },
     validateOnChange: true,
     onSubmit: async function (values, { resetForm }) {
-      await createCertificate({
+      const result = await createCertificate({
         name: values.name,
         status: values.status,
         signatories: signatories?.map(e => e._id || "").filter(e => e.length > 0).slice(0, 2) || []
@@ -48,8 +50,10 @@ export default function CreateCertificateButton () {
       queryClient.invalidateQueries({
         queryKey: ['certificates']
       })
+      router.push(`/dashboard/settings/certificate-builder/${result.data.id}/edit`)
       resetForm()
       onClose()
+
       toast({
         title: "Finished",
         description: "Certificate created",
@@ -81,8 +85,8 @@ export default function CreateCertificateButton () {
 
               <div className='mb-5 mt-5 flex justify-end items-center'>
                 <div className='flex items-center gap-2'>
-                  <button className='h-12 px-5' onClick={onClose} type='button'>Cancel</button>
-                  <button className='h-12 px-5 border rounded-md'>Save</button>
+                  <Button className='h-12 px-5' onClick={onClose} type='button'>Cancel</Button>
+                  <Button isDisabled={createCertificateForm.isSubmitting} isLoading={createCertificateForm.isSubmitting} className='h-12 px-5 border rounded-md'>Save</Button>
                 </div>
               </div>
             </form>
