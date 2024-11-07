@@ -86,7 +86,7 @@ export default function CreateCertificateButton () {
               <div className='mb-5 mt-5 flex justify-end items-center'>
                 <div className='flex items-center gap-2'>
                   <Button className='h-12 px-5' onClick={onClose} type='button'>Cancel</Button>
-                  <Button isDisabled={createCertificateForm.isSubmitting} isLoading={createCertificateForm.isSubmitting} className='h-12 px-5 border rounded-md'>Save</Button>
+                  <Button type='submit' isDisabled={createCertificateForm.isSubmitting} isLoading={createCertificateForm.isSubmitting} className='h-12 px-5 border rounded-md'>Save</Button>
                 </div>
               </div>
             </form>
