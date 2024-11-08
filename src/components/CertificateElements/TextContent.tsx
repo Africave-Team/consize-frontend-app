@@ -12,12 +12,11 @@ export default function TextContent ({ text, width, border }: Pick<ElementProper
       borderLeft: `${border?.l}px solid ${border?.color}`,
       borderRight: `${border?.r}px solid ${border?.color}`,
       textAlign: text?.align,
-      color: text?.color,
-      fontSize: text?.size,
-      fontWeight: text?.weight,
       ...(defaultFonts.find(e => e.title === text?.family)?.font.style)
-    }}>
-      <Text>{text?.value}</Text>
+    }} className='whitespace-nowrap'>
+      <Text color={text?.color} fontSize={text?.size} fontWeight={text?.weight} fontStyle={text?.style} textDecoration={text?.decoration} textTransform={text?.transform}>
+        {text?.value}
+      </Text>
     </div>
   )
 }

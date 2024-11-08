@@ -174,7 +174,7 @@ html {
 }
 
 .grid-lines {
-  background-size: 40px 40px;
+  background-size: 50px 50px;
   /* Adjust the grid size */
   z-index: 10;
   /* Ensure grid is above the background image */

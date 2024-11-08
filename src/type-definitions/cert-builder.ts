@@ -25,6 +25,22 @@ export enum TextAlign {
   CENTER = "center"
 }
 
+export enum TextDecoration {
+  NONE = "none",
+  UNDERLINE = "underline",
+  LINETHROUGH = 'line-through'
+}
+
+export enum TextStyle {
+  NORMAL = "normal",
+  ITALIC = "italic"
+}
+
+export enum TextTransform {
+  NONE = 'none',
+  UPPERCASE = 'uppercase'
+}
+
 
 export interface ElementProperties {
   height: number | "auto"
@@ -54,6 +70,9 @@ export interface ElementProperties {
     color: string
     value: string
     align: TextAlign
+    decoration?: TextDecoration,
+    style?: TextStyle,
+    transform?: TextTransform
   },
 
   url?: string

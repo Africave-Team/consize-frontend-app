@@ -20,14 +20,13 @@ export default function CertificateItem ({ certificate, onlyPreview, selector }:
     mutationFn: (data: { id: string }) => deleteCertificateByID(data.id)
   })
   return (
-    <div key={certificate.id} className='h-16 border rounded-md w-full px-4 flex justify-between items-center'>
+    <div key={certificate.id} className='h-10 border rounded-md w-full px-4 flex justify-between items-center'>
       <div className=''>
         <div className='text-base font-bold'>{certificate.name}</div>
-        <div className='text-sm'>{certificate.signatories.length} {certificate.signatories.length > 1 ? 'Signatories' : 'Signatory'}</div>
       </div>
       <div className='flex gap-2'>
         <Menu>
-          <MenuButton as={Button}>
+          <MenuButton className='hover:bg-white active:!bg-white'>
             <FiMoreHorizontal />
           </MenuButton>
           <MenuList>

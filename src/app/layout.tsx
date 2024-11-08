@@ -32,6 +32,12 @@ const customTheme = extendTheme({
             height: "auto", // Adjust height if needed
           },
         },
+        "certificate": {
+          dialog: {
+            maxWidth: "980px", // Set your custom width here
+            height: "auto", // Adjust height if needed
+          },
+        },
         "3xl": {
           dialog: {
             maxWidth: "1000px", // Set your custom width here

@@ -55,7 +55,7 @@ export default function TeamsSettingsPage () {
           <div></div>
           <CreateCertificateButton />
         </div>
-        <div className='grid grid-cols-2 gap-5 mt-10'>
+        <div className='grid grid-cols-4 gap-5 mt-10'>
           {certificates && certificates.map((certificate) => <div className={`${certificate.id === team?.defaultCertificateId && 'border-l-4 w-full rounded-md border border-primary-dark border-l-primary-dark'} cursor-pointer`} key={certificate.id}>
             <CertificateItem selector={certificate.id === team?.defaultCertificateId ? <></> : <MenuItem className='hover:bg-gray-100' onClick={() => handleSelectorClick(certificate.id)} icon={progress[certificate.id] ? <Spinner size={'sm'} /> :
               <FiCheck />}>

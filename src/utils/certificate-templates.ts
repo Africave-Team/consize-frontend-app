@@ -1,4 +1,4 @@
-import { CertificateTemplate, ComponentTypes, TextAlign } from '@/type-definitions/cert-builder'
+import { CertificateComponent, CertificateTemplate, ComponentTypes, TextAlign, TextDecoration, TextStyle, TextTransform } from '@/type-definitions/cert-builder'
 import moment from 'moment'
 
 export const certificateTemplates: CertificateTemplate[] = [
@@ -53,7 +53,7 @@ export const certificateTemplates: CertificateTemplate[] = [
   },
 ]
 
-export const defaultElements = [
+export const defaultElements: CertificateComponent[] = [
   {
     "position": {
       "x": 159,
@@ -76,7 +76,10 @@ export const defaultElements = [
         family: 'Inter',
         color: '#000',
         value: `Josep Blatter`,
-        align: TextAlign.CENTER
+        align: TextAlign.CENTER,
+        style: TextStyle.ITALIC,
+        decoration: TextDecoration.NONE,
+        transform: TextTransform.NONE
       }
     },
     "default": "Josep Blatter",
@@ -100,7 +103,10 @@ export const defaultElements = [
         family: 'Inter',
         color: '#000',
         value: `Enter text here`,
-        align: TextAlign.LEFT
+        align: TextAlign.LEFT,
+        style: TextStyle.NORMAL,
+        decoration: TextDecoration.NONE,
+        transform: TextTransform.NONE
       }
     },
     "default": `Enter text here`,
@@ -130,7 +136,10 @@ export const defaultElements = [
         family: 'Inter',
         color: '#000',
         value: moment().format('Do MMMM, YYYY'),
-        align: TextAlign.CENTER
+        align: TextAlign.CENTER,
+        style: TextStyle.NORMAL,
+        decoration: TextDecoration.NONE,
+        transform: TextTransform.NONE
       }
     },
     "default": ``,
@@ -153,7 +162,10 @@ export const defaultElements = [
         family: 'Inter',
         color: '#000',
         value: "Select a course from properties",
-        align: TextAlign.CENTER
+        align: TextAlign.CENTER,
+        style: TextStyle.NORMAL,
+        decoration: TextDecoration.NONE,
+        transform: TextTransform.NONE
       }
     },
     "default": ``,

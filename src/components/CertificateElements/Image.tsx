@@ -7,13 +7,23 @@ export default function ImageBox ({ url, width, height, radius }: Pick<ElementPr
     <div style={{
       "width": `${width}px`,
       "height": `${height}px`,
-      borderTopRightRadius: radius.rt,
-      borderBottomRightRadius: radius.rb,
-      borderTopLeftRadius: radius.lt,
-      borderBottomLeftRadius: radius.lb
     }} >
-      <div className='h-full w-full relative'>
-        {url ? <img className='h-full w-full absolute top-0 left-0' src={url} /> : <div className='w-full h-full flex justify-center items-center'>
+      <div style={{
+        "width": `${width}px`,
+        "height": `${height}px`,
+        borderTopRightRadius: radius.rt,
+        borderBottomRightRadius: radius.rb,
+        borderTopLeftRadius: radius.lt,
+        borderBottomLeftRadius: radius.lb
+      }} className='h-full w-full relative'>
+        {url ? <img style={{
+          "width": `${width}px`,
+          "height": `${height}px`,
+          borderTopRightRadius: radius.rt,
+          borderBottomRightRadius: radius.rb,
+          borderTopLeftRadius: radius.lt,
+          borderBottomLeftRadius: radius.lb
+        }} className='h-full w-full absolute top-0 left-0' src={url} /> : <div className='w-full h-full flex justify-center items-center'>
           <FaRegImage className='text-5xl' />
         </div>}
         <div className="absolute left-0 top-0 h-full w-full"></div>
