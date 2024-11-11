@@ -229,6 +229,29 @@ export default function CertBuilderContent () {
     },
   ]
 
+  const handleMediaUpload = async function (file?: File) {
+    if (file) {
+      setUploading(true)
+      const formData = new FormData()
+      const originalName = file.name
+      const fileExtension = originalName.substring(originalName.lastIndexOf('.'))
+      let timestamp = new Date().getTime()
+      formData.append("file", file, `${timestamp}${fileExtension}`)
+      // upload and return the url to the parent
+      const { data } = await uploadFile(formData)
+      if (data) {
+        let urls = [...(team?.certificateMedia || [])]
+        urls.push({
+          type: CertificateMediaTypes.IMAGE,
+          url: data
+        })
+        const res = await _updateTeamBackgrounds({ payload: { certificateMedia: urls } })
+        setTeam(res.data)
+      }
+      setUploading(false)
+    }
+  }
+
 
   useEffect(() => {
     tempDataRef.current = {
@@ -245,7 +268,7 @@ export default function CertBuilderContent () {
   ])
 
   const { mutateAsync: _updateTeamBackgrounds } = useMutation({
-    mutationFn: (load: { payload: { certificateBackgrounds: string[] } }) => {
+    mutationFn: (load: { payload: { certificateBackgrounds?: string[], certificateMedia?: { url: string, type: CertificateMediaTypes }[] } }) => {
       return updateMyTeamInfo(load.payload)
     },
     onSuccess: async () => {
@@ -2185,6 +2208,24 @@ export default function CertBuilderContent () {
                     return <></>
                   }
                 })}
+
+                <div className={`relative h-40 rounded-md`}>
+                  <div className='absolute top-0 left-0 h-40 w-full rounded-md border group flex justify-center items-center hover:bg-white/40'>
+                    <input className='hidden' onChange={(e => {
+                      if (e.target.files) {
+                        handleMediaUpload(e.target.files[0])
+                      }
+                    })} type="file" id="add-certificate-media" />
+                    <button onClick={() => {
+                      let ele = document.getElementById('add-certificate-media')
+                      if (ele) {
+                        ele.click()
+                      }
+                    }} disabled={uploading} className='flex rounded-md h-7 text-xs bg-white items-center justify-center px-3'>
+                      {uploading ? <Spinner /> : <FiPlus className='font-bold text-5xl' />}
+                    </button>
+                  </div>
+                </div>
               </div>}
             </div>
             {isColorSelectorOpen && <div className='absolute top-0 left-0 h-full w-full flex justify-center'>
