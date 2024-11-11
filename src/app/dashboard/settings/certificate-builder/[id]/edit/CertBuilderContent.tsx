@@ -2209,8 +2209,8 @@ export default function CertBuilderContent () {
                   }
                 })}
 
-                <div className={`relative h-40 rounded-md`}>
-                  <div className='absolute top-0 left-0 h-40 w-full rounded-md border group flex justify-center items-center hover:bg-white/40'>
+                <div className={` h-32 flex cursor-pointer justify-center items-center`}>
+                  <>
                     <input className='hidden' onChange={(e => {
                       if (e.target.files) {
                         handleMediaUpload(e.target.files[0])
@@ -2224,7 +2224,7 @@ export default function CertBuilderContent () {
                     }} disabled={uploading} className='flex rounded-md h-7 text-xs bg-white items-center justify-center px-3'>
                       {uploading ? <Spinner /> : <FiPlus className='font-bold text-5xl' />}
                     </button>
-                  </div>
+                  </>
                 </div>
               </div>}
             </div>
