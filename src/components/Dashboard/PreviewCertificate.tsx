@@ -6,8 +6,8 @@ import { FiEye } from 'react-icons/fi'
 export default function PreviewCertificateButton ({ id, template, menu }: { id: string, template: boolean, menu?: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const previewPayload = Buffer.from(JSON.stringify({
-    "studentName": "Ahman Emmanuel Onoja Solomon",
-    "courseName": "The first and last time I will trust a woman",
+    "studentName": "Ahman Emmanuel Onoja",
+    "courseName": "Project management essentials",
     "organizationName": "Fate Foundation",
     "signature1": "first_man",
     "signatory1": "First man",
