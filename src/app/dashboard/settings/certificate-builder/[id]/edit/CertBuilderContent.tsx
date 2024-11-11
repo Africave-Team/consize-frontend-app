@@ -2170,15 +2170,21 @@ export default function CertBuilderContent () {
                     return item
                   }
                   return false
-                }).filter(e => e !== false).map((element) => <div key={element.properties.url} onClick={() => {
-                  if (selectedElement && selectedElement.properties.url === element.properties.url) {
-                    setSelectedElement(null)
+                }).map((element, index) => {
+                  if (element !== false) {
+                    return <div key={element.properties.url} onClick={() => {
+                      if (selectedElement && selectedElement.properties.url === element.properties.url) {
+                        setSelectedElement(null)
+                      } else {
+                        setSelectedElement(structuredClone(element))
+                      }
+                    }} className={`h-32 flex cursor-pointer justify-center items-center ${element.properties.url === selectedElement?.properties.url ? 'border-primary-dark border-2' : 'border'}`}>
+                      {renderPickableComponent(element)}
+                    </div>
                   } else {
-                    setSelectedElement(structuredClone(element))
+                    return <></>
                   }
-                }} className={`h-32 flex cursor-pointer justify-center items-center ${element.properties.url === selectedElement?.properties.url ? 'border-primary-dark border-2' : 'border'}`}>
-                  {renderPickableComponent(element)}
-                </div>)}
+                })}
               </div>}
             </div>
             {isColorSelectorOpen && <div className='absolute top-0 left-0 h-full w-full flex justify-center'>
