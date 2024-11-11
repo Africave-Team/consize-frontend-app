@@ -3,7 +3,6 @@ import localFont from 'next/font/local'
 import React, { ReactNode, useEffect, useState } from 'react'
 import "./styles.css"
 import moment from 'moment'
-import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa6'
 import Logo from '@/components/Logo'
 import { fonts } from '@/app/fonts'
 import { CertificateComponent, CertificatesInterface, ComponentTypes } from '@/type-definitions/cert-builder'
@@ -23,7 +22,7 @@ import ImageBox from '@/components/CertificateElements/Image'
 import Trapezoid from '@/components/CertificateElements/Trapezoid'
 import Triangle from '@/components/CertificateElements/Triangle'
 import Box from '@/components/CertificateElements/Box'
-import { fetchCertificateByID } from '@/services/certificates.services'
+import { fetchOpenCertificateByID } from '@/services/certificates.services'
 import { useQuery } from '@tanstack/react-query'
 
 interface DataInterface {
@@ -44,7 +43,7 @@ export default function PageContents ({ details }: { details: DataInterface }) {
   const [certificateContents, setCertificateContents] = useState<ReactNode>(<></>)
 
   const loadData = async function (id: string) {
-    const result = await fetchCertificateByID(id)
+    const result = await fetchOpenCertificateByID(id)
     return result.data
   }
 

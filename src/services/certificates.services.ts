@@ -17,6 +17,11 @@ export const fetchCertificateByID = async (id: string): Promise<any> =>
     url: `certificates/${id}`,
   })
 
+export const fetchOpenCertificateByID = async (id: string): Promise<any> =>
+  http.get({
+    url: `certificates/open/${id}`,
+  })
+
 
 export const updateCertificateByID = async (id: string, data: { components: CertificateTemplate, name?: string }): Promise<any> =>
   http.put({
