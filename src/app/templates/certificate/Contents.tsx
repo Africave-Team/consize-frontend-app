@@ -482,40 +482,35 @@ export default function PageContents ({ details }: { details: DataInterface }) {
           if (nameIndex >= 0 && certificate.components && certificate.components.components[nameIndex] && certificate.components.components[nameIndex].properties && certificate.components.components[nameIndex].properties.text) {
             certificate.components!.components[nameIndex]!.properties!.text!.value = data.studentName
           }
-          return <div className='template h-[650px] w-[880px] relative'>
+          return <div className='template h-[650px] w-[900px] relative'>
 
             {certificate.components.bg === "plain" ? <div style={{
               background: certificate.components.components[0].properties.color
-            }} className='absolute border top-0 left-0 h-full w-[880px] rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-[880px] rounded-md' src={certificate.components.bg} />}
-            <div className={`rounded-2xl absolute`}
-              style={{
-                width: '880px',
-                height: '650px',
-                position: 'relative',
-                overflow: "hidden"
-              }}>
+            }} className='absolute border top-0 left-0 h-full w-full rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-full rounded-md' src={certificate.components.bg} />}
+            <div className="rounded-2xl absolute top-0 left-0 w-full h-full">
+              <div className={`w-full h-full relative overflow-hidden`}>
+                {
+                  certificate.components.components.map((comp, index) => {
+                    if (comp.type === ComponentTypes.BACKGROUND) {
+                      return <div key={`${comp.type}_${index}`} />
+                    } else {
+                      return <Rnd
+                        key={`${comp.type}_${index}`}
+                        bounds="parent" // This restricts dragging and resizing to the parent container
+                        position={{
+                          x: comp.position.x || 100,
+                          y: comp.position.y || 100,
+                        }}
+                        enableResizing={false}
+                        className={`absolute`}
+                      >
+                        <div>{renderComponent(comp)}</div>
+                      </Rnd>
+                    }
+                  })
+                }
 
-              {
-                certificate.components.components.map((comp, index) => {
-                  if (comp.type === ComponentTypes.BACKGROUND) {
-                    return <div key={`${comp.type}_${index}`} />
-                  } else {
-                    return <Rnd
-                      key={`${comp.type}_${index}`}
-                      bounds="parent" // This restricts dragging and resizing to the parent container
-                      position={{
-                        x: comp.position.x || 100,
-                        y: comp.position.y || 100,
-                      }}
-                      enableResizing={false}
-                      className={`absolute`}
-                    >
-                      <div>{renderComponent(comp)}</div>
-                    </Rnd>
-                  }
-                })
-              }
-
+              </div>
             </div>
 
           </div>
