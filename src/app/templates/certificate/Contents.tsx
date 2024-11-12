@@ -487,10 +487,6 @@ export default function PageContents ({ details }: { details: DataInterface }) {
             {certificate.components.bg === "plain" ? <div style={{
               background: certificate.components.components[0].properties.color
             }} className='absolute border top-0 left-0 h-full w-[900px] rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-[900px] rounded-md' src={certificate.components.bg} />}
-            {/* <div className='absolute border top-0 left-0 h-full w-[900px] grid-lines' style={{
-            backgroundImage: `linear-gradient(to right, ${gridColor} 1px, transparent 1px), 
-                          linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)`,
-          }} /> */}
             <div className={`rounded-2xl`}
               style={{
                 width: '900px',

@@ -2103,10 +2103,10 @@ export default function CertBuilderContent () {
             {basicTools.map(e =>
               <Tooltip placement='end' label={e.title}>
                 <div onClick={() => setOpenSection(e.value)} className='flex flex-col cursor-pointer group h-14 items-center justify-center'>
-                  <div className={`h-10 rounded-lg w-10 flex items-center justify-center ${openSection === e.value ? 'bg-primary-dark' : 'group-hover:bg-primary-dark/70'}`}>
+                  <div className={`h-10 rounded-lg w-10 flex items-center justify-center ${openSection === e.value ? 'bg-primary-dark text-white' : 'group-hover:bg-primary-dark/70'}`}>
                     {openSection === e.value ? e.activeIcon : e.icon}
                   </div>
-                  <div className='text-xs font-medium mt-1.5'>{e.title}</div>
+                  <div className='text-xs font-medium mt-0.5'>{e.title}</div>
                 </div>
               </Tooltip>
             )}
