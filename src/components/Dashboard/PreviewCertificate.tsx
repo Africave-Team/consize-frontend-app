@@ -37,7 +37,7 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
           <ModalCloseButton />
           <ModalBody className='flex justify-center'>
             <div className="relative h-[700px] w-[940px]">
-              <iframe className='absolute top-0 left-0' src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="940px" height="700px"></iframe>
+              <iframe className='absolute top-0 left-0' src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="990px" height="700px"></iframe>
               <div className='absolute top-0 left-0 w-full h-full'></div>
             </div>
           </ModalBody>
