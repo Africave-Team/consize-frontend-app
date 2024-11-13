@@ -1,6 +1,7 @@
 import { MenuItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tooltip, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import { FiEye } from 'react-icons/fi'
+import ViewCertificateComponent from '../ViewCertificateComponent'
 
 
 export default function PreviewCertificateButton ({ id, template, menu }: { id: string, template: boolean, menu?: boolean }) {
@@ -25,7 +26,7 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
           <FiEye />
         </button>
       </Tooltip>}
-      {isOpen && <Modal size={'3xl'} onClose={() => {
+      {isOpen && <Modal size={'certificate'} onClose={() => {
         onClose()
       }} isOpen={isOpen} isCentered={true}>
 
@@ -35,9 +36,20 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
             Preview Certificate
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody className='flex justify-center'>
-            <div className="relative h-[750px] w-[980px]">
-              <iframe className='absolute top-0 left-0' src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="980px" height="700px"></iframe>
+          <ModalBody className='flex justify-center items-center'>
+            <div className="relative h-[680px] w-[1100px]">
+              <ViewCertificateComponent details={{
+                "studentName": "Ahman Emmanuel Onoja",
+                "courseName": "Project management essentials",
+                "organizationName": "Fate Foundation",
+                "signature1": "first_man",
+                "signatory1": "First man",
+                "signature2": "second_man",
+                "signatory2": "Second Man",
+                "certificateId": id,
+                "template": template,
+                logoUrl: ""
+              }} />
               <div className='absolute top-0 left-0 w-full h-full'></div>
             </div>
           </ModalBody>

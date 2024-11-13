@@ -34,7 +34,7 @@ const customTheme = extendTheme({
         },
         "certificate": {
           dialog: {
-            maxWidth: "1000px", // Set your custom width here
+            maxWidth: "1100px", // Set your custom width here
             height: "auto", // Adjust height if needed
           },
         },
