@@ -25,7 +25,7 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
           <FiEye />
         </button>
       </Tooltip>}
-      {isOpen && <Modal size={'certificate'} onClose={() => {
+      {isOpen && <Modal size={'3xl'} onClose={() => {
         onClose()
       }} isOpen={isOpen} isCentered={true}>
 
@@ -36,8 +36,8 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody className='flex justify-center'>
-            <div className="relative h-[700px] w-[940px]">
-              <iframe className='absolute top-0 left-0' src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="990px" height="700px"></iframe>
+            <div className="relative h-[750px] w-[980px]">
+              <iframe className='absolute top-0 left-0' src={`https://${location.host}/templates/certificate?data=${previewPayload}`} width="980px" height="700px"></iframe>
               <div className='absolute top-0 left-0 w-full h-full'></div>
             </div>
           </ModalBody>
