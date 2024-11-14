@@ -17,5 +17,7 @@ interface DataInterface {
 }
 
 export default function PageContents ({ details }: { details: DataInterface }) {
-  return <ViewCertificateComponent details={details} />
+  return <div className='h-screen certificate-view'>
+    <ViewCertificateComponent details={details} />
+  </div>
 }

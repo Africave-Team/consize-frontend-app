@@ -852,8 +852,8 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
     }
   }, [details, certificateInfo, isFetching])
   return (
-    <div className='h-screen certificate-view'>
+    <>
       {certificateContents}
-    </div>
+    </>
   )
 }

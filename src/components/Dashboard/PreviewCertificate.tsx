@@ -2,10 +2,12 @@ import { MenuItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader
 import React from 'react'
 import { FiEye } from 'react-icons/fi'
 import ViewCertificateComponent from '../ViewCertificateComponent'
+import { useAuthStore } from '@/store/auth.store'
 
 
 export default function PreviewCertificateButton ({ id, template, menu }: { id: string, template: boolean, menu?: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { team } = useAuthStore()
   const previewPayload = Buffer.from(JSON.stringify({
     "studentName": "Ahman Emmanuel Onoja",
     "courseName": "Project management essentials",
@@ -41,7 +43,7 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
               <ViewCertificateComponent details={{
                 "studentName": "Ahman Emmanuel Onoja",
                 "courseName": "Project management essentials",
-                "organizationName": "Fate Foundation",
+                "organizationName": team?.name || "",
                 "signature1": "first_man",
                 "signatory1": "First man",
                 "signature2": "second_man",
