@@ -360,7 +360,8 @@ export default function CertBuilderContent () {
     if ((event.ctrlKey || event.metaKey)) {
     }
   })
-  useKey("Backspace", () => {
+
+  const handleDeleteElement = () => {
     if (tempDataRef.current) {
       if (isActiveElementNotInput()) {
         const {
@@ -372,10 +373,12 @@ export default function CertBuilderContent () {
           setSelected({ ...copy })
           setActiveComponent(null)
           setActiveComponentIndex(null)
+          handleSave()
         }
       }
     }
-  })
+  }
+  useKey((e) => e.key === "Backspace" || e.key === "Delete", handleDeleteElement)
 
   useKey("c", (event) => {
 
@@ -2371,6 +2374,7 @@ export default function CertBuilderContent () {
           <div className="h-10 w-full flex justify-center">
             {selected && <div className='h-10 w-auto flex justify-start items-center border px-1 gap-0 bg-white shadow-xl rounded-2xl'>
               {activeComponent && renderElementProperties(activeComponent, selected)}
+
               <button disabled={updatePending} className='text-primary-dark px-3 h-8 rounded-l-2xl rounded-r-md flex hover:bg-gray-100 items-center gap-2' id="save-button" onClick={() => _updateCertificate({
                 payload: {
                   components: selected,
@@ -2379,6 +2383,10 @@ export default function CertBuilderContent () {
               })}>
                 {updatePending ? <Spinner size={'sm'} /> : <FiSave />}
               </button>
+
+              {activeComponent && <button className='text-primary-dark px-3 h-8 rounded-l-md rounded-r-md flex hover:bg-gray-100 items-center gap-2' id="delete-button" onClick={handleDeleteElement}>
+                <FiTrash2 />
+              </button>}
 
               {certificateInfo && <PreviewCertificateButton template={!certificateInfo?.components || certificateInfo?.components.components.length === 0} id={certificateInfo.id} />}
             </div>}
