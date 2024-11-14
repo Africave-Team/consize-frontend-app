@@ -94,7 +94,7 @@ export default function page () {
                     form.setFieldValue("description", value)
                   }} placeholder='Describe your course for us' value={form.values.description} aiOptionButtons={[]} />
                 </div>
-                <div className='w-[640px]'>
+                <div className='w-full'>
                   <div className='flex justify-between items-center'>
                     <label htmlFor="">Course header image</label>
                     <ImageBuilder imageText={form.values.title} title={form.values.description} onFileUploaded={(val) => {
