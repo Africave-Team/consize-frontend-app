@@ -361,24 +361,31 @@ export default function CertBuilderContent () {
     }
   })
 
-  const handleDeleteElement = () => {
-    if (tempDataRef.current) {
-      if (isActiveElementNotInput()) {
-        const {
-          activeComponent, activeComponentIndex, selected
-        } = tempDataRef.current
-        if (activeComponent && activeComponentIndex !== null && selected && activeComponent.type !== ComponentTypes.BACKGROUND) {
-          const copy = { ...selected }
-          copy.components.splice(activeComponentIndex, 1)
-          setSelected({ ...copy })
-          setActiveComponent(null)
-          setActiveComponentIndex(null)
-          handleSave()
-        }
-      }
+  const handleDeleteElement = (data: {
+    activeComponent: CertificateComponent | null,
+    selectedElement: CertificateComponent | null,
+    activeComponentIndex: number | null,
+    selected: CertificateTemplate | null,
+  }) => {
+    const {
+      activeComponent, activeComponentIndex, selected
+    } = data
+    if (activeComponent && activeComponentIndex !== null && selected && activeComponent.type !== ComponentTypes.BACKGROUND) {
+      const copy = { ...selected }
+      copy.components.splice(activeComponentIndex, 1)
+      setSelected({ ...copy })
+      setActiveComponent(null)
+      setActiveComponentIndex(null)
+      handleSave()
     }
   }
-  useKey((e) => e.key === "Backspace" || e.key === "Delete", handleDeleteElement)
+  useKey((e) => e.key === "Backspace" || e.key === "Delete", () => {
+    if (tempDataRef.current) {
+      if (isActiveElementNotInput()) {
+        handleDeleteElement(tempDataRef.current)
+      }
+    }
+  })
 
   useKey("c", (event) => {
 
@@ -2384,7 +2391,7 @@ export default function CertBuilderContent () {
                 {updatePending ? <Spinner size={'sm'} /> : <FiSave />}
               </button>
 
-              {activeComponent && <button className='text-primary-dark px-3 h-8 rounded-l-md rounded-r-md flex hover:bg-gray-100 items-center gap-2' id="delete-button" onClick={handleDeleteElement}>
+              {activeComponent && <button className='text-primary-dark px-3 h-8 rounded-l-md rounded-r-md flex hover:bg-gray-100 items-center gap-2' id="delete-button" onClick={() => tempDataRef.current && handleDeleteElement(tempDataRef.current)}>
                 <FiTrash2 />
               </button>}
 
