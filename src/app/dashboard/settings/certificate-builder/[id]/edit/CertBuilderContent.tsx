@@ -39,6 +39,7 @@ import { LuUnderline } from 'react-icons/lu'
 import { RxCornerTopLeft, RxLetterCaseCapitalize } from 'react-icons/rx'
 import { RiText } from 'react-icons/ri'
 import { FaRegImage } from 'react-icons/fa6'
+import { debounce } from '@/utils/tools'
 
 const defaultColors = [
   "#000000",
@@ -307,6 +308,17 @@ export default function CertBuilderContent () {
     setBackgrounds(["plain", ...(team?.certificateBackgrounds || []), ...certificateTemplates.map(e => e.bg)])
   }, [team, certificateTemplates])
 
+  const handleSave = debounce(() => {
+    if (selected) {
+      _updateCertificate({
+        payload: {
+          components: selected,
+          name: certificateInfo?.name
+        }, id
+      })
+    }
+  }, 5000)
+
   const handleContainerClick = (e: MouseEvent<HTMLDivElement>) => {
     if (selectedElement) {
       if (selected && mousePosition) {
@@ -316,6 +328,7 @@ export default function CertBuilderContent () {
           }]
         })
         setSelectedElement(null)
+        handleSave()
       }
       return
     }
@@ -392,6 +405,7 @@ export default function CertBuilderContent () {
             selComponent.position.x += 1
           }
           setSelected({ ...copy })
+          handleSave()
         }
       }
     }
@@ -411,6 +425,7 @@ export default function CertBuilderContent () {
             selComponent.position.x -= 1
           }
           setSelected({ ...copy })
+          handleSave()
         }
       }
     }
@@ -430,6 +445,7 @@ export default function CertBuilderContent () {
             selComponent.position.y -= 1
           }
           setSelected({ ...copy })
+          handleSave()
         }
       }
     }
@@ -449,6 +465,7 @@ export default function CertBuilderContent () {
             selComponent.position.y += 1
           }
           setSelected({ ...copy })
+          handleSave()
         }
       }
     }
@@ -2103,7 +2120,7 @@ export default function CertBuilderContent () {
             {basicTools.map(e =>
               <Tooltip placement='end' label={e.title}>
                 <div onClick={() => setOpenSection(e.value)} className='flex flex-col cursor-pointer group h-14 items-center justify-center'>
-                  <div className={`h-10 rounded-lg w-10 flex items-center justify-center ${openSection === e.value ? 'bg-primary-dark text-white' : 'group-hover:bg-primary-dark/70'}`}>
+                  <div className={`h-10 rounded-lg w-10 flex items-center justify-center ${openSection === e.value ? 'bg-primary-dark text-white' : 'group-hover:bg-primary-dark/85 group-hover:text-white'}`}>
                     {openSection === e.value ? e.activeIcon : e.icon}
                   </div>
                   <div className='text-xs font-medium mt-0.5'>{e.title}</div>
@@ -2354,7 +2371,7 @@ export default function CertBuilderContent () {
           <div className="h-10 w-full flex justify-center">
             {selected && <div className='h-10 w-auto flex justify-start items-center border px-1 gap-0 bg-white shadow-xl rounded-2xl'>
               {activeComponent && renderElementProperties(activeComponent, selected)}
-              <button disabled={updatePending} className='text-primary-dark px-3 h-8 rounded-l-2xl rounded-r-md flex hover:bg-gray-100 items-center gap-2' onClick={() => _updateCertificate({
+              <button disabled={updatePending} className='text-primary-dark px-3 h-8 rounded-l-2xl rounded-r-md flex hover:bg-gray-100 items-center gap-2' id="save-button" onClick={() => _updateCertificate({
                 payload: {
                   components: selected,
                   name: certificateInfo?.name
@@ -2423,6 +2440,7 @@ export default function CertBuilderContent () {
                           }
                           copySel.components[index].position = old
                           setSelected(copySel)
+                          handleSave()
 
                         }}
                         onDragStop={() => {

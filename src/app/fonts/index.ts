@@ -6,7 +6,7 @@ const cloisterFont = localFont({ src: '../templates/certificate/CloisterBlack.tt
 const culpa = localFont({ src: '../templates/certificate/helvetica.ttf' })
 const antique = localFont({ src: '../templates/certificate/antique.ttf' })
 const sequel = localFont({ src: '../templates/certificate/sequel.ttf' })
-const theseasons = localFont({ src: '../templates/certificate/theseasons-reg.otf' })
+const theseasons = localFont({ src: './theseasons-reg.woff' })
 const sloop = localFont({ src: '../templates/certificate/Sloop-ScriptThree.ttf' })
 
 const rubik = Rubik({
