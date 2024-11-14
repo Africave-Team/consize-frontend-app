@@ -88,7 +88,7 @@ export default function RootLayout ({
         <meta name="twitter:title" content="Consize" />
         <meta name="twitter:description" content="Deliver impactful training - that your learners will actually take &#x2013; through everyday messaging tools, all in 10 minutes a day." />
       </head>
-      {path === "/embed" ? <body suppressHydrationWarning className='h-screen w-screen'>{children}</body> : <body className='h-screen overflow-y-hidden w-screen overflow-x-hidden' suppressHydrationWarning>
+      {path === "/embed" ? <body suppressHydrationWarning className='h-screen w-screen'>{children}</body> : <body className='h-screen overflow-y-hidden w-screen !p-0 overflow-x-hidden' suppressHydrationWarning>
         <NextTopLoader color='#0D1F23' />
         <ChakraProvider theme={customTheme}>
           <CacheProvider>
