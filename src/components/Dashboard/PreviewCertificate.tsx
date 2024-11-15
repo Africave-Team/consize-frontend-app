@@ -38,20 +38,22 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
             Preview Certificate
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody className='flex justify-center items-center'>
-            <div className="relative h-[680px] w-[1100px]">
-              <ViewCertificateComponent details={{
-                "studentName": "Ahman Emmanuel Onoja",
-                "courseName": "Project management essentials",
-                "organizationName": team?.name || "",
-                "signature1": "first_man",
-                "signatory1": "First man",
-                "signature2": "second_man",
-                "signatory2": "Second Man",
-                "certificateId": id,
-                "template": template,
-                logoUrl: ""
-              }} />
+          <ModalBody className='flex justify-center items-center pb-10 pt-5'>
+            <div className="relative h-[600px] w-[900px]">
+              <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                <ViewCertificateComponent details={{
+                  "studentName": "Ahman Emmanuel Onoja",
+                  "courseName": "Project management essentials",
+                  "organizationName": team?.name || "",
+                  "signature1": "first_man",
+                  "signatory1": "First man",
+                  "signature2": "second_man",
+                  "signatory2": "Second Man",
+                  "certificateId": id,
+                  "template": template,
+                  logoUrl: ""
+                }} />
+              </div>
               <div className='absolute top-0 left-0 w-full h-full'></div>
             </div>
           </ModalBody>

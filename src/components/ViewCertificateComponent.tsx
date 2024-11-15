@@ -481,7 +481,7 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
           if (nameIndex >= 0 && certificate.components && certificate.components.components[nameIndex] && certificate.components.components[nameIndex].properties && certificate.components.components[nameIndex].properties.text) {
             certificate.components!.components[nameIndex]!.properties!.text!.value = data.studentName
           }
-          return <div className='template h-[650px] w-[900px] relative'>
+          return <div className='template h-[600px] w-[900px] relative'>
 
             {certificate.components.bg === "plain" ? <div style={{
               background: certificate.components.components[0].properties.color
