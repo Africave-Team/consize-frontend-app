@@ -481,13 +481,18 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
           if (nameIndex >= 0 && certificate.components && certificate.components.components[nameIndex] && certificate.components.components[nameIndex].properties && certificate.components.components[nameIndex].properties.text) {
             certificate.components!.components[nameIndex]!.properties!.text!.value = data.studentName
           }
-          return <div className='template h-[600px] w-[900px] relative'>
+          return <div style={{
+            width: '900px',
+            height: '600px',
+            position: 'relative',
+            overflow: "hidden"
+          }} className='template relative'>
 
             {certificate.components.bg === "plain" ? <div style={{
               background: certificate.components.components[0].properties.color
-            }} className='absolute border top-0 left-0 h-full w-full rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-full rounded-md' src={certificate.components.bg} />}
-            <div className="rounded-2xl absolute top-0 left-0 w-full h-full">
-              <div className={`w-full h-full relative overflow-hidden`}>
+            }} className='absolute border top-0 left-0 h-full w-[900px] rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-[900px] rounded-md' src={certificate.components.bg} />}
+            <div className="rounded-2xl absolute top-0 left-0 w-[900px] h-full">
+              <div className={`w-[900px] h-full relative overflow-hidden`}>
                 {
                   certificate.components.components.map((comp, index) => {
                     if (comp.type === ComponentTypes.BACKGROUND) {

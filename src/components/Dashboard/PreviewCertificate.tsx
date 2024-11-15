@@ -19,6 +19,7 @@ export default function PreviewCertificateButton ({ id, template, menu }: { id: 
     "certificateId": id,
     "template": template
   }), 'utf-8').toString('base64')
+  console.log(previewPayload)
 
   return (
     <div>
