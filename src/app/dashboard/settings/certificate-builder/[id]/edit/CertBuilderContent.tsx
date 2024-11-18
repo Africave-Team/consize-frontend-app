@@ -309,10 +309,10 @@ export default function CertBuilderContent () {
   }, [team, certificateTemplates])
 
   const handleSave = debounce(() => {
-    if (selected) {
+    if (tempDataRef.current && tempDataRef.current.selected) {
       _updateCertificate({
         payload: {
-          components: selected,
+          components: tempDataRef.current.selected,
           name: certificateInfo?.name
         }, id
       })
