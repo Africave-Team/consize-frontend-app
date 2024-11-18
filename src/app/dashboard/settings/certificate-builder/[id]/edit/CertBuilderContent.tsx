@@ -2125,7 +2125,7 @@ export default function CertBuilderContent () {
   return (
     <>
       <div className='flex w-full gap-2 h-full'>
-        <div className={`w-[550px] border-r h-full py-0 flex gap-1 ${isColorSelectorOpen && 'bg-gray-200'}`}>
+        <div className={`flex-1 border-r h-full py-0 flex gap-1 ${isColorSelectorOpen && 'bg-gray-200'}`}>
           <div className='w-24 h-full flex py-5 flex-col gap-5'>
             {basicTools.map(e =>
               <Tooltip placement='end' label={e.title}>
@@ -2376,7 +2376,7 @@ export default function CertBuilderContent () {
           </div>
 
         </div>
-        <div className='flex-1 px-10 gap-6 h-full flex flex-col justify-start overflow-y-scroll'>
+        <div className='w-[1000px] px-10 gap-6 h-full flex flex-col justify-start items-center overflow-y-scroll'>
           <div className=''></div>
           <div className="h-10 w-full flex justify-center">
             {selected && <div className='h-10 w-auto flex justify-start items-center border px-1 gap-0 bg-white shadow-xl rounded-2xl'>

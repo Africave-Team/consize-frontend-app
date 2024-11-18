@@ -72,7 +72,7 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
         component = <SignatureBox url={data.properties.url} border={data.properties.border} radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 40} width={data.properties.width || 400} />
         break
       case ComponentTypes.CIRCLE:
-        component = <Circle size={data.properties.size || 100} color={data.properties.color || '#000'} />
+        component = <Circle border={data.properties.border} size={data.properties.size || 100} color={data.properties.color || '#000'} />
         break
 
       case ComponentTypes.IMAGE:
@@ -85,10 +85,10 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
         component = <Triangle leftSize={data.properties.leftSize || 100} rightSize={data.properties.rightSize || 100} bottomSize={data.properties.bottomSize || 120} color={data.properties.color || '#000'} />
         break
       case ComponentTypes.SQUARE:
-        component = <Box radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 100} width={data.properties.width || 100} color={data.properties.color || '#000'} />
+        component = <Box border={data.properties.border} radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 100} width={data.properties.width || 100} color={data.properties.color || '#000'} />
         break
       case ComponentTypes.RECTANGLE:
-        component = <Box radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 40} width={data.properties.width || 400} color={data.properties.color || '#000'} />
+        component = <Box border={data.properties.border} radius={data.properties.radius || { rt: 0, rb: 0, lb: 0, lt: 0 }} height={data.properties.height || 40} width={data.properties.width || 400} color={data.properties.color || '#000'} />
         break
       default:
         break
@@ -486,13 +486,20 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
             height: '600px',
             position: 'relative',
             overflow: "hidden"
-          }} className='template relative'>
+          }} className='template'>
 
-            {certificate.components.bg === "plain" ? <div style={{
-              background: certificate.components.components[0].properties.color
-            }} className='absolute border top-0 left-0 h-full w-[900px] rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-[900px] rounded-md' src={certificate.components.bg} />}
-            <div className="rounded-2xl absolute top-0 left-0 w-[900px] h-full">
-              <div className={`w-[900px] h-full relative overflow-hidden`}>
+            <div className="relative h-full w-full border">
+              {certificate.components.bg === "plain" ? <div style={{
+                background: certificate.components.components[0].properties.color
+              }} className='absolute border top-0 left-0 h-full w-[900px] rounded-2xl'></div> : <img className='absolute top-0 left-0 h-full w-[900px] rounded-md' src={certificate.components.bg} />}
+              <div className={`cursor-move rounded-2xl`}
+                style={{
+                  width: '900px',
+                  height: '600px',
+                  position: 'relative',
+                  overflow: "hidden"
+                }}>
+
                 {
                   certificate.components.components.map((comp, index) => {
                     if (comp.type === ComponentTypes.BACKGROUND) {
@@ -505,7 +512,19 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
                           x: comp.position.x || 100,
                           y: comp.position.y || 100,
                         }}
+                        onDrag={(e, d) => {
+
+                        }}
+                        onDragStop={() => {
+                          console.log("drag end")
+                        }}
+                        onDragStart={() => {
+                          console.log("drag start")
+                        }}
                         enableResizing={false}
+                        onMouseDown={(e) => {
+                          e.stopPropagation()
+                        }}
                         className={`absolute`}
                       >
                         <div>{renderComponent(comp)}</div>
