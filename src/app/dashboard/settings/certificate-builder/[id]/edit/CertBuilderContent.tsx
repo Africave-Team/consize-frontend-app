@@ -2122,6 +2122,13 @@ export default function CertBuilderContent () {
       value: "images"
     }
   ]
+
+  useEffect(() => {
+    // Set viewport settings dynamically (for client-side rendering)
+    document.body.style.width = "1280px"
+    document.body.style.height = "800px"
+    document.body.style.zoom = "1" // deviceScaleFactor equivalent
+  }, [])
   return (
     <>
       <div className='flex w-full justify-between gap-2 h-full'>
