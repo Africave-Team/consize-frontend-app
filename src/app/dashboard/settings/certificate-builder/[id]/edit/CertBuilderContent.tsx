@@ -40,6 +40,7 @@ import { RxCornerTopLeft, RxLetterCaseCapitalize } from 'react-icons/rx'
 import { RiText } from 'react-icons/ri'
 import { FaRegImage } from 'react-icons/fa6'
 import { debounce } from '@/utils/tools'
+import Head from 'next/head'
 
 const defaultColors = [
   "#000000",
@@ -2123,14 +2124,15 @@ export default function CertBuilderContent () {
     }
   ]
 
-  useEffect(() => {
-    // Set viewport settings dynamically (for client-side rendering)
-    document.body.style.width = "1280px"
-    document.body.style.height = "800px"
-    document.body.style.zoom = "1" // deviceScaleFactor equivalent
-  }, [])
   return (
     <>
+      <Head>
+        {/* Set viewport settings specific to this page */}
+        <meta
+          name="viewport"
+          content="width=1280, height=800, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
+      </Head>
       <div className='flex w-full justify-between gap-2 h-full'>
         <div className={`w-[550px] border-r h-full py-0 flex gap-1 ${isColorSelectorOpen && 'bg-gray-200'}`}>
           <div className='w-24 h-full flex py-5 flex-col gap-5'>
