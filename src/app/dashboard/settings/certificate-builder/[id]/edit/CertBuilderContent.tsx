@@ -26,6 +26,7 @@ import { useKey } from "react-use"
 import { isValidHexColor } from '@/utils/string-formatters'
 import { defaultDateFormats, defaultFonts, defaultFontSizes, defaultFontWeights } from '@/utils/certificate-utils'
 import moment from 'moment'
+import Draggable from 'react-draggable'
 import MediaSelectorCertificate from '@/components/MediaSelectorCertificate'
 import { CertificateMediaTypes } from '@/type-definitions/auth'
 import SignatureBox from '@/components/CertificateElements/SignatureBox'
@@ -2446,7 +2447,50 @@ export default function CertBuilderContent () {
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
-                      return <Rnd
+                      return <>
+                        <Draggable
+                          key={`${comp.type}_${index}`}
+                          bounds="parent"
+                          axis="both"
+                          defaultPosition={{ x: 0, y: 0 }}
+                          position={{
+                            x: comp.position.x || 100,
+                            y: comp.position.y || 100,
+                          }}
+                          scale={1}
+                          onDrag={(e, d) => {
+                            let copySel = { ...selected }
+                            let old = copySel.components[index].position
+                            if (d.x > 0) {
+                              old.x = d.x
+                            }
+                            if (d.y > 0) {
+                              old.y = d.y
+                            }
+                            copySel.components[index].position = old
+                            setSelected(copySel)
+                            handleSave()
+
+                          }}
+                          onStop={() => {
+                            console.log("drag end")
+                            setShowGrid(false)
+                          }}
+                          onStart={() => {
+                            console.log("drag start")
+                            setShowGrid(true)
+                          }}
+                          onMouseDown={(e) => {
+                            setActiveComponent(comp)
+                            setActiveComponentIndex(index)
+                            e.stopPropagation()
+                          }}
+                        >
+                          <div className={`absolute ${activeComponent && activeComponentIndex === index ? 'ring-2 ring-primary-dark' : ''}`}>
+                            {renderComponent(comp)}
+                          </div>
+                        </Draggable>
+                        {/* <Rnd
                         key={`${comp.type}_${index}`}
                         bounds="parent" // This restricts dragging and resizing to the parent container
                         position={{
@@ -2484,7 +2528,8 @@ export default function CertBuilderContent () {
                         className={`absolute ${activeComponent && activeComponentIndex === index ? 'border border-primary-dark' : ''}`}
                       >
                         <div>{renderComponent(comp)}</div>
-                      </Rnd>
+                      </Rnd> */}
+                      </>
                     }
                   })
                 }
