@@ -201,13 +201,13 @@ export default function CertBuilderContent () {
     })
   }
 
-  const adjustForDPI = (position: { x: number, y: number }) => {
+  const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
     const defaultPixelRatio = 2
     const dpiScale = window.devicePixelRatio || 1
     const factor = defaultPixelRatio / dpiScale
     return {
       x: position.x,
-      y: position.y,
+      y: (dpiScale !== defaultPixelRatio && sloop) ? position.y + 20 : position.y,
     }
   }
 
@@ -2454,6 +2454,7 @@ export default function CertBuilderContent () {
 
                 {
                   selected.components.map((comp, index) => {
+                    let sloop = comp.properties && comp.properties.text && comp.properties.text.family === "Sloop"
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
@@ -2466,7 +2467,7 @@ export default function CertBuilderContent () {
                           position={adjustForDPI({
                             x: comp.position.x || 100,
                             y: comp.position.y || 100,
-                          })}
+                          }, sloop)}
                           scale={1}
                           onDrag={(e, d) => {
                             let copySel = { ...selected }
