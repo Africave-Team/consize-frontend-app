@@ -204,10 +204,10 @@ export default function CertBuilderContent () {
   const adjustForDPI = (position: { x: number, y: number }) => {
     const defaultPixelRatio = 2
     const dpiScale = window.devicePixelRatio || 1
-    const factor = dpiScale / defaultPixelRatio
+    const factor = defaultPixelRatio / dpiScale
     return {
-      x: position.x * factor,
-      y: position.y * factor,
+      x: position.x,
+      y: position.y,
     }
   }
 
