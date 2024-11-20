@@ -207,7 +207,7 @@ export default function CertBuilderContent () {
     const factor = defaultPixelRatio / dpiScale
     return {
       x: position.x,
-      y: (dpiScale !== defaultPixelRatio && sloop) ? position.y + 18 : position.y,
+      y: position.y,
     }
   }
 
