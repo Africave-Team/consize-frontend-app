@@ -13,6 +13,8 @@ const sequel = fonts.sequel
 const theseasons = fonts.theseasons
 const sloop = fonts.sloop
 
+import Draggable from 'react-draggable'
+
 import { Rnd } from 'react-rnd'
 import TextContent from '@/components/CertificateElements/TextContent'
 import Circle from '@/components/CertificateElements/Circle'
@@ -44,6 +46,15 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
   const loadData = async function (id: string) {
     const result = await fetchOpenCertificateByID(id)
     return result.data
+  }
+
+  const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
+    const dpiScale = window.devicePixelRatio || 1
+    const factor = Number.isInteger(dpiScale) ? 0 : sloop ? 20 : 0
+    return {
+      x: position.x,
+      y: position.y + factor,
+    }
   }
 
   const { data: certificateInfo, isFetching } =
@@ -502,33 +513,25 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
 
                 {
                   certificate.components.components.map((comp, index) => {
+                    let sloop = comp.properties && comp.properties.text && comp.properties.text.family === "Sloop"
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
-                      return <Rnd
+                      return <Draggable
                         key={`${comp.type}_${index}`}
-                        bounds="parent" // This restricts dragging and resizing to the parent container
-                        position={{
+                        bounds="parent"
+                        axis="both"
+                        defaultPosition={{ x: 0, y: 0 }}
+                        position={adjustForDPI({
                           x: comp.position.x || 100,
                           y: comp.position.y || 100,
-                        }}
-                        onDrag={(e, d) => {
-
-                        }}
-                        onDragStop={() => {
-                          console.log("drag end")
-                        }}
-                        onDragStart={() => {
-                          console.log("drag start")
-                        }}
-                        enableResizing={false}
-                        onMouseDown={(e) => {
-                          e.stopPropagation()
-                        }}
-                        className={`absolute`}
+                        }, sloop)}
+                        scale={1}
                       >
-                        <div>{renderComponent(comp)}</div>
-                      </Rnd>
+                        <div className={`absolute`}>
+                          {renderComponent(comp)}
+                        </div>
+                      </Draggable>
                     }
                   })
                 }
