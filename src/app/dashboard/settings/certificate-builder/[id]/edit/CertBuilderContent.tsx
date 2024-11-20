@@ -201,6 +201,16 @@ export default function CertBuilderContent () {
     })
   }
 
+  const adjustForDPI = (position: { x: number, y: number }) => {
+    const defaultPixelRatio = 2
+    const dpiScale = window.devicePixelRatio || 1
+    const factor = dpiScale / defaultPixelRatio
+    return {
+      x: position.x * factor,
+      y: position.y * factor,
+    }
+  }
+
 
   useEffect(() => {
     if (selected) {
@@ -2453,10 +2463,10 @@ export default function CertBuilderContent () {
                           bounds="parent"
                           axis="both"
                           defaultPosition={{ x: 0, y: 0 }}
-                          position={{
+                          position={adjustForDPI({
                             x: comp.position.x || 100,
                             y: comp.position.y || 100,
-                          }}
+                          })}
                           scale={1}
                           onDrag={(e, d) => {
                             let copySel = { ...selected }
@@ -2470,7 +2480,6 @@ export default function CertBuilderContent () {
                             copySel.components[index].position = old
                             setSelected(copySel)
                             handleSave()
-
                           }}
                           onStop={() => {
                             console.log("drag end")
