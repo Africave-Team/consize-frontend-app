@@ -51,12 +51,15 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
   const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
     const dpiScale = window.devicePixelRatio || 1
     let factor = 0
-    if (dpiScale === 1) {
-      factor = -20
-    } else if (dpiScale === 1.2) {
-      factor = 20
-    } else if (dpiScale === 1.5) {
-      factor = 40
+    if (sloop) {
+      console.log(dpiScale)
+      if (dpiScale === 1.0) {
+        factor = -24
+      } else if (dpiScale === 1.2) {
+        factor = 18
+      } else if (dpiScale === 1.5) {
+        factor = 10
+      }
     }
     return {
       x: position.x,
