@@ -201,6 +201,12 @@ export default function CertBuilderContent () {
     })
   }
 
+  function getAdjustmentPixels (dpr: number) {
+    const baseAdjustment = 15 // Adjustment at DPR = 1.1
+    const referenceDPR = 1.1
+    return baseAdjustment * (dpr / referenceDPR)
+  }
+
   const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
     let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
     let factor = 0
@@ -210,14 +216,8 @@ export default function CertBuilderContent () {
         case 1.0:
           factor = -20
           break
-        case 1.1:
-        case 1.2:
-          factor = 15
-          break
-        case 1.5:
-          factor = 8
-          break
         default:
+          factor = getAdjustmentPixels(dpiScale)
           break
       }
     }
