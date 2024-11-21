@@ -202,11 +202,11 @@ export default function CertBuilderContent () {
   }
 
   const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
-    const dpiScale = window.devicePixelRatio || 1
+    let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
     let factor = 0
     if (sloop) {
       console.log(dpiScale)
-      if (dpiScale === 1) {
+      if (dpiScale === 1.0) {
         factor = -24
       } else if (dpiScale === 1.2) {
         factor = 40
@@ -2478,10 +2478,7 @@ export default function CertBuilderContent () {
                           bounds="parent"
                           axis="both"
                           defaultPosition={{ x: 0, y: 0 }}
-                          position={adjustForDPI({
-                            x: comp.position.x || 100,
-                            y: comp.position.y || 100,
-                          }, sloop)}
+                          position={pos}
                           scale={1}
                           onDrag={(e, d) => {
                             let copySel = { ...selected }
