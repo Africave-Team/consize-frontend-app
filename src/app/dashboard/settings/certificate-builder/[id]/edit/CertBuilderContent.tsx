@@ -205,6 +205,7 @@ export default function CertBuilderContent () {
     let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
     let factor = 0
     if (sloop) {
+      console.log(dpiScale)
       factor = generateRepositionFactor(dpiScale)
     }
     return {
@@ -2143,11 +2144,11 @@ export default function CertBuilderContent () {
         {/* Set viewport settings specific to this page */}
         <meta
           name="viewport"
-          content="width=1280, height=800, initial-scale=1, maximum-scale=1, user-scalable=no"
+          content="width=1440, height=800, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </Head>
-      <div className='flex w-full justify-between gap-2 h-full'>
-        <div className={`w-[550px] border-r h-full py-0 flex gap-1 ${isColorSelectorOpen && 'bg-gray-200'}`}>
+      <div className='flex w-screen justify-between gap-2 h-full'>
+        <div className={`w-4/12 border-r h-full py-0 flex gap-1 ${isColorSelectorOpen && 'bg-gray-200'}`}>
           <div className='w-24 h-full flex py-5 flex-col gap-5'>
             {basicTools.map(e =>
               <Tooltip placement='end' label={e.title}>
@@ -2398,7 +2399,7 @@ export default function CertBuilderContent () {
           </div>
 
         </div>
-        <div className='w-[1000px] px-10 gap-6 h-full flex flex-col justify-start items-center overflow-y-scroll'>
+        <div className='w-8/12 overflow-x-scroll px-10 gap-6 h-full flex flex-col justify-start items-center overflow-y-scroll'>
           <div className=''></div>
           <div className="h-10 w-full flex justify-center">
             {selected && <div className='h-10 w-auto flex justify-start items-center border px-1 gap-0 bg-white shadow-xl rounded-2xl'>

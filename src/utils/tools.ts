@@ -32,14 +32,16 @@ function getAdjustmentPixels3 (dpr: number) {
 }
 export const generateRepositionFactor = function (dpi: number) {
   let factor = 0
-  debugger
   switch (dpi) {
     case 2.0:
       factor = 0
       break
 
     case 1.0:
-      factor = -20
+      factor = -0
+      break
+    case 1.5:
+      factor = 0
       break
     default:
       if (dpi < 1) {
