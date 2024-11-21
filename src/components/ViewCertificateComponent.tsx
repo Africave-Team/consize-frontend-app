@@ -52,7 +52,7 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
     const dpiScale = window.devicePixelRatio || 1
     let factor = 0
     if (dpiScale === 1) {
-      factor = -20
+      factor = -10
     } else if (dpiScale === 1.2) {
       factor = 20
     } else if (dpiScale === 1.5) {
@@ -521,6 +521,11 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
                 {
                   certificate.components.components.map((comp, index) => {
                     let sloop = comp.properties && comp.properties.text && comp.properties.text.family === "Sloop"
+                    let pos = adjustForDPI({
+                      x: comp.position.x || 100,
+                      y: comp.position.y || 100,
+                    }, sloop)
+                    console.log(pos, comp.position)
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
@@ -529,10 +534,7 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
                         bounds="parent"
                         axis="both"
                         defaultPosition={{ x: 0, y: 0 }}
-                        position={adjustForDPI({
-                          x: comp.position.x || 100,
-                          y: comp.position.y || 100,
-                        }, sloop)}
+                        position={pos}
                         scale={1}
                       >
                         <div className={`absolute`}>
