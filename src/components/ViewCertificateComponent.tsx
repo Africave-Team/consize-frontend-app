@@ -53,12 +53,19 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
     let factor = 0
     if (sloop) {
       console.log(dpiScale)
-      if (dpiScale === 1.0) {
-        factor = -20
-      } else if (dpiScale === 1.2) {
-        factor = 15
-      } else if (dpiScale === 1.5) {
-        factor = 8
+      switch (dpiScale) {
+        case 1.0:
+          factor = -20
+          break
+        case 1.1:
+        case 1.2:
+          factor = 15
+          break
+        case 1.5:
+          factor = 8
+          break
+        default:
+          break
       }
     }
     return {
