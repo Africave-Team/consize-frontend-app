@@ -21,7 +21,7 @@ function getAdjustmentPixels1 (dpr: number) {
   return baseAdjustment * (dpr / referenceDPR)
 }
 function getAdjustmentPixels0 (dpr: number) {
-  const baseAdjustment = -10 // Adjustment at DPR = 1.1
+  const baseAdjustment = -1 // Adjustment at DPR = 1.1
   const referenceDPR = 0.8
   return baseAdjustment * (dpr / referenceDPR)
 }
