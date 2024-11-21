@@ -209,9 +209,9 @@ export default function CertBuilderContent () {
       if (dpiScale === 1.0) {
         factor = -24
       } else if (dpiScale === 1.2) {
-        factor = 40
+        factor = 20
       } else if (dpiScale === 1.5) {
-        factor = 60
+        factor = 10
       }
     }
     return {
