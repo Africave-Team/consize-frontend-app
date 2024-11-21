@@ -54,7 +54,7 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
     if (sloop) {
       console.log(dpiScale)
       if (dpiScale === 1.0) {
-        factor = -24
+        factor = -20
       } else if (dpiScale === 1.2) {
         factor = 15
       } else if (dpiScale === 1.5) {
