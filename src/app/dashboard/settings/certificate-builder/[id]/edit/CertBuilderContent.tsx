@@ -2501,12 +2501,16 @@ export default function CertBuilderContent () {
                               if (sloop) {
                                 let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
                                 let factor = 0
-                                if (dpiScale === 1.0) {
-                                  factor = -20
-                                } else if (dpiScale === 1.2) {
-                                  factor = 15
-                                } else if (dpiScale === 1.5) {
-                                  factor = 8
+                                switch (dpiScale) {
+                                  case 1.0:
+                                    factor = -20
+                                    break
+                                  case 2.0:
+                                    factor = 0
+                                    break
+                                  default:
+                                    factor = getAdjustmentPixels(dpiScale)
+                                    break
                                 }
                                 y = d.y - factor
                               }
