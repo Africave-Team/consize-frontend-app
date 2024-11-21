@@ -214,6 +214,14 @@ export default function CertBuilderContent () {
       console.log(dpiScale)
       switch (dpiScale) {
         case 1.0:
+        case 0.2:
+        case 0.3:
+        case 0.9:
+        case 0.4:
+        case 0.5:
+        case 0.6:
+        case 0.7:
+        case 0.8:
           factor = -20
           break
         case 2.0:
@@ -2503,6 +2511,14 @@ export default function CertBuilderContent () {
                                 let factor = 0
                                 switch (dpiScale) {
                                   case 1.0:
+                                  case 0.2:
+                                  case 0.3:
+                                  case 0.9:
+                                  case 0.4:
+                                  case 0.5:
+                                  case 0.6:
+                                  case 0.7:
+                                  case 0.8:
                                     factor = -20
                                     break
                                   case 2.0:
