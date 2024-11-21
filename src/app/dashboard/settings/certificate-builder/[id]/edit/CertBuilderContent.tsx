@@ -762,7 +762,7 @@ export default function CertBuilderContent () {
           </div>
           <Popover>
             <PopoverTrigger>
-              <div className='w-20 text-xs cursor-pointer flex items-center justify-center ml-2 border rounded-lg h-8'>
+              <div className='w-32 text-xs cursor-pointer flex items-center justify-center ml-2 border rounded-lg h-8'>
                 {data.properties.text?.weight ? defaultFontWeights.find(e => e.value === data.properties.text?.weight)?.title : ""}
               </div>
             </PopoverTrigger>
