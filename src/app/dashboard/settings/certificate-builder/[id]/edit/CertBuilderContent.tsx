@@ -40,7 +40,7 @@ import { LuUnderline } from 'react-icons/lu'
 import { RxCornerTopLeft, RxLetterCaseCapitalize } from 'react-icons/rx'
 import { RiText } from 'react-icons/ri'
 import { FaRegImage } from 'react-icons/fa6'
-import { debounce } from '@/utils/tools'
+import { debounce, generateRepositionFactor } from '@/utils/tools'
 import Head from 'next/head'
 
 const defaultColors = [
@@ -201,36 +201,11 @@ export default function CertBuilderContent () {
     })
   }
 
-  function getAdjustmentPixels (dpr: number) {
-    const baseAdjustment = 15 // Adjustment at DPR = 1.1
-    const referenceDPR = 1.1
-    return baseAdjustment * (dpr / referenceDPR)
-  }
-
   const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
     let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
     let factor = 0
     if (sloop) {
-      console.log(dpiScale)
-      switch (dpiScale) {
-        case 1.0:
-        case 0.2:
-        case 0.3:
-        case 0.9:
-        case 0.4:
-        case 0.5:
-        case 0.6:
-        case 0.7:
-        case 0.8:
-          factor = -20
-          break
-        case 2.0:
-          factor = 0
-          break
-        default:
-          factor = getAdjustmentPixels(dpiScale)
-          break
-      }
+      factor = generateRepositionFactor(dpiScale)
     }
     return {
       x: position.x,
@@ -2508,26 +2483,7 @@ export default function CertBuilderContent () {
                               let y = d.y
                               if (sloop) {
                                 let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
-                                let factor = 0
-                                switch (dpiScale) {
-                                  case 1.0:
-                                  case 0.2:
-                                  case 0.3:
-                                  case 0.9:
-                                  case 0.4:
-                                  case 0.5:
-                                  case 0.6:
-                                  case 0.7:
-                                  case 0.8:
-                                    factor = -20
-                                    break
-                                  case 2.0:
-                                    factor = 0
-                                    break
-                                  default:
-                                    factor = getAdjustmentPixels(dpiScale)
-                                    break
-                                }
+                                let factor = generateRepositionFactor(dpiScale)
                                 y = d.y - factor
                               }
                               old.y = y

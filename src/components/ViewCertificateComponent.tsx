@@ -25,6 +25,7 @@ import Triangle from '@/components/CertificateElements/Triangle'
 import Box from '@/components/CertificateElements/Box'
 import { fetchOpenCertificateByID } from '@/services/certificates.services'
 import { useQuery } from '@tanstack/react-query'
+import { generateRepositionFactor } from '@/utils/tools'
 
 interface DataInterface {
   studentName: string
@@ -48,36 +49,12 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
     return result.data
   }
 
-  function getAdjustmentPixels (dpr: number) {
-    const baseAdjustment = 15 // Adjustment at DPR = 1.1
-    const referenceDPR = 1.1
-    return baseAdjustment * (dpr / referenceDPR)
-  }
-
   const adjustForDPI = (position: { x: number, y: number }, sloop?: boolean) => {
     let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
     let factor = 0
     if (sloop) {
       console.log(dpiScale)
-      switch (dpiScale) {
-        case 1.0:
-        case 0.2:
-        case 0.3:
-        case 0.9:
-        case 0.4:
-        case 0.5:
-        case 0.6:
-        case 0.7:
-        case 0.8:
-          factor = -20
-          break
-        case 2.0:
-          factor = 0
-          break
-        default:
-          factor = getAdjustmentPixels(dpiScale)
-          break
-      }
+      factor = generateRepositionFactor(dpiScale)
     }
     return {
       x: position.x,
