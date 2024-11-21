@@ -216,6 +216,9 @@ export default function CertBuilderContent () {
         case 1.0:
           factor = -20
           break
+        case 2.0:
+          factor = 0
+          break
         default:
           factor = getAdjustmentPixels(dpiScale)
           break
