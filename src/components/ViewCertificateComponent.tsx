@@ -56,9 +56,9 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
       if (dpiScale === 1.0) {
         factor = -24
       } else if (dpiScale === 1.2) {
-        factor = 18
+        factor = 15
       } else if (dpiScale === 1.5) {
-        factor = 10
+        factor = 8
       }
     }
     return {
