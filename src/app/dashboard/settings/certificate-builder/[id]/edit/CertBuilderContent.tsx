@@ -205,11 +205,11 @@ export default function CertBuilderContent () {
     const dpiScale = window.devicePixelRatio || 1
     let factor = 0
     if (dpiScale === 1) {
-      factor = -20
+      factor = -24
     } else if (dpiScale === 1.2) {
-      factor = 20
-    } else if (dpiScale === 1.5) {
       factor = 40
+    } else if (dpiScale === 1.5) {
+      factor = 60
     }
     return {
       x: position.x,
@@ -2465,7 +2465,7 @@ export default function CertBuilderContent () {
                       x: comp.position.x || 100,
                       y: comp.position.y || 100,
                     }, sloop)
-                    console.log(pos, comp.position)
+                    console.log(pos, comp.position, sloop)
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
