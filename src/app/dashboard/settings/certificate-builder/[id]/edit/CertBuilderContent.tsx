@@ -2461,6 +2461,11 @@ export default function CertBuilderContent () {
                 {
                   selected.components.map((comp, index) => {
                     let sloop = comp.properties && comp.properties.text && comp.properties.text.family === "Sloop"
+                    let pos = adjustForDPI({
+                      x: comp.position.x || 100,
+                      y: comp.position.y || 100,
+                    }, sloop)
+                    console.log(pos, comp.position)
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
