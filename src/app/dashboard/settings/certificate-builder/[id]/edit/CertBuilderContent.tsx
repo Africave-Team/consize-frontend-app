@@ -2487,7 +2487,20 @@ export default function CertBuilderContent () {
                               old.x = d.x
                             }
                             if (d.y > 0) {
-                              old.y = d.y
+                              let y = d.y
+                              if (sloop) {
+                                let dpiScale = Number((window.devicePixelRatio || 1).toFixed(1))
+                                let factor = 0
+                                if (dpiScale === 1.0) {
+                                  factor = -24
+                                } else if (dpiScale === 1.2) {
+                                  factor = 15
+                                } else if (dpiScale === 1.5) {
+                                  factor = 8
+                                }
+                                y = d.y - factor
+                              }
+                              old.y = y
                             }
                             copySel.components[index].position = old
                             setSelected(copySel)
