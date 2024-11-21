@@ -22,7 +22,7 @@ function getAdjustmentPixels1 (dpr: number) {
 }
 function getAdjustmentPixels0 (dpr: number) {
   const baseAdjustment = -20 // Adjustment at DPR = 1.1
-  const referenceDPR = 1.0
+  const referenceDPR = 0.8
   return baseAdjustment * (dpr / referenceDPR)
 }
 function getAdjustmentPixels3 (dpr: number) {
@@ -37,12 +37,12 @@ export const generateRepositionFactor = function (dpi: number) {
     case 2.0:
       factor = 0
       break
+
+    case 1.0:
+      factor = -20
+      break
     default:
-      if (dpi <= 1) {
-        factor = getAdjustmentPixels0(dpi)
-      } else if (dpi < 2) {
-        factor = getAdjustmentPixels1(dpi)
-      }
+      factor = getAdjustmentPixels1(dpi)
       break
   }
 
