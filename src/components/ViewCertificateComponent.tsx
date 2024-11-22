@@ -523,7 +523,6 @@ export default function ViewCertificateComponent ({ details }: { details: DataIn
                       x: comp.position.x || 100,
                       y: comp.position.y || 100,
                     }, sloop)
-                    console.log(pos, comp.position)
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {
