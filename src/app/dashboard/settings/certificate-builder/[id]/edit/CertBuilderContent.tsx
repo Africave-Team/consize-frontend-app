@@ -2462,7 +2462,6 @@ export default function CertBuilderContent () {
                       x: comp.position.x || 100,
                       y: comp.position.y || 100,
                     }, sloop)
-                    console.log(pos, comp.position, sloop)
                     if (comp.type === ComponentTypes.BACKGROUND) {
                       return <div key={`${comp.type}_${index}`} />
                     } else {

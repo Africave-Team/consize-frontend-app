@@ -48,10 +48,10 @@ export const defaultFonts = [
     title: "The Seasons",
     font: fonts.theseasons
   },
-  {
-    title: "Sloop",
-    font: fonts.sloop
-  },
+  // {
+  //   title: "Sloop",
+  //   font: fonts.sloop
+  // },
   {
     title: "Sequel",
     font: fonts.sequel
