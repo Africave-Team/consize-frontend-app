@@ -57,7 +57,7 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
               <Link
                 className="text-[#334155] hover:text-[#334155] focus:text-[#334155] hover:underline text-sm disabled:text-black/30 lg:px-2 [&.active]:text-black/90"
                 aria-current="page"
-                href="https://calendly.com/ketan-vuov/meet-consize"
+                href="https://calendly.com/consize-demo/60min?month=2024-11"
                 target='__blank'
                 data-te-nav-link-ref>Contact Us</Link>
             </li>

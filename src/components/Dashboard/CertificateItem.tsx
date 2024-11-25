@@ -37,6 +37,7 @@ export default function CertificateItem ({ certificate, onlyPreview, selector }:
             {selector}
           </MenuList>
         </Menu>
+
       </div>
     </div>
   )
