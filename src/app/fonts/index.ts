@@ -1,6 +1,14 @@
 import { Rubik, Outfit, Poppins, Inter, Fira_Code, Montserrat } from 'next/font/google'
 import localFont from 'next/font/local'
 
+const myFont = localFont({ src: '../templates/certificate/gilsans.ttf' })
+const cloisterFont = localFont({ src: '../templates/certificate/CloisterBlack.ttf' })
+const culpa = localFont({ src: '../templates/certificate/helvetica.ttf' })
+const antique = localFont({ src: '../templates/certificate/antique.ttf' })
+const sequel = localFont({ src: '../templates/certificate/sequel.ttf' })
+const theseasons = localFont({ src: './theseasons-reg.woff' })
+const sloop = localFont({ src: '../templates/certificate/Sloop-ScriptThree.ttf' })
+
 const rubik = Rubik({
   subsets: ['latin'],
   variable: '--font-rubik',
@@ -38,5 +46,12 @@ export const fonts = {
   fira,
   brandFont,
   brandFont2,
-  montserrat
+  montserrat,
+  sloop,
+  theseasons,
+  sequel,
+  antique,
+  culpa,
+  cloisterFont,
+  gilsnas: myFont
 }

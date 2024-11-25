@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Economica:ital,wght@0,400;0,700;1,400;1,700&family=Lobster&display=swap');
 
 
-body {
+.certificate-view {
   font-family: 'Arial', sans-serif;
   text-align: center;
   background-color: #f5f5f5;

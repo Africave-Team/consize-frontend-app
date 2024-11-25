@@ -90,3 +90,8 @@ export function isBase64 (s: string): boolean {
   const pattern: RegExp = /^[A-Za-z0-9+/]+(?:={0,2})?$/
   return pattern.test(s)
 }
+
+export function isValidHexColor (hex: string) {
+  const hexColorRegex = /^#([0-9A-F]{3}|[0-9A-F]{6}|[0-9A-F]{8}|[0-9A-F]{4})$/i
+  return hexColorRegex.test(hex)
+}

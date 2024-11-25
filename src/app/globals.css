@@ -172,3 +172,12 @@ html {
   white-space: nowrap;
   overflow-wrap: break-word;
 }
+
+.grid-lines {
+  background-size: 50px 50px;
+  /* Adjust the grid size */
+  z-index: 10;
+  /* Ensure grid is above the background image */
+  pointer-events: none;
+  /* Allows interaction with draggable components through the grid */
+}
