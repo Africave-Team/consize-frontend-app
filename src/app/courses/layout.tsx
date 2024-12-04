@@ -12,7 +12,7 @@ export default function PublicCoursesLayout ({
   children: React.ReactNode
 }) {
   const { setTeam } = useNavigationStore()
-  const [companyCode, setCompanyName] = useState<string>("test")
+  const [companyCode, setCompanyName] = useState<string>("")
 
   const { data, isLoading } = useQuery({
     queryKey: ["company_info", companyCode],

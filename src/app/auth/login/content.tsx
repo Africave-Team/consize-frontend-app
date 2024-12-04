@@ -11,6 +11,8 @@ import { login } from '@/services/auth.service'
 import { useRouter } from 'next/navigation'
 import { COOKIE_AUTH_KEY } from '@/utils/tools'
 import { useEffect, useState } from 'react'
+import { resolveMyTeamInfo } from '@/services/teams'
+import { useQuery } from '@tanstack/react-query'
 
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
@@ -20,23 +22,35 @@ const LoginSchema = Yup.object().shape({
 
 
 export default function LoginHome () {
-  const [companyCode, setCompanyName] = useState<string>("test")
+  const [companyCode, setCompanyName] = useState<string>("")
   const toast = useToast()
   const { setAccess, setUser, setTeam } = useAuthStore()
   const router = useRouter()
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["company_info", companyCode],
+    enabled: companyCode.length > 0,
+    queryFn: () => resolveMyTeamInfo(companyCode)
+  })
+
+
+  useEffect(() => {
+    let host = location.hostname
+    setCompanyName(host)
+  }, [])
   const loginFormik = useFormik({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
+      shortCode: ''
     },
     onSubmit: async (values) => {
       try {
         // validate
         await LoginSchema.validate(values)
         let val = { ...values }
-        if (companyCode !== "test") {
-          // @ts-ignore
-          val = { ...values, shortCode: companyCode }
+        if (data && data.data) {
+          val = { ...values, shortCode: data.data.shortCode }
         }
         const result = await login(val)
         setAccess(result.tokens)
@@ -65,16 +79,10 @@ export default function LoginHome () {
     },
   })
 
+
   useEffect(() => {
     let host = location.hostname
-    host = host.replace('app.', '').replace('staging-app.', '').replace('www', '')
-    let parts = host.split('.')
-    parts.pop()
-    parts.pop()
-    if (parts.length > 0) {
-      let subdomain = parts[0]
-      setCompanyName(subdomain)
-    }
+    setCompanyName(host)
   }, [])
   return (
     <Layout>
