@@ -39,6 +39,7 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
 
   const { data, isLoading } = useQuery({
     queryKey: ["company_info", companyCode],
+    enabled: companyCode.length > 0,
     queryFn: () => resolveMyTeamInfo(companyCode)
   })
 
@@ -46,16 +47,12 @@ export default function TeamPublicCourses ({ params }: { params: { teamId: strin
     setPageTitle(data?.data?.name + " - Courses")
   }, [data])
 
+
+
+
   useEffect(() => {
     let host = location.hostname
-    host = host.replace('app.', '').replace('staging-app.', '')
-    let parts = host.split('.')
-    parts.pop()
-    parts.pop()
-    if (parts.length > 0) {
-      let subdomain = parts[0]
-      setCompanyName(subdomain)
-    }
+    setCompanyName(host)
   }, [])
 
   useEffect(() => {
