@@ -12,6 +12,10 @@ export default function SettingsNav () {
       path: "/dashboard/settings/website"
     },
     {
+      title: "Domains",
+      path: "/dashboard/settings/domains"
+    },
+    {
       title: "Team members",
       path: "/dashboard/settings/teams"
     },

@@ -57,6 +57,14 @@ export enum CertificateMediaTypes {
   FONT = 'font'
 }
 
+
+export interface Domain {
+  host: string
+  internal: boolean
+  dnsVerified: boolean
+  vercelVerified: boolean
+}
+
 export interface Team {
   name: string
   id: string
@@ -73,6 +81,7 @@ export interface Team {
   owner: string
   defaultCertificateId?: string
   certificateBackgrounds?: string[]
+  domains: Domain[]
   certificateMedia?: {
     type: CertificateMediaTypes,
     url: string

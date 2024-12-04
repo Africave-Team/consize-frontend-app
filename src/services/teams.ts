@@ -1,4 +1,4 @@
-import { ResetPasswordPayloadInterface, Team } from '@/type-definitions/auth'
+import { Domain, ResetPasswordPayloadInterface, Team } from '@/type-definitions/auth'
 import http from './base'
 import { IResponse } from '@/type-definitions/IAxios'
 import { CreateTeam, TeamWithOwner } from '@/type-definitions/teams'
@@ -42,6 +42,35 @@ export const updateMyTeamInfo = async (payload: Partial<Omit<Team, "id" | "owner
   http.put({
     url: `teams/`,
     body: payload
+  })
+
+
+export const saveTeamDomains = async (id: string, host: string): Promise<any> =>
+  http.post({
+    url: `teams/${id}/domains`,
+    body: {
+      host
+    }
+  })
+
+
+
+export const updateTeamDomains = async (id: string, host: string): Promise<any> =>
+  http.put({
+    url: `teams/${id}/domains`,
+    body: {
+      host
+    }
+  })
+
+
+
+export const deleteTeamDomains = async (id: string, host: string): Promise<any> =>
+  http.delete({
+    url: `teams/${id}/domains`,
+    body: {
+      host
+    }
   })
 
 

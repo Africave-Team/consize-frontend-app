@@ -8,28 +8,19 @@ import { useEffect, useState } from 'react'
 
 
 export default function Home () {
-  const [companyCode, setCompanyName] = useState<string>("test")
+  const [companyCode, setCompanyName] = useState<string>("")
 
 
   const { data, isLoading } = useQuery({
     queryKey: ["company_info", companyCode],
+    enabled: companyCode.length > 0,
     queryFn: () => resolveMyTeamInfo(companyCode)
   })
 
 
   useEffect(() => {
     let host = location.hostname
-    host = host.replace('app.', '').replace('staging-app.', '')
-    let parts = host.split('.')
-    parts.pop()
-    parts.pop()
-    if (parts.length > 0) {
-      let subdomain = parts[0]
-      setCompanyName(subdomain)
-    } else {
-      // location.href = location.origin + '/courses'
-      location.href = location.origin + '/home'
-    }
+    setCompanyName(host)
   }, [])
 
   useEffect(() => {
