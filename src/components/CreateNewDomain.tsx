@@ -107,7 +107,7 @@ export default function CreateNewDomain () {
                   <tr>
                     <td>CNAME</td>
                     <td>{host}</td>
-                    <td>consize.com</td>
+                    <td>{process.env['NEXT_PUBLIC_APP_ENV'] === "production" ? "consize.com" : "staging-app.consize.com"}</td>
                   </tr>
                 </tbody>
               </table>
