@@ -40,6 +40,17 @@ export default function CreateNewDomain () {
     onSubmit: async (values) => {
       try {
         if (!team) return
+        if (team.domains.find(e => !e.internal)) {
+          toast({
+            title: 'To many custom domains.',
+            description: "You may only have one custom domain on your account. Edit the existing one if you want to change it",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+
+          return
+        }
         // validate
         await _submitMutation({ id: team.id, host: values.host })
         const items = values.host.split(".")
