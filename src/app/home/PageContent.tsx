@@ -5,20 +5,21 @@ import MainFooter from '@/components/navigations/MainFooter'
 import Section1 from '@/components/Section1'
 import Section2 from '@/components/Section2'
 import SiteNavBar from '@/components/siteNavBar'
+import SiteTemporarilyDown from '@/components/SiteTemporarilyDown'
 import Layout from '@/layouts/PageTransition'
 import React from 'react'
 
-export default function HomePageContent () {
+export default function HomePageContent ({ disabled }: { disabled?: boolean }) {
   return (
     <Layout>
       <section className='h-screen flex flex-col overflow-x-hidden'>
-        <SiteNavBar />
-        <div className='h-screen overflow-y-scroll'>
+        <SiteNavBar disabled={disabled} />
+        {disabled ? <SiteTemporarilyDown /> : <div className='h-screen overflow-y-scroll'>
           <Hero />
           <Section1 />
           <Section2 />
           <MainFooter />
-        </div>
+        </div>}
       </section>
     </Layout>
   )

@@ -11,6 +11,6 @@ export const metadata: Metadata = {
 
 export default function page () {
   return (
-    <HomePageContent />
+    <HomePageContent disabled={process.env['DISABLE_SITE'] === "YES"} />
   )
 }

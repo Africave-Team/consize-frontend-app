@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { LuEqual } from 'react-icons/lu'
 import { useNavigationStore } from '@/store/navigation.store'
 
-export default function SiteNavBar ({ team = false }: { team?: boolean }) {
+export default function SiteNavBar ({ team = false, disabled }: { team?: boolean, disabled?: boolean }) {
   const router = useRouter()
   const { team: teamStore } = useNavigationStore()
   const hamburgerClicked = function () {
@@ -48,7 +48,7 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
           className="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
           id="navbarSupportedContent4"
           data-te-collapse-item>
-          <ul
+          {!disabled && <ul
             className="list-style-none mr-auto text-sm flex flex-col pl-0 lg:mt-1 lg:flex-row lg:px-3 lg:justify-end flex-1"
             data-te-navbar-nav-ref>
             <li
@@ -61,11 +61,11 @@ export default function SiteNavBar ({ team = false }: { team?: boolean }) {
                 target='__blank'
                 data-te-nav-link-ref>Contact Us</Link>
             </li>
-          </ul>
+          </ul>}
 
-          <div className="flex items-center gap-3 md:mt-0 mt-3">
+          {!disabled && <div className="flex items-center gap-3 md:mt-0 mt-3">
             <Link href={"/auth/login"} className='bg-primary-app text-black hover:bg-primary-app/80 rounded-3xl font-medium w-20 py-2 text-sm flex justify-center items-center h-10'>Sign in</Link>
-          </div>
+          </div>}
         </div>}
       </div>
     </nav>
