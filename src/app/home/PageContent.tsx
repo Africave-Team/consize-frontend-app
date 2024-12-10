@@ -14,7 +14,6 @@ export default function HomePageContent () {
   return (
     <Layout>
       <section className='h-screen flex flex-col overflow-x-hidden'>
-        <div>{disabled && "YES"}</div>
         <SiteNavBar disabled={disabled} />
         {disabled ? <SiteTemporarilyDown /> : <div className='h-screen overflow-y-scroll'>
           <Hero />
