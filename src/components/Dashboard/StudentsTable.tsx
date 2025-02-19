@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import SortStudentItems from './SortStudentItems'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button, ButtonGroup, Tooltip } from '@chakra-ui/react'
+import TablePagination from './TablePagination'
 export default function StudentsTable ({ students, courseId, courseDetails }: { students: RTDBStudent[], courseId: string, courseDetails: Course }) {
   const pageSize = 10
   const [data, setData] = useState<RTDBStudent[]>([...students])
@@ -137,7 +138,9 @@ export default function StudentsTable ({ students, courseId, courseDetails }: { 
         </table>
       </div>
 
-      {pages > 1 && <div className='flex justify-center py-4'>
+      <TablePagination totalItems={students.length} perPage={pageSize} currentPage={page} onPageChange={(val) => { goto(val) }} totalPages={pages} />
+
+      {/* {pages > 1 && <div className='flex justify-center py-4'>
         <ButtonGroup variant='outline' isAttached>
           <Button isDisabled={page === 1} onClick={() => { goto(page - 1) }} className='font-medium' size={'sm'}>Previous</Button>
           {new Array(pages).fill(0).map((_, i) => {
@@ -154,7 +157,7 @@ export default function StudentsTable ({ students, courseId, courseDetails }: { 
 
           <Button onClick={() => { goto(page + 1) }} isDisabled={page === pages} className='font-medium' size={'sm'}>Next</Button>
         </ButtonGroup>
-      </div>}
+      </div>} */}
     </div>
   )
 }
