@@ -1,10 +1,10 @@
 import React from 'react'
 import { useQRCode } from 'next-qrcode'
 
-export default function TeamQRCode ({ shortCode, teamName, teamLogo }: { shortCode: string, teamName: string, teamLogo: string }) {
+export default function TeamQRCode ({ shortCode, teamName, phoneNumber }: { shortCode: string, teamName: string, teamLogo: string, phoneNumber: string }) {
   const { Canvas } = useQRCode()
   const message = `Hello Consize, \nI want to see courses offered by *${teamName}* (id: _${shortCode}_)`
-  const url = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER}?text=${encodeURIComponent(message)}`
+  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
   return (
     <Canvas
       text={url}

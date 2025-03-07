@@ -85,6 +85,7 @@ export default function DashboardPage () {
       }
     }
   }, [team])
+  const phoneNumber = (team?.facebookData?.phoneNumber ? team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""
   return (
     <Layout>
       <div className='w-full overflow-y-scroll max-h-full'>
@@ -105,7 +106,7 @@ export default function DashboardPage () {
 
             </div>
             <div className='h-96 border w-1/3 flex items-center justify-center p-5'>
-              {showTeamQR ? <>{team && <TeamQRCode teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
+              {showTeamQR ? <>{team && <TeamQRCode phoneNumber={phoneNumber} teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
             </div>
           </div>
         </div>

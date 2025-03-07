@@ -223,6 +223,8 @@ export default function IntegrationSettings () {
       window.removeEventListener('message', sessionInfoListener)
     }
   }, [])
+
+  const phoneNumber = (team?.facebookData?.phoneNumber ? team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""
   return (
     <Layout>
       <div className='w-full overflow-y-scroll h-screen p-4'>
@@ -286,7 +288,7 @@ export default function IntegrationSettings () {
             <div className='h-52'></div>
           </div>
           <div className='w-1/3'>
-            {showTeamQR ? <>{team && <TeamQRCode teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
+            {showTeamQR ? <>{team && <TeamQRCode phoneNumber={phoneNumber} teamLogo={team.logo || ""} shortCode={team?.shortCode} teamName={team.name} />}</> : <div className='h-full w-full flex justify-center items-center'>Whatsapp channel is disabled</div>}
           </div>
         </div>
       </div>
