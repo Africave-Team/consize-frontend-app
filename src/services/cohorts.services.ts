@@ -21,6 +21,11 @@ export const getCourseCohorts = async (courseId: string, distribution: Distribut
     url: `cohorts/${courseId}/${distribution}`,
   })
 
+export const getCohortById = async (cohortId: string): Promise<any> =>
+  http.get({
+    url: `cohorts/${cohortId}`,
+  })
+
 
 
 export const getGeneralCourseCohorts = async (courseId: string): Promise<any> =>

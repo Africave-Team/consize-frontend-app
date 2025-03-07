@@ -17,8 +17,14 @@ import { FiClock, FiDollarSign } from 'react-icons/fi'
 import { RiWhatsappLine } from 'react-icons/ri'
 import MainFooter from '@/components/navigations/MainFooter'
 import chroma from 'chroma-js'
-import { Team } from '@/type-definitions/auth'
+import { getCohortById, getCourseCohorts } from '@/services/cohorts.services'
+import { Distribution } from '@/type-definitions/callbacks'
+import { CohortsInterface } from '@/type-definitions/cohorts'
 
+interface CohortApiResponse {
+  data: CohortsInterface
+  message: string
+}
 
 interface ApiResponse {
   data: PublicCourse
@@ -40,6 +46,19 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
       queryKey: ['one-course', params.id],
       queryFn: () => loadData()
     })
+
+  const loadCohortData = async function (id: string) {
+    const data = await getCohortById(id)
+    return data
+  }
+
+  const { data: cohortResult } =
+    useQuery<CohortApiResponse>({
+      enabled: !!searchParams.cohort,
+      queryKey: ['cohort', { cohortId: searchParams.cohort }],
+      queryFn: () => loadCohortData(params.id)
+    })
+
 
   useEffect(() => {
     let app: any
@@ -259,7 +278,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                         {searchParams.tryout ? <WholeForm team={courseResults?.data.owner} cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                           <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                           <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                        </div> : <WholeForm team={courseResults?.data.owner} cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
+                        </div> : <WholeForm team={courseResults?.data.owner} courseName={courseResults?.data.title} shortCode={courseResults?.data.shortCode} cohortShortCode={cohortResult?.data.shortCode} cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
                       </div>
                     </div>
                   </div>
@@ -280,7 +299,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
                     {searchParams.tryout ? <WholeForm team={courseResults?.data.owner} cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} tryout={true} id={params.id} /> : maxEnrollmentReached ? <div className='bg-[#EF444414] min-h-20 w-full rounded-lg mt-10 p-4'>
                       <div className='font-semibold text-[#EF4444] text-sm'>Maximum enrollment reached</div>
                       <div className='text-[#EF4444] text-sm'>Sorry, the maximum learner limit has reached for this course</div>
-                    </div> : <WholeForm team={courseResults?.data.owner} cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
+                    </div> : <WholeForm team={courseResults?.data.owner} courseName={courseResults?.data.title} shortCode={courseResults?.data.shortCode} cohortShortCode={cohortResult?.data.shortCode} cohortId={searchParams.cohort} fields={courseResults?.data.settings.enrollmentFormFields || []} id={params.id} />}
                   </div>
                 </div>
               </div>

@@ -152,6 +152,7 @@ export interface PublicCourse {
   title: string
   description: string
   owner: Team
+  shortCode: string
   lessons: Lesson[]
   courses: PublicCourse[]
   headerMedia: Media

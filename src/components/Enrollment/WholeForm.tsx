@@ -12,6 +12,7 @@ import { RiWhatsappLine } from 'react-icons/ri'
 import { testCourseWhatsapp } from '@/services/secure.courses.service'
 import { EnrollmentField } from '@/type-definitions/secure.courses'
 import { Team } from '@/type-definitions/auth'
+import CourseQRCode from '../Dashboard/CourseQRCode'
 
 const phoneRegExp = /^\+[1-9]\d{1,14}$/
 const validatePhoneVerification = Yup.object({
@@ -93,7 +94,7 @@ const generateValidationSchema = (fields: EnrollmentField[]) => {
   return Yup.object().shape(validationObject)
 }
 
-export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[], cohortId?: string, team?: Team }) {
+export default function WholeForm (params: { id: string, tryout?: boolean, fields: EnrollmentField[], cohortId?: string, team?: Team, shortCode?: string, courseName?: string, cohortShortCode?: string }) {
   const [enrolled, setEnrolled] = useState(false)
   const toast = useToast()
   const verifyPhoneForm = useFormik({
@@ -359,7 +360,11 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
   })
 
   const phoneNumber = (params.team?.facebookData?.phoneNumber ? params.team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""
-
+  const message = `Hello, \nI want to start the course *${params.courseName}* offered by *${params.team?.name}* \n(id: _${params.shortCode}_)`
+  if (params.cohortShortCode) {
+    message + ` \n(group: _${params.cohortShortCode}_)`
+  }
+  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
 
   return (
     <div className='mt-4'>
@@ -453,7 +458,7 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
             </button>
           </form>}
         </div>
-      </div> : <div className='h-[250px] w-full flex justify-center items-center'>
+      </div> : <div className='min-h-[250px] w-full flex justify-center items-center'>
         <div className='flex flex-col items-center w-full'>
           <img loading="lazy" src="/success-icon.svg" />
           <div className='text-center'>
@@ -463,12 +468,27 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
             </h1>
           </div>
           <div className='w-full mt-2 text-center'>
-            {isMobileScreen ? <div className='w-full text-center'>
-              <a href={`https://wa.me/+${phoneNumber}`} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
-                <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
-                Continue in WhatsApp</a>
-            </div> : <p className='text-sm'>
-              Open WhatsApp to start the course
+            {isMobileScreen ? <div className='flex flex-col'>
+              <div>
+                Click on this link if you fail to receive any messages on whatsapp.
+              </div>
+              <div className='w-full text-center'>
+                <a href={url} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
+                  <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
+                  Continue in WhatsApp</a>
+              </div>
+            </div> : <p className='text-sm flex flex-col items-center'>
+
+              <div className='font-semibold'>
+                Open WhatsApp to start the course
+              </div>
+              <div>
+                Scan this QR Code if you fail to receive any messages on whatsapp.
+              </div>
+
+              <div className='h-52 w-52'>
+                <CourseQRCode width={200} phoneNumber={phoneNumber} cohort={params.cohortShortCode || ""} shortCode={params.shortCode || ""} courseName={params.courseName || ""} teamName={params.team?.name || ""} />
+              </div>
             </p>}
           </div>
         </div>
