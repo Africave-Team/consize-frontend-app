@@ -17,7 +17,7 @@ export const verifyStudentPhone = async (phoneNumber: string, teamId: string): P
   http.get({
     url: `students`,
     query: {
-      phoneNumber
+      phoneNumber, teamId
     }
   })
 
