@@ -13,7 +13,7 @@ export const fetchSinglePublishedCourse = async (courseId: string): Promise<any>
     url: `courses/public/single/${courseId}`
   })
 
-export const verifyStudentPhone = async (phoneNumber: string): Promise<any> =>
+export const verifyStudentPhone = async (phoneNumber: string, teamId: string): Promise<any> =>
   http.get({
     url: `students`,
     query: {

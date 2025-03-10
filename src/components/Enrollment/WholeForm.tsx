@@ -133,11 +133,14 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
           verifyPhoneForm.resetForm()
           setEnrolled(true)
         } else {
-          const result = await verifyStudentPhone(values.phoneNumber.replace('+', ''))
-          setFieldValue("completed", true)
-          if (result.data && result.data.verified) {
-            setFieldValue("user", result.data)
-            setFieldValue("userFound", true)
+          if (params.team) {
+            const result = await verifyStudentPhone(values.phoneNumber.replace('+', ''), params.team.id)
+            setFieldValue("completed", true)
+            if (result.data && result.data.verified) {
+              setFieldValue("user", result.data)
+              setFieldValue("userFound", true)
+            }
+
           }
         }
       } catch (error) {
@@ -360,12 +363,6 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
   })
 
   const phoneNumber = (params.team?.facebookData?.phoneNumber ? params.team.facebookData.phoneNumber : process.env.NEXT_PUBLIC_WHATSAPP_PHONENUMBER) || ""
-  const message = `Hello, \nI want to start the course *${params.courseName}* offered by *${params.team?.name}* \n(id: _${params.shortCode}_)`
-  if (params.cohortShortCode) {
-    message + ` \n(group: _${params.cohortShortCode}_)`
-  }
-  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
-
   return (
     <div className='mt-4'>
       {!enrolled ? <div>
@@ -423,25 +420,6 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
             <button type='submit' disabled={!completeVerifyPhoneForm.isValid || completeVerifyPhoneForm.isSubmitting || enrollMutation.isPending} className='text-sm rounded-3xl px-10 w-full h-12 mt-2 border items-center justify-center text-black bg-[#1FFF69] flex font-medium gap-1 disabled:bg-[#1FFF69]/40'>
               Verify & enroll {(enrollMutation.isPending || completeVerifyPhoneForm.isSubmitting) && <Spinner size={'sm'} />}
             </button>
-
-            {isMobileScreen ? <div className='flex flex-col'>
-              <div>
-                Click on this link if you dont receive any messages on whatsapp.
-              </div>
-              <div className='w-full text-center'>
-                <a href={url} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
-                  <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
-                  Continue in WhatsApp</a>
-              </div>
-            </div> : <p className='text-sm flex flex-col items-center'>
-              <div>
-                Scan this QR Code if you dont receive any messages on whatsapp.
-              </div>
-
-              <div className='h-52 w-52'>
-                <CourseQRCode width={200} phoneNumber={phoneNumber} cohort={params.cohortShortCode || ""} shortCode={params.shortCode || ""} courseName={params.courseName || ""} teamName={params.team?.name || ""} />
-              </div>
-            </p>}
           </form>}
 
           {verifyPhoneForm.values.registerationForm && <form className='mt-2' onSubmit={registerStudentForm.handleSubmit}>
@@ -487,27 +465,12 @@ export default function WholeForm (params: { id: string, tryout?: boolean, field
             </h1>
           </div>
           <div className='w-full mt-2 text-center'>
-            {isMobileScreen ? <div className='flex flex-col'>
-              <div>
-                Click on this link if you fail to receive any messages on whatsapp.
-              </div>
-              <div className='w-full text-center'>
-                <a href={url} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
-                  <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
-                  Continue in WhatsApp</a>
-              </div>
-            </div> : <p className='text-sm flex flex-col items-center'>
-
-              <div className='font-semibold'>
-                Open WhatsApp to start the course
-              </div>
-              <div>
-                Scan this QR Code if you fail to receive any messages on whatsapp.
-              </div>
-
-              <div className='h-52 w-52'>
-                <CourseQRCode width={200} phoneNumber={phoneNumber} cohort={params.cohortShortCode || ""} shortCode={params.shortCode || ""} courseName={params.courseName || ""} teamName={params.team?.name || ""} />
-              </div>
+            {isMobileScreen ? <div className='w-full text-center'>
+              <a href={`https://wa.me/+${phoneNumber}`} target='__blank' className='w-full bg-[#14B8A6] flex gap-1 py-2 rounded-md justify-center text-white items-center'>
+                <Icon as={RiWhatsappLine} color={'white'} className='text-2xl' />
+                Continue in WhatsApp</a>
+            </div> : <p className='text-sm'>
+              Open WhatsApp to start the course
             </p>}
           </div>
         </div>
