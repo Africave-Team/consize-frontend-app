@@ -49,7 +49,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
 
   const loadCohortData = async function (id: string) {
     const data = await getCohortById(id)
-    return data
+    return { data: data.cohort, message: data.message }
   }
 
   const { data: cohortResult } =
