@@ -56,7 +56,7 @@ export default function SinglePublicCourses ({ params, searchParams }: { params:
     useQuery<CohortApiResponse>({
       enabled: !!searchParams.cohort,
       queryKey: ['cohort', { cohortId: searchParams.cohort }],
-      queryFn: () => loadCohortData(params.id)
+      queryFn: () => loadCohortData(searchParams.cohort || "")
     })
 
 
